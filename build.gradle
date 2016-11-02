@@ -1,17 +1,41 @@
-group 'com.ocado.pandateam.newrelic.alerts'
-version '1.0-SNAPSHOT'
+allprojects {
+    group = 'com.ocado.pandateam.newrelic.alerts'
+    version = '0.1-SNAPSHOT'
 
-buildscript {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    compileJava.options.encoding = 'UTF-8'
+}
+
+project(':newrelic-sync') {
+    dependencies {
+        compile project(':newrelic-api')
+    }
+}
+
+subprojects {
     repositories {
         mavenCentral()
     }
-    dependencies {
-    }
-}
 
-dependencies {
-}
-repositories {
-    mavenCentral()
-    jcenter()
+    dependencies {
+        testCompile "junit:junit:4.12"
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
 }
