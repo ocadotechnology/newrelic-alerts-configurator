@@ -1,0 +1,17 @@
+group 'com.ocado.pandateam.newrelic.alerts'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+
+dependencies {
+}
+repositories {
+    mavenCentral()
+    jcenter()
+}
