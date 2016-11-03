@@ -3,6 +3,7 @@ allprojects {
     version = '0.1-SNAPSHOT'
 
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -17,7 +18,8 @@ project(':newrelic-sync') {
 
 subprojects {
     repositories {
-        mavenCentral()
+        maven { url 'http://maven.ocado.com/nexus/content/repositories/central' }
+        mavenLocal()
     }
 
     dependencies {
@@ -37,5 +39,28 @@ subprojects {
     artifacts {
         archives sourcesJar
         archives javadocJar
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+        repositories {
+            maven {
+//                credentials {
+//                    username config.nexus.username
+//                    password config.nexus.password
+//                }
+                if (project.version.endsWith('-SNAPSHOT')) {
+                    url 'http://maven.ocado.com/nexus/content/repositories/core-services-snapshots/'
+                } else {
+                    url 'http://maven.ocado.com/nexus/content/repositories/core-services-releases/'
+                }
+            }
+        }
     }
 }
