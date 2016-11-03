@@ -51,10 +51,10 @@ subprojects {
         }
         repositories {
             maven {
-//                credentials {
-//                    username config.nexus.username
-//                    password config.nexus.password
-//                }
+                credentials {
+                    username System.getenv("MAVEN_REPO_USERNAME")
+                    password System.getenv("MAVEN_REPO_PASSWORD")
+                }
                 if (project.version.endsWith('-SNAPSHOT')) {
                     url 'http://maven.ocado.com/nexus/content/repositories/core-services-snapshots/'
                 } else {
