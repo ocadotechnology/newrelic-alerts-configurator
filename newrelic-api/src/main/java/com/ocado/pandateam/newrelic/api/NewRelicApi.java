@@ -14,10 +14,20 @@ import java.util.Optional;
  */
 public class NewRelicApi {
 
+    private static final String NEWRELIC_HOST_URL = "https://api.newrelic.com";
     private static final String APPLICATIONS_URL = "/v2/applications.json";
     private static final String USERS_URL = "/v2/users.json";
 
     private final NewRelicApiRestClient rest;
+
+    /**
+     * NewRelic API constructor.
+     *
+     * @param apiKey API Key for given NewRelic account
+     */
+    public NewRelicApi(String apiKey) {
+        this(NEWRELIC_HOST_URL, apiKey);
+    }
 
     /**
      * NewRelic API constructor.

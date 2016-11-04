@@ -34,6 +34,17 @@ public class NewRelicApiRestClient {
         }
     }
 
+    public <T> Optional<T> asSingleObject(Class<? extends ObjectList<T>> responseClass, HttpRequest httpRequest)
+            throws NewRelicApiException {
+        List<T> list = asObject(responseClass, httpRequest).getList();
+        if (list.isEmpty()) {
+            return Optional.empty();
+        } else if(list.size() > 1) {
+            throw new NewRelicApiException("Expected single element in the list");
+        }
+        return Optional.of(list.get(0));
+    }
+
     private <T> HttpResponse<? extends T> handleErrorResponse(HttpRequest httpRequest,
                                                               HttpResponse<? extends T> httpResponse)
             throws NewRelicApiException {
@@ -44,22 +55,6 @@ public class NewRelicApiRestClient {
                             httpRequest.getHttpMethod(), httpRequest.getUrl()));
         }
         return httpResponse;
-    }
-
-    public <T> List<T> asList(Class<? extends ObjectList<T>> responseClass, HttpRequest httpRequest)
-            throws NewRelicApiException {
-        return asObject(responseClass, httpRequest).getList();
-    }
-
-    public <T> Optional<T> asSingleObject(Class<? extends ObjectList<T>> responseClass, HttpRequest httpRequest)
-            throws NewRelicApiException {
-        List<T> list = asList(responseClass, httpRequest);
-        if (list.isEmpty()) {
-            return Optional.empty();
-        } else if(list.size() > 1) {
-            throw new NewRelicApiException("Expected single element in the list");
-        }
-        return Optional.of(list.get(0));
     }
 
 }
