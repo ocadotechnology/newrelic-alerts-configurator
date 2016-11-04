@@ -51,7 +51,7 @@ public class NewRelicApiTest {
         newRelicReturnsApplications();
 
         // when
-        Optional<Application> app = testee.getApplicationsByName("user_management");
+        Optional<Application> app = testee.getApplicationByName("user_management");
 
         // then
         Assert.assertTrue(app.isPresent());

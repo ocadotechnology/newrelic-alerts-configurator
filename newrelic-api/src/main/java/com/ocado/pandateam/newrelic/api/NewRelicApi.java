@@ -4,11 +4,13 @@ import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicApiRestClient;
 import com.ocado.pandateam.newrelic.api.model.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
+import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyList;
 import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
 import com.ocado.pandateam.newrelic.api.model.KeyTransactionList;
-import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
 import com.ocado.pandateam.newrelic.api.model.User;
 import com.ocado.pandateam.newrelic.api.model.UserList;
 
@@ -26,6 +28,7 @@ public class NewRelicApi {
     private static final String USERS = "/v2/users.json";
     private static final String KEY_TRANSACTIONS = "/v2/key_transactions.json";
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
+    private static final String ALERTS_POLICIES = "/v2/alerts_policies.json";
 
     private final NewRelicApiRestClient api;
 
@@ -54,7 +57,7 @@ public class NewRelicApi {
      * @return Optional containing {@link Application} object, or empty if application not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
-    public Optional<Application> getApplicationsByName(String name) throws NewRelicApiException {
+    public Optional<Application> getApplicationByName(String name) throws NewRelicApiException {
         return api.get(APPLICATIONS).queryString("filter[name]", name).asSingleObject(ApplicationList.class);
     }
 
@@ -132,4 +135,14 @@ public class NewRelicApi {
                 .getChannel();
     }
 
+    /**
+     * Get {@link AlertPolicy} object using its name.
+     *
+     * @param name Name of the alert policy registered in NewRelic
+     * @return Optional containing {@link AlertPolicy} object, or empty if alert policy not found
+     * @throws NewRelicApiException when more than one response returned or received error response
+     */
+    public Optional<AlertPolicy> getAlertPolicyByName(String name) throws NewRelicApiException {
+        return api.get(ALERTS_POLICIES).queryString("filter[name]", name).asSingleObject(AlertPolicyList.class);
+    }
 }
