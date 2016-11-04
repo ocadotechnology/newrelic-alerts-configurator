@@ -56,6 +56,8 @@ public class NewRelicApiRestClient {
         List<T> list = asList(responseClass, httpRequest);
         if (list.isEmpty()) {
             return Optional.empty();
+        } else if(list.size() > 1) {
+            throw new NewRelicApiException("Expected single element in the list");
         }
         return Optional.of(list.get(0));
     }

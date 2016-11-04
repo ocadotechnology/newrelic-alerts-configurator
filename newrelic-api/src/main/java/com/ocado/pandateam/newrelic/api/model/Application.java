@@ -18,7 +18,9 @@ public class Application {
     @JsonProperty("last_reported_at")
     String lastReportedAt;
     @JsonProperty("application_summary")
-    ApplicationSummary applicationSummary;
-    @JsonProperty("settings")
-    ApplicationSettings applicationSettings;
+    ApplicationSummary summary;
+    @JsonProperty
+    ApplicationSettings settings;
+    @JsonProperty
+    ApplicationLinks links;
 }
