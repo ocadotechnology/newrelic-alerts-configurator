@@ -10,7 +10,7 @@ import com.ocado.pandateam.newrelic.api.model.ObjectList;
 import java.util.List;
 import java.util.Optional;
 
-public class NewRelicRequest {
+public class NewRelicRequest { // TODO: support pagination
 
     private final HttpRequest httpRequest;
 

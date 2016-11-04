@@ -1,5 +1,6 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.mashape.unirest.http.ObjectMapper;
@@ -14,6 +15,7 @@ class Mapper implements ObjectMapper {
     Mapper() {
         jacksonObjectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
         jacksonObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        jacksonObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     public <T> T readValue(String value, Class<T> valueType) {
