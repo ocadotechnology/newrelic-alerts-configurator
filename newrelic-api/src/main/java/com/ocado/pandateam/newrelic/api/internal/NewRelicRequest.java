@@ -1,9 +1,7 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequest;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
@@ -12,32 +10,30 @@ import com.ocado.pandateam.newrelic.api.model.ObjectList;
 import java.util.List;
 import java.util.Optional;
 
-public class NewRelicApiRestClient {
+public class NewRelicRequest {
 
-    private final String hostUrl;
-    private final String apiKey;
+    private final HttpRequest httpRequest;
 
-    public NewRelicApiRestClient(String hostUrl, String apiKey) {
-        this.hostUrl = hostUrl;
-        this.apiKey = apiKey;
-        Unirest.setObjectMapper(new Mapper());
+    NewRelicRequest(HttpRequest httpRequest) {
+        this.httpRequest = httpRequest;
     }
 
-    public GetRequest get(String url) {
-        return Unirest.get(hostUrl + url).header("X-Api-Key", apiKey);
+    public NewRelicRequest queryString(String name, Object value) {
+        httpRequest.queryString(name, value);
+        return this;
     }
 
-    public <T> T asObject(Class<? extends T> responseClass, HttpRequest httpRequest) throws NewRelicApiException {
+    public <T> T asObject(Class<? extends T> responseClass) throws NewRelicApiException {
         try {
-            return handleErrorResponse(httpRequest, httpRequest.asObject(responseClass)).getBody();
+            return handleErrorResponse(httpRequest.asObject(responseClass)).getBody();
         } catch (UnirestException e) {
             throw new NewRelicApiException(e);
         }
     }
 
-    public <T> Optional<T> asSingleObject(Class<? extends ObjectList<T>> responseClass, HttpRequest httpRequest)
+    public <T> Optional<T> asSingleObject(Class<? extends ObjectList<T>> responseClass)
             throws NewRelicApiException {
-        List<T> list = asObject(responseClass, httpRequest).getList();
+        List<T> list = asObject(responseClass).getList();
         if (list.isEmpty()) {
             return Optional.empty();
         } else if(list.size() > 1) {
@@ -46,8 +42,7 @@ public class NewRelicApiRestClient {
         return Optional.of(list.get(0));
     }
 
-    private <T> HttpResponse<? extends T> handleErrorResponse(HttpRequest httpRequest,
-                                                              HttpResponse<? extends T> httpResponse)
+    private <T> HttpResponse<? extends T> handleErrorResponse(HttpResponse<? extends T> httpResponse)
             throws NewRelicApiException {
         if (httpResponse.getStatus() / 100 > 3) {
             throw new NewRelicApiHttpException(httpResponse.getStatus(), httpResponse.getStatusText(),

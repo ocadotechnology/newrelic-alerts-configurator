@@ -1,7 +1,7 @@
 package com.ocado.pandateam.newrelic.api;
 
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.internal.NewRelicApiRestClient;
+import com.ocado.pandateam.newrelic.api.internal.NewRelicApiRestClientNew;
 import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.User;
@@ -18,7 +18,7 @@ public class NewRelicApi {
     private static final String APPLICATIONS_URL = "/v2/applications.json";
     private static final String USERS_URL = "/v2/users.json";
 
-    private final NewRelicApiRestClient rest;
+    private final NewRelicApiRestClientNew api;
 
     /**
      * NewRelic API constructor.
@@ -36,7 +36,7 @@ public class NewRelicApi {
      * @param apiKey API Key for given NewRelic account
      */
     public NewRelicApi(String hostUrl, String apiKey) {
-        rest = new NewRelicApiRestClient(hostUrl, apiKey);
+        api = new NewRelicApiRestClientNew(hostUrl, apiKey);
     }
 
     /**
@@ -46,7 +46,7 @@ public class NewRelicApi {
      * @throws NewRelicApiException when more than one response returned or received error response
      */
     public Optional<Application> getApplicationsByName(String name) throws NewRelicApiException {
-        return rest.asSingleObject(ApplicationList.class, rest.get(APPLICATIONS_URL).queryString("filter[name]", name));
+        return api.get(APPLICATIONS_URL).queryString("filter[name]", name).asSingleObject(ApplicationList.class);
     }
 
     /**
@@ -56,7 +56,7 @@ public class NewRelicApi {
      * @throws NewRelicApiException when more than one response returned or received error response
      */
     public Optional<User> getUserByEmail(String email) throws NewRelicApiException {
-        return rest.asSingleObject(UserList.class, rest.get(USERS_URL).queryString("filter[email]", email));
+        return api.get(USERS_URL).queryString("filter[email]", email).asSingleObject(UserList.class);
     }
 
 }
