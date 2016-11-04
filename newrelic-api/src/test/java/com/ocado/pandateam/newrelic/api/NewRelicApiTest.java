@@ -45,7 +45,7 @@ public class NewRelicApiTest {
     }
 
     @Test
-    public void test() throws IOException, NewRelicApiException {
+    public void shouldGetApplicationCorrectly() throws IOException, NewRelicApiException {
 
         // given
         newRelicReturnsApplications();
