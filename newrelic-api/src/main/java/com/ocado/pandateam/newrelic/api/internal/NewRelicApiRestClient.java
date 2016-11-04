@@ -2,12 +2,12 @@ package com.ocado.pandateam.newrelic.api.internal;
 
 import com.mashape.unirest.http.Unirest;
 
-public class NewRelicApiRestClientNew {
+public class NewRelicApiRestClient {
 
     private final String hostUrl;
     private final String apiKey;
 
-    public NewRelicApiRestClientNew(String hostUrl, String apiKey) {
+    public NewRelicApiRestClient(String hostUrl, String apiKey) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         Unirest.setObjectMapper(new Mapper());

@@ -1,7 +1,7 @@
 package com.ocado.pandateam.newrelic.api;
 
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.internal.NewRelicApiRestClientNew;
+import com.ocado.pandateam.newrelic.api.internal.NewRelicApiRestClient;
 import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.User;
@@ -18,7 +18,7 @@ public class NewRelicApi {
     private static final String APPLICATIONS_URL = "/v2/applications.json";
     private static final String USERS_URL = "/v2/users.json";
 
-    private final NewRelicApiRestClientNew api;
+    private final NewRelicApiRestClient api;
 
     /**
      * NewRelic API constructor.
@@ -36,7 +36,7 @@ public class NewRelicApi {
      * @param apiKey API Key for given NewRelic account
      */
     public NewRelicApi(String hostUrl, String apiKey) {
-        api = new NewRelicApiRestClientNew(hostUrl, apiKey);
+        api = new NewRelicApiRestClient(hostUrl, apiKey);
     }
 
     /**
