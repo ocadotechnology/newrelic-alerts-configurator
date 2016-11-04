@@ -6,6 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequest;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
+import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
 import com.ocado.pandateam.newrelic.api.model.ObjectList;
 
 import java.util.List;
@@ -49,10 +50,8 @@ public class NewRelicApiRestClient {
                                                               HttpResponse<? extends T> httpResponse)
             throws NewRelicApiException {
         if (httpResponse.getStatus() / 100 > 3) {
-            throw new NewRelicApiException(
-                    String.format("NewRelic API returned error code %d: %s; %s %s",
-                            httpResponse.getStatus(), httpResponse.getStatusText(),
-                            httpRequest.getHttpMethod(), httpRequest.getUrl()));
+            throw new NewRelicApiHttpException(httpResponse.getStatus(), httpResponse.getStatusText(),
+                    httpRequest.getHttpMethod().name(), httpRequest.getUrl());
         }
         return httpResponse;
     }
