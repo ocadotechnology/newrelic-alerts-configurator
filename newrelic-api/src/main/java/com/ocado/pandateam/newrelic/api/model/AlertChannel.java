@@ -1,13 +1,13 @@
 package com.ocado.pandateam.newrelic.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
 @Value
 @Builder
-@JsonDeserialize(builder = AlertChannel.AlertChannelBuilder.class)
+@AllArgsConstructor
 public class AlertChannel {
     @JsonProperty
     Integer id;

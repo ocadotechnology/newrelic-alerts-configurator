@@ -1,7 +1,7 @@
 package com.ocado.pandateam.newrelic.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Value
 @Builder
-@JsonDeserialize(builder = AlertChannelConfiguration.AlertChannelConfigurationBuilder.class)
+@AllArgsConstructor
 public class AlertChannelConfiguration {
     @JsonProperty("user_id")
     String userId;
