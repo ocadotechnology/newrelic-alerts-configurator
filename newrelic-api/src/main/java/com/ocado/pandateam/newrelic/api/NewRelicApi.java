@@ -88,20 +88,6 @@ public class NewRelicApi {
     }
 
     /**
-     * Creates {@link AlertChannel} of type "user".
-     * @param name Name of the Alert Channel to be created
-     * @param userId Identifier of the user entity from NewRelic
-     * @return created {@link AlertChannel} instance in NewRelic
-     * @throws NewRelicApiException
-     */
-    public AlertChannel createUserAlertChannel(String name, String userId) throws NewRelicApiException {
-        return api.post(ALERTS_CHANNELS)
-                .body(new AlertChannelWrapper(AlertChannel.createForUser(name, userId)))
-                .asObject(AlertChannelWrapper.class)
-                .getChannel();
-    }
-
-    /**
      * Creates {@link AlertChannel} of type "email".
      * @param name Name of the Alert Channel to be created
      * @param recipients E-mail address of recipients
@@ -109,12 +95,11 @@ public class NewRelicApi {
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException
      */
-    public AlertChannel createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
+    public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
             throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)))
-                .asObject(AlertChannelWrapper.class)
-                .getChannel();
+                .asSingleObject(AlertChannelList.class);
     }
 
     /**
@@ -125,11 +110,10 @@ public class NewRelicApi {
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException
      */
-    public AlertChannel createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
+    public Optional<AlertChannel> createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)))
-                .asObject(AlertChannelWrapper.class)
-                .getChannel();
+                .asSingleObject(AlertChannelList.class);
     }
 
 }

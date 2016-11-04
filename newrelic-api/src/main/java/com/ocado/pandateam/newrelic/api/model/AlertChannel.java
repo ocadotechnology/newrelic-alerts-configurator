@@ -20,12 +20,6 @@ public class AlertChannel {
     @JsonProperty
     AlertChannelLinks links;
 
-    public static AlertChannel createForUser(String name, String userId) {
-        AlertChannelConfiguration config = AlertChannelConfiguration.builder()
-                .userId(userId).build();
-        return builder().name(name).type("user").configuration(config).build();
-    }
-
     public static AlertChannel createForEmail(String name, String recipients, String includeJsonAttachment) {
         AlertChannelConfiguration config = AlertChannelConfiguration.builder()
                 .recipients(recipients).includeJsonAttachment(includeJsonAttachment).build();
