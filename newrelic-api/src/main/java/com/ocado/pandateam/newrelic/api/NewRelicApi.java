@@ -22,7 +22,7 @@ public class NewRelicApi {
 
     private static final String NEWRELIC_HOST_URL = "https://api.newrelic.com";
 
-    private static final String APPLICATIONS = "/v2/applications.json";
+    static final String APPLICATIONS = "/v2/applications.json";
     private static final String USERS = "/v2/users.json";
     private static final String KEY_TRANSACTIONS = "/v2/key_transactions.json";
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
