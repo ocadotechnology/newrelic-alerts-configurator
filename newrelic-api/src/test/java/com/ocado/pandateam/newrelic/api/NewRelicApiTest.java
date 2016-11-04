@@ -58,9 +58,11 @@ public class NewRelicApiTest {
     }
 
     private void newRelicReturnsApplications() throws UnsupportedEncodingException {
+        String queryParam = URLEncoder.encode("filter[name]", UTF_8.name());
+
         WIRE_MOCK.addStubMapping(
                 get(urlPathEqualTo(APPLICATIONS))
-                        .withQueryParam(URLEncoder.encode("filter[name]", UTF_8.name()), equalTo("user_management"))
+                        .withQueryParam(queryParam, equalTo("user_management"))
                         .withHeader("X-Api-Key", equalTo("secret"))
                         .willReturn(aResponse()
                                 .withStatus(SC_OK)
