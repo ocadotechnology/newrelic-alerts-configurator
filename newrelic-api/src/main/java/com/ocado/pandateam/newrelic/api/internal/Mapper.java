@@ -7,11 +7,11 @@ import com.ocado.pandateam.newrelic.api.exception.NewRelicApiRuntimeException;
 
 import java.io.IOException;
 
-public class Mapper implements ObjectMapper {
+class Mapper implements ObjectMapper {
 
     private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper;
 
-    public Mapper() {
+    Mapper() {
         jacksonObjectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
         jacksonObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
