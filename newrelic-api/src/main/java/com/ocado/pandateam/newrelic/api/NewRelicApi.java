@@ -60,7 +60,7 @@ public class NewRelicApi {
 
     /**
      * Get {@link User} object using its e-mail.
-     * @param email E-mail of the user registered in NewRelic
+     * @param email E-mail of the user present in NewRelic
      * @return Optional containing {@link User} object, or empty if application not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
@@ -68,31 +68,68 @@ public class NewRelicApi {
         return api.get(USERS).queryString("filter[email]", email).asSingleObject(UserList.class);
     }
 
+    /**
+     * Get {@link KeyTransaction} object using its name.
+     * @param name Name of the KeyTransaction present in NewRelic
+     * @return Optional containing {@link KeyTransaction} object, or empty if application not found
+     * @throws NewRelicApiException when more than one response returned or received error response
+     */
     public Optional<KeyTransaction> getKeyTransactionByName(String name) throws NewRelicApiException {
         return api.get(KEY_TRANSACTIONS).queryString("filter[name]", name).asSingleObject(KeyTransactionList.class);
     }
 
+    /**
+     * List all existing Alert Channels.
+     * @return list of all existing {@link AlertChannel} from NewRelic
+     * @throws NewRelicApiException when received error response
+     */
     public List<AlertChannel> listAlertChannels() throws NewRelicApiException {
         return api.get(ALERTS_CHANNELS).asObject(AlertChannelList.class).getList();
     }
 
+    /**
+     * Creates {@link AlertChannel} of type "user".
+     * @param name Name of the Alert Channel to be created
+     * @param userId Identifier of the user entity from NewRelic
+     * @return created {@link AlertChannel} instance in NewRelic
+     * @throws NewRelicApiException
+     */
     public AlertChannel createUserAlertChannel(String name, String userId) throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForUser(name, userId)))
-                .asObject(AlertChannel.class);
+                .asObject(AlertChannelWrapper.class)
+                .getChannel();
     }
 
+    /**
+     * Creates {@link AlertChannel} of type "email".
+     * @param name Name of the Alert Channel to be created
+     * @param recipients E-mail address of recipients
+     * @param includeJsonAttachment
+     * @return created {@link AlertChannel} instance in NewRelic
+     * @throws NewRelicApiException
+     */
     public AlertChannel createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
             throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)))
-                .asObject(AlertChannel.class);
+                .asObject(AlertChannelWrapper.class)
+                .getChannel();
     }
 
+    /**
+     * Creates {@link AlertChannel} of type "slack".
+     * @param name Name of the Alert Channel to be created
+     * @param url (Optional) URL address of Slack
+     * @param channel
+     * @return created {@link AlertChannel} instance in NewRelic
+     * @throws NewRelicApiException
+     */
     public AlertChannel createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)))
-                .asObject(AlertChannel.class);
+                .asObject(AlertChannelWrapper.class)
+                .getChannel();
     }
 
 }
