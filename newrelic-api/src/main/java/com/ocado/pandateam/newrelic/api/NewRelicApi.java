@@ -22,7 +22,7 @@ public class NewRelicApi {
 
     private static final String NEWRELIC_HOST_URL = "https://api.newrelic.com";
 
-    static final String APPLICATIONS = "/v2/applications.json";
+    static final String APPLICATIONS = "/v2/applications.json"; // TODO for Lukasz Drabik: should be private
     private static final String USERS = "/v2/users.json";
     private static final String KEY_TRANSACTIONS = "/v2/key_transactions.json";
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
@@ -91,7 +91,7 @@ public class NewRelicApi {
      * Creates {@link AlertChannel} of type "email".
      * @param name Name of the Alert Channel to be created
      * @param recipients E-mail address of recipients
-     * @param includeJsonAttachment
+     * @param includeJsonAttachment flag determining if email alert should include attachment
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException
      */
@@ -106,7 +106,7 @@ public class NewRelicApi {
      * Creates {@link AlertChannel} of type "slack".
      * @param name Name of the Alert Channel to be created
      * @param url (Optional) URL address of Slack
-     * @param channel
+     * @param channel Name of the Slack channel for example: #channel-name
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException
      */
