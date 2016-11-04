@@ -15,6 +15,7 @@ project(':newrelic-api') {
         compile 'com.mashape.unirest:unirest-java:1.4.9'
         compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
         compile 'org.projectlombok:lombok:1.16.10'
+        compile 'commons-io:commons-io:2.5'
     }
 }
 

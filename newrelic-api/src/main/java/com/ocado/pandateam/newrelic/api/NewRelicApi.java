@@ -8,6 +8,7 @@ import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
 import com.ocado.pandateam.newrelic.api.model.KeyTransactionList;
+import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
 import com.ocado.pandateam.newrelic.api.model.User;
 import com.ocado.pandateam.newrelic.api.model.UserList;
 
@@ -73,6 +74,25 @@ public class NewRelicApi {
 
     public List<AlertChannel> listAlertChannels() throws NewRelicApiException {
         return api.get(ALERTS_CHANNELS).asObject(AlertChannelList.class).getList();
+    }
+
+    public AlertChannel createUserAlertChannel(String name, String userId) throws NewRelicApiException {
+        return api.post(ALERTS_CHANNELS)
+                .body(new AlertChannelWrapper(AlertChannel.createForUser(name, userId)))
+                .asObject(AlertChannel.class);
+    }
+
+    public AlertChannel createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
+            throws NewRelicApiException {
+        return api.post(ALERTS_CHANNELS)
+                .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)))
+                .asObject(AlertChannel.class);
+    }
+
+    public AlertChannel createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
+        return api.post(ALERTS_CHANNELS)
+                .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)))
+                .asObject(AlertChannel.class);
     }
 
 }

@@ -6,7 +6,10 @@ import com.mashape.unirest.request.HttpRequest;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
 import com.ocado.pandateam.newrelic.api.model.ObjectList;
+import org.apache.commons.io.IOUtils;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +18,7 @@ public class NewRelicRequest { // TODO: support pagination
     private final HttpRequest httpRequest;
 
     NewRelicRequest(HttpRequest httpRequest) {
-        this.httpRequest = httpRequest;
+        this.httpRequest = httpRequest.header("accept", "application/json");
     }
 
     public NewRelicRequest queryString(String name, Object value) {
@@ -46,9 +49,17 @@ public class NewRelicRequest { // TODO: support pagination
             throws NewRelicApiException {
         if (httpResponse.getStatus() / 100 > 3) {
             throw new NewRelicApiHttpException(httpResponse.getStatus(), httpResponse.getStatusText(),
-                    httpRequest.getHttpMethod().name(), httpRequest.getUrl());
+                    httpRequest.getHttpMethod().name(), httpRequest.getUrl(), getRawResponse(httpResponse));
         }
         return httpResponse;
+    }
+
+    private static <T> String getRawResponse(HttpResponse<? extends T> httpResponse) throws NewRelicApiException {
+        try {
+            return IOUtils.toString(httpResponse.getRawBody(), Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            throw new NewRelicApiException(e);
+        }
     }
 
 }
