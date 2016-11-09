@@ -25,6 +25,12 @@ project(':newrelic-api') {
     }
 }
 
+project(':newrelic-client') {
+    dependencies {
+        compile project(':newrelic-api')
+    }
+}
+
 project(':newrelic-sync') {
     dependencies {
         compile project(':newrelic-api')
