@@ -48,7 +48,7 @@ public class NewRelicRequest { // TODO: support pagination
 
     private <T> HttpResponse<T> executeRequest(Class<T> responseClass) throws UnirestException {
         log.info("{} {}", request.getHttpMethod(), request.getUrl());
-        if (request.getHttpMethod() == HttpMethod.POST) {
+        if (request.getHttpMethod() == HttpMethod.POST || request.getHttpMethod() == HttpMethod.PUT) {
             log.info("{}", request.getBody());
         }
         return request.asObject(responseClass);

@@ -21,4 +21,7 @@ public class NewRelicApiRestClient {
         return new NewRelicRequestWithBody(Unirest.post(hostUrl + url).header("X-Api-Key", apiKey));
     }
 
+    public NewRelicRequestWithBody put(String url) {
+        return new NewRelicRequestWithBody(Unirest.put(hostUrl + url).header("X-Api-Key", apiKey));
+    }
 }

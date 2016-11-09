@@ -14,7 +14,11 @@ public class Main {
         } else {
             String apiKey = args[0];
             NewRelicApi api = new NewRelicApi(apiKey);
-            Configuration config = Configuration.builder().applicationName("user_management").build();
+            Configuration config = Configuration.builder()
+                    .applicationName("user_management")
+                    .appApdexThreshold(0.5f)
+                    .userApdexThreshold(7.0f)
+                    .build();
             Synchronizer synchronizer = new Synchronizer(api, config);
             synchronizer.sync();
         }

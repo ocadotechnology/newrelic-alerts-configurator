@@ -1,11 +1,15 @@
 package com.ocado.pandateam.newrelic.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Value;
 
 import java.time.OffsetDateTime;
 
 @Value
+@Builder
+@AllArgsConstructor
 public class Application {
     @JsonProperty
     Integer id;
@@ -20,9 +24,11 @@ public class Application {
     @JsonProperty("last_reported_at")
     OffsetDateTime lastReportedAt;
     @JsonProperty("application_summary")
-    ApplicationSummary summary;
+    ApplicationSummary appSummary;
+    @JsonProperty("end_user_summary")
+    UserSummary userSummary;
     @JsonProperty
-    ApplicationSettings settings;
+    Settings settings;
     @JsonProperty
-    ApplicationLinks links;
+    Links links;
 }

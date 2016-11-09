@@ -11,7 +11,7 @@ public class Configuration {
 
     private String policyName;
 
-    private double appAppdexThreshold;
+    private float appApdexThreshold;
 
-    private double userAppdexThreshold;
+    private float userApdexThreshold;
 }

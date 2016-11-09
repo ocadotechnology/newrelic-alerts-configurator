@@ -16,5 +16,4 @@ public class NewRelicRequestWithBody extends NewRelicRequest {
         httpRequestWithBody.body(body);
         return this;
     }
-
 }

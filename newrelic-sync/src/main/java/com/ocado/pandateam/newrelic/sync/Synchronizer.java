@@ -3,8 +3,7 @@ package com.ocado.pandateam.newrelic.sync;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.Application;
-
-import java.util.Optional;
+import com.ocado.pandateam.newrelic.api.model.Settings;
 
 public class Synchronizer {
 
@@ -18,8 +17,17 @@ public class Synchronizer {
     }
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
-        Optional<Application> applicationOptional = api.getApplicationByName(config.getApplicationName());
-        Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
+        //Optional<Application> applicationOptional = api.getApplicationByName(config.getApplicationName());
+        //Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
+        Settings settings = Settings.builder()
+                .appApdexThreshold(config.getAppApdexThreshold())
+                .endUserApdexThreshold(config.getUserApdexThreshold())
+                .build();
+        Application application = Application.builder()
+                .name(config.getApplicationName())
+                .settings(settings)
+                .build();
+        application = api.updateApplication(application);
         //Optional<AlertPolicy> policyOptional = api.getAlertPolicyByName(config.getApplicationName());
     }
 }

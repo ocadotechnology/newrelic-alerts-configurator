@@ -10,6 +10,7 @@ import com.ocado.pandateam.newrelic.api.model.AlertPolicyList;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyWrapper;
 import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ApplicationList;
+import com.ocado.pandateam.newrelic.api.model.ApplicationWrapper;
 import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
 import com.ocado.pandateam.newrelic.api.model.KeyTransactionList;
 import com.ocado.pandateam.newrelic.api.model.User;
@@ -61,6 +62,19 @@ public class NewRelicApi {
      */
     public Optional<Application> getApplicationByName(String name) throws NewRelicApiException {
         return api.get(APPLICATIONS).queryString("filter[name]", name).asSingleObject(ApplicationList.class);
+    }
+
+    /**
+     * Updates {@link Application} object.
+     *
+     * @param application Application to be updated.
+     * @return Updated {@link Application}.
+     * @throws NewRelicApiException when received error response
+     */
+    public Application updateApplication(Application application) throws NewRelicApiException {
+        return api.put(APPLICATIONS)
+                .body(new ApplicationWrapper(application))
+                .asObject(Application.class);
     }
 
     /**
