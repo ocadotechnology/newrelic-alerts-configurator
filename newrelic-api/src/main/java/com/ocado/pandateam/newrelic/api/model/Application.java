@@ -3,6 +3,8 @@ package com.ocado.pandateam.newrelic.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
+import java.time.OffsetDateTime;
+
 @Value
 public class Application {
     @JsonProperty
@@ -16,7 +18,7 @@ public class Application {
     @JsonProperty
     Boolean reporting;
     @JsonProperty("last_reported_at")
-    String lastReportedAt;
+    OffsetDateTime lastReportedAt;
     @JsonProperty("application_summary")
     ApplicationSummary summary;
     @JsonProperty

@@ -26,7 +26,7 @@ public class NewRelicRequest { // TODO: support pagination
         return this;
     }
 
-    public <T> T asObject(Class<? extends T> responseClass) throws NewRelicApiException {
+    public <T> T asObject(Class<T> responseClass) throws NewRelicApiException {
         try {
             return handleErrorResponse(httpRequest.asObject(responseClass)).getBody();
         } catch (UnirestException e) {
@@ -39,15 +39,16 @@ public class NewRelicRequest { // TODO: support pagination
         List<T> list = asObject(responseClass).getList();
         if (list.isEmpty()) {
             return Optional.empty();
-        } else if(list.size() > 1) {
-            throw new NewRelicApiException("Expected single element in the list");
+        } else if (list.size() > 1) {
+            throw new NewRelicApiException("Expected single element in the list but found: " + list.size());
         }
         return Optional.of(list.get(0));
     }
 
     private <T> HttpResponse<? extends T> handleErrorResponse(HttpResponse<? extends T> httpResponse)
             throws NewRelicApiException {
-        if (httpResponse.getStatus() / 100 > 3) {
+        int status = httpResponse.getStatus();
+        if (status < 200 || 300 <= status) {
             throw new NewRelicApiHttpException(httpResponse.getStatus(), httpResponse.getStatusText(),
                     httpRequest.getHttpMethod().name(), httpRequest.getUrl(), getRawResponse(httpResponse));
         }
@@ -61,5 +62,4 @@ public class NewRelicRequest { // TODO: support pagination
             throw new NewRelicApiException(e);
         }
     }
-
 }

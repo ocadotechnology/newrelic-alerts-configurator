@@ -96,7 +96,7 @@ public class NewRelicApi {
      * @param recipients E-mail address of recipients
      * @param includeJsonAttachment flag determining if email alert should include attachment
      * @return created {@link AlertChannel} instance in NewRelic
-     * @throws NewRelicApiException
+     * @throws NewRelicApiException when received error response
      */
     public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
             throws NewRelicApiException {
@@ -111,7 +111,7 @@ public class NewRelicApi {
      * @param url (Optional) URL address of Slack
      * @param channel Name of the Slack channel for example: #channel-name
      * @return created {@link AlertChannel} instance in NewRelic
-     * @throws NewRelicApiException
+     * @throws NewRelicApiException when received error response
      */
     public Optional<AlertChannel> createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)

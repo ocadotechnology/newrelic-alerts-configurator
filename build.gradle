@@ -12,9 +12,12 @@ allprojects {
 
 project(':newrelic-api') {
     dependencies {
+        compileOnly 'org.projectlombok:lombok:1.16.10'
+
         compile 'com.mashape.unirest:unirest-java:1.4.9'
         compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
-        compile 'org.projectlombok:lombok:1.16.10'
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.4'
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.4'
         compile 'commons-io:commons-io:2.5'
 
         testCompile 'com.google.guava:guava:20.0'

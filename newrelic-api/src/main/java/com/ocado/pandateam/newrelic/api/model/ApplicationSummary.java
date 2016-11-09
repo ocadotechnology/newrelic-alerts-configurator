@@ -19,4 +19,6 @@ public class ApplicationSummary {
     Integer hostCount;
     @JsonProperty("instance_count")
     Integer instanceCount;
+    @JsonProperty("concurrent_instance_count")
+    Integer concurrentInstanceCount;
 }

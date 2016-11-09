@@ -14,7 +14,8 @@
         "apdex_target": 0.5,
         "apdex_score": 1,
         "host_count": 2,
-        "instance_count": 2
+        "instance_count": 2,
+        "concurrent_instance_count": 2
       },
       "settings": {
         "app_apdex_threshold": 0.5,
