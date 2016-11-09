@@ -21,7 +21,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.google.common.io.Resources.getResource;
-import static com.ocado.pandateam.newrelic.api.NewRelicApi.APPLICATIONS;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class NewRelicApiTest {
@@ -61,7 +60,7 @@ public class NewRelicApiTest {
         String queryParam = URLEncoder.encode("filter[name]", UTF_8.name());
 
         WIRE_MOCK.addStubMapping(
-                get(urlPathEqualTo(APPLICATIONS))
+                get(urlPathEqualTo("/v2/applications.json"))
                         .withQueryParam(queryParam, equalTo("user_management"))
                         .withHeader("X-Api-Key", equalTo("secret"))
                         .willReturn(aResponse()

@@ -12,13 +12,10 @@ allprojects {
 
 project(':newrelic-api') {
     dependencies {
-        compileOnly 'org.projectlombok:lombok:1.16.10'
-
         compile 'com.mashape.unirest:unirest-java:1.4.9'
         compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.4'
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.4'
-        compile 'commons-io:commons-io:2.5'
 
         testCompile 'com.google.guava:guava:20.0'
         testCompile 'com.github.tomakehurst:wiremock:2.1.12'
@@ -27,7 +24,8 @@ project(':newrelic-api') {
 
 project(':newrelic-client') {
     dependencies {
-        compile project(':newrelic-api')
+        compile project(':newrelic-sync')
+        compile 'org.slf4j:slf4j-simple:1.7.21'
     }
 }
 
@@ -44,6 +42,8 @@ subprojects {
     }
 
     dependencies {
+        compileOnly 'org.projectlombok:lombok:1.16.10'
+        compile 'org.slf4j:slf4j-api:1.7.21'
         testCompile "junit:junit:4.12"
     }
 

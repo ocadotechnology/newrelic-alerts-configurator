@@ -2,16 +2,21 @@ package com.ocado.panda.newrelic.client;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
+import com.ocado.pandateam.newrelic.sync.Configuration;
+import com.ocado.pandateam.newrelic.sync.NewRelicSyncException;
+import com.ocado.pandateam.newrelic.sync.Synchronizer;
 
 public class Main {
 
-    public static void main(String[] args) throws NewRelicApiException {
+    public static void main(String[] args) throws NewRelicApiException, NewRelicSyncException {
         if (args.length == 0 || args[0].length() == 0) {
             throw new IllegalArgumentException("Missing API key");
         } else {
             String apiKey = args[0];
-            NewRelicApi newRelicApi = new NewRelicApi(apiKey);
-            System.out.println(newRelicApi.getApplicationByName("user_management"));
+            NewRelicApi api = new NewRelicApi(apiKey);
+            Configuration config = Configuration.builder().applicationName("user_management").build();
+            Synchronizer synchronizer = new Synchronizer(api, config);
+            synchronizer.sync();
         }
     }
 }

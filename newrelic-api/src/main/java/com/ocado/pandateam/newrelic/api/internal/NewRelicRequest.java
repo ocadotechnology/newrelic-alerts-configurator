@@ -1,37 +1,28 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
+import com.mashape.unirest.http.HttpMethod;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
 import com.ocado.pandateam.newrelic.api.model.ObjectList;
-import org.apache.commons.io.IOUtils;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class NewRelicRequest { // TODO: support pagination
 
-    private final HttpRequest httpRequest;
+    private final HttpRequest request;
 
-    NewRelicRequest(HttpRequest httpRequest) {
-        this.httpRequest = httpRequest.header("accept", "application/json");
+    NewRelicRequest(HttpRequest request) {
+        this.request = request.header("accept", "application/json");
     }
 
     public NewRelicRequest queryString(String name, Object value) {
-        httpRequest.queryString(name, value);
+        request.queryString(name, value);
         return this;
-    }
-
-    public <T> T asObject(Class<T> responseClass) throws NewRelicApiException {
-        try {
-            return handleErrorResponse(httpRequest.asObject(responseClass)).getBody();
-        } catch (UnirestException e) {
-            throw new NewRelicApiException(e);
-        }
     }
 
     public <T> Optional<T> asSingleObject(Class<? extends ObjectList<T>> responseClass)
@@ -39,13 +30,42 @@ public class NewRelicRequest { // TODO: support pagination
         List<T> list = asObject(responseClass).getList();
         if (list.isEmpty()) {
             return Optional.empty();
-        } else if (list.size() > 1) {
-            throw new NewRelicApiException("Expected single element in the list but found: " + list.size());
         }
-        return Optional.of(list.get(0));
+        if (list.size() == 1) {
+            return Optional.of(list.get(0));
+        }
+        throw new NewRelicApiException("Expected single element in the list but found: " + list.size());
     }
 
-    private <T> HttpResponse<? extends T> handleErrorResponse(HttpResponse<? extends T> httpResponse)
+    public <T> T asObject(Class<T> responseClass) throws NewRelicApiException {
+        try {
+            HttpResponse<T> httpResponse = executeRequest(responseClass);
+            return handleResponse(httpResponse);
+        } catch (UnirestException e) {
+            throw new NewRelicApiException(e);
+        }
+    }
+
+    private <T> HttpResponse<T> executeRequest(Class<T> responseClass) throws UnirestException {
+        log.info("{} {}", request.getHttpMethod(), request.getUrl());
+        if (request.getHttpMethod() == HttpMethod.POST) {
+            log.info("{}", request.getBody());
+        }
+        return request.asObject(responseClass);
+    }
+
+    private <T> T handleResponse(HttpResponse<T> response) throws NewRelicApiException {
+        log.info("{} {}", response.getStatus(), response.getStatusText());
+        if (200 <= response.getStatus() && response.getStatus() < 300) {
+            log.info("{}", response.getBody());
+            return response.getBody();
+        } else {
+            //FIXME
+            throw new RuntimeException();
+        }
+    }
+
+    /*private <T> HttpResponse<? extends T> handleResponse(HttpResponse<? extends T> httpResponse)
             throws NewRelicApiException {
         int status = httpResponse.getStatus();
         if (status < 200 || 300 <= status) {
@@ -57,9 +77,9 @@ public class NewRelicRequest { // TODO: support pagination
 
     private static <T> String getRawResponse(HttpResponse<? extends T> httpResponse) throws NewRelicApiException {
         try {
-            return IOUtils.toString(httpResponse.getRawBody(), Charset.forName("UTF-8"));
+            return IOUtils.toString(httpResponse.getRawBody(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new NewRelicApiException(e);
         }
-    }
+    }*/
 }
