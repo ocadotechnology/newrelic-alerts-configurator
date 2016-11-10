@@ -1,32 +1,27 @@
 package com.ocado.pandateam.newrelic.api.exception;
 
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.request.HttpRequest;
+
 public class NewRelicApiHttpException extends NewRelicApiException {
 
-    private final int statusCode;
-    private final String statusText;
     private final String method;
     private final String url;
+    private final int statusCode;
+    private final String statusText;
 
-    public NewRelicApiHttpException(int statusCode, String statusText, String method, String url, String body) {
-        super(formatMessage(statusCode, statusText, method, url, body));
-        this.statusCode = statusCode;
-        this.statusText = statusText;
-        this.method = method;
-        this.url = url;
+    public NewRelicApiHttpException(HttpRequest request, HttpResponse response) {
+        super("");
+        this.method = request.getHttpMethod().name();
+        this.url = request.getUrl();
+        this.statusCode = response.getStatus();
+        this.statusText = response.getStatusText();
     }
 
-    private static String formatMessage(int statusCode, String statusText, String method, String url, String body) {
-        return String.format(
-                "NewRelic API returned error code %d: %s; %s %s; body: %s",
-                statusCode, statusText, method, url, body);
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getStatusText() {
-        return statusText;
+    @Override
+    public String getMessage() {
+        return String.format("NewRelic error %s: %s: %d %s", method, url, statusCode, statusText);
     }
 
     public String getMethod() {
@@ -37,4 +32,11 @@ public class NewRelicApiHttpException extends NewRelicApiException {
         return url;
     }
 
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public String getStatusText() {
+        return statusText;
+    }
 }

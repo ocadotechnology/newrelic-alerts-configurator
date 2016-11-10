@@ -71,7 +71,7 @@ public class NewRelicApi {
     public Application getApplicationById(int id) throws NewRelicApiException {
         return api.get(APPLICATIONS)
                 .routeParam("id", id)
-                .asObject(Application.class);
+                .asObject(ApplicationWrapper.class).getApplication();
     }
 
     /**
@@ -85,7 +85,7 @@ public class NewRelicApi {
         return api.put(APPLICATIONS)
                 .routeParam("id", id)
                 .body(new ApplicationWrapper(application))
-                .asObject(Application.class);
+                .asObject(ApplicationWrapper.class).getApplication();
     }
 
     /**

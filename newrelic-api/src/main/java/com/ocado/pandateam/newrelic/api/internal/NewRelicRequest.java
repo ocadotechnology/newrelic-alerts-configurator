@@ -3,6 +3,7 @@ package com.ocado.pandateam.newrelic.api.internal;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
+import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
 import com.ocado.pandateam.newrelic.api.model.ObjectList;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,14 +40,14 @@ public abstract class NewRelicRequest {
         }
     }
 
-    private <T> T execute(Class<T> responseClass) throws UnirestException {
+    private <T> T execute(Class<T> responseClass) throws UnirestException, NewRelicApiHttpException {
         logRequest();
         NewRelicResponse<T> response = getResponse(responseClass);
         response.log();
         if (response.isSuccess()) {
             return response.getBody();
         } else {
-            throw new RuntimeException();
+            throw new NewRelicApiHttpException(request, response.getRawResponse());
         }
     }
 
@@ -55,22 +56,4 @@ public abstract class NewRelicRequest {
     }
 
     protected abstract void logRequest();
-
-    /*private <T> HttpResponse<? extends T> handleResponse(HttpResponse<? extends T> httpResponse)
-            throws NewRelicApiException {
-        int status = httpResponse.getStatus();
-        if (status < 200 || 300 <= status) {
-            throw new NewRelicApiHttpException(httpResponse.getStatus(), httpResponse.getStatusText(),
-                    httpRequest.getHttpMethod().name(), httpRequest.getUrl(), getRawResponse(httpResponse));
-        }
-        return httpResponse;
-    }
-
-    private static <T> String getRawResponse(HttpResponse<? extends T> httpResponse) throws NewRelicApiException {
-        try {
-            return IOUtils.toString(httpResponse.getRawBody(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new NewRelicApiException(e);
-        }
-    }*/
 }

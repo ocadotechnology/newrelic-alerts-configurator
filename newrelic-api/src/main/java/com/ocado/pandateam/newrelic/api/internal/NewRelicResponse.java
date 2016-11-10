@@ -20,6 +20,10 @@ class NewRelicResponse<T> {
         return response.getBody();
     }
 
+    HttpResponse<T> getRawResponse() {
+        return response;
+    }
+
     void log() {
         log.info("{} {}", response.getStatus(), response.getStatusText());
         if (response.getBody() != null) {

@@ -20,19 +20,17 @@ public class Synchronizer {
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
         Optional<Application> applicationOptional = api.getApplicationByName(config.getApplicationName());
-        Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
 
-        api.getApplicationById(application.getId());
+        Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
 
         Settings settings = Settings.builder()
                 .appApdexThreshold(config.getAppApdexThreshold())
                 .endUserApdexThreshold(config.getUserApdexThreshold())
                 .build();
-        Application application1 = Application.builder()
+        Application applicationUpdate = Application.builder()
                 .name(config.getApplicationName())
                 .settings(settings)
                 .build();
-        application1 = api.updateApplication(application.getId(), application1);
-        //Optional<AlertPolicy> policyOptional = api.getAlertPolicyByName(config.getApplicationName());
+        api.updateApplication(application.getId(), applicationUpdate);
     }
 }
