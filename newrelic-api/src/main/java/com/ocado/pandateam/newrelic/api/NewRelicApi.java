@@ -1,7 +1,7 @@
 package com.ocado.pandateam.newrelic.api;
 
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.internal.NewRelicApiRestClient;
+import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import com.ocado.pandateam.newrelic.api.model.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
@@ -32,7 +32,7 @@ public class NewRelicApi {
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
     private static final String ALERTS_POLICIES = "/v2/alerts_policies.json";
 
-    private final NewRelicApiRestClient api;
+    private final NewRelicRestClient api;
 
     /**
      * NewRelic API constructor.
@@ -50,7 +50,7 @@ public class NewRelicApi {
      * @param apiKey  API Key for given NewRelic account
      */
     public NewRelicApi(String hostUrl, String apiKey) {
-        api = new NewRelicApiRestClient(hostUrl, apiKey);
+        api = new NewRelicRestClient(hostUrl, apiKey);
     }
 
     /**

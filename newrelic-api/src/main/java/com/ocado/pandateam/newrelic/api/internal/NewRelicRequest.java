@@ -1,9 +1,10 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
-import com.mashape.unirest.http.HttpMethod;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequest;
+import com.mashape.unirest.request.HttpRequestWithBody;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.ObjectList;
 import lombok.extern.slf4j.Slf4j;
@@ -12,17 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class NewRelicRequest { // TODO: support pagination
+public abstract class NewRelicRequest { // TODO: support pagination
 
     private final HttpRequest request;
 
-    NewRelicRequest(HttpRequest request) {
+    private NewRelicRequest(HttpRequest request) {
         this.request = request.header("accept", "application/json");
-    }
-
-    public NewRelicRequest queryString(String name, Object value) {
-        request.queryString(name, value);
-        return this;
     }
 
     public <T> Optional<T> asSingleObject(Class<? extends ObjectList<T>> responseClass)
@@ -39,31 +35,97 @@ public class NewRelicRequest { // TODO: support pagination
 
     public <T> T asObject(Class<T> responseClass) throws NewRelicApiException {
         try {
-            HttpResponse<T> httpResponse = executeRequest(responseClass);
-            return handleResponse(httpResponse);
+            return execute(responseClass);
         } catch (UnirestException e) {
             throw new NewRelicApiException(e);
         }
     }
 
-    private <T> HttpResponse<T> executeRequest(Class<T> responseClass) throws UnirestException {
-        log.info("{} {}", request.getHttpMethod(), request.getUrl());
-        if (request.getHttpMethod() == HttpMethod.POST || request.getHttpMethod() == HttpMethod.PUT) {
-            log.info("{}", request.getBody());
-        }
-        return request.asObject(responseClass);
-    }
-
-    private <T> T handleResponse(HttpResponse<T> response) throws NewRelicApiException {
-        log.info("{} {}", response.getStatus(), response.getStatusText());
-        if (200 <= response.getStatus() && response.getStatus() < 300) {
-            log.info("{}", response.getBody());
+    private <T> T execute(Class<T> responseClass) throws UnirestException {
+        logRequest();
+        NewRelicResponse<T> response = getResponse(responseClass);
+        response.log();
+        if (response.isSuccess()) {
             return response.getBody();
         } else {
-            //FIXME
             throw new RuntimeException();
         }
     }
+
+    private <T> NewRelicResponse<T> getResponse(Class<T> responseClass) throws UnirestException {
+        return new NewRelicResponse<>(request.asObject(responseClass));
+    }
+
+    public static class NewRelicGetRequest extends NewRelicRequest {
+
+        private final HttpRequest getRequest;
+
+        NewRelicGetRequest(GetRequest getRequest) {
+            super(getRequest);
+            this.getRequest = getRequest;
+        }
+
+        public NewRelicGetRequest queryString(String name, Object value) {
+            getRequest.queryString(name, value);
+            return this;
+        }
+
+        @Override
+        protected void logRequest() {
+            log.info("{} {}", getRequest.getHttpMethod(), getRequest.getUrl());
+        }
+    }
+
+    public static class NewRelicRequestWithBody extends NewRelicRequest {
+
+        private final HttpRequestWithBody requestWithBody;
+
+        private Object body;
+
+        NewRelicRequestWithBody(HttpRequestWithBody requestWithBody) {
+            super(requestWithBody);
+            this.requestWithBody = requestWithBody;
+        }
+
+        public NewRelicRequestWithBody body(Object body) {
+            this.body = body;
+            requestWithBody.header("Content-Type", "application/json");
+            requestWithBody.body(body);
+            return this;
+        }
+
+        @Override
+        protected void logRequest() {
+            log.info("{} {}", requestWithBody.getHttpMethod(), requestWithBody.getUrl());
+            log.info("{}", body);
+        }
+    }
+
+    private class NewRelicResponse<T> {
+
+        private final HttpResponse<T> response;
+
+        private NewRelicResponse(HttpResponse<T> response) {
+            this.response = response;
+        }
+
+        boolean isSuccess() {
+            return 200 <= response.getStatus() && response.getStatus() < 300;
+        }
+
+        T getBody() {
+            return response.getBody();
+        }
+
+        void log() {
+            log.info("{} {}", response.getStatus(), response.getStatusText());
+            if (response.getBody() != null) {
+                log.info("{}", response.getBody());
+            }
+        }
+    }
+
+    protected abstract void logRequest();
 
     /*private <T> HttpResponse<? extends T> handleResponse(HttpResponse<? extends T> httpResponse)
             throws NewRelicApiException {
