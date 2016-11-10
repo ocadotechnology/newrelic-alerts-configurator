@@ -26,7 +26,9 @@ public class NewRelicApi {
 
     private static final String NEWRELIC_HOST_URL = "https://api.newrelic.com";
 
-    private static final String APPLICATIONS = "/v2/applications.json";
+    private static final String ALL_APPLICATIONS = "/v2/applications.json";
+    private static final String APPLICATIONS = "/v2/applications/{id}.json";
+
     private static final String USERS = "/v2/users.json";
     private static final String KEY_TRANSACTIONS = "/v2/key_transactions.json";
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
@@ -61,7 +63,15 @@ public class NewRelicApi {
      * @throws NewRelicApiException when more than one response returned or received error response
      */
     public Optional<Application> getApplicationByName(String name) throws NewRelicApiException {
-        return api.get(APPLICATIONS).queryString("filter[name]", name).asSingleObject(ApplicationList.class);
+        return api.get(ALL_APPLICATIONS)
+                .queryString("filter[name]", name)
+                .asSingleObject(ApplicationList.class);
+    }
+
+    public Application getApplicationById(int id) throws NewRelicApiException {
+        return api.get(APPLICATIONS)
+                .routeParam("id", id)
+                .asObject(Application.class);
     }
 
     /**
@@ -71,8 +81,9 @@ public class NewRelicApi {
      * @return Updated {@link Application}.
      * @throws NewRelicApiException when received error response
      */
-    public Application updateApplication(Application application) throws NewRelicApiException {
+    public Application updateApplication(int id, Application application) throws NewRelicApiException {
         return api.put(APPLICATIONS)
+                .routeParam("id", id)
                 .body(new ApplicationWrapper(application))
                 .asObject(Application.class);
     }

@@ -1,8 +1,6 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
 import com.mashape.unirest.http.Unirest;
-import com.ocado.pandateam.newrelic.api.internal.NewRelicRequest.NewRelicGetRequest;
-import com.ocado.pandateam.newrelic.api.internal.NewRelicRequest.NewRelicRequestWithBody;
 
 public class NewRelicRestClient {
 
@@ -12,7 +10,7 @@ public class NewRelicRestClient {
     public NewRelicRestClient(String hostUrl, String apiKey) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
-        Unirest.setObjectMapper(new Mapper());
+        Unirest.setObjectMapper(new NewRelicRequestMapper());
     }
 
     public NewRelicGetRequest get(String url) {
