@@ -18,6 +18,7 @@ public class Main {
                     .applicationName("user_management")
                     .appApdexThreshold(0.5f)
                     .userApdexThreshold(7.0f)
+                    .policyName("User Management")
                     .build();
             Synchronizer synchronizer = new Synchronizer(api, config);
             synchronizer.sync();
