@@ -40,19 +40,27 @@ public class NewRelicRestClient {
     }
 
     public HttpRequestWithBody put(String url) {
+        return put(url, "application/json");
+    }
+
+    public HttpRequestWithBody put(String url, String contentType) {
         return Unirest
                 .put(hostUrl + url)
                 .header("X-Api-Key", apiKey)
                 .header("accept", "application/json")
-                .header("Content-Type", "application/json");
+                .header("Content-Type", contentType);
     }
 
     public HttpRequestWithBody post(String url) {
+        return post(url, "application/json");
+    }
+
+    public HttpRequestWithBody post(String url, String contentType) {
         return Unirest
                 .post(hostUrl + url)
                 .header("X-Api-Key", apiKey)
                 .header("accept", "application/json")
-                .header("Content-Type", "application/json");
+                .header("Content-Type", contentType);
     }
 
     public <T> T asObject(BaseRequest request, Class<T> responseType) throws NewRelicApiException {
