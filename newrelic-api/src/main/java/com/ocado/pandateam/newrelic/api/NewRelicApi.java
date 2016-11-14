@@ -184,9 +184,9 @@ public class NewRelicApi {
 
     public AlertPolicyChannels updateAlertsPolicyChannels(AlertPolicyChannels alertPolicyChannels) throws NewRelicApiException {
         return api.put(ALERTS_POLICY_CHANNELS)
-                //.field("policy_id", policyId)
-                //.field("channel_ids", channelIds)
-                .body(alertPolicyChannels)
+                .field("policy_id", alertPolicyChannels.getPolicyId())
+                .field("channel_ids", alertPolicyChannels.getChannelIds())
+                //.body(alertPolicyChannels)
                 .asObject(AlertPolicyChannelsWrapper.class).getPolicyChannels();
     }
 }
