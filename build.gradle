@@ -26,6 +26,7 @@ project(':newrelic-client') {
     dependencies {
         compile project(':newrelic-sync')
         compile 'org.slf4j:slf4j-simple:1.7.21'
+        compile 'org.slf4j:jcl-over-slf4j:1.7.21'
     }
 }
 
