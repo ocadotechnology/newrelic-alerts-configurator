@@ -8,7 +8,9 @@ import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class NewRelicRestClient {
 
     private final String hostUrl;
@@ -19,18 +21,6 @@ public class NewRelicRestClient {
         this.apiKey = apiKey;
         Unirest.setObjectMapper(new NewRelicRequestMapper());
     }
-
-    /*public NewRelicGetRequest get(String url) {
-        return new NewRelicGetRequest(Unirest.get(hostUrl + url).header("X-Api-Key", apiKey));
-    }
-
-    public NewRelicRequestWithBody post(String url) {
-        return new NewRelicRequestWithBody(Unirest.post(hostUrl + url).header("X-Api-Key", apiKey));
-    }
-
-    public NewRelicRequestWithBody put(String url) {
-        return new NewRelicRequestWithBody(Unirest.put(hostUrl + url).header("X-Api-Key", apiKey));
-    }*/
 
     public GetRequest get(String url) {
         return Unirest
@@ -65,11 +55,27 @@ public class NewRelicRestClient {
 
     public <T> T asObject(BaseRequest request, Class<T> responseType) throws NewRelicApiException {
         try {
+            logRequest(request);
             HttpResponse<T> response = request.asObject(responseType);
+            logResponse(request, response);
             return handleResponse(request, response);
         } catch (UnirestException e) {
             throw new NewRelicApiException(e);
         }
+    }
+
+    private void logRequest(BaseRequest request) {
+        log.info("{} {}",
+                request.getHttpRequest().getHttpMethod(),
+                request.getHttpRequest().getUrl());
+    }
+
+    private <T> void logResponse(BaseRequest request, HttpResponse<T> response) {
+        log.info("{} {}: {} {}",
+                request.getHttpRequest().getHttpMethod(),
+                request.getHttpRequest().getUrl(),
+                response.getStatus(),
+                response.getStatusText());
     }
 
     private <T> T handleResponse(BaseRequest request, HttpResponse<T> response) throws NewRelicApiHttpException {

@@ -89,28 +89,6 @@ public class NewRelicApi {
     }
 
     /**
-     * Get {@link User} object using its e-mail.
-     *
-     * @param email E-mail of the user present in NewRelic
-     * @return Optional containing {@link User} object, or empty if application not found
-     * @throws NewRelicApiException when more than one response returned or received error response
-     *//*
-    public Optional<User> getUserByEmail(String email) throws NewRelicApiException {
-        return api.get(USERS).queryString("filter[email]", email).asSingleObject(UserList.class);
-    }*/
-
-    /**
-     * Get {@link KeyTransaction} object using its name.
-     *
-     * @param name Name of the KeyTransaction present in NewRelic
-     * @return Optional containing {@link KeyTransaction} object, or empty if application not found
-     * @throws NewRelicApiException when more than one response returned or received error response
-     *//*
-    public Optional<KeyTransaction> getKeyTransactionByName(String name) throws NewRelicApiException {
-        return api.get(KEY_TRANSACTIONS).queryString("filter[name]", name).asSingleObject(KeyTransactionList.class);
-    }*/
-
-    /**
      * List all existing Alert Channels.
      *
      * @return list of all existing {@link AlertChannel} from NewRelic
@@ -136,21 +114,6 @@ public class NewRelicApi {
                 .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)));
         return api.asObject(request, AlertChannelList.class).getSingle();
     }
-
-    /**
-     * Creates {@link AlertChannel} of type "slack".
-     *
-     * @param name    Name of the Alert Channel to be created
-     * @param url     (Optional) URL address of Slack
-     * @param channel Name of the Slack channel for example: #channel-name
-     * @return created {@link AlertChannel} instance in NewRelic
-     * @throws NewRelicApiException when received error response
-     *//*
-    public Optional<AlertChannel> createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
-        return api.post(ALERTS_CHANNELS)
-                .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)))
-                .asSingleObject(AlertChannelList.class);
-    }*/
 
     /**
      * Get {@link AlertPolicy} object using its name.
@@ -187,4 +150,41 @@ public class NewRelicApi {
                         alertPolicyChannels.getChannelIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
         return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
     }
+
+    /**
+     * Get {@link User} object using its e-mail.
+     *
+     * @param email E-mail of the user present in NewRelic
+     * @return Optional containing {@link User} object, or empty if application not found
+     * @throws NewRelicApiException when more than one response returned or received error response
+     *//*
+    public Optional<User> getUserByEmail(String email) throws NewRelicApiException {
+        return api.get(USERS).queryString("filter[email]", email).asSingleObject(UserList.class);
+    }*/
+
+    /**
+     * Get {@link KeyTransaction} object using its name.
+     *
+     * @param name Name of the KeyTransaction present in NewRelic
+     * @return Optional containing {@link KeyTransaction} object, or empty if application not found
+     * @throws NewRelicApiException when more than one response returned or received error response
+     *//*
+    public Optional<KeyTransaction> getKeyTransactionByName(String name) throws NewRelicApiException {
+        return api.get(KEY_TRANSACTIONS).queryString("filter[name]", name).asSingleObject(KeyTransactionList.class);
+    }*/
+
+    /**
+     * Creates {@link AlertChannel} of type "slack".
+     *
+     * @param name    Name of the Alert Channel to be created
+     * @param url     (Optional) URL address of Slack
+     * @param channel Name of the Slack channel for example: #channel-name
+     * @return created {@link AlertChannel} instance in NewRelic
+     * @throws NewRelicApiException when received error response
+     *//*
+    public Optional<AlertChannel> createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
+        return api.post(ALERTS_CHANNELS)
+                .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)))
+                .asSingleObject(AlertChannelList.class);
+    }*/
 }
