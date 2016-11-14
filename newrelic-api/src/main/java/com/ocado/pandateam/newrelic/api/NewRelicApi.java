@@ -182,6 +182,7 @@ public class NewRelicApi {
 
     public AlertPolicyChannels updateAlertsPolicyChannels(AlertPolicyChannels alertPolicyChannels) throws NewRelicApiException {
         MultipartBody request = api.put(ALERTS_POLICY_CHANNELS)
+                .header("Content-Type", "application/x-www-form-urlencoded")
                 .field("policy_id", alertPolicyChannels.getPolicyId())
                 .field("channel_ids",
                         alertPolicyChannels.getChannelIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
