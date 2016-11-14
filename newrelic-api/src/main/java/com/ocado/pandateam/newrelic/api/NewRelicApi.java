@@ -129,7 +129,7 @@ public class NewRelicApi {
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException when received error response
      */
-    public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
+    public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, boolean includeJsonAttachment)
             throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)))
