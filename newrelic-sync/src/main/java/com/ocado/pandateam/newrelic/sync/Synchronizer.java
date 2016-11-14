@@ -2,6 +2,7 @@ package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
 import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.Settings;
 
@@ -32,5 +33,10 @@ public class Synchronizer {
                 .settings(settings)
                 .build();
         api.updateApplication(application.getId(), applicationUpdate);
+
+        Optional<AlertPolicy> policyOptional = api.getAlertPolicyByName(config.getPolicyName());
+        AlertPolicy policy = policyOptional.orElse(
+                api.createAlertPolicy(config.getPolicyName())
+        );
     }
 }

@@ -171,7 +171,10 @@ public class NewRelicApi {
      */
     public AlertPolicy createAlertPolicy(String name) throws NewRelicApiException {
         return api.post(ALERTS_POLICIES)
-                .body(new AlertPolicyWrapper(AlertPolicy.builder().name(name).build()))
+                .body(new AlertPolicyWrapper(AlertPolicy.builder()
+                        .name(name)
+                        .incidentPreference("PER_POLICY")
+                        .build()))
                 .asObject(AlertPolicy.class);
     }
 }
