@@ -1,5 +1,9 @@
 package com.ocado.pandateam.newrelic.api;
 
+import com.mashape.unirest.request.GetRequest;
+import com.mashape.unirest.request.HttpRequest;
+import com.mashape.unirest.request.body.MultipartBody;
+import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import com.ocado.pandateam.newrelic.api.model.AlertChannel;
@@ -14,9 +18,7 @@ import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.ApplicationWrapper;
 import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
-import com.ocado.pandateam.newrelic.api.model.KeyTransactionList;
 import com.ocado.pandateam.newrelic.api.model.User;
-import com.ocado.pandateam.newrelic.api.model.UserList;
 
 import java.util.List;
 import java.util.Optional;
@@ -67,15 +69,8 @@ public class NewRelicApi {
      * @throws NewRelicApiException when more than one response returned or received error response
      */
     public Optional<Application> getApplicationByName(String name) throws NewRelicApiException {
-        return api.get(ALL_APPLICATIONS)
-                .queryString("filter[name]", name)
-                .asSingleObject(ApplicationList.class);
-    }
-
-    public Application getApplicationById(int id) throws NewRelicApiException {
-        return api.get(APPLICATIONS)
-                .routeParam("id", id)
-                .asObject(ApplicationWrapper.class).getApplication();
+        HttpRequest request = api.get(ALL_APPLICATIONS).queryString("filter[name]", name);
+        return api.asObject(request, ApplicationList.class).getSingle();
     }
 
     /**
@@ -86,10 +81,10 @@ public class NewRelicApi {
      * @throws NewRelicApiException when received error response
      */
     public Application updateApplication(int id, Application application) throws NewRelicApiException {
-        return api.put(APPLICATIONS)
-                .routeParam("id", id)
-                .body(new ApplicationWrapper(application))
-                .asObject(ApplicationWrapper.class).getApplication();
+        RequestBodyEntity request = api.put(APPLICATIONS)
+                .routeParam("id", String.valueOf(id))
+                .body(new ApplicationWrapper(application));
+        return api.asObject(request, ApplicationWrapper.class).getApplication();
     }
 
     /**
@@ -98,10 +93,10 @@ public class NewRelicApi {
      * @param email E-mail of the user present in NewRelic
      * @return Optional containing {@link User} object, or empty if application not found
      * @throws NewRelicApiException when more than one response returned or received error response
-     */
+     *//*
     public Optional<User> getUserByEmail(String email) throws NewRelicApiException {
         return api.get(USERS).queryString("filter[email]", email).asSingleObject(UserList.class);
-    }
+    }*/
 
     /**
      * Get {@link KeyTransaction} object using its name.
@@ -109,10 +104,10 @@ public class NewRelicApi {
      * @param name Name of the KeyTransaction present in NewRelic
      * @return Optional containing {@link KeyTransaction} object, or empty if application not found
      * @throws NewRelicApiException when more than one response returned or received error response
-     */
+     *//*
     public Optional<KeyTransaction> getKeyTransactionByName(String name) throws NewRelicApiException {
         return api.get(KEY_TRANSACTIONS).queryString("filter[name]", name).asSingleObject(KeyTransactionList.class);
-    }
+    }*/
 
     /**
      * List all existing Alert Channels.
@@ -121,7 +116,8 @@ public class NewRelicApi {
      * @throws NewRelicApiException when received error response
      */
     public List<AlertChannel> listAlertChannels() throws NewRelicApiException {
-        return api.get(ALERTS_CHANNELS).asObject(AlertChannelList.class).getList();
+        GetRequest request = api.get(ALERTS_CHANNELS);
+        return api.asObject(request, AlertChannelList.class).getList();
     }
 
     /**
@@ -135,9 +131,9 @@ public class NewRelicApi {
      */
     public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
             throws NewRelicApiException {
-        return api.post(ALERTS_CHANNELS)
-                .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)))
-                .asSingleObject(AlertChannelList.class);
+        RequestBodyEntity request = api.post(ALERTS_CHANNELS)
+                .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)));
+        return api.asObject(request, AlertChannelList.class).getSingle();
     }
 
     /**
@@ -148,12 +144,12 @@ public class NewRelicApi {
      * @param channel Name of the Slack channel for example: #channel-name
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException when received error response
-     */
+     *//*
     public Optional<AlertChannel> createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)))
                 .asSingleObject(AlertChannelList.class);
-    }
+    }*/
 
     /**
      * Get {@link AlertPolicy} object using its name.
@@ -163,7 +159,8 @@ public class NewRelicApi {
      * @throws NewRelicApiException when more than one response returned or received error response
      */
     public Optional<AlertPolicy> getAlertPolicyByName(String name) throws NewRelicApiException {
-        return api.get(ALERTS_POLICIES).queryString("filter[name]", name).asSingleObject(AlertPolicyList.class);
+        HttpRequest request = api.get(ALERTS_POLICIES).queryString("filter[name]", name);
+        return api.asObject(request, AlertPolicyList.class).getSingle();
     }
 
     /**
@@ -174,19 +171,18 @@ public class NewRelicApi {
      * @throws NewRelicApiException when received error response
      */
     public AlertPolicy createAlertPolicy(String name) throws NewRelicApiException {
-        return api.post(ALERTS_POLICIES)
+        RequestBodyEntity request = api.post(ALERTS_POLICIES)
                 .body(new AlertPolicyWrapper(AlertPolicy.builder()
                         .name(name)
                         .incidentPreference("PER_POLICY")
-                        .build()))
-                .asObject(AlertPolicyWrapper.class).getPolicy();
+                        .build()));
+        return api.asObject(request, AlertPolicyWrapper.class).getPolicy();
     }
 
     public AlertPolicyChannels updateAlertsPolicyChannels(AlertPolicyChannels alertPolicyChannels) throws NewRelicApiException {
-        return api.put(ALERTS_POLICY_CHANNELS)
+        MultipartBody request = api.put(ALERTS_POLICY_CHANNELS)
                 .field("policy_id", alertPolicyChannels.getPolicyId())
-                .field("channel_ids", alertPolicyChannels.getChannelIds())
-                //.body(alertPolicyChannels)
-                .asObject(AlertPolicyChannelsWrapper.class).getPolicyChannels();
+                .field("channel_ids", alertPolicyChannels.getChannelIds());
+        return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
     }
 }

@@ -6,7 +6,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class AlertChannelList implements ObjectList<AlertChannel> {
+public class AlertChannelList extends ObjectList<AlertChannel> {
     @JsonProperty("channels")
     List<AlertChannel> list;
 }

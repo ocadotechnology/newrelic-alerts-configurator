@@ -6,7 +6,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class ApplicationList implements ObjectList<Application> {
+public class ApplicationList extends ObjectList<Application> {
     @JsonProperty("applications")
     List<Application> list;
 }

@@ -6,7 +6,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class KeyTransactionList implements ObjectList<KeyTransaction> {
+public class KeyTransactionList extends ObjectList<KeyTransaction> {
     @JsonProperty("key_transactions")
     List<KeyTransaction> list;
 }

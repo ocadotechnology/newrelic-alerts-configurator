@@ -2,7 +2,7 @@ package com.ocado.pandateam.newrelic.api.exception;
 
 
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.request.HttpRequest;
+import com.mashape.unirest.request.BaseRequest;
 
 public class NewRelicApiHttpException extends NewRelicApiException {
 
@@ -11,10 +11,10 @@ public class NewRelicApiHttpException extends NewRelicApiException {
     private final int statusCode;
     private final String statusText;
 
-    public NewRelicApiHttpException(HttpRequest request, HttpResponse response) {
+    public NewRelicApiHttpException(BaseRequest request, HttpResponse response) {
         super("");
-        this.method = request.getHttpMethod().name();
-        this.url = request.getUrl();
+        this.method = request.getHttpRequest().getHttpMethod().name();
+        this.url = request.getHttpRequest().getUrl();
         this.statusCode = response.getStatus();
         this.statusText = response.getStatusText();
     }

@@ -1,7 +1,22 @@
 package com.ocado.pandateam.newrelic.api.model;
 
-import java.util.List;
+import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 
-public interface ObjectList<T> {
-    List<T> getList();
+import java.util.List;
+import java.util.Optional;
+
+public abstract class ObjectList<T> {
+
+    public abstract List<T> getList();
+
+    public Optional<T> getSingle() throws NewRelicApiException {
+        List<T> list = getList();
+        if (list.isEmpty()) {
+            return Optional.empty();
+        }
+        if (list.size() == 1) {
+            return Optional.of(list.get(0));
+        }
+        throw new NewRelicApiException("Expected single element in the list but found: " + list.size());
+    }
 }
