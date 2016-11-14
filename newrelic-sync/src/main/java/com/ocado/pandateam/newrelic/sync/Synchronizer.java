@@ -38,9 +38,16 @@ public class Synchronizer {
         api.updateApplication(application.getId(), applicationUpdate);
 
         Optional<AlertPolicy> policyOptional = api.getAlertPolicyByName(config.getPolicyName());
-        AlertPolicy policy = policyOptional.orElse(
-                api.createAlertPolicy(config.getPolicyName())
+        AlertPolicy policy = policyOptional.orElseGet(
+                () -> {
+                    try {
+                        return api.createAlertPolicy(config.getPolicyName());
+                    } catch (NewRelicApiException e) {
+                        return null;
+                    }
+                }
         );
+
 
         List<AlertChannel> alertChannels = api.listAlertChannels();
 
