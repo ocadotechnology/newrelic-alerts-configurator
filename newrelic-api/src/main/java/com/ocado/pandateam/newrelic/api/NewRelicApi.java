@@ -22,6 +22,7 @@ import com.ocado.pandateam.newrelic.api.model.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Object exposing NewRelic API endpoints as Java methods. Requires API key.
@@ -182,7 +183,8 @@ public class NewRelicApi {
     public AlertPolicyChannels updateAlertsPolicyChannels(AlertPolicyChannels alertPolicyChannels) throws NewRelicApiException {
         MultipartBody request = api.put(ALERTS_POLICY_CHANNELS)
                 .field("policy_id", alertPolicyChannels.getPolicyId())
-                .field("channel_ids", alertPolicyChannels.getChannelIds());
+                .field("channel_ids",
+                        alertPolicyChannels.getChannelIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
         return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
     }
 }

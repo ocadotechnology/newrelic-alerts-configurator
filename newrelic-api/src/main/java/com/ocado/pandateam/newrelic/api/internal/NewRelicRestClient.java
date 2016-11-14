@@ -5,7 +5,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
 import com.mashape.unirest.request.GetRequest;
-import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
@@ -34,15 +33,26 @@ public class NewRelicRestClient {
     }*/
 
     public GetRequest get(String url) {
-        return Unirest.get(hostUrl + url).header("X-Api-Key", apiKey).header("accept", "application/json");
+        return Unirest
+                .get(hostUrl + url)
+                .header("X-Api-Key", apiKey)
+                .header("accept", "application/json");
     }
 
     public HttpRequestWithBody put(String url) {
-        return Unirest.put(hostUrl + url).header("X-Api-Key", apiKey).header("accept", "application/json");
+        return Unirest
+                .put(hostUrl + url)
+                .header("X-Api-Key", apiKey)
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json");
     }
 
     public HttpRequestWithBody post(String url) {
-        return Unirest.post(hostUrl + url).header("X-Api-Key", apiKey).header("accept", "application/json");
+        return Unirest
+                .post(hostUrl + url)
+                .header("X-Api-Key", apiKey)
+                .header("accept", "application/json")
+                .header("Content-Type", "application/json");
     }
 
     public <T> T asObject(BaseRequest request, Class<T> responseType) throws NewRelicApiException {
