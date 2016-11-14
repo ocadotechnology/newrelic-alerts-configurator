@@ -129,7 +129,7 @@ public class NewRelicApi {
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException when received error response
      */
-    public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, boolean includeJsonAttachment)
+    public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
             throws NewRelicApiException {
         return api.post(ALERTS_CHANNELS)
                 .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)))
@@ -175,6 +175,6 @@ public class NewRelicApi {
                         .name(name)
                         .incidentPreference("PER_POLICY")
                         .build()))
-                .asObject(AlertPolicy.class);
+                .asObject(AlertPolicyWrapper.class).getPolicy();
     }
 }

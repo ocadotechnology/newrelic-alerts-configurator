@@ -53,7 +53,7 @@ public class Synchronizer {
                 .filter(s -> !currentEmails.contains(s))
                 .forEach(s -> {
                             try {
-                                api.createEmailAlertChannel(s, s, false);
+                                api.createEmailAlertChannel(s, s, Boolean.FALSE.toString());
                             } catch (NewRelicApiException e) {
                                 e.printStackTrace();
                             }
