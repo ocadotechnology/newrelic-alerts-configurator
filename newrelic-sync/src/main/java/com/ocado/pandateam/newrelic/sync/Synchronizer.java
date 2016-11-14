@@ -4,9 +4,11 @@ import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
 import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.Settings;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,15 +58,26 @@ public class Synchronizer {
                 .map(alertChannel -> alertChannel.getConfiguration().getRecipients())
                 .collect(Collectors.toList());
 
+        List<AlertChannel> emailChannels = new LinkedList<>();
+
         config.getEmailChannels().stream()
                 .filter(s -> !currentEmails.contains(s))
                 .forEach(s -> {
                             try {
-                                api.createEmailAlertChannel(s, s, Boolean.FALSE.toString());
+                                emailChannels.add(api.createEmailAlertChannel(s, s, Boolean.FALSE.toString()).get());
                             } catch (NewRelicApiException e) {
                                 e.printStackTrace();
                             }
                         }
                 );
+
+        api.updateAlertsPolicyChannels(
+                AlertPolicyChannels.builder()
+                        .policyId(policy.getId())
+                        .channelIds(emailChannels.stream()
+                                .map(AlertChannel::getId)
+                                .collect(Collectors.toList()))
+                        .build()
+        );
     }
 }

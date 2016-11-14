@@ -3,6 +3,8 @@ package com.ocado.pandateam.newrelic.api.internal;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collection;
+
 @Slf4j
 public class NewRelicRequestWithBody extends NewRelicRequest {
 
@@ -19,6 +21,16 @@ public class NewRelicRequestWithBody extends NewRelicRequest {
         this.body = body;
         requestWithBody.header("Content-Type", "application/json");
         requestWithBody.body(body);
+        return this;
+    }
+
+    public NewRelicRequestWithBody field(String name, Object value) {
+        requestWithBody.field(name, value);
+        return this;
+    }
+
+    public NewRelicRequestWithBody field(String name, Collection values) {
+        requestWithBody.field(name, values);
         return this;
     }
 

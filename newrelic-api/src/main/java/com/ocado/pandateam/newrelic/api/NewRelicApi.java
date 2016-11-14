@@ -6,6 +6,8 @@ import com.ocado.pandateam.newrelic.api.model.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannelsWrapper;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyList;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyWrapper;
 import com.ocado.pandateam.newrelic.api.model.Application;
@@ -33,6 +35,8 @@ public class NewRelicApi {
     private static final String KEY_TRANSACTIONS = "/v2/key_transactions.json";
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
     private static final String ALERTS_POLICIES = "/v2/alerts_policies.json";
+
+    private static final String ALERTS_POLICY_CHANNELS = "/v2/alerts_policy_channels.json";
 
     private final NewRelicRestClient api;
 
@@ -176,5 +180,13 @@ public class NewRelicApi {
                         .incidentPreference("PER_POLICY")
                         .build()))
                 .asObject(AlertPolicyWrapper.class).getPolicy();
+    }
+
+    public AlertPolicyChannels updateAlertsPolicyChannels(AlertPolicyChannels alertPolicyChannels) throws NewRelicApiException {
+        return api.put(ALERTS_POLICY_CHANNELS)
+                //.field("policy_id", policyId)
+                //.field("channel_ids", channelIds)
+                .body(alertPolicyChannels)
+                .asObject(AlertPolicyChannelsWrapper.class).getPolicyChannels();
     }
 }
