@@ -64,19 +64,22 @@ public class Synchronizer {
                 .filter(s -> !currentEmails.contains(s))
                 .forEach(s -> {
                             try {
-                                emailChannels.add(api.createEmailAlertChannel(s, s, Boolean.FALSE.toString()).get());
+                                alertChannels.add(api.createEmailAlertChannel(s, s, Boolean.FALSE.toString()).get());
                             } catch (NewRelicApiException e) {
                                 e.printStackTrace();
                             }
                         }
                 );
 
+        List<Integer> emails = alertChannels.stream().filter(
+                alertChannel -> alertChannel.getType().equals("email")
+        ).filter(alertChannel -> currentEmails.contains(alertChannel.getConfiguration().getRecipients()))
+                .map(AlertChannel::getId).collect(Collectors.toList());
+
         api.updateAlertsPolicyChannels(
                 AlertPolicyChannels.builder()
                         .policyId(policy.getId())
-                        .channelIds(emailChannels.stream()
-                                .map(AlertChannel::getId)
-                                .collect(Collectors.toList()))
+                        .channelIds(emails)
                         .build()
         );
     }
