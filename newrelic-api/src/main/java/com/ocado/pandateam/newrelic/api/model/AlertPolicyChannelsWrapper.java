@@ -5,6 +5,6 @@ import lombok.Value;
 
 @Value
 public class AlertPolicyChannelsWrapper {
-    @JsonProperty
+    @JsonProperty("policy")
     AlertPolicyChannels policyChannels;
 }

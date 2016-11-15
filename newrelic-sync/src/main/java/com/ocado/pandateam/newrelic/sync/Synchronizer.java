@@ -6,7 +6,9 @@ import com.ocado.pandateam.newrelic.api.model.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
 import com.ocado.pandateam.newrelic.api.model.Application;
+import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.Settings;
+import com.ocado.pandateam.newrelic.api.model.Terms;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class Synchronizer {
                 .name(config.getApplicationName())
                 .settings(settings)
                 .build();
-        api.updateApplication(application.getId(), applicationUpdate);
+        application = api.updateApplication(application.getId(), applicationUpdate);
 
         Optional<AlertPolicy> policyOptional = api.getAlertPolicyByName(config.getPolicyName());
         AlertPolicy policy = policyOptional.orElseGet(
@@ -86,6 +88,23 @@ public class Synchronizer {
                         .build()
         );
 
-        api.listAlertConditions(policy.getId());
+        if (api.listExternalServiceConditions(policy.getId()).getList().isEmpty()) {
+            api.createExternalServiceCondition(policy.getId(),
+                    ExternalServiceCondition.builder()
+                            .enabled(true)
+                            .name("KMS average response time")
+                            .type("apm_external_service")
+                            .metric("response_time_web")
+                            .externalServiceUrl("kms.eu-west-1.amazonaws.com")
+                            .entities(new Integer[]{application.getId()})
+                            .terms(new Terms[]{Terms.builder()
+                                    .duration("5")
+                                    .operator("above")
+                                    .threshold("5")
+                                    .timeFunction("all")
+                                    .priority("critical")
+                                    .build()}).build()
+            );
+        }
     }
 }

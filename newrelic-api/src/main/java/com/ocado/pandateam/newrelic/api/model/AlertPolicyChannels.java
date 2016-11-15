@@ -11,7 +11,7 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 public class AlertPolicyChannels {
-    @JsonProperty("policy_id")
+    @JsonProperty("id")
     Integer policyId;
     @JsonProperty("channel_ids")
     Collection<Integer> channelIds;

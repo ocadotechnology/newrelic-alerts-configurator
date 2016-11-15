@@ -8,7 +8,7 @@ import lombok.Value;
 @Value
 @Builder
 @AllArgsConstructor
-public class AlertCondition {
+public class ExternalServiceCondition {
     Integer id;
     String type;
     String name;
@@ -17,6 +17,7 @@ public class AlertCondition {
     String metric;
     @JsonProperty("runbook_url")
     String runbookUrl;
+    @JsonProperty("external_service_url")
+    String externalServiceUrl;
     Terms[] terms;
-    UserDefined userDefined;
 }
