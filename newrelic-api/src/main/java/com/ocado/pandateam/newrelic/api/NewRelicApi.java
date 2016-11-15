@@ -9,9 +9,6 @@ import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import com.ocado.pandateam.newrelic.api.model.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
-import com.ocado.pandateam.newrelic.api.model.AlertCondition;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionList;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionWrapper;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannelsWrapper;
@@ -22,7 +19,6 @@ import com.ocado.pandateam.newrelic.api.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.ApplicationWrapper;
 import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionList;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionWrapper;
 import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
 import com.ocado.pandateam.newrelic.api.model.User;
 
@@ -47,10 +43,9 @@ public class NewRelicApi {
 
     private static final String ALERTS_POLICY_CHANNELS = "/v2/alerts_policy_channels.json";
 
-    private static final String ALL_EXTERNAL_SERVICE_CONDITIONS = "/v2/alerts_external_service_conditions";
-    private static final String EXTERNAL_SERVICE_CONDITIONS = "/v2/alerts_external_service_conditions/policies/{policy_id}.json";
-
     private final NewRelicRestClient api;
+
+    private final ExternalServiceConditionsApi externalServiceConditionsApi;
 
     /**
      * NewRelic API constructor.
@@ -69,6 +64,7 @@ public class NewRelicApi {
      */
     public NewRelicApi(String hostUrl, String apiKey) {
         api = new NewRelicRestClient(hostUrl, apiKey);
+        externalServiceConditionsApi = new ExternalServiceConditionsApi(api);
     }
 
     /**
@@ -161,18 +157,23 @@ public class NewRelicApi {
     }
 
     public ExternalServiceConditionList listExternalServiceConditions(int policyId) throws NewRelicApiException {
-        HttpRequest request = api.get(ALL_EXTERNAL_SERVICE_CONDITIONS)
-                .queryString("policy_id", policyId);
-        return api.asObject(request, ExternalServiceConditionList.class);
+        return externalServiceConditionsApi.list(policyId);
     }
 
     public ExternalServiceCondition createExternalServiceCondition(int policyId,
                                                                    ExternalServiceCondition externalServiceCondition)
             throws NewRelicApiException {
-        RequestBodyEntity request = api.post(EXTERNAL_SERVICE_CONDITIONS)
-                .routeParam("policy_id", String.valueOf(policyId))
-                .body(new ExternalServiceConditionWrapper(externalServiceCondition));
-        return api.asObject(request, ExternalServiceConditionWrapper.class).getExternalServiceCondition();
+        return externalServiceConditionsApi.create(policyId, externalServiceCondition);
+    }
+
+    public ExternalServiceCondition updateExternalServiceCondition(int conditionId,
+                                                                   ExternalServiceCondition externalServiceCondition)
+            throws NewRelicApiException {
+        return externalServiceConditionsApi.update(conditionId, externalServiceCondition);
+    }
+
+    public ExternalServiceCondition deleteExternalServiceCondition(int conditionId) throws NewRelicApiException {
+        return externalServiceConditionsApi.delete(conditionId);
     }
 
     /**
