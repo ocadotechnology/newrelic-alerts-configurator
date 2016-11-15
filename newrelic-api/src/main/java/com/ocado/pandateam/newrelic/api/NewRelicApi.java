@@ -9,6 +9,7 @@ import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import com.ocado.pandateam.newrelic.api.model.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
 import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
+import com.ocado.pandateam.newrelic.api.model.AlertConditionList;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
 import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannelsWrapper;
@@ -40,6 +41,7 @@ public class NewRelicApi {
     private static final String ALERTS_POLICIES = "/v2/alerts_policies.json";
 
     private static final String ALERTS_POLICY_CHANNELS = "/v2/alerts_policy_channels.json";
+    private static final String ALERTS_CONDITIONS = "/v2/alerts_conditions.json";
 
     private final NewRelicRestClient api;
 
@@ -149,6 +151,12 @@ public class NewRelicApi {
                 .field("channel_ids",
                         alertPolicyChannels.getChannelIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
         return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
+    }
+
+    public AlertConditionList listAlertConditions(int policyId) throws NewRelicApiException {
+        HttpRequest request = api.get(ALERTS_CONDITIONS)
+                .queryString("policy_id", policyId);
+        return api.asObject(request, AlertConditionList.class);
     }
 
     /**

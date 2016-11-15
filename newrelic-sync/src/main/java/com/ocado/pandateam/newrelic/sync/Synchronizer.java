@@ -63,7 +63,7 @@ public class Synchronizer {
         config.getEmailChannels().stream().forEach(
                 emailChannel -> {
                     if (currentEmailChannels.contains(emailChannel.getChannelName())) {
-                        // delete create
+                        // if not equal delete create
                         // add id
                     } else {
                         try {
@@ -75,7 +75,6 @@ public class Synchronizer {
                         } catch (NewRelicApiException e) {
                             e.printStackTrace();
                         }
-
                     }
                 }
         );
@@ -86,5 +85,7 @@ public class Synchronizer {
                         .channelIds(policyChannels)
                         .build()
         );
+
+        api.listAlertConditions(policy.getId());
     }
 }
