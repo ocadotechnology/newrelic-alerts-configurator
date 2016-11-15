@@ -5,9 +5,9 @@ import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.AlertChannel;
-import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
-import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelList;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelWrapper;
 
 import java.util.List;
 import java.util.Optional;

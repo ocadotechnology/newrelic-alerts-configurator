@@ -1,11 +1,14 @@
-package com.ocado.pandateam.newrelic.api.model;
+package com.ocado.pandateam.newrelic.api.model.applications;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ocado.pandateam.newrelic.api.model.ObjectList;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.util.List;
 
 @Value
+@EqualsAndHashCode(callSuper = true)
 public class ApplicationList extends ObjectList<Application> {
     @JsonProperty("applications")
     List<Application> list;

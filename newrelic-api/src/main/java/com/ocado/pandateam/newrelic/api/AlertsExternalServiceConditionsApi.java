@@ -4,20 +4,18 @@ import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionList;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionWrapper;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceCondition;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceConditionList;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceConditionWrapper;
 
-public class AlertsExternalServiceConditionsApi {
+public class AlertsExternalServiceConditionsApi extends BaseApi {
 
     private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
     private static final String CONDITION_URL = "/v2/alerts_external_service_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_external_service_conditions/policies/{policy_id}.json";
 
-    private final NewRelicRestClient api;
-
     AlertsExternalServiceConditionsApi(NewRelicRestClient api) {
-        this.api = api;
+        super(api);
     }
 
     public ExternalServiceConditionList list(int policyId) throws NewRelicApiException {

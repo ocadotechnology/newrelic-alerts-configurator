@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.api.model;
+package com.ocado.pandateam.newrelic.api.model.channels;
 
 import lombok.Value;
 

@@ -4,20 +4,18 @@ import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.AlertCondition;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionList;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionWrapper;
+import com.ocado.pandateam.newrelic.api.model.conditions.AlertCondition;
+import com.ocado.pandateam.newrelic.api.model.conditions.AlertConditionList;
+import com.ocado.pandateam.newrelic.api.model.conditions.AlertConditionWrapper;
 
-public class AlertsConditionsApi {
+public class AlertsConditionsApi extends BaseApi {
 
     private static final String CONDITIONS_URL = "/v2/alerts_conditions";
     private static final String CONDITION_URL = "/v2/alerts_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_conditions/policies/{policy_id}.json";
 
-    private final NewRelicRestClient api;
-
     AlertsConditionsApi(NewRelicRestClient api) {
-        this.api = api;
+        super(api);
     }
 
     public AlertConditionList list(int policyId) throws NewRelicApiException {

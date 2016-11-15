@@ -3,7 +3,7 @@ package com.ocado.pandateam.newrelic.api;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.google.common.io.Resources;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.model.Application;
+import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import org.apache.http.HttpHeaders;
 import org.junit.Assert;
 import org.junit.Before;

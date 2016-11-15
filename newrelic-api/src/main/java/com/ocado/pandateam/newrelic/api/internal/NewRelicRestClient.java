@@ -56,7 +56,7 @@ public class NewRelicRestClient {
 
     public HttpRequest delete(String url) {
         return Unirest
-                .post(hostUrl + url)
+                .delete(hostUrl + url)
                 .header("X-Api-Key", apiKey)
                 .header("accept", "application/json");
     }
