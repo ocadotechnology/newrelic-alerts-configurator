@@ -6,25 +6,7 @@ import com.mashape.unirest.request.body.MultipartBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.AlertChannel;
-import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
-import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
-import com.ocado.pandateam.newrelic.api.model.AlertCondition;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionList;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionWrapper;
-import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
-import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
-import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannelsWrapper;
-import com.ocado.pandateam.newrelic.api.model.AlertPolicyList;
-import com.ocado.pandateam.newrelic.api.model.AlertPolicyWrapper;
-import com.ocado.pandateam.newrelic.api.model.Application;
-import com.ocado.pandateam.newrelic.api.model.ApplicationList;
-import com.ocado.pandateam.newrelic.api.model.ApplicationWrapper;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionList;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionWrapper;
-import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
-import com.ocado.pandateam.newrelic.api.model.User;
+import com.ocado.pandateam.newrelic.api.model.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -201,14 +183,14 @@ public class NewRelicApi {
      * Creates {@link AlertChannel} of type "slack".
      *
      * @param name    Name of the Alert Channel to be created
-     * @param url     (Optional) URL address of Slack
-     * @param channel Name of the Slack channel for example: #channel-name
+     * @param url     URL address of Slack
+     * @param channel (Optional) Name of the Slack channel for example: #channel-name
      * @return created {@link AlertChannel} instance in NewRelic
      * @throws NewRelicApiException when received error response
-     *//*
+     */
     public Optional<AlertChannel> createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
-        return api.post(ALERTS_CHANNELS)
-                .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)))
-                .asSingleObject(AlertChannelList.class);
-    }*/
+        RequestBodyEntity request = api.post(ALERTS_CHANNELS)
+                .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)));
+        return api.asObject(request, AlertChannelList.class).getSingle();
+    }
 }
