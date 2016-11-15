@@ -32,14 +32,14 @@ public class NewRelicApiTest {
 
     private static final Charset UTF_8 = Charset.forName("UTF-8");
 
-    private NewRelicApi testee;
+    private ApplicationsApi testee;
 
     private String applications;
 
     @Before
     public void setUp() throws IOException {
         WIRE_MOCK.resetMappings();
-        testee = new NewRelicApi("http://localhost:6766", "secret");
+        testee = new NewRelicApi("http://localhost:6766", "secret").getApplicationsApi();
         applications = Resources.toString(getResource("applications.json"), UTF_8);
     }
 
@@ -50,7 +50,7 @@ public class NewRelicApiTest {
         newRelicReturnsApplications();
 
         // when
-        Optional<Application> app = testee.getApplicationByName("user_management");
+        Optional<Application> app = testee.getByName("user_management");
 
         // then
         Assert.assertTrue(app.isPresent());

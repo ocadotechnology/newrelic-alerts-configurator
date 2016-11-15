@@ -25,19 +25,19 @@ public class AlertsExternalServiceConditionsApi {
         return api.asObject(request, ExternalServiceConditionList.class);
     }
 
-    public ExternalServiceCondition create(int policyId, ExternalServiceCondition externalServiceCondition)
+    public ExternalServiceCondition create(int policyId, ExternalServiceCondition condition)
             throws NewRelicApiException {
         RequestBodyEntity request = api.post(CONDITION_POLICY_URL)
                 .routeParam("policy_id", String.valueOf(policyId))
-                .body(new ExternalServiceConditionWrapper(externalServiceCondition));
+                .body(new ExternalServiceConditionWrapper(condition));
         return api.asObject(request, ExternalServiceConditionWrapper.class).getExternalServiceCondition();
     }
 
-    public ExternalServiceCondition update(int conditionId, ExternalServiceCondition externalServiceCondition)
+    public ExternalServiceCondition update(int conditionId, ExternalServiceCondition condition)
             throws NewRelicApiException {
         RequestBodyEntity request = api.put(CONDITION_URL)
                 .routeParam("condition_id", String.valueOf(conditionId))
-                .body(new ExternalServiceConditionWrapper(externalServiceCondition));
+                .body(new ExternalServiceConditionWrapper(condition));
         return api.asObject(request, ExternalServiceConditionWrapper.class).getExternalServiceCondition();
     }
 

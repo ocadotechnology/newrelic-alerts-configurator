@@ -27,7 +27,7 @@ public class Synchronizer {
     }
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
-        Optional<Application> applicationOptional = api.getApplicationByName(config.getApplicationName());
+        Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());
 
         Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
 
@@ -39,13 +39,13 @@ public class Synchronizer {
                 .name(config.getApplicationName())
                 .settings(settings)
                 .build();
-        application = api.updateApplication(application.getId(), applicationUpdate);
+        application = api.getApplicationsApi().update(application.getId(), applicationUpdate);
 
-        Optional<AlertPolicy> policyOptional = api.getAlertPolicyByName(config.getPolicyName());
+        Optional<AlertPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertPolicy policy = policyOptional.orElseGet(
                 () -> {
                     try {
-                        return api.createAlertPolicy(config.getPolicyName());
+                        return api.getAlertsPoliciesApi().create(config.getPolicyName());
                     } catch (NewRelicApiException e) {
                         return null;
                     }
@@ -53,7 +53,7 @@ public class Synchronizer {
         );
 
 
-        List<AlertChannel> alertChannels = api.listAlertChannels();
+        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
 
         List<String> currentEmailChannels = alertChannels.stream()
                 .filter(alertChannel -> alertChannel.getType().equals("email"))
@@ -69,7 +69,7 @@ public class Synchronizer {
                         // add id
                     } else {
                         try {
-                            AlertChannel newChannel = api.createEmailAlertChannel(
+                            AlertChannel newChannel = api.getAlertsChannelsApi().createEmailAlertChannel(
                                     emailChannel.getChannelName(),
                                     emailChannel.getEmailAddress(),
                                     emailChannel.getIncludeJsonAttachment()).get();
@@ -81,7 +81,7 @@ public class Synchronizer {
                 }
         );
 
-        api.updateAlertsPolicyChannels(
+        api.getAlertsPoliciesApi().updateChannels(
                 AlertPolicyChannels.builder()
                         .policyId(policy.getId())
                         .channelIds(policyChannels)

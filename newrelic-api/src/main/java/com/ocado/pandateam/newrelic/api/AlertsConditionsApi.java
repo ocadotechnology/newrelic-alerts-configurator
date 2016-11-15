@@ -16,7 +16,7 @@ public class AlertsConditionsApi {
 
     private final NewRelicRestClient api;
 
-    public AlertsConditionsApi(NewRelicRestClient api) {
+    AlertsConditionsApi(NewRelicRestClient api) {
         this.api = api;
     }
 
@@ -25,19 +25,19 @@ public class AlertsConditionsApi {
         return api.asObject(request, AlertConditionList.class);
     }
 
-    public AlertCondition create(int policyId, AlertCondition AlertCondition)
+    public AlertCondition create(int policyId, AlertCondition condition)
             throws NewRelicApiException {
         RequestBodyEntity request = api.post(CONDITION_POLICY_URL)
                 .routeParam("policy_id", String.valueOf(policyId))
-                .body(new AlertConditionWrapper(AlertCondition));
+                .body(new AlertConditionWrapper(condition));
         return api.asObject(request, AlertConditionWrapper.class).getCondition();
     }
 
-    public AlertCondition update(int conditionId, AlertCondition AlertCondition)
+    public AlertCondition update(int conditionId, AlertCondition condition)
             throws NewRelicApiException {
         RequestBodyEntity request = api.put(CONDITION_URL)
                 .routeParam("condition_id", String.valueOf(conditionId))
-                .body(new AlertConditionWrapper(AlertCondition));
+                .body(new AlertConditionWrapper(condition));
         return api.asObject(request, AlertConditionWrapper.class).getCondition();
     }
 
