@@ -2,13 +2,13 @@ package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.model.AlertChannel;
-import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
-import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
-import com.ocado.pandateam.newrelic.api.model.Application;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
-import com.ocado.pandateam.newrelic.api.model.Settings;
-import com.ocado.pandateam.newrelic.api.model.Terms;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannels;
+import com.ocado.pandateam.newrelic.api.model.applications.Application;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceCondition;
+import com.ocado.pandateam.newrelic.api.model.applications.Settings;
+import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 
 import java.util.LinkedList;
 import java.util.List;

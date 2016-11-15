@@ -4,9 +4,9 @@ import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.AlertCondition;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionList;
-import com.ocado.pandateam.newrelic.api.model.AlertConditionWrapper;
+import com.ocado.pandateam.newrelic.api.model.conditions.AlertCondition;
+import com.ocado.pandateam.newrelic.api.model.conditions.AlertConditionList;
+import com.ocado.pandateam.newrelic.api.model.conditions.AlertConditionWrapper;
 
 public class AlertsConditionsApi extends BaseApi {
 
