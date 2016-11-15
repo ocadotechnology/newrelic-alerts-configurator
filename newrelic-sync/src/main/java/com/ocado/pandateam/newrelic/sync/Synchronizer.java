@@ -53,33 +53,37 @@ public class Synchronizer {
 
         List<AlertChannel> alertChannels = api.listAlertChannels();
 
-        List<String> currentEmails = alertChannels.stream()
+        List<String> currentEmailChannels = alertChannels.stream()
                 .filter(alertChannel -> alertChannel.getType().equals("email"))
-                .map(alertChannel -> alertChannel.getConfiguration().getRecipients())
+                .map(AlertChannel::getName)
                 .collect(Collectors.toList());
 
-        List<AlertChannel> emailChannels = new LinkedList<>();
+        List<Integer> policyChannels = new LinkedList<>();
 
-        config.getEmailChannels().stream()
-                .filter(s -> !currentEmails.contains(s))
-                .forEach(s -> {
-                            try {
-                                alertChannels.add(api.createEmailAlertChannel(s, s, Boolean.FALSE.toString()).get());
-                            } catch (NewRelicApiException e) {
-                                e.printStackTrace();
-                            }
+        config.getEmailChannels().stream().forEach(
+                emailChannel -> {
+                    if (currentEmailChannels.contains(emailChannel.getChannelName())) {
+                        // delete create
+                        // add id
+                    } else {
+                        try {
+                            AlertChannel newChannel = api.createEmailAlertChannel(
+                                    emailChannel.getChannelName(),
+                                    emailChannel.getEmailAddress(),
+                                    emailChannel.getIncludeJsonAttachment()).get();
+                            policyChannels.add(newChannel.getId());
+                        } catch (NewRelicApiException e) {
+                            e.printStackTrace();
                         }
-                );
 
-        List<Integer> emails = alertChannels.stream().filter(
-                alertChannel -> alertChannel.getType().equals("email")
-        ).filter(alertChannel -> currentEmails.contains(alertChannel.getConfiguration().getRecipients()))
-                .map(AlertChannel::getId).collect(Collectors.toList());
+                    }
+                }
+        );
 
         api.updateAlertsPolicyChannels(
                 AlertPolicyChannels.builder()
                         .policyId(policy.getId())
-                        .channelIds(emails)
+                        .channelIds(policyChannels)
                         .build()
         );
     }

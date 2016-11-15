@@ -17,5 +17,5 @@ public class Configuration {
 
     private float userApdexThreshold;
 
-    private List<String> emailChannels;
+    private List<EmailChannel> emailChannels;
 }
