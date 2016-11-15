@@ -7,6 +7,6 @@ import java.util.List;
 
 @Value
 public class ExternalServiceConditionList extends ObjectList<ExternalServiceCondition> {
-    @JsonProperty("conditions")
+    @JsonProperty("external_service_conditions")
     List<ExternalServiceCondition> list;
 }
