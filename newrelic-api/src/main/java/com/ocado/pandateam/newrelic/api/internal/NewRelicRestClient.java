@@ -5,6 +5,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
 import com.mashape.unirest.request.GetRequest;
+import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
@@ -51,6 +52,13 @@ public class NewRelicRestClient {
                 .header("X-Api-Key", apiKey)
                 .header("accept", "application/json")
                 .header("Content-Type", contentType);
+    }
+
+    public HttpRequest delete(String url) {
+        return Unirest
+                .post(hostUrl + url)
+                .header("X-Api-Key", apiKey)
+                .header("accept", "application/json");
     }
 
     public <T> T asObject(BaseRequest request, Class<T> responseType) throws NewRelicApiException {

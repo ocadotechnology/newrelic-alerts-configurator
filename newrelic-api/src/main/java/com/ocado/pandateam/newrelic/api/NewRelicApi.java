@@ -6,7 +6,20 @@ import com.mashape.unirest.request.body.MultipartBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.*;
+import com.ocado.pandateam.newrelic.api.model.AlertChannel;
+import com.ocado.pandateam.newrelic.api.model.AlertChannelList;
+import com.ocado.pandateam.newrelic.api.model.AlertChannelWrapper;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicy;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannels;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyChannelsWrapper;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyList;
+import com.ocado.pandateam.newrelic.api.model.AlertPolicyWrapper;
+import com.ocado.pandateam.newrelic.api.model.Application;
+import com.ocado.pandateam.newrelic.api.model.ApplicationList;
+import com.ocado.pandateam.newrelic.api.model.ApplicationWrapper;
+import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
+import com.ocado.pandateam.newrelic.api.model.User;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,17 +35,18 @@ public class NewRelicApi {
     private static final String ALL_APPLICATIONS = "/v2/applications.json";
     private static final String APPLICATIONS = "/v2/applications/{id}.json";
 
-    private static final String USERS = "/v2/users.json";
-    private static final String KEY_TRANSACTIONS = "/v2/key_transactions.json";
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
     private static final String ALERTS_POLICIES = "/v2/alerts_policies.json";
 
     private static final String ALERTS_POLICY_CHANNELS = "/v2/alerts_policy_channels.json";
 
-    private static final String ALL_EXTERNAL_SERVICE_CONDITIONS = "/v2/alerts_external_service_conditions";
-    private static final String EXTERNAL_SERVICE_CONDITIONS = "/v2/alerts_external_service_conditions/policies/{policy_id}.json";
-
     private final NewRelicRestClient api;
+
+    @Getter
+    private final AlertsConditionsApi alertsConditionsApi;
+
+    @Getter
+    private final AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApi;
 
     /**
      * NewRelic API constructor.
@@ -51,6 +65,8 @@ public class NewRelicApi {
      */
     public NewRelicApi(String hostUrl, String apiKey) {
         api = new NewRelicRestClient(hostUrl, apiKey);
+        alertsConditionsApi = new AlertsConditionsApi(api);
+        alertsExternalServiceConditionsApi = new AlertsExternalServiceConditionsApi(api);
     }
 
     /**
@@ -140,21 +156,6 @@ public class NewRelicApi {
                 .field("channel_ids",
                         alertPolicyChannels.getChannelIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
         return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
-    }
-
-    public ExternalServiceConditionList listExternalServiceConditions(int policyId) throws NewRelicApiException {
-        HttpRequest request = api.get(ALL_EXTERNAL_SERVICE_CONDITIONS)
-                .queryString("policy_id", policyId);
-        return api.asObject(request, ExternalServiceConditionList.class);
-    }
-
-    public ExternalServiceCondition createExternalServiceCondition(int policyId,
-                                                                   ExternalServiceCondition externalServiceCondition)
-            throws NewRelicApiException {
-        RequestBodyEntity request = api.post(EXTERNAL_SERVICE_CONDITIONS)
-                .routeParam("policy_id", String.valueOf(policyId))
-                .body(new ExternalServiceConditionWrapper(externalServiceCondition));
-        return api.asObject(request, ExternalServiceConditionWrapper.class).getExternalServiceCondition();
     }
 
     /**
