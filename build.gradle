@@ -33,6 +33,9 @@ project(':newrelic-client') {
 project(':newrelic-sync') {
     dependencies {
         compile project(':newrelic-api')
+        compile 'org.apache.commons:commons-lang3:3.5'
+        testCompile 'org.mockito:mockito-all:1.10.19'
+        testCompile 'com.google.guava:guava:20.0'
     }
 }
 

@@ -1,9 +1,7 @@
-package com.ocado.pandateam.newrelic.sync;
+package com.ocado.pandateam.newrelic.sync.configuration;
 
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.List;
 
 @Builder
 @Getter
@@ -17,5 +15,4 @@ public class Configuration {
 
     private float userApdexThreshold;
 
-    private List<EmailChannel> emailChannels;
 }

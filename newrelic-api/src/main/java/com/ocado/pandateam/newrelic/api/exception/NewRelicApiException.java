@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.api.exception;
 
-public class NewRelicApiException extends Exception {
+public class NewRelicApiException extends RuntimeException {
 
     public NewRelicApiException(String message) {
         super(message);

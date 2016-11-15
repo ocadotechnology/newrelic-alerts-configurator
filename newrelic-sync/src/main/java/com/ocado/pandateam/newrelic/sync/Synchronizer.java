@@ -9,6 +9,9 @@ import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.Settings;
 import com.ocado.pandateam.newrelic.api.model.Terms;
+import com.ocado.pandateam.newrelic.sync.channel.ChannelUtils;
+import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.Configuration;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,12 +24,17 @@ public class Synchronizer {
 
     private final Configuration config;
 
-    public Synchronizer(NewRelicApi api, Configuration config) {
+    private final ChannelConfiguration channelConfig;
+
+    public Synchronizer(NewRelicApi api, Configuration config, ChannelConfiguration channelConfig) {
         this.api = api;
         this.config = config;
+        this.channelConfig = channelConfig;
     }
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
+        List<Integer> policyChannels = updateChannels();
+
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());
 
         Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
@@ -52,41 +60,7 @@ public class Synchronizer {
                 }
         );
 
-
-        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
-
-        List<String> currentEmailChannels = alertChannels.stream()
-                .filter(alertChannel -> alertChannel.getType().equals("email"))
-                .map(AlertChannel::getName)
-                .collect(Collectors.toList());
-
-        List<Integer> policyChannels = new LinkedList<>();
-
-        config.getEmailChannels().stream().forEach(
-                emailChannel -> {
-                    if (currentEmailChannels.contains(emailChannel.getChannelName())) {
-                        // if not equal delete create
-                        // add id
-                    } else {
-                        try {
-                            AlertChannel newChannel = api.getAlertsChannelsApi().createEmailAlertChannel(
-                                    emailChannel.getChannelName(),
-                                    emailChannel.getEmailAddress(),
-                                    emailChannel.getIncludeJsonAttachment()).get();
-                            policyChannels.add(newChannel.getId());
-                        } catch (NewRelicApiException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        );
-
-        api.getAlertsPoliciesApi().updateChannels(
-                AlertPolicyChannels.builder()
-                        .policyId(policy.getId())
-                        .channelIds(policyChannels)
-                        .build()
-        );
+        updateAlertPolicyChannels(policy, policyChannels);
 
         if (api.getAlertsExternalServiceConditionsApi().list(policy.getId()).getList().isEmpty()) {
             api.getAlertsExternalServiceConditionsApi().create(policy.getId(),
@@ -106,5 +80,41 @@ public class Synchronizer {
                                     .build()}).build()
             );
         }
+    }
+
+    private List<Integer> updateChannels() throws NewRelicApiException, NewRelicSyncException {
+        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
+        List<Integer> policyChannels = new LinkedList<>();
+
+        channelConfig.getChannels().stream().forEach(
+                channel -> {
+                    AlertChannel mapped = channel.getAsAlertChannel();
+                    List<AlertChannel> sameInstanceChannels = alertChannels.stream()
+                            .filter(alertChannel -> ChannelUtils.sameInstance(mapped, alertChannel))
+                            .collect(Collectors.toList());
+
+                    AlertChannel updatedChannel = sameInstanceChannels.stream()
+                            .filter(alertChannel -> ChannelUtils.same(mapped, alertChannel))
+                            .findFirst()
+                            .orElse(api.getAlertsChannelsApi().create(mapped));
+
+                    int id = updatedChannel.getId();
+                    sameInstanceChannels.stream().map(AlertChannel::getId).filter(channelId -> channelId != id).forEach(
+                            channelId -> api.getAlertsChannelsApi().delete(channelId)
+                    );
+                    policyChannels.add(updatedChannel.getId());
+                }
+        );
+
+        return policyChannels;
+    }
+
+    private void updateAlertPolicyChannels(AlertPolicy policy, List<Integer> policyChannels) throws NewRelicApiException {
+        api.getAlertsPoliciesApi().updateChannels(
+                AlertPolicyChannels.builder()
+                        .policyId(policy.getId())
+                        .channelIds(policyChannels)
+                        .build()
+        );
     }
 }
