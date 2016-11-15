@@ -8,7 +8,7 @@ import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionList;
 import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionWrapper;
 
-public class ExternalServiceConditionsApi {
+public class AlertsExternalServiceConditionsApi {
 
     private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
     private static final String CONDITION_URL = "/v2/alerts_external_service_conditions/{condition_id}.json";
@@ -16,7 +16,7 @@ public class ExternalServiceConditionsApi {
 
     private final NewRelicRestClient api;
 
-    public ExternalServiceConditionsApi(NewRelicRestClient api) {
+    AlertsExternalServiceConditionsApi(NewRelicRestClient api) {
         this.api = api;
     }
 

@@ -88,8 +88,8 @@ public class Synchronizer {
                         .build()
         );
 
-        if (api.listExternalServiceConditions(policy.getId()).getList().isEmpty()) {
-            api.createExternalServiceCondition(policy.getId(),
+        if (api.getAlertsExternalServiceConditionsApi().list(policy.getId()).getList().isEmpty()) {
+            api.getAlertsExternalServiceConditionsApi().create(policy.getId(),
                     ExternalServiceCondition.builder()
                             .enabled(true)
                             .name("KMS average response time")

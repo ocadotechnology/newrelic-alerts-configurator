@@ -17,10 +17,9 @@ import com.ocado.pandateam.newrelic.api.model.AlertPolicyWrapper;
 import com.ocado.pandateam.newrelic.api.model.Application;
 import com.ocado.pandateam.newrelic.api.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.ApplicationWrapper;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceCondition;
-import com.ocado.pandateam.newrelic.api.model.ExternalServiceConditionList;
 import com.ocado.pandateam.newrelic.api.model.KeyTransaction;
 import com.ocado.pandateam.newrelic.api.model.User;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,8 +35,6 @@ public class NewRelicApi {
     private static final String ALL_APPLICATIONS = "/v2/applications.json";
     private static final String APPLICATIONS = "/v2/applications/{id}.json";
 
-    private static final String USERS = "/v2/users.json";
-    private static final String KEY_TRANSACTIONS = "/v2/key_transactions.json";
     private static final String ALERTS_CHANNELS = "/v2/alerts_channels.json";
     private static final String ALERTS_POLICIES = "/v2/alerts_policies.json";
 
@@ -45,7 +42,11 @@ public class NewRelicApi {
 
     private final NewRelicRestClient api;
 
-    private final ExternalServiceConditionsApi externalServiceConditionsApi;
+    @Getter
+    private final AlertsConditionsApi alertsConditionsApi;
+
+    @Getter
+    private final AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApi;
 
     /**
      * NewRelic API constructor.
@@ -64,7 +65,8 @@ public class NewRelicApi {
      */
     public NewRelicApi(String hostUrl, String apiKey) {
         api = new NewRelicRestClient(hostUrl, apiKey);
-        externalServiceConditionsApi = new ExternalServiceConditionsApi(api);
+        alertsConditionsApi = new AlertsConditionsApi(api);
+        alertsExternalServiceConditionsApi = new AlertsExternalServiceConditionsApi(api);
     }
 
     /**
@@ -154,26 +156,6 @@ public class NewRelicApi {
                 .field("channel_ids",
                         alertPolicyChannels.getChannelIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
         return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
-    }
-
-    public ExternalServiceConditionList listExternalServiceConditions(int policyId) throws NewRelicApiException {
-        return externalServiceConditionsApi.list(policyId);
-    }
-
-    public ExternalServiceCondition createExternalServiceCondition(int policyId,
-                                                                   ExternalServiceCondition externalServiceCondition)
-            throws NewRelicApiException {
-        return externalServiceConditionsApi.create(policyId, externalServiceCondition);
-    }
-
-    public ExternalServiceCondition updateExternalServiceCondition(int conditionId,
-                                                                   ExternalServiceCondition externalServiceCondition)
-            throws NewRelicApiException {
-        return externalServiceConditionsApi.update(conditionId, externalServiceCondition);
-    }
-
-    public ExternalServiceCondition deleteExternalServiceCondition(int conditionId) throws NewRelicApiException {
-        return externalServiceConditionsApi.delete(conditionId);
     }
 
     /**
