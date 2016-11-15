@@ -94,7 +94,7 @@ public class Synchronizer {
                             .enabled(true)
                             .name("KMS average response time")
                             .type("apm_external_service")
-                            .metric("response_time_web")
+                            .metric("response_time_average")
                             .externalServiceUrl("kms.eu-west-1.amazonaws.com")
                             .entities(new Integer[]{application.getId()})
                             .terms(new Terms[]{Terms.builder()
