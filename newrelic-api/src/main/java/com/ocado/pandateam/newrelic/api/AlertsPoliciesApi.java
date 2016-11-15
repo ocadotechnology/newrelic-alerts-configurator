@@ -43,6 +43,7 @@ public class AlertsPoliciesApi extends BaseApi {
      * @return {@link AlertPolicy} object
      * @throws NewRelicApiException when received error response
      */
+    @Deprecated
     public AlertPolicy create(String name) throws NewRelicApiException {
         RequestBodyEntity request = api.post(POLICIES_URL)
                 .body(new AlertPolicyWrapper(AlertPolicy.builder()
@@ -66,7 +67,10 @@ public class AlertsPoliciesApi extends BaseApi {
         MultipartBody request = api.put(POLICY_CHANNELS_URL, "application/x-www-form-urlencoded")
                 .field("policy_id", channels.getPolicyId())
                 .field("channel_ids",
-                        channels.getChannelIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
+                        channels.getChannelIds()
+                                .stream()
+                                .map(String::valueOf)
+                                .collect(Collectors.joining(",")));
         return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
     }
 }
