@@ -33,7 +33,12 @@ public class ChannelSynchronizer {
                 () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
         List<Integer> policyChannels = updateChannels();
-        updateAlertPolicyChannels(policy, policyChannels);
+
+        //List<Integer> oldPolicyChannelsToCleanup = getOldPolicyChannels(policy.getId());
+        //oldPolicyChannelsToCleanup.removeAll(policyChannels);
+        //cleanupAlertPolicyChannels(policy.getId(), oldPolicyChannelsToCleanup);
+
+        addAlertPolicyChannels(policy.getId(), policyChannels);
     }
 
     private List<Integer> updateChannels() throws NewRelicApiException, NewRelicSyncException {
@@ -67,12 +72,26 @@ public class ChannelSynchronizer {
         return policyChannels;
     }
 
-    private void updateAlertPolicyChannels(AlertPolicy policy, List<Integer> policyChannels) throws NewRelicApiException {
+    private void addAlertPolicyChannels(Integer policyId, List<Integer> policyChannels) throws NewRelicApiException {
+        // TODO this only adds channels (and starts from the second one lol)
         api.getAlertsPoliciesApi().updateChannels(
                 AlertPolicyChannels.builder()
-                        .policyId(policy.getId())
+                        .policyId(policyId)
                         .channelIds(policyChannels)
                         .build()
         );
+    }
+
+    private List<Integer> getOldPolicyChannels(Integer id) {
+        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
+        return alertChannels.stream()
+                .filter(policyChannel -> policyChannel.getLinks().getPolicyIds().contains(id))
+                .map(AlertChannel::getId)
+                .collect(Collectors.toList());
+    }
+
+    private void cleanupAlertPolicyChannels(Integer id, List<Integer> oldPolicyChannels) {
+        // TODO our API does not have a method to remove channels from policy
+        // TODO remove unused (which has been used earlier by this policy) channels?
     }
 }
