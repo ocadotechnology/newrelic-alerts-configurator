@@ -38,9 +38,9 @@ public class ApplicationsApi extends BaseApi {
      * @return Updated {@link Application}.
      * @throws NewRelicApiException when received error response
      */
-    public Application update(int id, Application application) throws NewRelicApiException {
+    public Application update(Application application) throws NewRelicApiException {
         RequestBodyEntity request = api.put(APPLICATION_URL)
-                .routeParam("application_id", String.valueOf(id))
+                .routeParam("application_id", String.valueOf(application.getId()))
                 .body(new ApplicationWrapper(application));
         return api.asObject(request, ApplicationWrapper.class).getApplication();
     }

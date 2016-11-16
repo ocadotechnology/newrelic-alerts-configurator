@@ -34,10 +34,11 @@ public class ApplicationSynchronizer {
                 .enableRealUserMonitoring(config.isEnableRealUserMonitoring())
                 .build();
         Application applicationUpdate = Application.builder()
+                .id(application.getId())
                 .name(config.getApplicationName())
                 .settings(settings)
                 .build();
-        api.getApplicationsApi().update(application.getId(), applicationUpdate);
+        api.getApplicationsApi().update(applicationUpdate);
     }
 
 }
