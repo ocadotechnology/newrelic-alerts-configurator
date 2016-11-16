@@ -5,6 +5,8 @@ import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
+import com.ocado.pandateam.newrelic.api.model.applications.ApplicationInput;
+import com.ocado.pandateam.newrelic.api.model.applications.ApplicationInputWrapper;
 import com.ocado.pandateam.newrelic.api.model.applications.ApplicationList;
 import com.ocado.pandateam.newrelic.api.model.applications.ApplicationWrapper;
 
@@ -38,10 +40,10 @@ public class ApplicationsApi extends BaseApi {
      * @return Updated {@link Application}.
      * @throws NewRelicApiException when received error response
      */
-    public Application update(Application application) throws NewRelicApiException {
+    public Application update(int applicationId, ApplicationInput application) throws NewRelicApiException {
         RequestBodyEntity request = api.put(APPLICATION_URL)
-                .routeParam("application_id", String.valueOf(application.getId()))
-                .body(new ApplicationWrapper(application));
+                .routeParam("application_id", String.valueOf(applicationId))
+                .body(new ApplicationInputWrapper(application));
         return api.asObject(request, ApplicationWrapper.class).getApplication();
     }
 }

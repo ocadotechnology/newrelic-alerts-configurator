@@ -3,7 +3,9 @@ package com.ocado.pandateam.newrelic.sync;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
+import com.ocado.pandateam.newrelic.api.model.applications.ApplicationInput;
 import com.ocado.pandateam.newrelic.api.model.applications.Settings;
+import com.ocado.pandateam.newrelic.api.model.applications.SettingsInput;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 
@@ -28,17 +30,16 @@ public class ApplicationSynchronizer {
         Application application = applicationOptional.orElseThrow(
                 () -> new NewRelicSyncException(format("Application %s does not exist", config.getApplicationName())));
 
-        Settings settings = Settings.builder()
+        SettingsInput settings = SettingsInput.builder()
                 .appApdexThreshold(config.getAppApdexThreshold())
                 .endUserApdexThreshold(config.getEndUserApdexThreshold())
                 .enableRealUserMonitoring(config.isEnableRealUserMonitoring())
                 .build();
-        Application applicationUpdate = Application.builder()
-                .id(application.getId())
+        ApplicationInput applicationUpdate = ApplicationInput.builder()
                 .name(config.getApplicationName())
                 .settings(settings)
                 .build();
-        api.getApplicationsApi().update(applicationUpdate);
+        api.getApplicationsApi().update(application.getId(), applicationUpdate);
     }
 
 }
