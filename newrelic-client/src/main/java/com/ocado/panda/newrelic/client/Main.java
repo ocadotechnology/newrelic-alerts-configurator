@@ -41,8 +41,8 @@ public class Main {
 
     private static void synchronizePolicy(NewRelicApi api) throws NewRelicSyncException {
         PolicyConfiguration policyConfig = PolicyConfiguration.builder()
-                .applicationName(APPLICATION_NAME)
                 .policyName(POLICY_NAME)
+                .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
                 .build();
 
         PolicySynchronizer synchronizer = new PolicySynchronizer(api, policyConfig);
