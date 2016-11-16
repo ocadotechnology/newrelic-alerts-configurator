@@ -2,11 +2,14 @@ package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NonNull;
 
-@AllArgsConstructor
+@Builder
 public class EmailChannel implements Channel {
+    @NonNull
     private String channelName;
+    @NonNull
     private String emailAddress;
     private boolean includeJsonAttachment;
 

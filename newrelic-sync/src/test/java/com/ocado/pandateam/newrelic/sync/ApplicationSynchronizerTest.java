@@ -64,6 +64,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
                 .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
                 .build();
         Application expectedApplicationUpdate = Application.builder()
+                .id(APPLICATION.getId())
                 .name(APPLICATION_NAME)
                 .settings(expectedSettings)
                 .build();
@@ -72,7 +73,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verify(applicationsApiMock).update(eq(APPLICATION.getId()), eq(expectedApplicationUpdate));
+        verify(applicationsApiMock).update(eq(expectedApplicationUpdate));
     }
 
     private void mockValidApplicationConfigurationMock() {

@@ -40,8 +40,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
     private static final String EMAIL_CHANNEL_NAME = "emailChannel";
     private static final String SLACK_CHANNEL_NAME = "slackChannel";
-    private static final Channel EMAIL_CHANNEL = new EmailChannel(EMAIL_CHANNEL_NAME, "recipents", true);
-    private static final Channel SLACK_CHANNEL = new SlackChannel(SLACK_CHANNEL_NAME, "slackUrl", "slackName");
+    private static final Channel EMAIL_CHANNEL = EmailChannel.builder().channelName(EMAIL_CHANNEL_NAME).emailAddress("recipents").build();
+    private static final Channel SLACK_CHANNEL = SlackChannel.builder().channelName(SLACK_CHANNEL_NAME).slackUrl("url").build();
     private static final AlertChannelConfiguration EMAIL_CHANNEL_CONFIG = EMAIL_CHANNEL.getAsAlertChannel().getConfiguration();
     private static final AlertChannelConfiguration SLACK_CHANNEL_CONFIG = SLACK_CHANNEL.getAsAlertChannel().getConfiguration();
     private static final AlertChannelConfiguration ALERT_CHANNEL_CONFIG = AlertChannelConfiguration.builder().build();
