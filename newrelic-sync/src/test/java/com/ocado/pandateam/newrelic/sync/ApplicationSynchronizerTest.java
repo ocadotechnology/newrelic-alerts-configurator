@@ -1,5 +1,7 @@
 package com.ocado.pandateam.newrelic.sync;
 
+import com.ocado.pandateam.newrelic.api.model.applications.Application;
+import com.ocado.pandateam.newrelic.api.model.applications.Settings;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.junit.Before;
@@ -13,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,6 +31,9 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
     private static final String APPLICATION_NAME = "appName";
     private static final float USER_APDEX_THRESHOLD = 0.7f;
     private static final float APP_APDEX_THRESHOLD = 0.5f;
+    private static final boolean ENABLE_REAL_USER_MONITORING = false;
+
+    private static final Application APPLICATION = Application.builder().id(1).name(APPLICATION_NAME).build();
 
     @Before
     public void setUp() {
@@ -47,9 +53,32 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
     }
 
+    @Test
+    public void shouldUpdateApplication() throws NewRelicSyncException {
+        // given
+        when(applicationsApiMock.getByName(eq(APPLICATION_NAME))).thenReturn(Optional.of(APPLICATION));
+
+        Settings expectedSettings = Settings.builder()
+                .appApdexThreshold(APP_APDEX_THRESHOLD)
+                .endUserApdexThreshold(USER_APDEX_THRESHOLD)
+                .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
+                .build();
+        Application expectedApplicationUpdate = Application.builder()
+                .name(APPLICATION_NAME)
+                .settings(expectedSettings)
+                .build();
+
+        // when
+        testee.sync();
+
+        // then
+        verify(applicationsApiMock).update(eq(APPLICATION.getId()), eq(expectedApplicationUpdate));
+    }
+
     private void mockValidApplicationConfigurationMock() {
         when(applicationConfigurationMock.getApplicationName()).thenReturn(APPLICATION_NAME);
-        when(applicationConfigurationMock.getUserApdexThreshold()).thenReturn(USER_APDEX_THRESHOLD);
+        when(applicationConfigurationMock.getEndUserApdexThreshold()).thenReturn(USER_APDEX_THRESHOLD);
         when(applicationConfigurationMock.getAppApdexThreshold()).thenReturn(APP_APDEX_THRESHOLD);
+        when(applicationConfigurationMock.isEnableRealUserMonitoring()).thenReturn(ENABLE_REAL_USER_MONITORING);
     }
 }

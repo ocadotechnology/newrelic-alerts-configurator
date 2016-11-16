@@ -30,32 +30,23 @@ public class Main {
     }
 
     private static void synchronizeApplication(NewRelicApi api) throws NewRelicSyncException {
-        ApplicationConfiguration applicationConfig = ApplicationConfiguration.builder()
-                .applicationName(APPLICATION_NAME)
-                .appApdexThreshold(0.5f)
-                .userApdexThreshold(7.0f)
-                .build();
+        ApplicationConfiguration applicationConfig = new ApplicationConfiguration(APPLICATION_NAME, 0.5f, 7.0f, true);
         ApplicationSynchronizer synchronizer = new ApplicationSynchronizer(api, applicationConfig);
         synchronizer.sync();
     }
 
     private static void synchronizePolicy(NewRelicApi api) throws NewRelicSyncException {
-        PolicyConfiguration policyConfig = PolicyConfiguration.builder()
-                .applicationName(APPLICATION_NAME)
-                .policyName(POLICY_NAME)
-                .build();
+        PolicyConfiguration policyConfig = new PolicyConfiguration(APPLICATION_NAME, POLICY_NAME);
 
         PolicySynchronizer synchronizer = new PolicySynchronizer(api, policyConfig);
         synchronizer.sync();
     }
 
     private static void synchronizeChannels(NewRelicApi api) throws NewRelicSyncException {
-        ChannelConfiguration channelConfig = ChannelConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channels(Arrays.asList(
+        ChannelConfiguration channelConfig = new ChannelConfiguration(POLICY_NAME,
+                Arrays.asList(
                         new EmailChannel("Panda team", "core-services-internal-xd@ocado.com", false)
-                ))
-                .build();
+                ));
         ChannelSynchronizer synchronizer = new ChannelSynchronizer(api, channelConfig);
         synchronizer.sync();
     }

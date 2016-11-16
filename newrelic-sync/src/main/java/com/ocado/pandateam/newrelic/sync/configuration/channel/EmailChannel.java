@@ -8,10 +8,10 @@ import lombok.AllArgsConstructor;
 public class EmailChannel implements Channel {
     private String channelName;
     private String emailAddress;
-    private Boolean includeJsonAttachment;
+    private boolean includeJsonAttachment;
 
     public String getIncludeJsonAttachment() {
-        return includeJsonAttachment == null ? null : String.valueOf(includeJsonAttachment);
+        return String.valueOf(includeJsonAttachment);
     }
 
     @Override

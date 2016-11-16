@@ -30,7 +30,8 @@ public class ApplicationSynchronizer {
 
         Settings settings = Settings.builder()
                 .appApdexThreshold(config.getAppApdexThreshold())
-                .endUserApdexThreshold(config.getUserApdexThreshold())
+                .endUserApdexThreshold(config.getEndUserApdexThreshold())
+                .enableRealUserMonitoring(config.isEnableRealUserMonitoring())
                 .build();
         Application applicationUpdate = Application.builder()
                 .name(config.getApplicationName())
