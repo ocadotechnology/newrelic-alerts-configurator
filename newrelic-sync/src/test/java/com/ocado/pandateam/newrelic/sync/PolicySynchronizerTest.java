@@ -80,7 +80,7 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
 
     private void mockValidPolicyConfiguration() {
         when(policyConfigurationMock.getPolicyName()).thenReturn(POLICY_NAME);
-        when(policyConfigurationMock.getIncidentPreference()).thenReturn(INCIDENT_PREFERENCE);
+        when(policyConfigurationMock.getIncidentPreference()).thenReturn(INCIDENT_PREFERENCE.name());
     }
 
     private static AlertPolicy createAlertPolicy(int id, PolicyConfiguration.IncidentPreference incidentPreference) {

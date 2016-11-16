@@ -1,6 +1,5 @@
 package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
-import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
 import lombok.Builder;
 import lombok.NonNull;
@@ -18,9 +17,20 @@ public class EmailChannel implements Channel {
     }
 
     @Override
-    public AlertChannel getAsAlertChannel() {
-        AlertChannelConfiguration config = AlertChannelConfiguration.builder()
-                .recipients(emailAddress).includeJsonAttachment(getIncludeJsonAttachment()).build();
-        return AlertChannel.builder().name(channelName).type("email").configuration(config).build();
+    public String getChannelName() {
+        return channelName;
+    }
+
+    @Override
+    public String getType() {
+        return ChannelType.EMAIL.name().toLowerCase();
+    }
+
+    @Override
+    public AlertChannelConfiguration getAlertChannelConfiguration() {
+        return AlertChannelConfiguration.builder()
+                .recipients(emailAddress)
+                .includeJsonAttachment(getIncludeJsonAttachment())
+                .build();
     }
 }

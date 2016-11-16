@@ -42,7 +42,11 @@ public class ChannelSynchronizer {
 
         config.getChannels().stream().forEach(
                 channel -> {
-                    AlertChannel mapped = channel.getAsAlertChannel();
+                    AlertChannel mapped = AlertChannel.builder()
+                            .name(channel.getChannelName())
+                            .type(channel.getType())
+                            .configuration(channel.getAlertChannelConfiguration())
+                            .build();
                     List<AlertChannel> sameInstanceChannels = alertChannels.stream()
                             .filter(alertChannel -> ChannelUtils.sameInstance(mapped, alertChannel))
                             .collect(Collectors.toList());

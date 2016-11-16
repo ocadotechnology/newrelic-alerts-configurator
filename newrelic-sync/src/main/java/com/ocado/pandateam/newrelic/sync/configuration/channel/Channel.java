@@ -1,7 +1,9 @@
 package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
-import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
 
 public interface Channel {
-    AlertChannel getAsAlertChannel();
+    String getChannelName();
+    String getType();
+    AlertChannelConfiguration getAlertChannelConfiguration();
 }

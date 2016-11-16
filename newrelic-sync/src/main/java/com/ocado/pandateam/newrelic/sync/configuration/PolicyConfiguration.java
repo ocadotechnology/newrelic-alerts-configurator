@@ -11,6 +11,10 @@ public class PolicyConfiguration {
     private String policyName;
     private IncidentPreference incidentPreference;
 
+    public String getIncidentPreference() {
+        return incidentPreference.name();
+    }
+
     public enum IncidentPreference {
         PER_POLICY, PER_CONDITION, PER_CONDITION_AND_TARGET
     }

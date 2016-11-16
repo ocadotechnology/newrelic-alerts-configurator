@@ -42,9 +42,11 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     private static final String SLACK_CHANNEL_NAME = "slackChannel";
     private static final Channel EMAIL_CHANNEL = EmailChannel.builder().channelName(EMAIL_CHANNEL_NAME).emailAddress("recipents").build();
     private static final Channel SLACK_CHANNEL = SlackChannel.builder().channelName(SLACK_CHANNEL_NAME).slackUrl("url").build();
-    private static final AlertChannelConfiguration EMAIL_CHANNEL_CONFIG = EMAIL_CHANNEL.getAsAlertChannel().getConfiguration();
-    private static final AlertChannelConfiguration SLACK_CHANNEL_CONFIG = SLACK_CHANNEL.getAsAlertChannel().getConfiguration();
+    private static final AlertChannelConfiguration EMAIL_CHANNEL_CONFIG = EMAIL_CHANNEL.getAlertChannelConfiguration();
+    private static final AlertChannelConfiguration SLACK_CHANNEL_CONFIG = SLACK_CHANNEL.getAlertChannelConfiguration();
     private static final AlertChannelConfiguration ALERT_CHANNEL_CONFIG = AlertChannelConfiguration.builder().build();
+    private static final AlertChannel EMAIL_CHANNEL_CONFIG_MAPPED = createAlertChannel(EMAIL_CHANNEL_NAME, EMAIL_CHANNEL.getType(), EMAIL_CHANNEL.getAlertChannelConfiguration());
+    private static final AlertChannel SLACK_CHANNEL_CONFIG_MAPPED = createAlertChannel(SLACK_CHANNEL_NAME, SLACK_CHANNEL.getType(), SLACK_CHANNEL.getAlertChannelConfiguration());
     private static final AlertChannel EMAIL_ALERT_CHANNEL_SAME = createAlertChannel(1, EMAIL_CHANNEL_NAME, "email", EMAIL_CHANNEL_CONFIG);
     private static final AlertChannel EMAIL_ALERT_CHANNEL_SAMEINSTANCE = createAlertChannel(2, EMAIL_CHANNEL_NAME, "email", ALERT_CHANNEL_CONFIG);
     private static final AlertChannel EMAIL_ALERT_CHANNEL_DIFFERENT = createAlertChannel(3, "different", "email", ALERT_CHANNEL_CONFIG);
@@ -54,8 +56,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public void setUp() {
         testee = new ChannelSynchronizer(apiMock, channelConfigurationMock);
         mockValidChannelConfiguration();
-        when(alertsChannelsApiMock.create(eq(EMAIL_CHANNEL.getAsAlertChannel()))).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
-        when(alertsChannelsApiMock.create(eq(SLACK_CHANNEL.getAsAlertChannel()))).thenReturn(SLACK_ALERT_CHANNEL_SAME);
+        when(alertsChannelsApiMock.create(eq(EMAIL_CHANNEL_CONFIG_MAPPED))).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
+        when(alertsChannelsApiMock.create(eq(SLACK_CHANNEL_CONFIG_MAPPED))).thenReturn(SLACK_ALERT_CHANNEL_SAME);
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
     }
 
@@ -81,8 +83,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // then
         verify(alertsChannelsApiMock).list();
         verify(alertsChannelsApiMock).delete(eq(EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId()));
-        verify(alertsChannelsApiMock).create(eq(EMAIL_CHANNEL.getAsAlertChannel()));
-        verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL.getAsAlertChannel()));
+        verify(alertsChannelsApiMock).create(eq(EMAIL_CHANNEL_CONFIG_MAPPED));
+        verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL_CONFIG_MAPPED));
         verifyNoMoreInteractions(alertsChannelsApiMock);
     }
 
@@ -95,7 +97,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
         // then
         verify(alertsChannelsApiMock).list();
-        verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL.getAsAlertChannel()));
+        verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL_CONFIG_MAPPED));
         verifyNoMoreInteractions(alertsChannelsApiMock);
     }
 
@@ -117,6 +119,10 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     private void mockValidChannelConfiguration() {
         when(channelConfigurationMock.getPolicyName()).thenReturn(POLICY_NAME);
         when(channelConfigurationMock.getChannels()).thenReturn(ImmutableList.of(EMAIL_CHANNEL, SLACK_CHANNEL));
+    }
+
+    private static AlertChannel createAlertChannel(String name, String type, AlertChannelConfiguration config) {
+        return AlertChannel.builder().name(name).type(type).configuration(config).build();
     }
 
     private static AlertChannel createAlertChannel(int id, String name, String type, AlertChannelConfiguration config) {
