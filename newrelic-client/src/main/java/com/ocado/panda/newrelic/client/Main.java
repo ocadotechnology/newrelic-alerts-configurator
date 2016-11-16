@@ -6,9 +6,9 @@ import com.ocado.pandateam.newrelic.sync.ApplicationSynchronizer;
 import com.ocado.pandateam.newrelic.sync.ChannelSynchronizer;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
-import com.ocado.pandateam.newrelic.sync.NewRelicSyncException;
+import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import com.ocado.pandateam.newrelic.sync.PolicySynchronizer;
-import com.ocado.pandateam.newrelic.sync.channel.EmailChannel;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 
 import java.util.Arrays;

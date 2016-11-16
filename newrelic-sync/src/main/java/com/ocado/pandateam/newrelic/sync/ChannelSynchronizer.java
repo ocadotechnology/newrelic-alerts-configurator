@@ -5,13 +5,16 @@ import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannels;
-import com.ocado.pandateam.newrelic.sync.channel.ChannelUtils;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
+import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 public class ChannelSynchronizer {
 
@@ -26,7 +29,8 @@ public class ChannelSynchronizer {
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
         Optional<AlertPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
-        AlertPolicy policy = policyOptional.orElseThrow(NewRelicSyncException::new);
+        AlertPolicy policy = policyOptional.orElseThrow(
+                () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
         List<Integer> policyChannels = updateChannels();
         updateAlertPolicyChannels(policy, policyChannels);

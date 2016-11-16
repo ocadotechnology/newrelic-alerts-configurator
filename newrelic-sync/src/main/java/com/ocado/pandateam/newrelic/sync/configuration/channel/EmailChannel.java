@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync.channel;
+package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;

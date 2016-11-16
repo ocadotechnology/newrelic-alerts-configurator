@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.sync.configuration;
 
-import com.ocado.pandateam.newrelic.sync.channel.Channel;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import lombok.Builder;
 import lombok.Getter;
 

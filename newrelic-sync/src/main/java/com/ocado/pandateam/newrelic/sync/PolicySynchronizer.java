@@ -7,8 +7,11 @@ import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
+import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 public class PolicySynchronizer {
 
@@ -22,9 +25,9 @@ public class PolicySynchronizer {
     }
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
-
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());
-        Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
+        Application application = applicationOptional.orElseThrow(
+                () -> new NewRelicSyncException(format("Application %s does not exist", config.getApplicationName())));
 
         Optional<AlertPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertPolicy policy = policyOptional.orElseGet(

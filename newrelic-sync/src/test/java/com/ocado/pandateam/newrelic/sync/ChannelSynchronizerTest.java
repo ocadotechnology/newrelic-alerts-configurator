@@ -1,21 +1,15 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.google.common.collect.ImmutableList;
-import com.ocado.pandateam.newrelic.api.AlertsChannelsApi;
-import com.ocado.pandateam.newrelic.api.AlertsConditionsApi;
-import com.ocado.pandateam.newrelic.api.AlertsExternalServiceConditionsApi;
-import com.ocado.pandateam.newrelic.api.AlertsPoliciesApi;
-import com.ocado.pandateam.newrelic.api.ApplicationsApi;
-import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannels;
-import com.ocado.pandateam.newrelic.sync.channel.Channel;
-import com.ocado.pandateam.newrelic.sync.channel.EmailChannel;
-import com.ocado.pandateam.newrelic.sync.channel.SlackChannel;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.SlackChannel;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
+import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,28 +26,12 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ChannelSynchronizerTest {
-
+public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Mock
-    private NewRelicApi apiMock;
-    @Mock
-    private ApplicationsApi applicationsApiMock;
-    @Mock
-    private AlertsChannelsApi alertsChannelsApiMock;
-    @Mock
-    private AlertsPoliciesApi alertsPoliciesApiMock;
-    @Mock
-    private AlertsConditionsApi alertsConditionsApiMock;
-    @Mock
-    private AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApiMock;
-
-    @Mock
     private ChannelConfiguration channelConfigurationMock;
-    @Mock
-    private PolicyConfiguration policyConfigurationMock;
 
     private ChannelSynchronizer testee;
 
@@ -75,7 +53,6 @@ public class ChannelSynchronizerTest {
     @Before
     public void setUp() {
         testee = new ChannelSynchronizer(apiMock, channelConfigurationMock);
-        mockApi();
         mockValidChannelConfiguration();
         when(alertsChannelsApiMock.create(eq(EMAIL_CHANNEL.getAsAlertChannel()))).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
         when(alertsChannelsApiMock.create(eq(SLACK_CHANNEL.getAsAlertChannel()))).thenReturn(SLACK_ALERT_CHANNEL_SAME);
@@ -135,14 +112,6 @@ public class ChannelSynchronizerTest {
 
         // then
         verify(alertsPoliciesApiMock).updateChannels(eq(expected));
-    }
-
-    private void mockApi() {
-        when(apiMock.getApplicationsApi()).thenReturn(applicationsApiMock);
-        when(apiMock.getAlertsChannelsApi()).thenReturn(alertsChannelsApiMock);
-        when(apiMock.getAlertsPoliciesApi()).thenReturn(alertsPoliciesApiMock);
-        when(apiMock.getAlertsConditionsApi()).thenReturn(alertsConditionsApiMock);
-        when(apiMock.getAlertsExternalServiceConditionsApi()).thenReturn(alertsExternalServiceConditionsApiMock);
     }
 
     private void mockValidChannelConfiguration() {

@@ -5,8 +5,11 @@ import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.applications.Settings;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
+import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 
 import java.util.Optional;
+
+import static java.lang.String.format;
 
 public class ApplicationSynchronizer {
 
@@ -22,7 +25,8 @@ public class ApplicationSynchronizer {
     public void sync() throws NewRelicApiException, NewRelicSyncException {
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());
 
-        Application application = applicationOptional.orElseThrow(NewRelicSyncException::new);
+        Application application = applicationOptional.orElseThrow(
+                () -> new NewRelicSyncException(format("Application %s does not exist", config.getApplicationName())));
 
         Settings settings = Settings.builder()
                 .appApdexThreshold(config.getAppApdexThreshold())
