@@ -33,14 +33,14 @@ public class PolicySynchronizer {
         AlertPolicy policy = policyOptional.orElseGet(
                 () -> {
                     try {
-                        return api.getAlertsPoliciesApi().create(config.getPolicyName());
+                        return api.getAlertsPoliciesApi().create(AlertPolicy.builder().name(config.getPolicyName()).build());
                     } catch (NewRelicApiException e) {
                         return null;
                     }
                 }
         );
 
-        if (api.getAlertsExternalServiceConditionsApi().list(policy.getId()).getList().isEmpty()) {
+        if (api.getAlertsExternalServiceConditionsApi().list(policy.getId()).isEmpty()) {
             api.getAlertsExternalServiceConditionsApi().create(policy.getId(),
                     ExternalServiceCondition.builder()
                             .enabled(true)

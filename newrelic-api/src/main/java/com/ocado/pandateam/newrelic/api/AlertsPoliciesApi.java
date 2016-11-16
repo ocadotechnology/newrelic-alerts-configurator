@@ -36,23 +36,6 @@ public class AlertsPoliciesApi extends BaseApi {
         return api.asObject(request, AlertPolicyList.class).getSingle();
     }
 
-    /**
-     * Creates {@link AlertPolicy} object using its name.
-     *
-     * @param name Name of the alert policy to be created
-     * @return {@link AlertPolicy} object
-     * @throws NewRelicApiException when received error response
-     */
-    @Deprecated
-    public AlertPolicy create(String name) throws NewRelicApiException {
-        RequestBodyEntity request = api.post(POLICIES_URL)
-                .body(new AlertPolicyWrapper(AlertPolicy.builder()
-                        .name(name)
-                        .incidentPreference("PER_POLICY")
-                        .build()));
-        return api.asObject(request, AlertPolicyWrapper.class).getPolicy();
-    }
-
     public AlertPolicy create(AlertPolicy policy) throws NewRelicApiException {
         RequestBodyEntity request = api.post(POLICIES_URL).body(new AlertPolicyWrapper(policy));
         return api.asObject(request, AlertPolicyWrapper.class).getPolicy();

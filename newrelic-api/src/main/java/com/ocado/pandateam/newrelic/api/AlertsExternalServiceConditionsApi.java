@@ -8,6 +8,8 @@ import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServic
 import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceConditionList;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceConditionWrapper;
 
+import java.util.List;
+
 public class AlertsExternalServiceConditionsApi extends BaseApi {
 
     private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
@@ -18,9 +20,9 @@ public class AlertsExternalServiceConditionsApi extends BaseApi {
         super(api);
     }
 
-    public ExternalServiceConditionList list(int policyId) throws NewRelicApiException {
+    public List<ExternalServiceCondition> list(int policyId) throws NewRelicApiException {
         HttpRequest request = api.get(CONDITIONS_URL).queryString("policy_id", policyId);
-        return api.asObject(request, ExternalServiceConditionList.class);
+        return api.asObject(request, ExternalServiceConditionList.class).getList();
     }
 
     public ExternalServiceCondition create(int policyId, ExternalServiceCondition condition)

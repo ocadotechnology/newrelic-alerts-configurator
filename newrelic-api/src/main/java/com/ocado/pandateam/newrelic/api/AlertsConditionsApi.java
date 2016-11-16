@@ -8,6 +8,8 @@ import com.ocado.pandateam.newrelic.api.model.conditions.AlertCondition;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertConditionList;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertConditionWrapper;
 
+import java.util.List;
+
 public class AlertsConditionsApi extends BaseApi {
 
     private static final String CONDITIONS_URL = "/v2/alerts_conditions";
@@ -18,21 +20,19 @@ public class AlertsConditionsApi extends BaseApi {
         super(api);
     }
 
-    public AlertConditionList list(int policyId) throws NewRelicApiException {
+    public List<AlertCondition> list(int policyId) throws NewRelicApiException {
         HttpRequest request = api.get(CONDITIONS_URL).queryString("policy_id", policyId);
-        return api.asObject(request, AlertConditionList.class);
+        return api.asObject(request, AlertConditionList.class).getList();
     }
 
-    public AlertCondition create(int policyId, AlertCondition condition)
-            throws NewRelicApiException {
+    public AlertCondition create(int policyId, AlertCondition condition) throws NewRelicApiException {
         RequestBodyEntity request = api.post(CONDITION_POLICY_URL)
                 .routeParam("policy_id", String.valueOf(policyId))
                 .body(new AlertConditionWrapper(condition));
         return api.asObject(request, AlertConditionWrapper.class).getCondition();
     }
 
-    public AlertCondition update(int conditionId, AlertCondition condition)
-            throws NewRelicApiException {
+    public AlertCondition update(int conditionId, AlertCondition condition) throws NewRelicApiException {
         RequestBodyEntity request = api.put(CONDITION_URL)
                 .routeParam("condition_id", String.valueOf(conditionId))
                 .body(new AlertConditionWrapper(condition));

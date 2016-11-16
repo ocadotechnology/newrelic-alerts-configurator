@@ -10,7 +10,6 @@ import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelList;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelWrapper;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AlertsChannelsApi extends BaseApi {
 
@@ -41,36 +40,5 @@ public class AlertsChannelsApi extends BaseApi {
     public AlertChannel delete(int channelId) throws NewRelicApiException {
         HttpRequest request = api.delete(CHANNEL_URL).routeParam("channel_id", String.valueOf(channelId));
         return api.asObject(request, AlertChannelWrapper.class).getChannel();
-    }
-
-    /**
-     * Creates {@link AlertChannel} of type "email".
-     *
-     * @param name                  Name of the Alert Channel to be created
-     * @param recipients            E-mail address of recipients
-     * @param includeJsonAttachment flag determining if email alert should include attachment
-     * @return created {@link AlertChannel} instance in NewRelic
-     * @throws NewRelicApiException when received error response
-     */
-    public Optional<AlertChannel> createEmailAlertChannel(String name, String recipients, String includeJsonAttachment)
-            throws NewRelicApiException {
-        RequestBodyEntity request = api.post(CHANNELS_URL)
-                .body(new AlertChannelWrapper(AlertChannel.createForEmail(name, recipients, includeJsonAttachment)));
-        return api.asObject(request, AlertChannelList.class).getSingle();
-    }
-
-    /**
-     * Creates {@link AlertChannel} of type "slack".
-     *
-     * @param name    Name of the Alert Channel to be created
-     * @param url     URL address of Slack
-     * @param channel (Optional) Name of the Slack channel for example: #channel-name
-     * @return created {@link AlertChannel} instance in NewRelic
-     * @throws NewRelicApiException when received error response
-     */
-    public Optional<AlertChannel> createSlackAlertChannel(String name, String url, String channel) throws NewRelicApiException {
-        RequestBodyEntity request = api.post(CHANNELS_URL)
-                .body(new AlertChannelWrapper(AlertChannel.createForSlack(name, url, channel)));
-        return api.asObject(request, AlertChannelList.class).getSingle();
     }
 }
