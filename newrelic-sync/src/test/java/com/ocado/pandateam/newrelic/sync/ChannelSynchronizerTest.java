@@ -5,18 +5,15 @@ import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannels;
+import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.SlackChannel;
-import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -25,15 +22,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
-    @Mock
-    private ChannelConfiguration channelConfigurationMock;
-
     private ChannelSynchronizer testee;
+    private ChannelConfiguration channelConfiguration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
     private static final AlertPolicy POLICY = AlertPolicy.builder().id(42).name(POLICY_NAME).build();
@@ -54,8 +48,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new ChannelSynchronizer(apiMock, channelConfigurationMock);
-        mockValidChannelConfiguration();
+        testee = new ChannelSynchronizer(apiMock, channelConfiguration);
+
         when(alertsChannelsApiMock.create(eq(EMAIL_CHANNEL_CONFIG_MAPPED))).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
         when(alertsChannelsApiMock.create(eq(SLACK_CHANNEL_CONFIG_MAPPED))).thenReturn(SLACK_ALERT_CHANNEL_SAME);
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
@@ -116,16 +110,18 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         verify(alertsPoliciesApiMock).updateChannels(eq(expected));
     }
 
-    private void mockValidChannelConfiguration() {
-        when(channelConfigurationMock.getPolicyName()).thenReturn(POLICY_NAME);
-        when(channelConfigurationMock.getChannels()).thenReturn(ImmutableList.of(EMAIL_CHANNEL, SLACK_CHANNEL));
-    }
-
     private static AlertChannel createAlertChannel(String name, String type, AlertChannelConfiguration config) {
         return AlertChannel.builder().name(name).type(type).configuration(config).build();
     }
 
     private static AlertChannel createAlertChannel(int id, String name, String type, AlertChannelConfiguration config) {
         return AlertChannel.builder().id(id).name(name).type(type).configuration(config).build();
+    }
+
+    private ChannelConfiguration createConfiguration() {
+        return ChannelConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .channels(ImmutableList.of(EMAIL_CHANNEL, SLACK_CHANNEL))
+                .build();
     }
 }

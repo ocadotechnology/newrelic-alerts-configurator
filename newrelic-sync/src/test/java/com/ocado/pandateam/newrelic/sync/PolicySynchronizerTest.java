@@ -5,9 +5,6 @@ import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -16,12 +13,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class PolicySynchronizerTest extends AbstractSynchronizerTest {
-    @Mock
-    private PolicyConfiguration policyConfigurationMock;
-
     private PolicySynchronizer testee;
+    private PolicyConfiguration policyConfiguration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
     private static final PolicyConfiguration.IncidentPreference INCIDENT_PREFERENCE = PolicyConfiguration.IncidentPreference.PER_CONDITION;
@@ -30,8 +24,7 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new PolicySynchronizer(apiMock, policyConfigurationMock);
-        mockValidPolicyConfiguration();
+        testee = new PolicySynchronizer(apiMock, policyConfiguration);
     }
 
     @Test
@@ -78,12 +71,14 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
         verifyNoMoreInteractions(alertsPoliciesApiMock);
     }
 
-    private void mockValidPolicyConfiguration() {
-        when(policyConfigurationMock.getPolicyName()).thenReturn(POLICY_NAME);
-        when(policyConfigurationMock.getIncidentPreference()).thenReturn(INCIDENT_PREFERENCE.name());
-    }
-
     private static AlertPolicy createAlertPolicy(int id, PolicyConfiguration.IncidentPreference incidentPreference) {
         return AlertPolicy.builder().id(id).name(POLICY_NAME).incidentPreference(incidentPreference.name()).build();
+    }
+
+    private static PolicyConfiguration createConfiguration() {
+        return PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .incidentPreference(INCIDENT_PREFERENCE)
+                .build();
     }
 }

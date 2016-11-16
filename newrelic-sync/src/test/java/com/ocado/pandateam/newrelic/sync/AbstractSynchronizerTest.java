@@ -7,11 +7,14 @@ import com.ocado.pandateam.newrelic.api.AlertsPoliciesApi;
 import com.ocado.pandateam.newrelic.api.ApplicationsApi;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.when;
 
-class AbstractSynchronizerTest {
+@RunWith(MockitoJUnitRunner.class)
+abstract class AbstractSynchronizerTest {
     @Mock
     NewRelicApi apiMock;
     @Mock

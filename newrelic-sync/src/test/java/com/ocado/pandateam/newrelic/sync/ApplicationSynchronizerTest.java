@@ -9,9 +9,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -19,15 +16,12 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
-    @Mock
-    private ApplicationConfiguration applicationConfigurationMock;
-
     private ApplicationSynchronizer testee;
+    private ApplicationConfiguration applicationConfiguration = createConfiguration();
 
     private static final String APPLICATION_NAME = "appName";
     private static final float USER_APDEX_THRESHOLD = 0.7f;
@@ -38,8 +32,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new ApplicationSynchronizer(apiMock, applicationConfigurationMock);
-        mockValidApplicationConfigurationMock();
+        testee = new ApplicationSynchronizer(apiMock, applicationConfiguration);
     }
 
     @Test
@@ -76,10 +69,12 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
         verify(applicationsApiMock).update(eq(APPLICATION.getId()), eq(expectedApplicationUpdate));
     }
 
-    private void mockValidApplicationConfigurationMock() {
-        when(applicationConfigurationMock.getApplicationName()).thenReturn(APPLICATION_NAME);
-        when(applicationConfigurationMock.getEndUserApdexThreshold()).thenReturn(USER_APDEX_THRESHOLD);
-        when(applicationConfigurationMock.getAppApdexThreshold()).thenReturn(APP_APDEX_THRESHOLD);
-        when(applicationConfigurationMock.isEnableRealUserMonitoring()).thenReturn(ENABLE_REAL_USER_MONITORING);
+    private ApplicationConfiguration createConfiguration() {
+        return ApplicationConfiguration.builder()
+                .applicationName(APPLICATION_NAME)
+                .appApdexThreshold(APP_APDEX_THRESHOLD)
+                .endUserApdexThreshold(USER_APDEX_THRESHOLD)
+                .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
+                .build();
     }
 }
