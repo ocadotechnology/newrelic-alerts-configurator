@@ -5,14 +5,8 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class Configuration {
-
+public class ApplicationConfiguration {
     private String applicationName;
-
-    private String policyName;
-
     private float appApdexThreshold;
-
     private float userApdexThreshold;
-
 }

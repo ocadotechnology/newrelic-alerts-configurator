@@ -7,16 +7,15 @@ import com.ocado.pandateam.newrelic.api.AlertsExternalServiceConditionsApi;
 import com.ocado.pandateam.newrelic.api.AlertsPoliciesApi;
 import com.ocado.pandateam.newrelic.api.ApplicationsApi;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
-import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
 import com.ocado.pandateam.newrelic.sync.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.channel.EmailChannel;
 import com.ocado.pandateam.newrelic.sync.channel.SlackChannel;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.Configuration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -25,11 +24,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SynchronizerTest {
+public class ChannelSynchronizerTest {
 
     @Mock
     private NewRelicApi apiMock;
@@ -47,14 +46,12 @@ public class SynchronizerTest {
     @Mock
     private ChannelConfiguration channelConfigurationMock;
     @Mock
-    private Configuration configurationMock;
+    private PolicyConfiguration policyConfigurationMock;
 
-    private Synchronizer testee;
+    private ChannelSynchronizer testee;
 
-    private static final String APPLICATION_NAME = "appName";
     private static final String POLICY_NAME = "policyName";
-    private static final float APP_APDEX_THRESHOLD = 1f;
-    private static final float USER_APDEX_THRESHOLD = 1f;
+    private static final AlertPolicy POLICY = AlertPolicy.builder().id(1).name(POLICY_NAME).build();
 
     private static final String EMAIL_CHANNEL_NAME = "emailChannel";
     private static final Channel EMAIL_CHANNEL = new EmailChannel(EMAIL_CHANNEL_NAME, "email", true);
@@ -62,21 +59,14 @@ public class SynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new Synchronizer(apiMock, configurationMock, channelConfigurationMock);
+        testee = new ChannelSynchronizer(apiMock, channelConfigurationMock);
         mockApi();
-        mockValidConfiguration();
         mockValidChannelConfiguration();
         when(alertsChannelsApiMock.create(any(AlertChannel.class))).thenReturn(createEmailAlertChannel(10, "test"));
-        when(applicationsApiMock.getByName(anyString())).thenReturn(Optional.of(Application.builder().id(1).build()));
+        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
     }
 
     @Test
-    public void aTest() {
-
-    }
-
-    @Test
-    @Ignore
     public void shouldRemoveDuplicatedChannels() throws NewRelicSyncException {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(createEmailAlertChannel(1, EMAIL_CHANNEL_NAME), createEmailAlertChannel(2, EMAIL_CHANNEL_NAME)));
@@ -95,14 +85,8 @@ public class SynchronizerTest {
         when(apiMock.getAlertsExternalServiceConditionsApi()).thenReturn(alertsExternalServiceConditionsApiMock);
     }
 
-    private void mockValidConfiguration() {
-        when(configurationMock.getApplicationName()).thenReturn(APPLICATION_NAME);
-        when(configurationMock.getPolicyName()).thenReturn(POLICY_NAME);
-        when(configurationMock.getAppApdexThreshold()).thenReturn(APP_APDEX_THRESHOLD);
-        when(configurationMock.getUserApdexThreshold()).thenReturn(USER_APDEX_THRESHOLD);
-    }
-
     private void mockValidChannelConfiguration() {
+        when(channelConfigurationMock.getPolicyName()).thenReturn(POLICY_NAME);
         when(channelConfigurationMock.getChannels()).thenReturn(ImmutableList.of(EMAIL_CHANNEL, SLACK_CHANNEL));
     }
 
