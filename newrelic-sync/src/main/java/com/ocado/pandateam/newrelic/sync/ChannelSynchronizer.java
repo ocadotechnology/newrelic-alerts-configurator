@@ -46,13 +46,13 @@ public class ChannelSynchronizer {
                     AlertChannel updatedChannel = sameInstanceChannels.stream()
                             .filter(alertChannel -> ChannelUtils.same(mapped, alertChannel))
                             .findFirst()
-                            .orElse(api.getAlertsChannelsApi().create(mapped));
+                            .orElseGet(() -> api.getAlertsChannelsApi().create(mapped));
 
                     int id = updatedChannel.getId();
+                    policyChannels.add(id);
                     sameInstanceChannels.stream().map(AlertChannel::getId).filter(channelId -> channelId != id).forEach(
                             channelId -> api.getAlertsChannelsApi().delete(channelId)
                     );
-                    policyChannels.add(updatedChannel.getId());
                 }
         );
 
