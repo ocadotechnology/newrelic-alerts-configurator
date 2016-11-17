@@ -24,7 +24,7 @@ public class ApmAppCondition implements Condition {
     @NonNull
     private PriorityTerm priorityTerm;
     @NonNull
-    private int thresholdTerm;
+    private Integer thresholdTerm;
     @NonNull
     private TimeFunctionTerm timeFunctionTerm;
 

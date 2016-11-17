@@ -3,6 +3,7 @@ package com.ocado.pandateam.newrelic.sync;
 import com.google.common.collect.ImmutableList;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelLinks;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
@@ -15,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.mockito.Matchers.eq;
@@ -115,7 +117,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     private static AlertChannel createAlertChannel(int id, String name, String type, AlertChannelConfiguration config) {
-        return AlertChannel.builder().id(id).name(name).type(type).configuration(config).build();
+        AlertChannelLinks alertChannelLinks = new AlertChannelLinks(Collections.emptyList());
+        return AlertChannel.builder().id(id).name(name).type(type).configuration(config).links(alertChannelLinks).build();
     }
 
     private ChannelConfiguration createConfiguration() {

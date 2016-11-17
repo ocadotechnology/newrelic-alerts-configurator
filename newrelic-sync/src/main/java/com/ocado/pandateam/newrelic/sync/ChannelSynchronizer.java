@@ -32,17 +32,17 @@ public class ChannelSynchronizer {
         AlertsPolicy policy = policyOptional.orElseThrow(
                 () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
-        List<Integer> policyChannels = updateChannels();
+        List<AlertChannel> allAlertChannels = api.getAlertsChannelsApi().list();
+        List<Integer> policyChannels = updateChannels(allAlertChannels);
 
-        //List<Integer> oldPolicyChannelsToCleanup = getOldPolicyChannels(policy.getId());
-        //oldPolicyChannelsToCleanup.removeAll(policyChannels);
-        //cleanupAlertPolicyChannels(policy.getId(), oldPolicyChannelsToCleanup);
+        List<Integer> oldPolicyChannelsToCleanup = getOldPolicyChannels(policy.getId(), allAlertChannels);
+        oldPolicyChannelsToCleanup.removeAll(policyChannels);
+        cleanupAlertPolicyChannels(policy.getId(), oldPolicyChannelsToCleanup);
 
         addAlertPolicyChannels(policy.getId(), policyChannels);
     }
 
-    private List<Integer> updateChannels() throws NewRelicApiException, NewRelicSyncException {
-        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
+    private List<Integer> updateChannels(List<AlertChannel> alertChannels) throws NewRelicApiException, NewRelicSyncException {
         List<Integer> policyChannels = new LinkedList<>();
 
         config.getChannels().stream().forEach(
@@ -73,7 +73,6 @@ public class ChannelSynchronizer {
     }
 
     private void addAlertPolicyChannels(Integer policyId, List<Integer> policyChannels) throws NewRelicApiException {
-        // TODO this only adds channels (and starts from the second one lol)
         api.getAlertsPoliciesApi().updateChannels(
                 AlertsPolicyChannels.builder()
                         .policyId(policyId)
@@ -82,8 +81,7 @@ public class ChannelSynchronizer {
         );
     }
 
-    private List<Integer> getOldPolicyChannels(Integer id) {
-        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
+    private List<Integer> getOldPolicyChannels(Integer id, List<AlertChannel> alertChannels) {
         return alertChannels.stream()
                 .filter(policyChannel -> policyChannel.getLinks().getPolicyIds().contains(id))
                 .map(AlertChannel::getId)

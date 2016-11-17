@@ -8,6 +8,6 @@ public interface Condition {
     String getDurationTerm();
     String getOperatorTerm();
     String getPriorityTerm();
-    int getThresholdTerm();
+    Integer getThresholdTerm();
     String getTimeFunctionTerm();
 }
