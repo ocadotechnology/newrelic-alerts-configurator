@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync;
+package com.ocado.pandateam.newrelic.sync.internal;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
@@ -10,6 +10,7 @@ import com.ocado.pandateam.newrelic.sync.configuration.ConditionsConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
+import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,17 +19,17 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
+@AllArgsConstructor
 public class ConditionsSynchronizer {
 
     private final NewRelicApi api;
     private final ConditionsConfiguration config;
 
-    public ConditionsSynchronizer(NewRelicApi api, ConditionsConfiguration config) {
-        this.api = api;
-        this.config = config;
-    }
-
     public void sync() throws NewRelicApiException, NewRelicSyncException {
+        if (api == null) {
+            throw new NewRelicSyncException("Initialization error");
+        }
+
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));

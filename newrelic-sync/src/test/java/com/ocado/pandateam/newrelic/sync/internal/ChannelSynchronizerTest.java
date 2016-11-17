@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync;
+package com.ocado.pandateam.newrelic.sync.internal;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -68,6 +69,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
+        expectedException.expectMessage(format("Policy %s does not exist", POLICY_NAME));
 
         // when
         testee.sync();

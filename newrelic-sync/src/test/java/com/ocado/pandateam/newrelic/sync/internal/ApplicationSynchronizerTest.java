@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync;
+package com.ocado.pandateam.newrelic.sync.internal;
 
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.applications.Settings;
@@ -11,6 +11,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,6 +42,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
+        expectedException.expectMessage(format("Application %s does not exist", APPLICATION_NAME));
 
         // when
         testee.sync();

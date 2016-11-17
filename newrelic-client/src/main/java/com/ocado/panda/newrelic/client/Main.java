@@ -1,11 +1,7 @@
 package com.ocado.panda.newrelic.client;
 
-import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.sync.ApplicationSynchronizer;
-import com.ocado.pandateam.newrelic.sync.ChannelSynchronizer;
-import com.ocado.pandateam.newrelic.sync.ConditionsSynchronizer;
-import com.ocado.pandateam.newrelic.sync.PolicySynchronizer;
+import com.ocado.pandateam.newrelic.sync.Synchronizer;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionsConfiguration;
@@ -20,6 +16,7 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConf
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TimeFunctionTerm;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 
+import java.util.Collection;
 import java.util.Collections;
 
 public class Main {
@@ -31,36 +28,36 @@ public class Main {
             throw new IllegalArgumentException("Missing API key");
         } else {
             String apiKey = args[0];
-            NewRelicApi api = new NewRelicApi(apiKey);
-            synchronizeApplication(api);
-            synchronizePolicy(api);
-            synchronizePolicyConditions(api);
-            synchronizeChannels(api);
+            Synchronizer synchronizer = Synchronizer.builder()
+                .apiKey(apiKey)
+                .applicationConfigurations(createApplicationConfigurations())
+                .policyConfigurations(createPolicyConfiguraitons())
+                .conditionsConfigurations(createConditionsConfigurations())
+                .channelConfigurations(createChannelConfigurations())
+                .build();
+            synchronizer.sync();
         }
     }
 
-    private static void synchronizeApplication(NewRelicApi api) throws NewRelicSyncException {
-        ApplicationConfiguration applicationConfig = ApplicationConfiguration.builder()
+    private static Collection<ApplicationConfiguration> createApplicationConfigurations() throws NewRelicSyncException {
+        return Collections.singleton(ApplicationConfiguration.builder()
             .applicationName(APPLICATION_NAME)
             .appApdexThreshold(0.5f).endUserApdexThreshold(7.0f)
             .enableRealUserMonitoring(true)
-            .build();
-        ApplicationSynchronizer synchronizer = new ApplicationSynchronizer(api, applicationConfig);
-        synchronizer.sync();
+            .build()
+        );
     }
 
-    private static void synchronizePolicy(NewRelicApi api) throws NewRelicSyncException {
-        PolicyConfiguration policyConfig = PolicyConfiguration.builder()
+    private static Collection<PolicyConfiguration> createPolicyConfiguraitons() throws NewRelicSyncException {
+        return Collections.singleton(PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
             .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
-            .build();
-
-        PolicySynchronizer synchronizer = new PolicySynchronizer(api, policyConfig);
-        synchronizer.sync();
+            .build()
+        );
     }
 
-    private static void synchronizePolicyConditions(NewRelicApi api) throws NewRelicSyncException {
-        ConditionsConfiguration conditionsConfig = ConditionsConfiguration.builder()
+    private static Collection<ConditionsConfiguration> createConditionsConfigurations() throws NewRelicSyncException {
+        return Collections.singleton(ConditionsConfiguration.builder()
             .policyName(POLICY_NAME)
             .conditions(
                 Collections.singletonList(
@@ -84,14 +81,12 @@ public class Main {
                         .build()
                 )
             )
-            .build();
-
-        ConditionsSynchronizer synchronizer = new ConditionsSynchronizer(api, conditionsConfig);
-        synchronizer.sync();
+            .build()
+        );
     }
 
-    private static void synchronizeChannels(NewRelicApi api) throws NewRelicSyncException {
-        ChannelConfiguration channelConfig = ChannelConfiguration.builder()
+    private static Collection<ChannelConfiguration> createChannelConfigurations() throws NewRelicSyncException {
+        return Collections.singleton(ChannelConfiguration.builder()
             .policyName(POLICY_NAME)
             .channels(
                 Collections.singletonList(
@@ -101,8 +96,7 @@ public class Main {
                         .includeJsonAttachment(false)
                         .build()
                 ))
-            .build();
-        ChannelSynchronizer synchronizer = new ChannelSynchronizer(api, channelConfig);
-        synchronizer.sync();
+            .build()
+        );
     }
 }
