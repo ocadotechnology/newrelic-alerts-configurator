@@ -17,7 +17,7 @@ public class TermsConfiguration {
     private TimeFunctionTerm timeFunctionTerm;
 
     public String getDurationTerm() {
-        return durationTerm.name().toLowerCase();
+        return String.valueOf(durationTerm.duration);
     }
 
     public String getOperatorTerm() {

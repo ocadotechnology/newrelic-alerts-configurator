@@ -33,7 +33,7 @@ class ConditionSynchronizer {
     }
 
     void sync() {
-        LOG.info(format("Synchronizing conditions for policy %s", config.getPolicyName()));
+        LOG.info(format("Synchronizing conditions for policy %s...", config.getPolicyName()));
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(

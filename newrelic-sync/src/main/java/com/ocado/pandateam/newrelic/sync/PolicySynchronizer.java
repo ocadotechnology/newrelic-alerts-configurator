@@ -23,7 +23,7 @@ class PolicySynchronizer {
     }
 
     void sync() {
-        LOG.info(format("Synchronizing policy %s", config.getPolicyName()));
+        LOG.info(format("Synchronizing policy %s...", config.getPolicyName()));
 
         AlertsPolicy alertsPolicyFromConfig = AlertsPolicy.builder()
             .name(config.getPolicyName())

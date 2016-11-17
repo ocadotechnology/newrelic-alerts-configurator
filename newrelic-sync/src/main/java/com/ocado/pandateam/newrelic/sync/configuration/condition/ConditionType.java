@@ -1,5 +1,8 @@
 package com.ocado.pandateam.newrelic.sync.configuration.condition;
 
+import lombok.Getter;
+
+@Getter
 public enum ConditionType {
     APM_APP("apm_app_metric");
 
@@ -7,9 +10,5 @@ public enum ConditionType {
 
     ConditionType(String typeString) {
         this.typeString = typeString;
-    }
-
-    public String getTypeString() {
-        return typeString;
     }
 }
