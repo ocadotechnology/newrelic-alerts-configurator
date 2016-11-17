@@ -20,9 +20,9 @@ public class ApplicationsApi extends BaseApi {
     }
 
     /**
-     * Get {@link Application} object using its name.
+     * Gets {@link Application} object using its name.
      *
-     * @param name Name of the application registered in NewRelic
+     * @param name name of the application registered in NewRelic
      * @return Optional containing {@link Application} object, or empty if application not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
@@ -34,8 +34,9 @@ public class ApplicationsApi extends BaseApi {
     /**
      * Updates {@link Application} object.
      *
-     * @param application Application to be updated.
-     * @return Updated {@link Application}.
+     * @param applicationId id of the application to be updated
+     * @param application   application definition to be updated.
+     * @return updated {@link Application}.
      * @throws NewRelicApiException when received error response
      */
     public Application update(int applicationId, Application application) throws NewRelicApiException {
