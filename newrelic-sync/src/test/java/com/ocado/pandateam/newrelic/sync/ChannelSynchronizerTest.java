@@ -9,6 +9,7 @@ import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.SlackChannel;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
@@ -42,12 +43,12 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     private static final Channel EMAIL_CHANNEL = EmailChannel.builder().channelName(EMAIL_CHANNEL_NAME).emailAddress("recipents").build();
     private static final Channel SLACK_CHANNEL = SlackChannel.builder().channelName(SLACK_CHANNEL_NAME).slackUrl("url").build();
 
-    private static final AlertsChannelConfiguration EMAIL_CHANNEL_CONFIG = EMAIL_CHANNEL.getAlertChannelConfiguration();
-    private static final AlertsChannelConfiguration SLACK_CHANNEL_CONFIG = SLACK_CHANNEL.getAlertChannelConfiguration();
+    private static final AlertsChannelConfiguration EMAIL_CHANNEL_CONFIG = ChannelUtils.generateAlertsChannelConfiguration(EMAIL_CHANNEL);
+    private static final AlertsChannelConfiguration SLACK_CHANNEL_CONFIG = ChannelUtils.generateAlertsChannelConfiguration(SLACK_CHANNEL);
     private static final AlertsChannelConfiguration ALERT_CHANNEL_CONFIG = AlertsChannelConfiguration.builder().build();
 
-    private static final AlertsChannel EMAIL_CHANNEL_CONFIG_MAPPED = createAlertChannel(EMAIL_CHANNEL_NAME, EMAIL_CHANNEL.getType(), EMAIL_CHANNEL.getAlertChannelConfiguration());
-    private static final AlertsChannel SLACK_CHANNEL_CONFIG_MAPPED = createAlertChannel(SLACK_CHANNEL_NAME, SLACK_CHANNEL.getType(), SLACK_CHANNEL.getAlertChannelConfiguration());
+    private static final AlertsChannel EMAIL_CHANNEL_CONFIG_MAPPED = createAlertChannel(EMAIL_CHANNEL_NAME, EMAIL_CHANNEL.getTypeString(), EMAIL_CHANNEL_CONFIG);
+    private static final AlertsChannel SLACK_CHANNEL_CONFIG_MAPPED = createAlertChannel(SLACK_CHANNEL_NAME, SLACK_CHANNEL.getTypeString(), SLACK_CHANNEL_CONFIG);
     private static final AlertsChannel EMAIL_ALERT_CHANNEL_SAME = createAlertChannel(1, EMAIL_CHANNEL_NAME, "email", EMAIL_CHANNEL_CONFIG);
     private static final AlertsChannel EMAIL_ALERT_CHANNEL_SAMEINSTANCE = createAlertChannel(2, EMAIL_CHANNEL_NAME, "email", ALERT_CHANNEL_CONFIG);
     private static final AlertsChannel EMAIL_ALERT_CHANNEL_DIFFERENT = createAlertChannel(3, "different", "email", ALERT_CHANNEL_CONFIG);

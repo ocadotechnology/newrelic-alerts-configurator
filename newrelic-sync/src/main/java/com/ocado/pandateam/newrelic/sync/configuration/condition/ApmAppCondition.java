@@ -10,6 +10,7 @@ import java.util.Collection;
 @Getter
 @Builder
 public class ApmAppCondition implements Condition {
+    private final ConditionType type = ConditionType.APM_APP;
     @NonNull
     private String conditionName;
     private boolean enabled;
@@ -24,8 +25,8 @@ public class ApmAppCondition implements Condition {
     private Collection<TermsConfiguration> terms;
 
     @Override
-    public String getType() {
-        return ConditionType.APM_APP.getType();
+    public String getTypeString() {
+        return type.getTypeString();
     }
 
     @Override

@@ -5,7 +5,8 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConf
 import java.util.Collection;
 
 public interface Condition {
-    String getType();
+    ConditionType getType();
+    String getTypeString();
     String getConditionName();
     boolean isEnabled();
     Collection<String> getEntities();

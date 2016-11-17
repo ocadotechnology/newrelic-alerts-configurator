@@ -31,7 +31,7 @@ public class Main {
 
             Synchronizer synchronizer = new Synchronizer(apiKey);
             synchronizer.setApplicationConfigurations(createApplicationConfigurations());
-            synchronizer.setPolicyConfigurations(createPolicyConfiguraitons());
+            synchronizer.setPolicyConfigurations(createPolicyConfigurations());
             synchronizer.setConditionsConfigurations(createConditionsConfigurations());
             synchronizer.setChannelConfigurations(createChannelConfigurations());
 
@@ -48,7 +48,7 @@ public class Main {
         );
     }
 
-    private static Collection<PolicyConfiguration> createPolicyConfiguraitons() throws NewRelicSyncException {
+    private static Collection<PolicyConfiguration> createPolicyConfigurations() throws NewRelicSyncException {
         return Collections.singleton(PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
             .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)

@@ -1,15 +1,15 @@
 package com.ocado.pandateam.newrelic.sync.configuration.condition;
 
-enum ConditionType {
+public enum ConditionType {
     APM_APP("apm_app_metric");
 
-    String type;
+    String typeString;
 
-    ConditionType(String type) {
-        this.type = type;
+    ConditionType(String typeString) {
+        this.typeString = typeString;
     }
 
-    public String getType() {
-        return type;
+    public String getTypeString() {
+        return typeString;
     }
 }

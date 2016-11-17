@@ -1,11 +1,13 @@
 package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
-import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannelConfiguration;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
 
 @Builder
+@Getter
 public class SlackChannel implements Channel {
+    private final ChannelType type = ChannelType.SLACK;
     @NonNull
     private String channelName;
     @NonNull
@@ -13,20 +15,7 @@ public class SlackChannel implements Channel {
     private String slackChannel;
 
     @Override
-    public String getChannelName() {
-        return channelName;
-    }
-
-    @Override
-    public String getType() {
-        return ChannelType.SLACK.name().toLowerCase();
-    }
-
-    @Override
-    public AlertsChannelConfiguration getAlertChannelConfiguration() {
-        return AlertsChannelConfiguration.builder()
-            .url(slackUrl)
-            .channel(slackChannel)
-            .build();
+    public String getTypeString() {
+        return type.name().toLowerCase();
     }
 }

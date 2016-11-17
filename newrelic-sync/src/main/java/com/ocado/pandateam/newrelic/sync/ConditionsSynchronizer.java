@@ -36,17 +36,18 @@ class ConditionsSynchronizer {
 
 
         List<AlertsCondition> alertConditions = api.getAlertsConditionsApi().list(policy.getId());
-        List<AlertsCondition> alertConditionsFromList = config.getConditions().stream()
+        List<AlertsCondition> alertConditionsFromConfig = config.getConditions().stream()
             .map(this::createAlertsCondition)
             .collect(Collectors.toList());
+
     }
 
     private AlertsCondition createAlertsCondition(Condition condition) {
         return AlertsCondition.builder()
-            .type(condition.getType())
+            .type(condition.getTypeString())
             .name(condition.getConditionName())
             .enabled(condition.isEnabled())
-            .entities(getEntities(condition.getEntities()))
+            .entities(getEntities(condition))
             .metric(condition.getMetric())
             .conditionScope(condition.getConditionScope())
             .runbookUrl(condition.getRunBookUrl())
@@ -54,17 +55,22 @@ class ConditionsSynchronizer {
             .build();
     }
 
-    private Collection<Integer> getEntities(Collection<String> entities) {
-        return entities.stream()
-            .map(
-                entity -> {
-                    Optional<Application> applicationOptional = api.getApplicationsApi().getByName(entity);
-                    Application application = applicationOptional.orElseThrow(
-                        () -> new NewRelicSyncException(format("Application %s does not exist", entity)));
-                    return application.getId();
-                }
-            )
-            .collect(Collectors.toList());
+    private Collection<Integer> getEntities(Condition condition) {
+        switch (condition.getType()) {
+            case APM_APP:
+                return condition.getEntities().stream()
+                    .map(
+                        entity -> {
+                            Optional<Application> applicationOptional = api.getApplicationsApi().getByName(entity);
+                            Application application = applicationOptional.orElseThrow(
+                                () -> new NewRelicSyncException(format("Application %s does not exist", entity)));
+                            return application.getId();
+                        }
+                    )
+                    .collect(Collectors.toList());
+            default:
+                throw new NewRelicSyncException(format("Could not get entities for condition %s", condition.getConditionName()));
+        }
     }
 
     private Collection<Terms> createTerms(Condition condition) {
