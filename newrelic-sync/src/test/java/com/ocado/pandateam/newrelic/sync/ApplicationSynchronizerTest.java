@@ -21,7 +21,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     private ApplicationSynchronizer testee;
-    private ApplicationConfiguration applicationConfiguration = createConfiguration();
+    private ApplicationConfiguration configuration = createConfiguration();
 
     private static final String APPLICATION_NAME = "appName";
     private static final float USER_APDEX_THRESHOLD = 0.7f;
@@ -32,11 +32,11 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new ApplicationSynchronizer(apiMock, applicationConfiguration);
+        testee = new ApplicationSynchronizer(apiMock, configuration);
     }
 
     @Test
-    public void shouldThrowException_whenApplicationDoesNotExist() throws NewRelicSyncException {
+    public void shouldThrowException_whenApplicationDoesNotExist() {
         // given
         when(applicationsApiMock.getByName(eq(APPLICATION_NAME))).thenReturn(Optional.empty());
 
@@ -49,7 +49,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldUpdateApplication() throws NewRelicSyncException {
+    public void shouldUpdateApplication() {
         // given
         when(applicationsApiMock.getByName(eq(APPLICATION_NAME))).thenReturn(Optional.of(APPLICATION));
 

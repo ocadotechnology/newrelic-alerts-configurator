@@ -3,7 +3,7 @@ package com.ocado.pandateam.newrelic.sync;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.ConditionsConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import lombok.NonNull;
 
@@ -14,7 +14,7 @@ public class Synchronizer {
 
     private Collection<ApplicationConfiguration> applicationConfigurations;
     private Collection<PolicyConfiguration> policyConfigurations;
-    private Collection<ConditionsConfiguration> conditionsConfigurations;
+    private Collection<ConditionConfiguration> conditionConfigurations;
     private Collection<ChannelConfiguration> channelConfigurations;
 
     public Synchronizer(@NonNull String apiKey) {
@@ -37,10 +37,10 @@ public class Synchronizer {
                     synchronizer.sync();
                 });
         }
-        if (conditionsConfigurations != null) {
-            conditionsConfigurations.stream().forEach(
+        if (conditionConfigurations != null) {
+            conditionConfigurations.stream().forEach(
                 configuration -> {
-                    ConditionsSynchronizer synchronizer = new ConditionsSynchronizer(api, configuration);
+                    ConditionSynchronizer synchronizer = new ConditionSynchronizer(api, configuration);
                     synchronizer.sync();
                 });
         }
@@ -61,8 +61,8 @@ public class Synchronizer {
         this.policyConfigurations = policyConfigurations;
     }
 
-    public void setConditionsConfigurations(Collection<ConditionsConfiguration> conditionsConfigurations) {
-        this.conditionsConfigurations = conditionsConfigurations;
+    public void setConditionsConfigurations(Collection<ConditionConfiguration> conditionConfigurations) {
+        this.conditionConfigurations = conditionConfigurations;
     }
 
     public void setChannelConfigurations(Collection<ChannelConfiguration> channelConfigurations) {

@@ -1,7 +1,6 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
-import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannel;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
@@ -29,26 +28,25 @@ class ChannelSynchronizer {
         this.config = config;
     }
 
-    void sync() throws NewRelicApiException, NewRelicSyncException {
+    void sync() {
         LOG.info(format("Synchronizing channels for policy %s...", config.getPolicyName()));
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
-        List<AlertsChannel> allAlertChannels = api.getAlertsChannelsApi().list();
-        List<AlertsChannel> currentPolicyChannels = updateChannels(allAlertChannels);
+        List<AlertsChannel> allAlertsChannels = api.getAlertsChannelsApi().list();
+        List<AlertsChannel> currentPolicyAlertsChannels = createOrUpdateAlertsChannels(allAlertsChannels);
 
-        List<AlertsChannel> oldPolicyChannelsToCleanup = getOldPolicyChannelsToRemove(policy, allAlertChannels,
-            currentPolicyChannels);
-        cleanupAlertPolicyChannels(policy, oldPolicyChannelsToCleanup);
+        List<AlertsChannel> currentPolicyOldAlertsChannelsToRemove = getOldPolicyAlertsChannelsToRemove(policy, allAlertsChannels,
+            currentPolicyAlertsChannels);
+        cleanupAlertsPolicyChannels(policy, currentPolicyOldAlertsChannelsToRemove);
 
-        addAlertPolicyChannels(policy, currentPolicyChannels);
+        addAlertsPolicyChannels(policy, currentPolicyAlertsChannels);
         LOG.info(format("Channels for policy %s synchronized!", config.getPolicyName()));
     }
 
-    private List<AlertsChannel> updateChannels(List<AlertsChannel> alertChannels)
-        throws NewRelicApiException, NewRelicSyncException {
+    private List<AlertsChannel> createOrUpdateAlertsChannels(List<AlertsChannel> alertChannels) {
         List<AlertsChannel> policyChannels = new LinkedList<>();
 
         config.getChannels().stream().forEach(
@@ -85,7 +83,7 @@ class ChannelSynchronizer {
         return policyChannels;
     }
 
-    private void addAlertPolicyChannels(AlertsPolicy policy, List<AlertsChannel> policyChannels) throws NewRelicApiException {
+    private void addAlertsPolicyChannels(AlertsPolicy policy, List<AlertsChannel> policyChannels) {
         List<Integer> policyChannelsIds = policyChannels.stream().map(AlertsChannel::getId).collect(Collectors.toList());
 
         api.getAlertsPoliciesApi().updateChannels(
@@ -96,8 +94,8 @@ class ChannelSynchronizer {
         );
     }
 
-    private List<AlertsChannel> getOldPolicyChannelsToRemove(AlertsPolicy policy, List<AlertsChannel> alertChannels,
-                                                             List<AlertsChannel> currentPolicyChannels) {
+    private List<AlertsChannel> getOldPolicyAlertsChannelsToRemove(AlertsPolicy policy, List<AlertsChannel> alertChannels,
+                                                                   List<AlertsChannel> currentPolicyChannels) {
         List<Integer> currentPolicyChannelsIds = currentPolicyChannels.stream()
             .map(AlertsChannel::getId)
             .collect(Collectors.toList());
@@ -108,7 +106,7 @@ class ChannelSynchronizer {
             .collect(Collectors.toList());
     }
 
-    private void cleanupAlertPolicyChannels(AlertsPolicy policy, List<AlertsChannel> oldPolicyChannels) {
+    private void cleanupAlertsPolicyChannels(AlertsPolicy policy, List<AlertsChannel> oldPolicyChannels) {
         oldPolicyChannels.stream().forEach(
             oldChannel -> {
                 api.getAlertsChannelsApi().deleteFromPolicy(policy.getId(), oldChannel.getId());

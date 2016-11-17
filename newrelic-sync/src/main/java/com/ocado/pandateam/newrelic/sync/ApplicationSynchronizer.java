@@ -1,7 +1,6 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
-import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.applications.Settings;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
@@ -24,7 +23,7 @@ class ApplicationSynchronizer {
         this.config = config;
     }
 
-    void sync() throws NewRelicApiException, NewRelicSyncException {
+    void sync() {
         LOG.info(format("Synchronizing application %s...", config.getApplicationName()));
 
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());

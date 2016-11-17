@@ -1,18 +1,19 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
-import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
-import com.ocado.pandateam.newrelic.sync.configuration.ConditionsConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
+import com.ocado.pandateam.newrelic.sync.configuration.condition.ConditionUtils;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -20,18 +21,18 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
-class ConditionsSynchronizer {
-    private static final Logger LOG = Logger.getLogger(ConditionsSynchronizer.class.getName());
+class ConditionSynchronizer {
+    private static final Logger LOG = Logger.getLogger(ConditionSynchronizer.class.getName());
 
     private final NewRelicApi api;
-    private final ConditionsConfiguration config;
+    private final ConditionConfiguration config;
 
-    ConditionsSynchronizer(@NonNull NewRelicApi api, @NonNull ConditionsConfiguration config) {
+    ConditionSynchronizer(@NonNull NewRelicApi api, @NonNull ConditionConfiguration config) {
         this.api = api;
         this.config = config;
     }
 
-    void sync() throws NewRelicApiException, NewRelicSyncException {
+    void sync() {
         LOG.info(format("Synchronizing conditions for policy %s", config.getPolicyName()));
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
@@ -39,24 +40,56 @@ class ConditionsSynchronizer {
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
 
-        List<AlertsCondition> alertConditions = api.getAlertsConditionsApi().list(policy.getId());
-        List<AlertsCondition> alertConditionsFromConfig = config.getConditions().stream()
+        List<AlertsCondition> allAlertsConditions = api.getAlertsConditionsApi().list(policy.getId());
+        List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(policy, allAlertsConditions);
+
+        cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
+        LOG.info(format("Conditions for policy %s synchronized!", config.getPolicyName()));
+    }
+
+    private List<Integer> createOrUpdateAlertsConditions(AlertsPolicy policy,
+                                                         List<AlertsCondition> allAlertsConditions) {
+
+        List<AlertsCondition> alertsConditionsFromConfig = config.getConditions().stream()
             .map(this::createAlertsCondition)
             .collect(Collectors.toList());
 
-//        alertConditions.stream().forEach(
-//            alertCondition -> {
-//                alertConditionsFromConfig.stream().forEach(
-//                    alertConditionFromConfig -> {
-//                        if (ConditionUtils.sameInstance(alertCondition, alertConditionFromConfig)) {
-//                            api.getAlertsConditionsApi().update(alertCondition.getId(), alertConditionFromConfig);
-//                        }
-//                    }
-//                );
-//            }
-//        );
+        List<AlertsCondition> updatedAlertConditions = new LinkedList<>();
+        alertsConditionsFromConfig.stream().forEach(
+            alertConditionFromConfig -> {
+                Optional<AlertsCondition> alertsConditionToUpdate = allAlertsConditions.stream()
+                    .filter(alertCondition -> ConditionUtils.sameInstance(alertCondition, alertConditionFromConfig))
+                    .findFirst();
+                if (alertsConditionToUpdate.isPresent()) {
+                    AlertsCondition updatedCondition = api.getAlertsConditionsApi().update(
+                        alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
+                    LOG.info(format("Alert condition %s (id: %d) updated for policy %s (id: %d)",
+                        updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId()));
+                    updatedAlertConditions.add(updatedCondition);
+                } else {
+                    AlertsCondition newCondition = api.getAlertsConditionsApi().create(
+                        policy.getId(), alertConditionFromConfig);
+                    LOG.info(format("Alert condition %s (id: %d) created for policy %s (id: %d)",
+                        newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId()));
+                }
+            }
+        );
+        return updatedAlertConditions.stream()
+            .map(AlertsCondition::getId)
+            .collect(Collectors.toList());
+    }
 
-
+    private void cleanupOldAlertsConditions(AlertsPolicy policy, List<AlertsCondition> allAlertsConditions,
+                                            List<Integer> updatedAlertsConditionsIds) {
+        allAlertsConditions.stream()
+            .filter(alertsCondition -> !updatedAlertsConditionsIds.contains(alertsCondition.getId()))
+            .forEach(
+                alertsCondition -> {
+                    api.getAlertsConditionsApi().delete(alertsCondition.getId());
+                    LOG.info(format("Alert condition %s (id: %d) removed from policy %s (id: %d)",
+                        alertsCondition.getName(), alertsCondition.getId(), policy.getName(), policy.getId()));
+                }
+            );
     }
 
     private AlertsCondition createAlertsCondition(Condition condition) {

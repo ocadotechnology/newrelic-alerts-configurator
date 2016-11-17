@@ -33,7 +33,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     private ChannelSynchronizer testee;
-    private ChannelConfiguration channelConfiguration = createConfiguration();
+    private ChannelConfiguration configuration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
@@ -56,7 +56,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new ChannelSynchronizer(apiMock, channelConfiguration);
+        testee = new ChannelSynchronizer(apiMock, configuration);
 
         when(alertsChannelsApiMock.create(eq(EMAIL_CHANNEL_CONFIG_MAPPED))).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
         when(alertsChannelsApiMock.create(eq(SLACK_CHANNEL_CONFIG_MAPPED))).thenReturn(SLACK_ALERT_CHANNEL_SAME);
@@ -64,7 +64,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldThrowException_whenPolicyDoesNotExist() throws NewRelicSyncException {
+    public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
 
@@ -89,7 +89,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldRemoveSameInstanceChannelsAndCreateNewOne_whenChannelUpdated() throws NewRelicSyncException {
+    public void shouldRemoveSameInstanceChannelsAndCreateNewOne_whenChannelUpdated() {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAMEINSTANCE, EMAIL_ALERT_CHANNEL_DIFFERENT));
         // when
@@ -104,7 +104,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldNotRemoveChannel_whenChannelNotUpdated() throws NewRelicSyncException {
+    public void shouldNotRemoveChannel_whenChannelNotUpdated() {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME, EMAIL_ALERT_CHANNEL_DIFFERENT));
         // when
@@ -117,7 +117,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldUpdateAlertPolicyChannels() throws NewRelicSyncException {
+    public void shouldUpdateAlertPolicyChannels() {
         // given
         AlertsChannel channelWithOnlyCurrentPolicyId = createAlertChannel(6, "different", "email", ALERT_CHANNEL_CONFIG, Lists.newArrayList(POLICY.getId(), 100));
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(channelWithOnlyCurrentPolicyId));
@@ -139,7 +139,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldRemoveUnusedPolicyChannel() throws NewRelicSyncException {
+    public void shouldRemoveUnusedPolicyChannel() {
         // given
         AlertsChannel channelWithOnlyCurrentPolicyId = createAlertChannel(6, "different", "email", ALERT_CHANNEL_CONFIG, Lists.newArrayList(POLICY.getId()));
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(channelWithOnlyCurrentPolicyId));

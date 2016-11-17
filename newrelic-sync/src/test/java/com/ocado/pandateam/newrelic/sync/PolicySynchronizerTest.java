@@ -2,7 +2,6 @@ package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
-import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +14,7 @@ import static org.mockito.Mockito.when;
 
 public class PolicySynchronizerTest extends AbstractSynchronizerTest {
     private PolicySynchronizer testee;
-    private PolicyConfiguration policyConfiguration = createConfiguration();
+    private PolicyConfiguration configuration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
     private static final PolicyConfiguration.IncidentPreference INCIDENT_PREFERENCE = PolicyConfiguration.IncidentPreference.PER_CONDITION;
@@ -24,11 +23,11 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new PolicySynchronizer(apiMock, policyConfiguration);
+        testee = new PolicySynchronizer(apiMock, configuration);
     }
 
     @Test
-    public void shouldCreateNewPolicy_whenPolicyDoesNotExist() throws NewRelicSyncException {
+    public void shouldCreateNewPolicy_whenPolicyDoesNotExist() {
         // given
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
         AlertsPolicy expectedPolicy = AlertsPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
@@ -43,7 +42,7 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldDeleteAndCreateNewPolicy_whenPolicyUpdated() throws NewRelicSyncException {
+    public void shouldDeleteAndCreateNewPolicy_whenPolicyUpdated() {
         // given
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(ALERT_POLICY_DIFFERENT));
         AlertsPolicy expectedPolicy = AlertsPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
@@ -59,7 +58,7 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldDoNothing_whenPolicyNotUpdated() throws NewRelicSyncException {
+    public void shouldDoNothing_whenPolicyNotUpdated() {
         // given
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(ALERT_POLICY_SAME));
 

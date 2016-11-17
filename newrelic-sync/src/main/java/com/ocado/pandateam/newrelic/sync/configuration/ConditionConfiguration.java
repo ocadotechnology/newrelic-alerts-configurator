@@ -9,7 +9,7 @@ import java.util.Collection;
 
 @Getter
 @Builder
-public class ConditionsConfiguration {
+public class ConditionConfiguration {
     @NonNull
     private String policyName;
     @NonNull
