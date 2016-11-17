@@ -28,13 +28,13 @@ public class Main {
             throw new IllegalArgumentException("Missing API key");
         } else {
             String apiKey = args[0];
-            Synchronizer synchronizer = Synchronizer.builder()
-                .apiKey(apiKey)
-                .applicationConfigurations(createApplicationConfigurations())
-                .policyConfigurations(createPolicyConfiguraitons())
-                .conditionsConfigurations(createConditionsConfigurations())
-                .channelConfigurations(createChannelConfigurations())
-                .build();
+
+            Synchronizer synchronizer = new Synchronizer(apiKey);
+            synchronizer.setApplicationConfigurations(createApplicationConfigurations());
+            synchronizer.setPolicyConfigurations(createPolicyConfiguraitons());
+            synchronizer.setConditionsConfigurations(createConditionsConfigurations());
+            synchronizer.setChannelConfigurations(createChannelConfigurations());
+
             synchronizer.sync();
         }
     }

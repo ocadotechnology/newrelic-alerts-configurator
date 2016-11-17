@@ -6,20 +6,21 @@ import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.applications.Settings;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 import java.util.Optional;
 
 import static java.lang.String.format;
 
-@AllArgsConstructor
 class ApplicationSynchronizer {
 
-    @NonNull
     private final NewRelicApi api;
-    @NonNull
     private final ApplicationConfiguration config;
+
+    ApplicationSynchronizer(@NonNull NewRelicApi api, @NonNull ApplicationConfiguration config) {
+        this.api = api;
+        this.config = config;
+    }
 
     void sync() throws NewRelicApiException, NewRelicSyncException {
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());

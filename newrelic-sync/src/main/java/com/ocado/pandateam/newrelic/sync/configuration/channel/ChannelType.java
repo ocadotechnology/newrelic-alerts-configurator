@@ -1,5 +1,5 @@
 package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
-public enum ChannelType {
+enum ChannelType {
     EMAIL, SLACK
 }

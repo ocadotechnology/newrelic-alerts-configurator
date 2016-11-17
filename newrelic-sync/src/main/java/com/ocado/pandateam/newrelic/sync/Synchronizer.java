@@ -5,20 +5,21 @@ import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionsConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
-import lombok.Builder;
 import lombok.NonNull;
 
 import java.util.Collection;
 
-@Builder
 public class Synchronizer {
-    @NonNull
-    private String apiKey;
+    private final String apiKey;
 
     private Collection<ApplicationConfiguration> applicationConfigurations;
     private Collection<PolicyConfiguration> policyConfigurations;
     private Collection<ConditionsConfiguration> conditionsConfigurations;
     private Collection<ChannelConfiguration> channelConfigurations;
+
+    public Synchronizer(@NonNull String apiKey) {
+        this.apiKey = apiKey;
+    }
 
     public void sync() {
         NewRelicApi api = new NewRelicApi(apiKey);
@@ -51,4 +52,21 @@ public class Synchronizer {
                 });
         }
     }
+
+    public void setApplicationConfigurations(Collection<ApplicationConfiguration> applicationConfigurations) {
+        this.applicationConfigurations = applicationConfigurations;
+    }
+
+    public void setPolicyConfigurations(Collection<PolicyConfiguration> policyConfigurations) {
+        this.policyConfigurations = policyConfigurations;
+    }
+
+    public void setConditionsConfigurations(Collection<ConditionsConfiguration> conditionsConfigurations) {
+        this.conditionsConfigurations = conditionsConfigurations;
+    }
+
+    public void setChannelConfigurations(Collection<ChannelConfiguration> channelConfigurations) {
+        this.channelConfigurations = channelConfigurations;
+    }
+
 }

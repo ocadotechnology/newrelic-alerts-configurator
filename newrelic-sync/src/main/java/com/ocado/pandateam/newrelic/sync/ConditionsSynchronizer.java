@@ -10,7 +10,6 @@ import com.ocado.pandateam.newrelic.sync.configuration.ConditionsConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 import java.util.Collection;
@@ -20,13 +19,15 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
-@AllArgsConstructor
 class ConditionsSynchronizer {
 
-    @NonNull
     private final NewRelicApi api;
-    @NonNull
     private final ConditionsConfiguration config;
+
+    ConditionsSynchronizer(@NonNull NewRelicApi api, @NonNull ConditionsConfiguration config) {
+        this.api = api;
+        this.config = config;
+    }
 
     void sync() throws NewRelicApiException, NewRelicSyncException {
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());

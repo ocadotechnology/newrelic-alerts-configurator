@@ -17,6 +17,6 @@ public class SynchronizerTest {
         expectedException.expectMessage("apiKey");
 
         // when
-        Synchronizer.builder().build();
+        new Synchronizer(null);
     }
 }

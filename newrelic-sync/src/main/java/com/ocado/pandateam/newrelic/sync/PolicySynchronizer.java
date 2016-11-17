@@ -5,19 +5,20 @@ import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
-@AllArgsConstructor
 class PolicySynchronizer {
 
-    @NonNull
     private final NewRelicApi api;
-    @NonNull
     private final PolicyConfiguration config;
+
+    PolicySynchronizer(@NonNull NewRelicApi api, @NonNull PolicyConfiguration config) {
+        this.config = config;
+        this.api = api;
+    }
 
     void sync() throws NewRelicApiException, NewRelicSyncException {
         AlertsPolicy configAlertPolicy = AlertsPolicy.builder()

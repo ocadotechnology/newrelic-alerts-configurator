@@ -8,7 +8,6 @@ import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 import java.util.LinkedList;
@@ -18,13 +17,15 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
-@AllArgsConstructor
 class ChannelSynchronizer {
 
-    @NonNull
     private final NewRelicApi api;
-    @NonNull
     private final ChannelConfiguration config;
+
+    ChannelSynchronizer(@NonNull NewRelicApi api, @NonNull ChannelConfiguration config) {
+        this.api = api;
+        this.config = config;
+    }
 
     void sync() throws NewRelicApiException, NewRelicSyncException {
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
