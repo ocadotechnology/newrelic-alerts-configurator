@@ -11,16 +11,24 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 public class AlertCondition {
+    @JsonProperty
     Integer id;
+    @JsonProperty
     String type;
+    @JsonProperty
     String name;
-    boolean enabled;
+    @JsonProperty
+    Boolean enabled;
+    @JsonProperty
     Collection<Integer> entities;
+    @JsonProperty
     String metric;
     @JsonProperty("condition_scope")
     String conditionScope;
     @JsonProperty("runbook_url")
     String runbookUrl;
+    @JsonProperty
     Collection<Terms> terms;
+    @JsonProperty
     UserDefined userDefined;
 }

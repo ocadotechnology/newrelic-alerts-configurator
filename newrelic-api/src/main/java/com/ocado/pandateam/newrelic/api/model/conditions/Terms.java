@@ -9,9 +9,13 @@ import lombok.Value;
 @Builder
 @AllArgsConstructor
 public class Terms {
+    @JsonProperty
     String duration;
+    @JsonProperty
     String operator;
+    @JsonProperty
     String priority;
+    @JsonProperty
     String threshold;
     @JsonProperty("time_function")
     String timeFunction;

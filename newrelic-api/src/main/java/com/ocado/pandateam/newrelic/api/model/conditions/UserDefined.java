@@ -5,6 +5,7 @@ import lombok.Value;
 
 @Value
 public class UserDefined {
+    @JsonProperty
     String metric;
     @JsonProperty("value_function")
     String valueFunction;
