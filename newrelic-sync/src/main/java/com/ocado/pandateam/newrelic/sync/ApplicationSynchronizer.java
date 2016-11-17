@@ -26,17 +26,17 @@ public class ApplicationSynchronizer {
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());
 
         Application application = applicationOptional.orElseThrow(
-                () -> new NewRelicSyncException(format("Application %s does not exist", config.getApplicationName())));
+            () -> new NewRelicSyncException(format("Application %s does not exist", config.getApplicationName())));
 
         Settings settings = Settings.builder()
-                .appApdexThreshold(config.getAppApdexThreshold())
-                .endUserApdexThreshold(config.getEndUserApdexThreshold())
-                .enableRealUserMonitoring(config.isEnableRealUserMonitoring())
-                .build();
+            .appApdexThreshold(config.getAppApdexThreshold())
+            .endUserApdexThreshold(config.getEndUserApdexThreshold())
+            .enableRealUserMonitoring(config.isEnableRealUserMonitoring())
+            .build();
         Application applicationUpdate = Application.builder()
-                .name(config.getApplicationName())
-                .settings(settings)
-                .build();
+            .name(config.getApplicationName())
+            .settings(settings)
+            .build();
         api.getApplicationsApi().update(application.getId(), applicationUpdate);
     }
 

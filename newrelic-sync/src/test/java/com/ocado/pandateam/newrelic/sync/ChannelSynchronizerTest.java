@@ -101,9 +101,9 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public void shouldUpdateAlertPolicyChannels() throws NewRelicSyncException {
         // given
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
-                .policyId(POLICY.getId())
-                .channelIds(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
-                .build();
+            .policyId(POLICY.getId())
+            .channelIds(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
+            .build();
 
         // when
         testee.sync();
@@ -123,8 +123,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
     private ChannelConfiguration createConfiguration() {
         return ChannelConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channels(ImmutableList.of(EMAIL_CHANNEL, SLACK_CHANNEL))
-                .build();
+            .policyName(POLICY_NAME)
+            .channels(ImmutableList.of(EMAIL_CHANNEL, SLACK_CHANNEL))
+            .build();
     }
 }

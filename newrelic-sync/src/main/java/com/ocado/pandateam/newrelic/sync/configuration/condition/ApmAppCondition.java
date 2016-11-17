@@ -1,12 +1,11 @@
 package com.ocado.pandateam.newrelic.sync.configuration.condition;
 
-import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.DurationTerm;
-import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.OperatorTerm;
-import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.PriorityTerm;
-import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TimeFunctionTerm;
+import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConfiguration;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+
+import java.util.Collection;
 
 @Getter
 @Builder
@@ -15,18 +14,19 @@ public class ApmAppCondition implements Condition {
     private String conditionName;
     private boolean enabled;
     @NonNull
+    private Collection<String> entities;
+    @NonNull
     private Metric metric;
+    @NonNull
+    private ConditionScope conditionScope;
     private String runBookUrl;
     @NonNull
-    private DurationTerm durationTerm;
-    @NonNull
-    private OperatorTerm operatorTerm;
-    @NonNull
-    private PriorityTerm priorityTerm;
-    @NonNull
-    private Integer thresholdTerm;
-    @NonNull
-    private TimeFunctionTerm timeFunctionTerm;
+    private Collection<TermsConfiguration> terms;
+
+    @Override
+    public String getType() {
+        return ConditionType.APM_APP.getType();
+    }
 
     @Override
     public String getMetric() {
@@ -34,23 +34,8 @@ public class ApmAppCondition implements Condition {
     }
 
     @Override
-    public String getDurationTerm() {
-        return durationTerm.name().toLowerCase();
-    }
-
-    @Override
-    public String getOperatorTerm() {
-        return operatorTerm.name().toLowerCase();
-    }
-
-    @Override
-    public String getPriorityTerm() {
-        return priorityTerm.name().toLowerCase();
-    }
-
-    @Override
-    public String getTimeFunctionTerm() {
-        return timeFunctionTerm.name().toLowerCase();
+    public String getConditionScope() {
+        return conditionScope.name().toLowerCase();
     }
 
     public enum Metric {

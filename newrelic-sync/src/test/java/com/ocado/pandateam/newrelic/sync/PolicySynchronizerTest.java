@@ -77,8 +77,8 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
 
     private static PolicyConfiguration createConfiguration() {
         return PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .incidentPreference(INCIDENT_PREFERENCE)
-                .build();
+            .policyName(POLICY_NAME)
+            .incidentPreference(INCIDENT_PREFERENCE)
+            .build();
     }
 }

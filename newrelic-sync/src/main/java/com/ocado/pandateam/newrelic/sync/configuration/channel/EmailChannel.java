@@ -29,8 +29,8 @@ public class EmailChannel implements Channel {
     @Override
     public AlertsChannelConfiguration getAlertChannelConfiguration() {
         return AlertsChannelConfiguration.builder()
-                .recipients(emailAddress)
-                .includeJsonAttachment(includeJsonAttachment)
-                .build();
+            .recipients(emailAddress)
+            .includeJsonAttachment(includeJsonAttachment)
+            .build();
     }
 }

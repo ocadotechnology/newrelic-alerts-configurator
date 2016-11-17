@@ -52,14 +52,14 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
         when(applicationsApiMock.getByName(eq(APPLICATION_NAME))).thenReturn(Optional.of(APPLICATION));
 
         Settings expectedSettings = Settings.builder()
-                .appApdexThreshold(APP_APDEX_THRESHOLD)
-                .endUserApdexThreshold(USER_APDEX_THRESHOLD)
-                .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
-                .build();
+            .appApdexThreshold(APP_APDEX_THRESHOLD)
+            .endUserApdexThreshold(USER_APDEX_THRESHOLD)
+            .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
+            .build();
         Application expectedApplicationUpdate = Application.builder()
-                .name(APPLICATION_NAME)
-                .settings(expectedSettings)
-                .build();
+            .name(APPLICATION_NAME)
+            .settings(expectedSettings)
+            .build();
 
         // when
         testee.sync();
@@ -70,10 +70,10 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
 
     private ApplicationConfiguration createConfiguration() {
         return ApplicationConfiguration.builder()
-                .applicationName(APPLICATION_NAME)
-                .appApdexThreshold(APP_APDEX_THRESHOLD)
-                .endUserApdexThreshold(USER_APDEX_THRESHOLD)
-                .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
-                .build();
+            .applicationName(APPLICATION_NAME)
+            .appApdexThreshold(APP_APDEX_THRESHOLD)
+            .endUserApdexThreshold(USER_APDEX_THRESHOLD)
+            .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
+            .build();
     }
 }

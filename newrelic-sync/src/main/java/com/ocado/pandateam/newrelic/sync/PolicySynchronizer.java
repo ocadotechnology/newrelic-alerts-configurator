@@ -22,9 +22,9 @@ public class PolicySynchronizer {
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
         AlertsPolicy configAlertPolicy = AlertsPolicy.builder()
-                .name(config.getPolicyName())
-                .incidentPreference(config.getIncidentPreference())
-                .build();
+            .name(config.getPolicyName())
+            .incidentPreference(config.getIncidentPreference())
+            .build();
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
 

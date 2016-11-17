@@ -1,13 +1,16 @@
 package com.ocado.pandateam.newrelic.sync.configuration.condition;
 
+import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConfiguration;
+
+import java.util.Collection;
+
 public interface Condition {
+    String getType();
     String getConditionName();
     boolean isEnabled();
+    Collection<String> getEntities();
     String getMetric();
+    String getConditionScope();
     String getRunBookUrl();
-    String getDurationTerm();
-    String getOperatorTerm();
-    String getPriorityTerm();
-    Integer getThresholdTerm();
-    String getTimeFunctionTerm();
+    Collection<TermsConfiguration> getTerms();
 }

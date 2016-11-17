@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.List;
+import java.util.Collection;
 
 @Getter
 @Builder
-public class ConditionConfiguration {
-    @NonNull
-    private String applicationName;
+public class ConditionsConfiguration {
     @NonNull
     private String policyName;
     @NonNull
-    private List<Condition> conditions;
+    private Collection<Condition> conditions;
 }

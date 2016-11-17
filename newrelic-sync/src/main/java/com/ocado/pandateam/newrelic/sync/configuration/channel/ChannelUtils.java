@@ -9,12 +9,12 @@ public final class ChannelUtils {
 
     public static boolean sameInstance(AlertsChannel alertChannel1, AlertsChannel alertChannel2) {
         return StringUtils.equals(alertChannel1.getName(), alertChannel2.getName())
-                && StringUtils.equals(alertChannel1.getType(), alertChannel2.getType());
+            && StringUtils.equals(alertChannel1.getType(), alertChannel2.getType());
     }
 
     public static boolean same(AlertsChannel alertChannel1, AlertsChannel alertChannel2) {
         return sameInstance(alertChannel1, alertChannel2)
-                && alertChannel1.getConfiguration().equals(alertChannel2.getConfiguration());
+            && alertChannel1.getConfiguration().equals(alertChannel2.getConfiguration());
     }
 
 }

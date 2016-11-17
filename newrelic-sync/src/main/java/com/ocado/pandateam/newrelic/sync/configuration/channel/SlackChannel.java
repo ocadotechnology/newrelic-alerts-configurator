@@ -25,8 +25,8 @@ public class SlackChannel implements Channel {
     @Override
     public AlertsChannelConfiguration getAlertChannelConfiguration() {
         return AlertsChannelConfiguration.builder()
-                .url(slackUrl)
-                .channel(slackChannel)
-                .build();
+            .url(slackUrl)
+            .channel(slackChannel)
+            .build();
     }
 }
