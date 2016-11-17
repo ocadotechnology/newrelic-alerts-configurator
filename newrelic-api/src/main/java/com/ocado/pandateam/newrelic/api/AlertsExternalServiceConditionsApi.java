@@ -4,9 +4,9 @@ import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceCondition;
-import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceConditionList;
-import com.ocado.pandateam.newrelic.api.model.conditions.external.ExternalServiceConditionWrapper;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceConditionList;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceConditionWrapper;
 
 import java.util.List;
 
@@ -20,29 +20,29 @@ public class AlertsExternalServiceConditionsApi extends BaseApi {
         super(api);
     }
 
-    public List<ExternalServiceCondition> list(int policyId) throws NewRelicApiException {
+    public List<AlertsExternalServiceCondition> list(int policyId) throws NewRelicApiException {
         HttpRequest request = api.get(CONDITIONS_URL).queryString("policy_id", policyId);
-        return api.asObject(request, ExternalServiceConditionList.class).getList();
+        return api.asObject(request, AlertsExternalServiceConditionList.class).getList();
     }
 
-    public ExternalServiceCondition create(int policyId, ExternalServiceCondition condition)
+    public AlertsExternalServiceCondition create(int policyId, AlertsExternalServiceCondition condition)
             throws NewRelicApiException {
         RequestBodyEntity request = api.post(CONDITION_POLICY_URL)
                 .routeParam("policy_id", String.valueOf(policyId))
-                .body(new ExternalServiceConditionWrapper(condition));
-        return api.asObject(request, ExternalServiceConditionWrapper.class).getExternalServiceCondition();
+                .body(new AlertsExternalServiceConditionWrapper(condition));
+        return api.asObject(request, AlertsExternalServiceConditionWrapper.class).getExternalServiceCondition();
     }
 
-    public ExternalServiceCondition update(int conditionId, ExternalServiceCondition condition)
+    public AlertsExternalServiceCondition update(int conditionId, AlertsExternalServiceCondition condition)
             throws NewRelicApiException {
         RequestBodyEntity request = api.put(CONDITION_URL)
                 .routeParam("condition_id", String.valueOf(conditionId))
-                .body(new ExternalServiceConditionWrapper(condition));
-        return api.asObject(request, ExternalServiceConditionWrapper.class).getExternalServiceCondition();
+                .body(new AlertsExternalServiceConditionWrapper(condition));
+        return api.asObject(request, AlertsExternalServiceConditionWrapper.class).getExternalServiceCondition();
     }
 
-    public ExternalServiceCondition delete(int conditionId) throws NewRelicApiException {
+    public AlertsExternalServiceCondition delete(int conditionId) throws NewRelicApiException {
         HttpRequest request = api.delete(CONDITION_URL).routeParam("condition_id", String.valueOf(conditionId));
-        return api.asObject(request, ExternalServiceConditionWrapper.class).getExternalServiceCondition();
+        return api.asObject(request, AlertsExternalServiceConditionWrapper.class).getExternalServiceCondition();
     }
 }

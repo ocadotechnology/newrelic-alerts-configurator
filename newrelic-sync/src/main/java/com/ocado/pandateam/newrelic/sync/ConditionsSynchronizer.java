@@ -3,8 +3,8 @@ package com.ocado.pandateam.newrelic.sync;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
-import com.ocado.pandateam.newrelic.api.model.conditions.AlertCondition;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
+import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 
@@ -29,11 +29,11 @@ public class ConditionsSynchronizer {
         Application application = applicationOptional.orElseThrow(
                 () -> new NewRelicSyncException(format("Application %s does not exist", config.getApplicationName())));
 
-        Optional<AlertPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
-        AlertPolicy policy = policyOptional.orElseThrow(
+        Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
+        AlertsPolicy policy = policyOptional.orElseThrow(
                 () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
 
-        List<AlertCondition> alertConditions = api.getAlertsConditionsApi().list(policy.getId());
+        List<AlertsCondition> alertConditions = api.getAlertsConditionsApi().list(policy.getId());
     }
 }

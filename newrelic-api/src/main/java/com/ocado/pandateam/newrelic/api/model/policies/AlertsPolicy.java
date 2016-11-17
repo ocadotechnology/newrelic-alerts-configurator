@@ -8,7 +8,7 @@ import lombok.Value;
 @Value
 @Builder
 @AllArgsConstructor
-public class AlertPolicy {
+public class AlertsPolicy {
     @JsonProperty
     Integer id;
     @JsonProperty("incident_preference")

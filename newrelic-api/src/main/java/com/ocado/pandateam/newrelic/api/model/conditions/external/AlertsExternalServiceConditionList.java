@@ -9,7 +9,7 @@ import java.util.List;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class ExternalServiceConditionList extends ObjectList<ExternalServiceCondition> {
+public class AlertsExternalServiceConditionList extends ObjectList<AlertsExternalServiceCondition> {
     @JsonProperty("external_service_conditions")
-    List<ExternalServiceCondition> list;
+    List<AlertsExternalServiceCondition> list;
 }

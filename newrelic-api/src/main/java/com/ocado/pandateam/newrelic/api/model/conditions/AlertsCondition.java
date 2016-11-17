@@ -1,7 +1,6 @@
-package com.ocado.pandateam.newrelic.api.model.conditions.external;
+package com.ocado.pandateam.newrelic.api.model.conditions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -11,7 +10,7 @@ import java.util.Collection;
 @Value
 @Builder
 @AllArgsConstructor
-public class ExternalServiceCondition {
+public class AlertsCondition {
     @JsonProperty
     Integer id;
     @JsonProperty
@@ -24,10 +23,12 @@ public class ExternalServiceCondition {
     Collection<Integer> entities;
     @JsonProperty
     String metric;
+    @JsonProperty("condition_scope")
+    String conditionScope;
     @JsonProperty("runbook_url")
     String runbookUrl;
-    @JsonProperty("external_service_url")
-    String externalServiceUrl;
     @JsonProperty
     Collection<Terms> terms;
+    @JsonProperty
+    UserDefined userDefined;
 }

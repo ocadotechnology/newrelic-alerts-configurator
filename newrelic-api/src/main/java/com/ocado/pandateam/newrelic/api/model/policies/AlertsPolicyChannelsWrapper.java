@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
 @Value
-public class AlertPolicyChannelsWrapper {
+public class AlertsPolicyChannelsWrapper {
     @JsonProperty("policy")
-    AlertPolicyChannels policyChannels;
+    AlertsPolicyChannels policyChannels;
 }

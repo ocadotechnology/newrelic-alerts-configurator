@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
 @Value
-public class ExternalServiceConditionWrapper {
+public class AlertsExternalServiceConditionWrapper {
     @JsonProperty("external_service_condition")
-    ExternalServiceCondition externalServiceCondition;
+    AlertsExternalServiceCondition externalServiceCondition;
 }

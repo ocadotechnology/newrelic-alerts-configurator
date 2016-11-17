@@ -3,8 +3,8 @@ package com.ocado.pandateam.newrelic.sync;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannels;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
@@ -28,8 +28,8 @@ public class ChannelSynchronizer {
     }
 
     public void sync() throws NewRelicApiException, NewRelicSyncException {
-        Optional<AlertPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
-        AlertPolicy policy = policyOptional.orElseThrow(
+        Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
+        AlertsPolicy policy = policyOptional.orElseThrow(
                 () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
         List<Integer> policyChannels = updateChannels();
@@ -75,7 +75,7 @@ public class ChannelSynchronizer {
     private void addAlertPolicyChannels(Integer policyId, List<Integer> policyChannels) throws NewRelicApiException {
         // TODO this only adds channels (and starts from the second one lol)
         api.getAlertsPoliciesApi().updateChannels(
-                AlertPolicyChannels.builder()
+                AlertsPolicyChannels.builder()
                         .policyId(policyId)
                         .channelIds(policyChannels)
                         .build()

@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.sync;
 
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.junit.Before;
@@ -19,8 +19,8 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
 
     private static final String POLICY_NAME = "policyName";
     private static final PolicyConfiguration.IncidentPreference INCIDENT_PREFERENCE = PolicyConfiguration.IncidentPreference.PER_CONDITION;
-    private static final AlertPolicy ALERT_POLICY_SAME = createAlertPolicy(1, INCIDENT_PREFERENCE);
-    private static final AlertPolicy ALERT_POLICY_DIFFERENT = createAlertPolicy(2, PolicyConfiguration.IncidentPreference.PER_POLICY);
+    private static final AlertsPolicy ALERT_POLICY_SAME = createAlertPolicy(1, INCIDENT_PREFERENCE);
+    private static final AlertsPolicy ALERT_POLICY_DIFFERENT = createAlertPolicy(2, PolicyConfiguration.IncidentPreference.PER_POLICY);
 
     @Before
     public void setUp() {
@@ -31,7 +31,7 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
     public void shouldCreateNewPolicy_whenPolicyDoesNotExist() throws NewRelicSyncException {
         // given
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
-        AlertPolicy expectedPolicy = AlertPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
+        AlertsPolicy expectedPolicy = AlertsPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
 
         // when
         testee.sync();
@@ -46,7 +46,7 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
     public void shouldDeleteAndCreateNewPolicy_whenPolicyUpdated() throws NewRelicSyncException {
         // given
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(ALERT_POLICY_DIFFERENT));
-        AlertPolicy expectedPolicy = AlertPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
+        AlertsPolicy expectedPolicy = AlertsPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
 
         // when
         testee.sync();
@@ -71,8 +71,8 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
         verifyNoMoreInteractions(alertsPoliciesApiMock);
     }
 
-    private static AlertPolicy createAlertPolicy(int id, PolicyConfiguration.IncidentPreference incidentPreference) {
-        return AlertPolicy.builder().id(id).name(POLICY_NAME).incidentPreference(incidentPreference.name()).build();
+    private static AlertsPolicy createAlertPolicy(int id, PolicyConfiguration.IncidentPreference incidentPreference) {
+        return AlertsPolicy.builder().id(id).name(POLICY_NAME).incidentPreference(incidentPreference.name()).build();
     }
 
     private static PolicyConfiguration createConfiguration() {

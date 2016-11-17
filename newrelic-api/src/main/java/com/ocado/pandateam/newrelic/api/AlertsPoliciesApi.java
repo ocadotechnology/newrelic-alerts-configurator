@@ -5,11 +5,11 @@ import com.mashape.unirest.request.body.MultipartBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannels;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannelsWrapper;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyList;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyWrapper;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannelsWrapper;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyList;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyWrapper;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,28 +25,28 @@ public class AlertsPoliciesApi extends BaseApi {
     }
 
     /**
-     * Get {@link AlertPolicy} object using its name.
+     * Get {@link AlertsPolicy} object using its name.
      *
      * @param name Name of the alert policy registered in NewRelic
-     * @return Optional containing {@link AlertPolicy} object, or empty if alert policy not found
+     * @return Optional containing {@link AlertsPolicy} object, or empty if alert policy not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
-    public Optional<AlertPolicy> getByName(String name) throws NewRelicApiException {
+    public Optional<AlertsPolicy> getByName(String name) throws NewRelicApiException {
         HttpRequest request = api.get(POLICIES_URL).queryString("filter[name]", name);
-        return api.asObject(request, AlertPolicyList.class).getSingle();
+        return api.asObject(request, AlertsPolicyList.class).getSingle();
     }
 
-    public AlertPolicy create(AlertPolicy policy) throws NewRelicApiException {
-        RequestBodyEntity request = api.post(POLICIES_URL).body(new AlertPolicyWrapper(policy));
-        return api.asObject(request, AlertPolicyWrapper.class).getPolicy();
+    public AlertsPolicy create(AlertsPolicy policy) throws NewRelicApiException {
+        RequestBodyEntity request = api.post(POLICIES_URL).body(new AlertsPolicyWrapper(policy));
+        return api.asObject(request, AlertsPolicyWrapper.class).getPolicy();
     }
 
-    public AlertPolicy delete(int policyId) throws NewRelicApiException {
+    public AlertsPolicy delete(int policyId) throws NewRelicApiException {
         HttpRequest request = api.delete(POLICY_URL).routeParam("policy_id", String.valueOf(policyId));
-        return api.asObject(request, AlertPolicyWrapper.class).getPolicy();
+        return api.asObject(request, AlertsPolicyWrapper.class).getPolicy();
     }
 
-    public AlertPolicyChannels updateChannels(AlertPolicyChannels channels) throws NewRelicApiException {
+    public AlertsPolicyChannels updateChannels(AlertsPolicyChannels channels) throws NewRelicApiException {
         MultipartBody request = api.put(POLICY_CHANNELS_URL, "application/x-www-form-urlencoded")
                 .field("policy_id", channels.getPolicyId())
                 .field("channel_ids",
@@ -54,6 +54,6 @@ public class AlertsPoliciesApi extends BaseApi {
                                 .stream()
                                 .map(String::valueOf)
                                 .collect(Collectors.joining(",")));
-        return api.asObject(request, AlertPolicyChannelsWrapper.class).getPolicyChannels();
+        return api.asObject(request, AlertsPolicyChannelsWrapper.class).getPolicyChannels();
     }
 }

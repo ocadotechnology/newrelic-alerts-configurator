@@ -3,8 +3,8 @@ package com.ocado.pandateam.newrelic.sync;
 import com.google.common.collect.ImmutableList;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicy;
-import com.ocado.pandateam.newrelic.api.model.policies.AlertPolicyChannels;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
@@ -30,7 +30,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     private ChannelConfiguration channelConfiguration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
-    private static final AlertPolicy POLICY = AlertPolicy.builder().id(42).name(POLICY_NAME).build();
+    private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
 
     private static final String EMAIL_CHANNEL_NAME = "emailChannel";
     private static final String SLACK_CHANNEL_NAME = "slackChannel";
@@ -98,7 +98,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     @Test
     public void shouldUpdateAlertPolicyChannels() throws NewRelicSyncException {
         // given
-        AlertPolicyChannels expected = AlertPolicyChannels.builder()
+        AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
                 .policyId(POLICY.getId())
                 .channelIds(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
                 .build();

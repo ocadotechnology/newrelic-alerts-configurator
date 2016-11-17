@@ -10,7 +10,7 @@ import java.util.Collection;
 @Value
 @Builder
 @AllArgsConstructor
-public class AlertPolicyChannels {
+public class AlertsPolicyChannels {
     @JsonProperty("id")
     Integer policyId;
     @JsonProperty("channel_ids")
