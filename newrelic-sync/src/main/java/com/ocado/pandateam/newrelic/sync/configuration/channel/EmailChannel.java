@@ -10,10 +10,10 @@ public class EmailChannel implements Channel {
     private String channelName;
     @NonNull
     private String emailAddress;
-    private boolean includeJsonAttachment;
+    private Boolean includeJsonAttachment;
 
     public String getIncludeJsonAttachment() {
-        return String.valueOf(includeJsonAttachment);
+        return includeJsonAttachment == null ? null : String.valueOf(includeJsonAttachment);
     }
 
     @Override
