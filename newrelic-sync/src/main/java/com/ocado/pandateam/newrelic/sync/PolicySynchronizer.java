@@ -12,7 +12,6 @@ import java.util.Optional;
 public class PolicySynchronizer {
 
     private final NewRelicApi api;
-
     private final PolicyConfiguration config;
 
     public PolicySynchronizer(NewRelicApi api, PolicyConfiguration config) {

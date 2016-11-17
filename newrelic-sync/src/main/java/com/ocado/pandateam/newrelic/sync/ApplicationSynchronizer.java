@@ -14,7 +14,6 @@ import static java.lang.String.format;
 public class ApplicationSynchronizer {
 
     private final NewRelicApi api;
-
     private final ApplicationConfiguration config;
 
     public ApplicationSynchronizer(NewRelicApi api, ApplicationConfiguration config) {

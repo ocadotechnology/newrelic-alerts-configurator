@@ -21,7 +21,6 @@ import static java.lang.String.format;
 public class ConditionsSynchronizer {
 
     private final NewRelicApi api;
-
     private final ConditionsConfiguration config;
 
     public ConditionsSynchronizer(NewRelicApi api, ConditionsConfiguration config) {

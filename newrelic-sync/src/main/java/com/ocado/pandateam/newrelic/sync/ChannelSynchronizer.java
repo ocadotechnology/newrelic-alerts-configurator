@@ -19,7 +19,6 @@ import static java.lang.String.format;
 public class ChannelSynchronizer {
 
     private final NewRelicApi api;
-
     private final ChannelConfiguration config;
 
     public ChannelSynchronizer(NewRelicApi api, ChannelConfiguration config) {
@@ -81,15 +80,24 @@ public class ChannelSynchronizer {
         );
     }
 
-    private List<Integer> getOldPolicyChannels(Integer id, List<AlertsChannel> alertChannels) {
+    private List<Integer> getOldPolicyChannels(Integer policyId, List<AlertsChannel> alertChannels) {
         return alertChannels.stream()
-            .filter(policyChannel -> policyChannel.getLinks().getPolicyIds().contains(id))
+            .filter(policyChannel -> policyChannel.getLinks().getPolicyIds().contains(policyId))
             .map(AlertsChannel::getId)
             .collect(Collectors.toList());
     }
 
-    private void cleanupAlertPolicyChannels(Integer id, List<Integer> oldPolicyChannels) {
-        // TODO our API does not have a method to remove channels from policy
-        // TODO remove unused (which has been used earlier by this policy) channels?
+    private void cleanupAlertPolicyChannels(Integer policyId, List<Integer> oldPolicyChannels) {
+        oldPolicyChannels.stream().forEach(
+            channelId -> {
+                AlertsChannel alertsChannel = api.getAlertsChannelsApi().deleteFromPolicy(policyId, channelId);
+                List<Integer> currentChannelPolicyIds = alertsChannel.getLinks().getPolicyIds();
+                currentChannelPolicyIds.remove(policyId);
+                if (currentChannelPolicyIds.isEmpty()) {
+                    api.getAlertsChannelsApi().delete(channelId);
+                }
+            }
+        );
+
     }
 }
