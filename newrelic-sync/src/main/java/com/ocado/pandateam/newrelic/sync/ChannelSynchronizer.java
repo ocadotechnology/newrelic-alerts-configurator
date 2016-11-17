@@ -2,7 +2,7 @@ package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.model.channels.AlertChannel;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannel;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
@@ -42,28 +42,28 @@ public class ChannelSynchronizer {
     }
 
     private List<Integer> updateChannels() throws NewRelicApiException, NewRelicSyncException {
-        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
+        List<AlertsChannel> alertChannels = api.getAlertsChannelsApi().list();
         List<Integer> policyChannels = new LinkedList<>();
 
         config.getChannels().stream().forEach(
                 channel -> {
-                    AlertChannel mapped = AlertChannel.builder()
+                    AlertsChannel mapped = AlertsChannel.builder()
                             .name(channel.getChannelName())
                             .type(channel.getType())
                             .configuration(channel.getAlertChannelConfiguration())
                             .build();
-                    List<AlertChannel> sameInstanceChannels = alertChannels.stream()
+                    List<AlertsChannel> sameInstanceChannels = alertChannels.stream()
                             .filter(alertChannel -> ChannelUtils.sameInstance(mapped, alertChannel))
                             .collect(Collectors.toList());
 
-                    AlertChannel updatedChannel = sameInstanceChannels.stream()
+                    AlertsChannel updatedChannel = sameInstanceChannels.stream()
                             .filter(alertChannel -> ChannelUtils.same(mapped, alertChannel))
                             .findFirst()
                             .orElseGet(() -> api.getAlertsChannelsApi().create(mapped));
 
                     int id = updatedChannel.getId();
                     policyChannels.add(id);
-                    sameInstanceChannels.stream().map(AlertChannel::getId).filter(channelId -> channelId != id).forEach(
+                    sameInstanceChannels.stream().map(AlertsChannel::getId).filter(channelId -> channelId != id).forEach(
                             channelId -> api.getAlertsChannelsApi().delete(channelId)
                     );
                 }
@@ -83,10 +83,10 @@ public class ChannelSynchronizer {
     }
 
     private List<Integer> getOldPolicyChannels(Integer id) {
-        List<AlertChannel> alertChannels = api.getAlertsChannelsApi().list();
+        List<AlertsChannel> alertChannels = api.getAlertsChannelsApi().list();
         return alertChannels.stream()
                 .filter(policyChannel -> policyChannel.getLinks().getPolicyIds().contains(id))
-                .map(AlertChannel::getId)
+                .map(AlertsChannel::getId)
                 .collect(Collectors.toList());
     }
 

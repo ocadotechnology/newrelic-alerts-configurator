@@ -8,7 +8,7 @@ import lombok.Value;
 @Value
 @Builder
 @AllArgsConstructor
-public class AlertChannel {
+public class AlertsChannel {
     @JsonProperty
     Integer id;
     @JsonProperty
@@ -16,7 +16,7 @@ public class AlertChannel {
     @JsonProperty
     String type;
     @JsonProperty
-    AlertChannelConfiguration configuration;
+    AlertsChannelConfiguration configuration;
     @JsonProperty
-    AlertChannelLinks links;
+    AlertsChannelLinks links;
 }

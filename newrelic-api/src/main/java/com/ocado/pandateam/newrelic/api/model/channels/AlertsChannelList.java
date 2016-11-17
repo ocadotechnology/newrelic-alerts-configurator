@@ -9,7 +9,7 @@ import java.util.List;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
-public class AlertChannelList extends ObjectList<AlertChannel> {
+public class AlertsChannelList extends ObjectList<AlertsChannel> {
     @JsonProperty("channels")
-    List<AlertChannel> list;
+    List<AlertsChannel> list;
 }

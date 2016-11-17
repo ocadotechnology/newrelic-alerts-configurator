@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
-import com.ocado.pandateam.newrelic.api.model.channels.AlertChannelConfiguration;
+import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannelConfiguration;
 import lombok.Builder;
 import lombok.NonNull;
 
@@ -23,8 +23,8 @@ public class SlackChannel implements Channel {
     }
 
     @Override
-    public AlertChannelConfiguration getAlertChannelConfiguration() {
-        return AlertChannelConfiguration.builder()
+    public AlertsChannelConfiguration getAlertChannelConfiguration() {
+        return AlertsChannelConfiguration.builder()
                 .url(slackUrl)
                 .channel(slackChannel)
                 .build();

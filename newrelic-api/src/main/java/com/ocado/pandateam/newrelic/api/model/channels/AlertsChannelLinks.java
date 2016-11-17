@@ -6,7 +6,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class AlertChannelLinks {
+public class AlertsChannelLinks {
     @JsonProperty("policy_ids")
     List<Integer> policyIds;
 }

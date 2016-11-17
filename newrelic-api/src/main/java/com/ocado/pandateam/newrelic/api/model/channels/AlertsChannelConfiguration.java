@@ -10,7 +10,7 @@ import java.util.Map;
 @Value
 @Builder
 @AllArgsConstructor
-public class AlertChannelConfiguration {
+public class AlertsChannelConfiguration {
     @JsonProperty("user_id")
     String userId;
     @JsonProperty
