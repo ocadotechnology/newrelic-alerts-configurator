@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.Collection;
+
 @Value
 @Builder
 @AllArgsConstructor
@@ -13,12 +15,12 @@ public class AlertCondition {
     String type;
     String name;
     boolean enabled;
-    Integer[] entities;
+    Collection<Integer> entities;
     String metric;
     @JsonProperty("condition_scope")
     String conditionScope;
     @JsonProperty("runbook_url")
     String runbookUrl;
-    Terms[] terms;
+    Collection<Terms> terms;
     UserDefined userDefined;
 }

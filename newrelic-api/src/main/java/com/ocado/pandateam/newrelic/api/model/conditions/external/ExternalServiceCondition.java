@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.Collection;
+
 @Value
 @Builder
 @AllArgsConstructor
@@ -14,11 +16,11 @@ public class ExternalServiceCondition {
     String type;
     String name;
     boolean enabled;
-    Integer[] entities;
+    Collection<Integer> entities;
     String metric;
     @JsonProperty("runbook_url")
     String runbookUrl;
     @JsonProperty("external_service_url")
     String externalServiceUrl;
-    Terms[] terms;
+    Collection<Terms> terms;
 }
