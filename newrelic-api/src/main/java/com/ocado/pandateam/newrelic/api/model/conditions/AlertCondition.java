@@ -15,6 +15,8 @@ public class AlertCondition {
     boolean enabled;
     Integer[] entities;
     String metric;
+    @JsonProperty("condition_scope")
+    String conditionScope;
     @JsonProperty("runbook_url")
     String runbookUrl;
     Terms[] terms;
