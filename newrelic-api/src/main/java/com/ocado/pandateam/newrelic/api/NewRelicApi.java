@@ -4,7 +4,7 @@ import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import lombok.Getter;
 
 /**
- * Object exposing NewRelic API endpoints as Java methods. Requires API key.
+ * API facade - object exposing NewRelic API endpoints as Java methods. Requires API key.
  */
 @Getter
 public class NewRelicApi {

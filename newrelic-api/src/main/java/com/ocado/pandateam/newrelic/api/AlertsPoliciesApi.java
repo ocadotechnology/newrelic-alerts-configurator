@@ -25,9 +25,9 @@ public class AlertsPoliciesApi extends BaseApi {
     }
 
     /**
-     * Get {@link AlertsPolicy} object using its name.
+     * Gets {@link AlertsPolicy} object using its name.
      *
-     * @param name Name of the alert policy registered in NewRelic
+     * @param name name of the alert policy registered in NewRelic
      * @return Optional containing {@link AlertsPolicy} object, or empty if alert policy not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
@@ -36,16 +36,37 @@ public class AlertsPoliciesApi extends BaseApi {
         return api.asObject(request, AlertsPolicyList.class).getSingle();
     }
 
+    /**
+     * Creates Alerts Policy instance.
+     *
+     * @param policy - policy definition to be created
+     * @return created {@link AlertsPolicy}
+     * @throws NewRelicApiException when received error response
+     */
     public AlertsPolicy create(AlertsPolicy policy) throws NewRelicApiException {
         RequestBodyEntity request = api.post(POLICIES_URL).body(new AlertsPolicyWrapper(policy));
         return api.asObject(request, AlertsPolicyWrapper.class).getPolicy();
     }
 
+    /**
+     * Deletes Alerts Policy instance.
+     *
+     * @param policyId - id of the policy to be removed
+     * @return deleted {@link AlertsPolicy}
+     * @throws NewRelicApiException when received error response
+     */
     public AlertsPolicy delete(int policyId) throws NewRelicApiException {
         HttpRequest request = api.delete(POLICY_URL).routeParam("policy_id", String.valueOf(policyId));
         return api.asObject(request, AlertsPolicyWrapper.class).getPolicy();
     }
 
+    /**
+     * Associates given channels to the policy. This method does not remove previously linked channel but not provided in the list.
+     *
+     * @param channels - {@link AlertsPolicyChannels} object mapping policy id to the list of channels ids
+     * @return {@link AlertsPolicyChannels} when successfully set
+     * @throws NewRelicApiException when received error response
+     */
     public AlertsPolicyChannels updateChannels(AlertsPolicyChannels channels) throws NewRelicApiException {
         MultipartBody request = api.put(POLICY_CHANNELS_URL, "application/x-www-form-urlencoded")
                 .field("policy_id", channels.getPolicyId())

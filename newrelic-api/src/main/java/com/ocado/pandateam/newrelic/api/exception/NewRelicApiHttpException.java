@@ -21,7 +21,7 @@ public class NewRelicApiHttpException extends NewRelicApiException {
 
     @Override
     public String getMessage() {
-        return String.format("NewRelic error %s: %s: %d %s", method, url, statusCode, statusText);
+        return String.format("%s %s: %d %s", method, url, statusCode, statusText);
     }
 
     public String getMethod() {
