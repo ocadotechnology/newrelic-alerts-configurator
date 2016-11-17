@@ -5,10 +5,6 @@ import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionsConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
-import com.ocado.pandateam.newrelic.sync.internal.ApplicationSynchronizer;
-import com.ocado.pandateam.newrelic.sync.internal.ChannelSynchronizer;
-import com.ocado.pandateam.newrelic.sync.internal.ConditionsSynchronizer;
-import com.ocado.pandateam.newrelic.sync.internal.PolicySynchronizer;
 import lombok.Builder;
 import lombok.NonNull;
 

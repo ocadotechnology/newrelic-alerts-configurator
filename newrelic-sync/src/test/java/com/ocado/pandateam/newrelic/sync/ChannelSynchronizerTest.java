@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync.internal;
+package com.ocado.pandateam.newrelic.sync;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

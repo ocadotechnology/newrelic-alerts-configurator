@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync.internal;
+package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;

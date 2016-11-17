@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync.internal;
+package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
@@ -6,21 +6,20 @@ import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 
 @AllArgsConstructor
-public class PolicySynchronizer {
+class PolicySynchronizer {
 
+    @NonNull
     private final NewRelicApi api;
+    @NonNull
     private final PolicyConfiguration config;
 
-    public void sync() throws NewRelicApiException, NewRelicSyncException {
-        if (api == null) {
-            throw new NewRelicSyncException("Initialization error");
-        }
-
+    void sync() throws NewRelicApiException, NewRelicSyncException {
         AlertsPolicy configAlertPolicy = AlertsPolicy.builder()
             .name(config.getPolicyName())
             .incidentPreference(config.getIncidentPreference())

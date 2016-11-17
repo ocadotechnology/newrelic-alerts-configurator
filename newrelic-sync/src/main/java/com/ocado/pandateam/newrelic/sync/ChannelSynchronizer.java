@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.sync.internal;
+package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
@@ -9,6 +9,7 @@ import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,16 +19,14 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @AllArgsConstructor
-public class ChannelSynchronizer {
+class ChannelSynchronizer {
 
+    @NonNull
     private final NewRelicApi api;
+    @NonNull
     private final ChannelConfiguration config;
 
-    public void sync() throws NewRelicApiException, NewRelicSyncException {
-        if (api == null) {
-            throw new NewRelicSyncException("Initialization error");
-        }
-
+    void sync() throws NewRelicApiException, NewRelicSyncException {
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
