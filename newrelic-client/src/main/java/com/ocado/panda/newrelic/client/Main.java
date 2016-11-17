@@ -57,7 +57,7 @@ public class Main {
                                 EmailChannel.builder()
                                         .channelName("Panda team")
                                         .emailAddress("core-services-internal-xd@ocado.com")
-                                        .includeJsonAttachment(false)
+                                        .includeJsonAttachment(true)
                                         .build()
                         ))
                 .build();

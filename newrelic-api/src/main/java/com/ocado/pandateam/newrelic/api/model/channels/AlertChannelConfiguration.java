@@ -18,7 +18,7 @@ public class AlertChannelConfiguration {
     @JsonProperty
     String url;
     @JsonProperty("include_json_attachment")
-    String includeJsonAttachment;
+    Boolean includeJsonAttachment;
     @JsonProperty
     String recipients;
     @JsonProperty("payload_type")

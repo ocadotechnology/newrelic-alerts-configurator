@@ -30,7 +30,7 @@ public class EmailChannel implements Channel {
     public AlertChannelConfiguration getAlertChannelConfiguration() {
         return AlertChannelConfiguration.builder()
                 .recipients(emailAddress)
-                .includeJsonAttachment(getIncludeJsonAttachment())
+                .includeJsonAttachment(includeJsonAttachment)
                 .build();
     }
 }
