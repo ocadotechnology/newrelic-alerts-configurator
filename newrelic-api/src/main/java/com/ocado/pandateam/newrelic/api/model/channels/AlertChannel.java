@@ -19,16 +19,4 @@ public class AlertChannel {
     AlertChannelConfiguration configuration;
     @JsonProperty
     AlertChannelLinks links;
-
-    public static AlertChannel createForEmail(String name, String recipients, String includeJsonAttachment) {
-        AlertChannelConfiguration config = AlertChannelConfiguration.builder()
-                .recipients(recipients).includeJsonAttachment(includeJsonAttachment).build();
-        return builder().name(name).type("email").configuration(config).build();
-    }
-
-    public static AlertChannel createForSlack(String name, String url, String channel) {
-        AlertChannelConfiguration config = AlertChannelConfiguration.builder()
-                .url(url).channel(channel).build();
-        return builder().name(name).type("slack").configuration(config).build();
-    }
 }

@@ -1,8 +1,7 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
-import com.ocado.pandateam.newrelic.api.model.applications.ApplicationInput;
-import com.ocado.pandateam.newrelic.api.model.applications.SettingsInput;
+import com.ocado.pandateam.newrelic.api.model.applications.Settings;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.junit.Before;
@@ -52,12 +51,12 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
         // given
         when(applicationsApiMock.getByName(eq(APPLICATION_NAME))).thenReturn(Optional.of(APPLICATION));
 
-        SettingsInput expectedSettings = SettingsInput.builder()
+        Settings expectedSettings = Settings.builder()
                 .appApdexThreshold(APP_APDEX_THRESHOLD)
                 .endUserApdexThreshold(USER_APDEX_THRESHOLD)
                 .enableRealUserMonitoring(ENABLE_REAL_USER_MONITORING)
                 .build();
-        ApplicationInput expectedApplicationUpdate = ApplicationInput.builder()
+        Application expectedApplicationUpdate = Application.builder()
                 .name(APPLICATION_NAME)
                 .settings(expectedSettings)
                 .build();
