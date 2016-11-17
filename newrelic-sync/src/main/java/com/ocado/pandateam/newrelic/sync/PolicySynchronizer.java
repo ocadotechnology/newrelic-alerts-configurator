@@ -9,8 +9,12 @@ import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
+import java.util.logging.Logger;
+
+import static java.lang.String.format;
 
 class PolicySynchronizer {
+    private static final Logger LOG = Logger.getLogger(PolicySynchronizer.class.getName());
 
     private final NewRelicApi api;
     private final PolicyConfiguration config;
@@ -21,6 +25,8 @@ class PolicySynchronizer {
     }
 
     void sync() throws NewRelicApiException, NewRelicSyncException {
+        LOG.info(format("Synchronizing policy %s", config.getPolicyName()));
+
         AlertsPolicy configAlertPolicy = AlertsPolicy.builder()
             .name(config.getPolicyName())
             .incidentPreference(config.getIncidentPreference())
@@ -33,9 +39,12 @@ class PolicySynchronizer {
             if (!StringUtils.equals(configAlertPolicy.getIncidentPreference(), oldPolicy.getIncidentPreference())) {
                 api.getAlertsPoliciesApi().delete(oldPolicy.getId());
                 api.getAlertsPoliciesApi().create(configAlertPolicy);
+                LOG.info(format("Policy %s updated!", config.getPolicyName()));
             }
         } else {
             api.getAlertsPoliciesApi().create(configAlertPolicy);
+            LOG.info(format("Policy %s created!", config.getPolicyName()));
         }
+        LOG.info(format("Policy %s synchronized!", config.getPolicyName()));
     }
 }

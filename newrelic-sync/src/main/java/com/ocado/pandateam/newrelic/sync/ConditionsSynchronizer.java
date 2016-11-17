@@ -15,11 +15,13 @@ import lombok.NonNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
 class ConditionsSynchronizer {
+    private static final Logger LOG = Logger.getLogger(ConditionsSynchronizer.class.getName());
 
     private final NewRelicApi api;
     private final ConditionsConfiguration config;
@@ -30,6 +32,8 @@ class ConditionsSynchronizer {
     }
 
     void sync() throws NewRelicApiException, NewRelicSyncException {
+        LOG.info(format("Synchronizing conditions for policy %s", config.getPolicyName()));
+
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
@@ -39,6 +43,19 @@ class ConditionsSynchronizer {
         List<AlertsCondition> alertConditionsFromConfig = config.getConditions().stream()
             .map(this::createAlertsCondition)
             .collect(Collectors.toList());
+
+//        alertConditions.stream().forEach(
+//            alertCondition -> {
+//                alertConditionsFromConfig.stream().forEach(
+//                    alertConditionFromConfig -> {
+//                        if (ConditionUtils.sameInstance(alertCondition, alertConditionFromConfig)) {
+//                            api.getAlertsConditionsApi().update(alertCondition.getId(), alertConditionFromConfig);
+//                        }
+//                    }
+//                );
+//            }
+//        );
+
 
     }
 

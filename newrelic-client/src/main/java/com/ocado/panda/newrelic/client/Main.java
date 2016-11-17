@@ -42,7 +42,8 @@ public class Main {
     private static Collection<ApplicationConfiguration> createApplicationConfigurations() throws NewRelicSyncException {
         return Collections.singleton(ApplicationConfiguration.builder()
             .applicationName(APPLICATION_NAME)
-            .appApdexThreshold(0.5f).endUserApdexThreshold(7.0f)
+            .appApdexThreshold(0.5f)
+            .endUserApdexThreshold(7.0f)
             .enableRealUserMonitoring(true)
             .build()
         );
