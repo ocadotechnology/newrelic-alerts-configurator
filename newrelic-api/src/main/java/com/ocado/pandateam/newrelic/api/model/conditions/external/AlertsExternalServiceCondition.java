@@ -8,6 +8,9 @@ import lombok.Value;
 
 import java.util.Collection;
 
+/**
+ * See <a href="https://rpm.newrelic.com/api/explore/alerts_external_service_conditions/list">Doc</a>
+ */
 @Value
 @Builder
 @AllArgsConstructor

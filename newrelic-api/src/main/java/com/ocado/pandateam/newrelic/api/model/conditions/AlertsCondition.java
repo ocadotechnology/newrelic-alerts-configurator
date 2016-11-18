@@ -8,6 +8,8 @@ import lombok.Value;
 import java.util.Collection;
 
 /**
+ * See <a href="https://rpm.newrelic.com/api/explore/alerts_conditions/list">Doc</a>
+ * <p>
  * Field {@link #conditionScope} is not documented in New Relic api explorer but it exists according to:
  * See <a href="https://docs.newrelic.com/docs/alerts/new-relic-alerts/configuring-alert-policies/scope-alert-thresholds-specific-instances">Link</a>
  */
