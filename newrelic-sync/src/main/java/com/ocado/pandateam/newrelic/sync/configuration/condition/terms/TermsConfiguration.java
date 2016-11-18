@@ -12,7 +12,7 @@ public class TermsConfiguration {
     @NonNull
     private PriorityTerm priorityTerm;
     @NonNull
-    private Integer thresholdTerm;
+    private Float thresholdTerm;
     @NonNull
     private TimeFunctionTerm timeFunctionTerm;
 

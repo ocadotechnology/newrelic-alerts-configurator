@@ -75,7 +75,7 @@ public class Main {
                                         .durationTerm(DurationTerm.DURATION_10)
                                         .operatorTerm(OperatorTerm.ABOVE)
                                         .priorityTerm(PriorityTerm.CRITICAL)
-                                        .thresholdTerm(1)
+                                        .thresholdTerm(0.5f)
                                         .timeFunctionTerm(TimeFunctionTerm.ALL)
                                         .build()
                                 )

@@ -52,7 +52,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     private static final DurationTerm DURATION_TERM = DurationTerm.DURATION_5;
     private static final OperatorTerm OPERATOR_TERM = OperatorTerm.ABOVE;
     private static final PriorityTerm PRIORITY_TERM = PriorityTerm.CRITICAL;
-    private static final Integer THRESHOLD_TERM = 1;
+    private static final Float THRESHOLD_TERM = 0.5f;
     private static final TimeFunctionTerm TIME_FUNCTION_TERM = TimeFunctionTerm.ALL;
     private static final TermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
 
