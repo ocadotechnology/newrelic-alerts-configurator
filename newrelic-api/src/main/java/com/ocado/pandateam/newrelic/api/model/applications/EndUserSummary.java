@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
 @Value
-public class UserSummary {
+public class EndUserSummary {
     @JsonProperty("response_time")
     Float responseTime;
     @JsonProperty

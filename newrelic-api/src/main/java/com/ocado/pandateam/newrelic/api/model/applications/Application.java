@@ -24,11 +24,11 @@ public class Application {
     @JsonProperty("last_reported_at")
     OffsetDateTime lastReportedAt;
     @JsonProperty("application_summary")
-    ApplicationSummary appSummary;
+    ApplicationSummary applicationSummary;
     @JsonProperty("end_user_summary")
-    UserSummary userSummary;
+    EndUserSummary endUserSummary;
     @JsonProperty
-    Settings settings;
+    ApplicationSettings settings;
     @JsonProperty
-    Links links;
+    ApplicationLinks links;
 }

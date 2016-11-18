@@ -6,7 +6,7 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-public class Links {
+public class ApplicationLinks {
     @JsonProperty("alert_policy")
     Integer alertPolicy;
     @JsonProperty

@@ -10,7 +10,7 @@ import com.ocado.pandateam.newrelic.api.model.conditions.AlertsConditionWrapper;
 
 import java.util.List;
 
-public class AlertsConditionsApi extends BaseApi {
+public class AlertsConditionsApi extends ApiBase {
 
     private static final String CONDITIONS_URL = "/v2/alerts_conditions";
     private static final String CONDITION_URL = "/v2/alerts_conditions/{condition_id}.json";

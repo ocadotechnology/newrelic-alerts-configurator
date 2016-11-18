@@ -7,6 +7,10 @@ import lombok.Value;
 
 import java.util.Collection;
 
+/**
+ * Field {@link #conditionScope} is not documented in New Relic api explorer but it exists according to:
+ * See <a href="https://docs.newrelic.com/docs/alerts/new-relic-alerts/configuring-alert-policies/scope-alert-thresholds-specific-instances">Link</a>
+ */
 @Value
 @Builder
 @AllArgsConstructor
@@ -29,6 +33,6 @@ public class AlertsCondition {
     String runbookUrl;
     @JsonProperty
     Collection<Terms> terms;
-    @JsonProperty
+    @JsonProperty("user_defined")
     UserDefined userDefined;
 }

@@ -14,7 +14,9 @@ import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyWrapper;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class AlertsPoliciesApi extends BaseApi {
+import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.APPLICATION_X_WWW_FORM_URLENCODED;
+
+public class AlertsPoliciesApi extends ApiBase {
 
     private static final String POLICIES_URL = "/v2/alerts_policies.json";
     private static final String POLICY_URL = "/v2/alerts_policies/{policy_id}.json";
@@ -68,7 +70,7 @@ public class AlertsPoliciesApi extends BaseApi {
      * @throws NewRelicApiException when received error response
      */
     public AlertsPolicyChannels updateChannels(AlertsPolicyChannels channels) throws NewRelicApiException {
-        MultipartBody request = api.put(POLICY_CHANNELS_URL, "application/x-www-form-urlencoded")
+        MultipartBody request = api.put(POLICY_CHANNELS_URL, APPLICATION_X_WWW_FORM_URLENCODED)
                 .field("policy_id", channels.getPolicyId())
                 .field("channel_ids",
                         channels.getChannelIds()
