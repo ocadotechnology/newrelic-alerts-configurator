@@ -11,6 +11,12 @@ import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.ACCEPT_HEADER;
+import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.APPLICATION_JSON;
+import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.APPLICATION_JSON_UTF_8;
+import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.CONTENT_TYPE_HEADER;
+import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.X_API_KEY_HEADER;
+
 @Slf4j
 public class NewRelicRestClient {
 
@@ -24,41 +30,31 @@ public class NewRelicRestClient {
     }
 
     public GetRequest get(String url) {
-        return Unirest
-                .get(hostUrl + url)
-                .header("X-Api-Key", apiKey)
-                .header("accept", "application/json");
+        return prepareRequest(Unirest.get(hostUrl + url));
     }
 
     public HttpRequestWithBody put(String url) {
-        return put(url, "application/json");
+        return put(url, APPLICATION_JSON_UTF_8);
     }
 
     public HttpRequestWithBody put(String url, String contentType) {
-        return Unirest
-                .put(hostUrl + url)
-                .header("X-Api-Key", apiKey)
-                .header("accept", "application/json")
-                .header("Content-Type", contentType);
+        return prepareRequest(Unirest.put(hostUrl + url), contentType);
     }
 
     public HttpRequestWithBody post(String url) {
-        return post(url, "application/json");
+        return post(url, APPLICATION_JSON_UTF_8);
     }
 
     public HttpRequestWithBody post(String url, String contentType) {
-        return Unirest
-                .post(hostUrl + url)
-                .header("X-Api-Key", apiKey)
-                .header("accept", "application/json")
-                .header("Content-Type", contentType);
+        return prepareRequest(Unirest.post(hostUrl + url), contentType);
     }
 
     public HttpRequest delete(String url) {
-        return Unirest
-                .delete(hostUrl + url)
-                .header("X-Api-Key", apiKey)
-                .header("accept", "application/json");
+        return delete(url, APPLICATION_JSON_UTF_8);
+    }
+
+    public HttpRequest delete(String url, String contentType) {
+        return prepareRequest(Unirest.delete(hostUrl + url), contentType);
     }
 
     public <T> T asObject(BaseRequest request, Class<T> responseType) throws NewRelicApiException {
@@ -70,6 +66,19 @@ public class NewRelicRestClient {
         } catch (UnirestException e) {
             throw new NewRelicApiException(e);
         }
+    }
+
+    private GetRequest prepareRequest(GetRequest request) {
+        return request
+                .header(X_API_KEY_HEADER, apiKey)
+                .header(ACCEPT_HEADER, APPLICATION_JSON);
+    }
+
+    private HttpRequestWithBody prepareRequest(HttpRequestWithBody request, String contentType) {
+        return request
+                .header(X_API_KEY_HEADER, apiKey)
+                .header(ACCEPT_HEADER, APPLICATION_JSON)
+                .header(CONTENT_TYPE_HEADER, contentType);
     }
 
     private void logRequest(BaseRequest request) {

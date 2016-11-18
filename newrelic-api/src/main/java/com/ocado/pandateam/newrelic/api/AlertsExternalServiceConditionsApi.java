@@ -10,7 +10,7 @@ import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternal
 
 import java.util.List;
 
-public class AlertsExternalServiceConditionsApi extends BaseApi {
+public class AlertsExternalServiceConditionsApi extends ApiBase {
 
     private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
     private static final String CONDITION_URL = "/v2/alerts_external_service_conditions/{condition_id}.json";

@@ -11,7 +11,7 @@ import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannelWrapper;
 
 import java.util.List;
 
-public class AlertsChannelsApi extends BaseApi {
+public class AlertsChannelsApi extends ApiBase {
 
     private static final String CHANNELS_URL = "/v2/alerts_channels.json";
     private static final String CHANNEL_URL = "/v2/alerts_channels/{channel_id}.json";

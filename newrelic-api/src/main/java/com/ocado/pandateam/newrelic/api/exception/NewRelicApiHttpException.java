@@ -6,37 +6,16 @@ import com.mashape.unirest.request.BaseRequest;
 
 public class NewRelicApiHttpException extends NewRelicApiException {
 
-    private final String method;
-    private final String url;
-    private final int statusCode;
-    private final String statusText;
-
     public NewRelicApiHttpException(BaseRequest request, HttpResponse response) {
-        super("");
-        this.method = request.getHttpRequest().getHttpMethod().name();
-        this.url = request.getHttpRequest().getUrl();
-        this.statusCode = response.getStatus();
-        this.statusText = response.getStatusText();
+        super(formatMessage(request, response));
+
     }
 
-    @Override
-    public String getMessage() {
+    private static String formatMessage(BaseRequest request, HttpResponse response) {
+        String method = request.getHttpRequest().getHttpMethod().name();
+        String url = request.getHttpRequest().getUrl();
+        int statusCode = response.getStatus();
+        String statusText = response.getStatusText();
         return String.format("%s %s: %d %s", method, url, statusCode, statusText);
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getStatusText() {
-        return statusText;
     }
 }

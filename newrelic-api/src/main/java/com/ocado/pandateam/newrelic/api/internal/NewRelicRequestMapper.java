@@ -22,6 +22,7 @@ class NewRelicRequestMapper implements ObjectMapper {
         jacksonObjectMapper.registerModule(new JavaTimeModule());
     }
 
+    @Override
     public <T> T readValue(String value, Class<T> valueType) {
         try {
             return jacksonObjectMapper.readValue(value, valueType);
@@ -30,6 +31,7 @@ class NewRelicRequestMapper implements ObjectMapper {
         }
     }
 
+    @Override
     public String writeValue(Object value) {
         try {
             return jacksonObjectMapper.writeValueAsString(value);

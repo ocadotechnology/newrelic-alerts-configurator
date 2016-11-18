@@ -10,7 +10,7 @@ import com.ocado.pandateam.newrelic.api.model.applications.ApplicationWrapper;
 
 import java.util.Optional;
 
-public class ApplicationsApi extends BaseApi {
+public class ApplicationsApi extends ApiBase {
 
     private static final String APPLICATIONS_URL = "/v2/applications.json";
     private static final String APPLICATION_URL = "/v2/applications/{application_id}.json";
