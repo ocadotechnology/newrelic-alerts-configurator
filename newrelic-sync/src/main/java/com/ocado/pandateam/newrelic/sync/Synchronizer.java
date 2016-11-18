@@ -4,6 +4,7 @@ import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.ExternalServiceConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import lombok.NonNull;
 
@@ -15,6 +16,7 @@ public class Synchronizer {
     private Collection<ApplicationConfiguration> applicationConfigurations;
     private Collection<PolicyConfiguration> policyConfigurations;
     private Collection<ConditionConfiguration> conditionConfigurations;
+    private Collection<ExternalServiceConditionConfiguration> externalServiceConditionConfigurations;
     private Collection<ChannelConfiguration> channelConfigurations;
 
     public Synchronizer(@NonNull String apiKey) {
@@ -44,6 +46,13 @@ public class Synchronizer {
                     synchronizer.sync();
                 });
         }
+        if (externalServiceConditionConfigurations != null) {
+            externalServiceConditionConfigurations.stream().forEach(
+                configuration -> {
+                    ExternalServiceConditionSynchronizer synchronizer = new ExternalServiceConditionSynchronizer(api, configuration);
+                    synchronizer.sync();
+                });
+        }
         if (channelConfigurations != null) {
             channelConfigurations.stream().forEach(
                 configuration -> {
@@ -61,12 +70,15 @@ public class Synchronizer {
         this.policyConfigurations = policyConfigurations;
     }
 
-    public void setConditionsConfigurations(Collection<ConditionConfiguration> conditionConfigurations) {
-        this.conditionConfigurations = conditionConfigurations;
-    }
-
     public void setChannelConfigurations(Collection<ChannelConfiguration> channelConfigurations) {
         this.channelConfigurations = channelConfigurations;
     }
 
+    public void setExternalServiceConditionConfigurations(Collection<ExternalServiceConditionConfiguration> externalServiceConditionConfigurations) {
+        this.externalServiceConditionConfigurations = externalServiceConditionConfigurations;
+    }
+
+    public void setConditionConfigurations(Collection<ConditionConfiguration> conditionConfigurations) {
+        this.conditionConfigurations = conditionConfigurations;
+    }
 }

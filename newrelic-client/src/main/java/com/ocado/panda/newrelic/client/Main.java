@@ -30,7 +30,7 @@ public class Main {
             Synchronizer synchronizer = new Synchronizer(apiKey);
             synchronizer.setApplicationConfigurations(createApplicationConfigurations());
             synchronizer.setPolicyConfigurations(createPolicyConfigurations());
-            synchronizer.setConditionsConfigurations(createConditionsConfigurations());
+            synchronizer.setConditionConfigurations(createConditionsConfigurations());
             synchronizer.setChannelConfigurations(createChannelConfigurations());
 
             synchronizer.sync();

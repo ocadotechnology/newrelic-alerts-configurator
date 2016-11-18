@@ -3,14 +3,13 @@ package com.ocado.pandateam.newrelic.sync;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
-import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
-import com.ocado.pandateam.newrelic.sync.configuration.condition.ConditionUtils;
-import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -57,7 +56,7 @@ class ConditionSynchronizer {
         alertsConditionsFromConfig.stream().forEach(
             alertConditionFromConfig -> {
                 Optional<AlertsCondition> alertsConditionToUpdate = allAlertsConditions.stream()
-                    .filter(alertCondition -> ConditionUtils.sameInstance(alertCondition, alertConditionFromConfig))
+                    .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
                     .findFirst();
                 if (alertsConditionToUpdate.isPresent()) {
                     AlertsCondition updatedCondition = api.getAlertsConditionsApi().update(
@@ -101,7 +100,7 @@ class ConditionSynchronizer {
             .metric(condition.getMetric())
             .conditionScope(condition.getConditionScope())
             .runbookUrl(condition.getRunBookUrl())
-            .terms(createTerms(condition))
+            .terms(TermsUtils.createTerms(condition.getTerms()))
             .build();
     }
 
@@ -125,17 +124,8 @@ class ConditionSynchronizer {
         }
     }
 
-    private Collection<Terms> createTerms(Condition condition) {
-        return condition.getTerms().stream().map(this::mapTerms).collect(Collectors.toList());
-    }
-
-    private Terms mapTerms(TermsConfiguration termsConfiguration) {
-        return Terms.builder()
-            .duration(termsConfiguration.getDurationTerm())
-            .operator(termsConfiguration.getOperatorTerm())
-            .priority(termsConfiguration.getPriorityTerm())
-            .threshold(termsConfiguration.getThresholdTerm())
-            .timeFunction(termsConfiguration.getTimeFunctionTerm())
-            .build();
+    private static boolean sameInstance(AlertsCondition alertsCondition1, AlertsCondition alertsCondition2) {
+        return StringUtils.equals(alertsCondition1.getName(), alertsCondition2.getName())
+            && StringUtils.equals(alertsCondition1.getType(), alertsCondition2.getType());
     }
 }
