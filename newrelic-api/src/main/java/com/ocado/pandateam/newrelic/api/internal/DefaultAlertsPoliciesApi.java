@@ -27,8 +27,8 @@ public class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesA
     }
 
     @Override
-    public Optional<AlertsPolicy> getByName(String name) throws NewRelicApiException {
-        HttpRequest request = api.get(POLICIES_URL).queryString("filter[name]", name);
+    public Optional<AlertsPolicy> getByName(String alertsPolicyName) throws NewRelicApiException {
+        HttpRequest request = api.get(POLICIES_URL).queryString("filter[name]", alertsPolicyName);
         return api.asObject(request, AlertsPolicyList.class).getSingle();
     }
 

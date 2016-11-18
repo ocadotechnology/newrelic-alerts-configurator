@@ -64,19 +64,19 @@ public class Main {
                 .conditions(
                     Collections.singletonList(
                         ApmAppCondition.builder()
-                            .conditionName("Error percentage (High)")
-                            .enabled(false)
+                            .conditionName("Apdex score (Low)")
+                            .enabled(true)
                             .entities(Collections.singletonList(APPLICATION_NAME))
                             .metric(ApmAppCondition.Metric.APDEX)
                             .conditionScope(ConditionScope.APPLICATION)
                             .terms(
                                 Collections.singletonList(
                                     TermsConfiguration.builder()
-                                        .durationTerm(DurationTerm.DURATION_10)
+                                        .durationTerm(DurationTerm.DURATION_5)
                                         .operatorTerm(OperatorTerm.ABOVE)
                                         .priorityTerm(PriorityTerm.CRITICAL)
+                                        .timeFunctionTerm(TimeFunctionTerm.ANY)
                                         .thresholdTerm(0.5f)
-                                        .timeFunctionTerm(TimeFunctionTerm.ALL)
                                         .build()
                                 )
                             )
