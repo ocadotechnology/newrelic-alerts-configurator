@@ -7,6 +7,9 @@ import lombok.Value;
 
 import java.time.OffsetDateTime;
 
+/**
+ * See <a href="https://rpm.newrelic.com/api/explore/applications/list">Doc</a>
+ */
 @Value
 @Builder
 @AllArgsConstructor
