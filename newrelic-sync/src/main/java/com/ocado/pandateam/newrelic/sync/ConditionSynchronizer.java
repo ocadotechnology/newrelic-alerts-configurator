@@ -4,6 +4,7 @@ import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
@@ -118,7 +119,16 @@ class ConditionSynchronizer {
                     )
                     .collect(Collectors.toList());
             case APM_KT:
-                // TODO: No API for key transactions
+                return condition.getEntities().stream()
+                    .map(
+                        entity -> {
+                            Optional<KeyTransaction> ktOptional = api.getKeyTransactionsApi().getByName(entity);
+                            KeyTransaction kt = ktOptional.orElseThrow(
+                                () -> new NewRelicSyncException(format("Key transaction %s does not exist", entity)));
+                            return kt.getId();
+                        }
+                    )
+                    .collect(Collectors.toList());
             default:
                 throw new NewRelicSyncException(format("Could not get entities for condition %s", condition.getConditionName()));
         }

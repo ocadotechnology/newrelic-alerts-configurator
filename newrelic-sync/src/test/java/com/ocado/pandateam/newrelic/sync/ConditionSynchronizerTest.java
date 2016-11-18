@@ -5,8 +5,10 @@ import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
 import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmAppCondition;
+import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmKtCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ConditionScope;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ConditionType;
@@ -40,10 +42,12 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     private static final String POLICY_NAME = "policyName";
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
 
-    private static final ApmAppCondition.Metric METRIC = ApmAppCondition.Metric.APDEX;
-    private static final String CONDITION_NAME = "conditionName";
+    private static final ApmAppCondition.Metric APP_METRIC = ApmAppCondition.Metric.APDEX;
+    private static final ApmKtCondition.Metric KT_METRIC = ApmKtCondition.Metric.ERROR_COUNT;
+    private static final String APP_CONDITION_NAME = "appConditionName";
+    private static final String KT_CONDITION_NAME = "ktConditionName";
     private static final boolean ENABLED = true;
-    private static final String APPLICATION_NAME = "applicationName";
+
     private static final ConditionScope CONDITION_SCOPE = ConditionScope.APPLICATION;
     private static final DurationTerm DURATION_TERM = DurationTerm.DURATION_5;
     private static final OperatorTerm OPERATOR_TERM = OperatorTerm.ABOVE;
@@ -52,18 +56,27 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     private static final TimeFunctionTerm TIME_FUNCTION_TERM = TimeFunctionTerm.ALL;
     private static final TermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
 
-    private static final Condition CONDITION = createCondition(CONDITION_NAME);
+    private static final Condition APP_CONDITION = createAppCondition(APP_CONDITION_NAME);
+    private static final Condition KT_CONDITION = createKtCondition(KT_CONDITION_NAME);
+
+    private static final String KEY_TRANSACTION_NAME = "keyTransaction";
+    private static final KeyTransaction KEY_TRANSACTION = KeyTransaction.builder().id(666).name(KEY_TRANSACTION_NAME).build();
+    private static final String APPLICATION_NAME = "applicationName";
     private static final Application APPLICATION = Application.builder().id(1).name(APPLICATION_NAME).build();
+
     private static final AlertsCondition ALERTS_CONDITION_SAME = createDefaultAlertsConditionBuilder().id(1).build();
     private static final AlertsCondition ALERTS_CONDITION_MAPPED = createDefaultAlertsConditionBuilder().build();
     private static final AlertsCondition ALERTS_CONDITION_UPDATED = createDefaultAlertsConditionBuilder().id(2).enabled(!ENABLED).build();
     private static final AlertsCondition ALERTS_CONDITION_DIFFERENT = createDefaultAlertsConditionBuilder().id(3).name("different").build();
+    private static final AlertsCondition ALERTS_CONDITION_KT_SAME = createAlertsKtConditionBuilder().id(15).build();
+    private static final AlertsCondition ALERTS_CONDITION_KT_MAPPED = createAlertsKtConditionBuilder().build();
 
     @Before
     public void setUp() {
         testee = new ConditionSynchronizer(apiMock, configuration);
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
         when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.of(APPLICATION));
+        when(keyTransactionsApiMock.getByName(KEY_TRANSACTION_NAME)).thenReturn(Optional.of(KEY_TRANSACTION));
     }
 
     @Test
@@ -84,6 +97,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // given
         when(alertsConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of());
         when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_SAME);
+        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync();
@@ -91,6 +105,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // then
         verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
         verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
+        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
         verifyNoMoreInteractions(alertsConditionsApiMock);
     }
 
@@ -99,6 +114,8 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // given
         when(alertsConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of(ALERTS_CONDITION_UPDATED));
         when(alertsConditionsApiMock.update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_UPDATED);
+        when(alertsConditionsApiMock.update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_UPDATED);
+        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync();
@@ -106,6 +123,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // then
         verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
         verify(alertsConditionsApiMock).update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED));
+        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
         verifyNoMoreInteractions(alertsConditionsApiMock);
     }
 
@@ -114,6 +132,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // given
         when(alertsConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of(ALERTS_CONDITION_DIFFERENT));
         when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_SAME);
+        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync();
@@ -122,6 +141,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
         verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
         verify(alertsConditionsApiMock).delete(eq(ALERTS_CONDITION_DIFFERENT.getId()));
+        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
         verifyNoMoreInteractions(alertsConditionsApiMock);
     }
 
@@ -129,8 +149,9 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         return ConditionConfiguration.builder()
             .policyName(POLICY_NAME)
             .conditions(
-                Collections.singletonList(
-                    CONDITION
+                ImmutableList.of(
+                    APP_CONDITION,
+                    KT_CONDITION
                 )
             )
             .build();
@@ -145,13 +166,27 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
             .timeFunctionTerm(TIME_FUNCTION_TERM);
     }
 
-    private static ApmAppCondition createCondition(String conditionName) {
+    private static ApmAppCondition createAppCondition(String conditionName) {
         return ApmAppCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
             .entities(Collections.singletonList(APPLICATION_NAME))
-            .metric(METRIC)
+            .metric(APP_METRIC)
             .conditionScope(CONDITION_SCOPE)
+            .terms(
+                Collections.singletonList(
+                    TERMS_CONFIGURATION
+                )
+            )
+            .build();
+    }
+
+    private static ApmKtCondition createKtCondition(String conditionName) {
+        return ApmKtCondition.builder()
+            .conditionName(conditionName)
+            .enabled(ENABLED)
+            .entities(Collections.singletonList(KEY_TRANSACTION_NAME))
+            .metric(KT_METRIC)
             .terms(
                 Collections.singletonList(
                     TERMS_CONFIGURATION
@@ -163,11 +198,30 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     private static AlertsCondition.AlertsConditionBuilder createDefaultAlertsConditionBuilder() {
         return AlertsCondition.builder()
             .type(ConditionType.APM_APP.getTypeString())
-            .name(CONDITION_NAME)
+            .name(APP_CONDITION_NAME)
             .enabled(ENABLED)
             .entities(ImmutableList.of(APPLICATION.getId()))
-            .metric(METRIC.name().toLowerCase())
+            .metric(APP_METRIC.name().toLowerCase())
             .conditionScope(CONDITION_SCOPE.name().toLowerCase())
+            .terms(ImmutableList.of(
+                Terms.builder()
+                    .duration(TERMS_CONFIGURATION.getDurationTerm())
+                    .operator(TERMS_CONFIGURATION.getOperatorTerm())
+                    .priority(TERMS_CONFIGURATION.getPriorityTerm())
+                    .threshold(TERMS_CONFIGURATION.getThresholdTerm())
+                    .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
+                    .build()
+                )
+            );
+    }
+
+    private static AlertsCondition.AlertsConditionBuilder createAlertsKtConditionBuilder() {
+        return AlertsCondition.builder()
+            .type(ConditionType.APM_KT.getTypeString())
+            .name(KT_CONDITION_NAME)
+            .enabled(ENABLED)
+            .entities(ImmutableList.of(KEY_TRANSACTION.getId()))
+            .metric(KT_METRIC.name().toLowerCase())
             .terms(ImmutableList.of(
                 Terms.builder()
                     .duration(TERMS_CONFIGURATION.getDurationTerm())

@@ -5,6 +5,7 @@ import com.ocado.pandateam.newrelic.api.AlertsConditionsApi;
 import com.ocado.pandateam.newrelic.api.AlertsExternalServiceConditionsApi;
 import com.ocado.pandateam.newrelic.api.AlertsPoliciesApi;
 import com.ocado.pandateam.newrelic.api.ApplicationsApi;
+import com.ocado.pandateam.newrelic.api.KeyTransactionsApi;
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -27,6 +28,8 @@ abstract class AbstractSynchronizerTest {
     AlertsConditionsApi alertsConditionsApiMock;
     @Mock
     AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApiMock;
+    @Mock
+    KeyTransactionsApi keyTransactionsApiMock;
 
     @Before
     public void setUpApi() {
@@ -39,5 +42,6 @@ abstract class AbstractSynchronizerTest {
         when(apiMock.getAlertsPoliciesApi()).thenReturn(alertsPoliciesApiMock);
         when(apiMock.getAlertsConditionsApi()).thenReturn(alertsConditionsApiMock);
         when(apiMock.getAlertsExternalServiceConditionsApi()).thenReturn(alertsExternalServiceConditionsApiMock);
+        when(apiMock.getKeyTransactionsApi()).thenReturn(keyTransactionsApiMock);
     }
 }
