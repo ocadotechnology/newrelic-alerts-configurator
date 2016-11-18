@@ -73,10 +73,10 @@ public class Main {
                                 Collections.singletonList(
                                     TermsConfiguration.builder()
                                         .durationTerm(DurationTerm.DURATION_5)
-                                        .operatorTerm(OperatorTerm.ABOVE)
+                                        .operatorTerm(OperatorTerm.BELOW)
                                         .priorityTerm(PriorityTerm.CRITICAL)
-                                        .timeFunctionTerm(TimeFunctionTerm.ANY)
-                                        .thresholdTerm(0.5f)
+                                        .timeFunctionTerm(TimeFunctionTerm.ALL)
+                                        .thresholdTerm(0.8f)
                                         .build()
                                 )
                             )
