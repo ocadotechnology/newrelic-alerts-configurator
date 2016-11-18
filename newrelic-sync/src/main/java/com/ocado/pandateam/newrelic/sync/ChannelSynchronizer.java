@@ -5,6 +5,7 @@ import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannel;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;
@@ -52,22 +53,21 @@ class ChannelSynchronizer {
 
         Set<Integer> policyChannelsToUpdate = new LinkedHashSet<>();
 
-        config.getChannels().stream().forEach(
-            channel -> {
-                AlertsChannel mapped = AlertsChannel.builder()
-                    .name(channel.getChannelName())
-                    .type(channel.getTypeString())
-                    .configuration(ChannelUtils.generateAlertsChannelConfiguration(channel))
-                    .build();
+        List<AlertsChannel> alertsChannelsFromConfig = config.getChannels().stream()
+            .map(this::createAlertsChannel)
+            .collect(Collectors.toList());
+
+        alertsChannelsFromConfig.stream().forEach(
+            alertsChannelFromConfig -> {
                 List<AlertsChannel> sameInstanceChannels = allAlertsChannels.stream()
-                    .filter(alertChannel -> ChannelUtils.sameInstance(mapped, alertChannel))
+                    .filter(alertChannel -> ChannelUtils.sameInstance(alertsChannelFromConfig, alertChannel))
                     .collect(Collectors.toList());
 
                 AlertsChannel updatedChannel = sameInstanceChannels.stream()
-                    .filter(alertChannel -> ChannelUtils.same(mapped, alertChannel))
+                    .filter(alertChannel -> ChannelUtils.same(alertsChannelFromConfig, alertChannel))
                     .findFirst()
                     .orElseGet(() -> {
-                        AlertsChannel newChannel = api.getAlertsChannelsApi().create(mapped);
+                        AlertsChannel newChannel = api.getAlertsChannelsApi().create(alertsChannelFromConfig);
                         LOG.info(format("Channel %s (id: %d) created!", newChannel.getName(), newChannel.getId()));
                         return newChannel;
                     });
@@ -87,6 +87,14 @@ class ChannelSynchronizer {
                 .build()
         );
         return policyChannelsToCleanup;
+    }
+
+    private AlertsChannel createAlertsChannel(Channel channel) {
+        return AlertsChannel.builder()
+                        .name(channel.getChannelName())
+                        .type(channel.getTypeString())
+                        .configuration(ChannelUtils.generateAlertsChannelConfiguration(channel))
+                        .build();
     }
 
     private void cleanupPolicyAlertsChannels(AlertsPolicy policy, Set<Integer> policyChannelsToCleanup) {
