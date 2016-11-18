@@ -5,7 +5,7 @@ import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
-import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
@@ -24,14 +24,12 @@ import static java.lang.String.format;
 @Slf4j
 class ConditionSynchronizer {
     private final NewRelicApi api;
-    private final ConditionConfiguration config;
 
-    ConditionSynchronizer(@NonNull NewRelicApi api, @NonNull ConditionConfiguration config) {
+    ConditionSynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
-        this.config = config;
     }
 
-    void sync() {
+    void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing alerts conditions for policy {}...", config.getPolicyName());
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
@@ -40,38 +38,37 @@ class ConditionSynchronizer {
 
 
         List<AlertsCondition> allAlertsConditions = api.getAlertsConditionsApi().list(policy.getId());
-        List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(policy, allAlertsConditions);
+        List<AlertsCondition> alertsConditionsFromConfig = config.getConditions().stream()
+            .map(this::createAlertsCondition)
+            .collect(Collectors.toList());
+        List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(
+            policy, alertsConditionsFromConfig, allAlertsConditions);
 
         cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
         LOG.info("Alerts conditions for policy {} synchronized", config.getPolicyName());
     }
 
     private List<Integer> createOrUpdateAlertsConditions(AlertsPolicy policy,
+                                                         List<AlertsCondition> alertsConditionsFromConfig,
                                                          List<AlertsCondition> allAlertsConditions) {
-        List<AlertsCondition> alertsConditionsFromConfig = config.getConditions().stream()
-            .map(this::createAlertsCondition)
-            .collect(Collectors.toList());
-
         List<AlertsCondition> updatedAlertConditions = new LinkedList<>();
-        alertsConditionsFromConfig.stream().forEach(
-            alertConditionFromConfig -> {
-                Optional<AlertsCondition> alertsConditionToUpdate = allAlertsConditions.stream()
-                    .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
-                    .findFirst();
-                if (alertsConditionToUpdate.isPresent()) {
-                    AlertsCondition updatedCondition = api.getAlertsConditionsApi().update(
-                        alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
-                    LOG.info("Alerts condition {} (id: {}) updated for policy {} (id: {})",
-                        updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId());
-                    updatedAlertConditions.add(updatedCondition);
-                } else {
-                    AlertsCondition newCondition = api.getAlertsConditionsApi().create(
-                        policy.getId(), alertConditionFromConfig);
-                    LOG.info("Alerts condition {} (id: {}) created for policy {} (id: {})",
-                        newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId());
-                }
+        for (AlertsCondition alertConditionFromConfig : alertsConditionsFromConfig) {
+            Optional<AlertsCondition> alertsConditionToUpdate = allAlertsConditions.stream()
+                .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
+                .findFirst();
+            if (alertsConditionToUpdate.isPresent()) {
+                AlertsCondition updatedCondition = api.getAlertsConditionsApi().update(
+                    alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
+                LOG.info("Alerts condition {} (id: {}) updated for policy {} (id: {})",
+                    updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId());
+                updatedAlertConditions.add(updatedCondition);
+            } else {
+                AlertsCondition newCondition = api.getAlertsConditionsApi().create(
+                    policy.getId(), alertConditionFromConfig);
+                LOG.info("Alerts condition {} (id: {}) created for policy {} (id: {})",
+                    newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId());
             }
-        );
+        }
 
         return updatedAlertConditions.stream()
             .map(AlertsCondition::getId)

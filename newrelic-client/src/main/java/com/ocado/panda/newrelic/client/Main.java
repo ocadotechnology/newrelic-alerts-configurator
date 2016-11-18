@@ -2,11 +2,11 @@ package com.ocado.panda.newrelic.client;
 
 import com.ocado.pandateam.newrelic.sync.Synchronizer;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmAppCondition;
+import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ConditionScope;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.DurationTerm;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.OperatorTerm;
@@ -30,14 +30,12 @@ public class Main {
             Synchronizer synchronizer = new Synchronizer(apiKey);
             synchronizer.setApplicationConfigurations(createApplicationConfigurations());
             synchronizer.setPolicyConfigurations(createPolicyConfigurations());
-            synchronizer.setConditionConfigurations(createConditionsConfigurations());
-            synchronizer.setChannelConfigurations(createChannelConfigurations());
 
             synchronizer.sync();
         }
     }
 
-    private static Collection<ApplicationConfiguration> createApplicationConfigurations(){
+    private static Collection<ApplicationConfiguration> createApplicationConfigurations() {
         return Collections.singleton(
             ApplicationConfiguration.builder()
                 .applicationName(APPLICATION_NAME)
@@ -53,53 +51,35 @@ public class Main {
             PolicyConfiguration.builder()
                 .policyName(POLICY_NAME)
                 .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+                .condition(createConditionConfiguration())
+                .channel(createChannelConfiguration())
                 .build()
         );
     }
 
-    private static Collection<ConditionConfiguration> createConditionsConfigurations() {
-        return Collections.singleton(
-            ConditionConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .conditions(
-                    Collections.singletonList(
-                        ApmAppCondition.builder()
-                            .conditionName("Apdex score (Low)")
-                            .enabled(true)
-                            .entities(Collections.singletonList(APPLICATION_NAME))
-                            .metric(ApmAppCondition.Metric.APDEX)
-                            .conditionScope(ConditionScope.APPLICATION)
-                            .terms(
-                                Collections.singletonList(
-                                    TermsConfiguration.builder()
-                                        .durationTerm(DurationTerm.DURATION_5)
-                                        .operatorTerm(OperatorTerm.BELOW)
-                                        .priorityTerm(PriorityTerm.CRITICAL)
-                                        .timeFunctionTerm(TimeFunctionTerm.ALL)
-                                        .thresholdTerm(0.8f)
-                                        .build()
-                                )
-                            )
-                            .build()
-                    )
-                )
+    private static Condition createConditionConfiguration() {
+        return ApmAppCondition.builder()
+            .conditionName("Apdex score (Low)")
+            .enabled(true)
+            .entities(Collections.singletonList(APPLICATION_NAME))
+            .metric(ApmAppCondition.Metric.APDEX)
+            .conditionScope(ConditionScope.APPLICATION)
+            .term(TermsConfiguration.builder()
+                .durationTerm(DurationTerm.DURATION_5)
+                .operatorTerm(OperatorTerm.BELOW)
+                .priorityTerm(PriorityTerm.CRITICAL)
+                .timeFunctionTerm(TimeFunctionTerm.ALL)
+                .thresholdTerm(0.8f)
                 .build()
-        );
+            )
+            .build();
     }
 
-    private static Collection<ChannelConfiguration> createChannelConfigurations() {
-        return Collections.singleton(
-            ChannelConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channels(
-                    Collections.singletonList(
-                        EmailChannel.builder()
-                            .channelName("Panda team")
-                            .emailAddress("core-services-xd@ocado.com")
-                            .includeJsonAttachment(false)
-                            .build()
-                    ))
-                .build()
-        );
+    private static Channel createChannelConfiguration() {
+        return EmailChannel.builder()
+            .channelName("Panda team")
+            .emailAddress("core-services-xd@ocado.com")
+            .includeJsonAttachment(false)
+            .build();
     }
 }

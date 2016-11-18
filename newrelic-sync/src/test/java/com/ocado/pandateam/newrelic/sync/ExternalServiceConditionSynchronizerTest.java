@@ -5,7 +5,7 @@ import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
-import com.ocado.pandateam.newrelic.sync.configuration.ExternalServiceConditionConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmAppCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmExternalServiceCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ExternalServiceCondition;
@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -32,9 +31,6 @@ import static org.mockito.Mockito.when;
 public class ExternalServiceConditionSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
-
-    private ExternalServiceConditionSynchronizer testee;
-    private ExternalServiceConditionConfiguration configuration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
@@ -58,9 +54,12 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
     private static final AlertsExternalServiceCondition ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED = createDefaultAlertsConditionBuilder().id(2).enabled(!ENABLED).build();
     private static final AlertsExternalServiceCondition ALERTS_EXTERNAL_SERVICE_CONDITION_DIFFERENT = createDefaultAlertsConditionBuilder().id(3).name("different").build();
 
+    private ExternalServiceConditionSynchronizer testee;
+    private static final PolicyConfiguration CONFIGURATION = createConfiguration();
+
     @Before
     public void setUp() {
-        testee = new ExternalServiceConditionSynchronizer(apiMock, configuration);
+        testee = new ExternalServiceConditionSynchronizer(apiMock);
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
         when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.of(APPLICATION));
     }
@@ -75,7 +74,7 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
         expectedException.expectMessage(format("Policy %s does not exist", POLICY_NAME));
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
     }
 
     @Test
@@ -86,7 +85,7 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
             .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_SAME);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
@@ -103,7 +102,7 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
             .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
@@ -121,7 +120,7 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
             .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_SAME);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
@@ -131,14 +130,10 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
         order.verifyNoMoreInteractions();
     }
 
-    private static ExternalServiceConditionConfiguration createConfiguration() {
-        return ExternalServiceConditionConfiguration.builder()
+    private static PolicyConfiguration createConfiguration() {
+        return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
-            .externalServiceConditions(
-                Collections.singletonList(
-                    EXTERNAL_SERVICE_CONDITION
-                )
-            )
+            .externalServiceCondition(EXTERNAL_SERVICE_CONDITION)
             .build();
     }
 
@@ -155,14 +150,10 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
         return ApmExternalServiceCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
-            .entities(Collections.singletonList(APPLICATION_NAME))
+            .entity(APPLICATION_NAME)
             .metric(METRIC)
             .externalServiceUrl(EXTERNAL_SERVICE_URL)
-            .terms(
-                Collections.singletonList(
-                    TERMS_CONFIGURATION
-                )
-            )
+            .term(TERMS_CONFIGURATION)
             .build();
     }
 
@@ -171,18 +162,16 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
             .type(ExternalServiceConditionType.APM.getTypeString())
             .name(CONDITION_NAME)
             .enabled(ENABLED)
-            .entities(ImmutableList.of(APPLICATION.getId()))
+            .entity(APPLICATION.getId())
             .metric(METRIC.name().toLowerCase())
             .externalServiceUrl(EXTERNAL_SERVICE_URL)
-            .terms(ImmutableList.of(
-                Terms.builder()
-                    .duration(TERMS_CONFIGURATION.getDurationTerm())
-                    .operator(TERMS_CONFIGURATION.getOperatorTerm())
-                    .priority(TERMS_CONFIGURATION.getPriorityTerm())
-                    .threshold(TERMS_CONFIGURATION.getThresholdTerm())
-                    .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
-                    .build()
-                )
+            .term(Terms.builder()
+                .duration(TERMS_CONFIGURATION.getDurationTerm())
+                .operator(TERMS_CONFIGURATION.getOperatorTerm())
+                .priority(TERMS_CONFIGURATION.getPriorityTerm())
+                .threshold(TERMS_CONFIGURATION.getThresholdTerm())
+                .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
+                .build()
             );
     }
 }

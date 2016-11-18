@@ -4,6 +4,7 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConf
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Singular;
 
 import java.util.Collection;
 
@@ -15,6 +16,7 @@ public class ApmExternalServiceCondition implements ExternalServiceCondition {
     private String conditionName;
     private boolean enabled;
     @NonNull
+    @Singular
     private Collection<String> entities;
     @NonNull
     private String externalServiceUrl;
@@ -22,6 +24,7 @@ public class ApmExternalServiceCondition implements ExternalServiceCondition {
     private ApmAppCondition.Metric metric;
     private String runBookUrl;
     @NonNull
+    @Singular
     private Collection<TermsConfiguration> terms;
 
     @Override

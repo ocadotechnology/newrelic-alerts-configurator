@@ -14,14 +14,12 @@ import static java.lang.String.format;
 @Slf4j
 class PolicySynchronizer {
     private final NewRelicApi api;
-    private final PolicyConfiguration config;
 
-    PolicySynchronizer(@NonNull NewRelicApi api, @NonNull PolicyConfiguration config) {
-        this.config = config;
+    PolicySynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
     }
 
-    void sync() {
+    void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing policy {}...", config.getPolicyName());
 
         AlertsPolicy alertsPolicyFromConfig = AlertsPolicy.builder()

@@ -4,7 +4,7 @@ import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
-import com.ocado.pandateam.newrelic.sync.configuration.ExternalServiceConditionConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
@@ -23,14 +23,12 @@ import static java.lang.String.format;
 @Slf4j
 class ExternalServiceConditionSynchronizer {
     private final NewRelicApi api;
-    private final ExternalServiceConditionConfiguration config;
 
-    ExternalServiceConditionSynchronizer(@NonNull NewRelicApi api, @NonNull ExternalServiceConditionConfiguration config) {
+    ExternalServiceConditionSynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
-        this.config = config;
     }
 
-    void sync() {
+    void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing external service alerts conditions for policy {}...", config.getPolicyName());
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
@@ -40,8 +38,11 @@ class ExternalServiceConditionSynchronizer {
 
         List<AlertsExternalServiceCondition> allAlertsExternalServiceConditions = api.getAlertsExternalServiceConditionsApi()
             .list(policy.getId());
+        List<AlertsExternalServiceCondition> alertsConditionsFromConfig = config.getExternalServiceConditions().stream()
+            .map(this::createAlertsExternalServiceCondition)
+            .collect(Collectors.toList());
         List<Integer> updatedAlertsExternalServiceConditionsIds = createOrUpdateAlertsExternalServiceConditions(
-            policy, allAlertsExternalServiceConditions);
+            policy, alertsConditionsFromConfig, allAlertsExternalServiceConditions);
 
         cleanupOldAlertsExternalServiceConditions(policy, allAlertsExternalServiceConditions,
             updatedAlertsExternalServiceConditionsIds);
@@ -49,31 +50,26 @@ class ExternalServiceConditionSynchronizer {
     }
 
     private List<Integer> createOrUpdateAlertsExternalServiceConditions(AlertsPolicy policy,
+                                                                        List<AlertsExternalServiceCondition> alertsConditionsFromConfig,
                                                                         List<AlertsExternalServiceCondition> allAlertsConditions) {
-        List<AlertsExternalServiceCondition> alertsConditionsFromConfig = config.getExternalServiceConditions().stream()
-            .map(this::createAlertsExternalServiceCondition)
-            .collect(Collectors.toList());
-
         List<AlertsExternalServiceCondition> updatedAlertConditions = new LinkedList<>();
-        alertsConditionsFromConfig.stream().forEach(
-            alertConditionFromConfig -> {
-                Optional<AlertsExternalServiceCondition> alertsConditionToUpdate = allAlertsConditions.stream()
-                    .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
-                    .findFirst();
-                if (alertsConditionToUpdate.isPresent()) {
-                    AlertsExternalServiceCondition updatedCondition = api.getAlertsExternalServiceConditionsApi().update(
-                        alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
-                    LOG.info("External service alerts condition {} (id: {}) updated for policy {} (id: {})",
-                        updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId());
-                    updatedAlertConditions.add(updatedCondition);
-                } else {
-                    AlertsExternalServiceCondition newCondition = api.getAlertsExternalServiceConditionsApi().create(
-                        policy.getId(), alertConditionFromConfig);
-                    LOG.info("External service alerts condition {} (id: {}) created for policy {} (id: {})",
-                        newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId());
-                }
+        for (AlertsExternalServiceCondition alertConditionFromConfig : alertsConditionsFromConfig) {
+            Optional<AlertsExternalServiceCondition> alertsConditionToUpdate = allAlertsConditions.stream()
+                .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
+                .findFirst();
+            if (alertsConditionToUpdate.isPresent()) {
+                AlertsExternalServiceCondition updatedCondition = api.getAlertsExternalServiceConditionsApi().update(
+                    alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
+                LOG.info("External service alerts condition {} (id: {}) updated for policy {} (id: {})",
+                    updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId());
+                updatedAlertConditions.add(updatedCondition);
+            } else {
+                AlertsExternalServiceCondition newCondition = api.getAlertsExternalServiceConditionsApi().create(
+                    policy.getId(), alertConditionFromConfig);
+                LOG.info("External service alerts condition {} (id: {}) created for policy {} (id: {})",
+                    newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId());
             }
-        );
+        }
 
         return updatedAlertConditions.stream()
             .map(AlertsExternalServiceCondition::getId)

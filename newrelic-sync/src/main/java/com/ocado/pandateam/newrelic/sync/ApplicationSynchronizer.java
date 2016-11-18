@@ -15,14 +15,12 @@ import static java.lang.String.format;
 @Slf4j
 class ApplicationSynchronizer {
     private final NewRelicApi api;
-    private final ApplicationConfiguration config;
 
-    ApplicationSynchronizer(@NonNull NewRelicApi api, @NonNull ApplicationConfiguration config) {
+    ApplicationSynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
-        this.config = config;
     }
 
-    void sync() {
+    void sync(@NonNull ApplicationConfiguration config) {
         LOG.info("Synchronizing application {}...", config.getApplicationName());
 
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());

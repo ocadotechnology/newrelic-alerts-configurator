@@ -20,7 +20,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
     public final ExpectedException expectedException = ExpectedException.none();
 
     private ApplicationSynchronizer testee;
-    private ApplicationConfiguration configuration = createConfiguration();
+    private static final ApplicationConfiguration CONFIGURATION = createConfiguration();
 
     private static final String APPLICATION_NAME = "appName";
     private static final float USER_APDEX_THRESHOLD = 0.7f;
@@ -31,7 +31,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new ApplicationSynchronizer(apiMock, configuration);
+        testee = new ApplicationSynchronizer(apiMock);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
         expectedException.expectMessage(format("Application %s does not exist", APPLICATION_NAME));
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
     }
 
     @Test
@@ -63,13 +63,13 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
             .build();
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         verify(applicationsApiMock).update(APPLICATION.getId(), expectedApplicationUpdate);
     }
 
-    private ApplicationConfiguration createConfiguration() {
+    private static ApplicationConfiguration createConfiguration() {
         return ApplicationConfiguration.builder()
             .applicationName(APPLICATION_NAME)
             .appApdexThreshold(APP_APDEX_THRESHOLD)

@@ -6,7 +6,7 @@ import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
-import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmAppCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmKtCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -35,9 +34,6 @@ import static org.mockito.Mockito.when;
 public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
-
-    private ConditionSynchronizer testee;
-    private ConditionConfiguration configuration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
@@ -71,9 +67,12 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     private static final AlertsCondition ALERTS_CONDITION_KT_SAME = createAlertsKtConditionBuilder().id(15).build();
     private static final AlertsCondition ALERTS_CONDITION_KT_MAPPED = createAlertsKtConditionBuilder().build();
 
+    private ConditionSynchronizer testee;
+    private static final PolicyConfiguration CONFIGURATION = createConfiguration();
+
     @Before
     public void setUp() {
-        testee = new ConditionSynchronizer(apiMock, configuration);
+        testee = new ConditionSynchronizer(apiMock);
         when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
         when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.of(APPLICATION));
         when(keyTransactionsApiMock.getByName(KEY_TRANSACTION_NAME)).thenReturn(Optional.of(KEY_TRANSACTION));
@@ -89,7 +88,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         expectedException.expectMessage(format("Policy %s does not exist", POLICY_NAME));
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
     }
 
     @Test
@@ -100,7 +99,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
@@ -119,7 +118,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
@@ -137,7 +136,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
@@ -148,15 +147,11 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         order.verifyNoMoreInteractions();
     }
 
-    private static ConditionConfiguration createConfiguration() {
-        return ConditionConfiguration.builder()
+    private static PolicyConfiguration createConfiguration() {
+        return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
-            .conditions(
-                ImmutableList.of(
-                    APP_CONDITION,
-                    KT_CONDITION
-                )
-            )
+            .condition(APP_CONDITION)
+            .condition(KT_CONDITION)
             .build();
     }
 
@@ -173,14 +168,10 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         return ApmAppCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
-            .entities(Collections.singletonList(APPLICATION_NAME))
+            .entity(APPLICATION_NAME)
             .metric(APP_METRIC)
             .conditionScope(CONDITION_SCOPE)
-            .terms(
-                Collections.singletonList(
-                    TERMS_CONFIGURATION
-                )
-            )
+            .term(TERMS_CONFIGURATION)
             .build();
     }
 
@@ -188,13 +179,9 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         return ApmKtCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
-            .entities(Collections.singletonList(KEY_TRANSACTION_NAME))
+            .entity(KEY_TRANSACTION_NAME)
             .metric(KT_METRIC)
-            .terms(
-                Collections.singletonList(
-                    TERMS_CONFIGURATION
-                )
-            )
+            .term(TERMS_CONFIGURATION)
             .build();
     }
 
@@ -203,18 +190,16 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
             .type(ConditionType.APM_APP.getTypeString())
             .name(APP_CONDITION_NAME)
             .enabled(ENABLED)
-            .entities(ImmutableList.of(APPLICATION.getId()))
+            .entity(APPLICATION.getId())
             .metric(APP_METRIC.name().toLowerCase())
             .conditionScope(CONDITION_SCOPE.name().toLowerCase())
-            .terms(ImmutableList.of(
-                Terms.builder()
-                    .duration(TERMS_CONFIGURATION.getDurationTerm())
-                    .operator(TERMS_CONFIGURATION.getOperatorTerm())
-                    .priority(TERMS_CONFIGURATION.getPriorityTerm())
-                    .threshold(TERMS_CONFIGURATION.getThresholdTerm())
-                    .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
-                    .build()
-                )
+            .term(Terms.builder()
+                .duration(TERMS_CONFIGURATION.getDurationTerm())
+                .operator(TERMS_CONFIGURATION.getOperatorTerm())
+                .priority(TERMS_CONFIGURATION.getPriorityTerm())
+                .threshold(TERMS_CONFIGURATION.getThresholdTerm())
+                .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
+                .build()
             );
     }
 
@@ -223,17 +208,15 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
             .type(ConditionType.APM_KT.getTypeString())
             .name(KT_CONDITION_NAME)
             .enabled(ENABLED)
-            .entities(ImmutableList.of(KEY_TRANSACTION.getId()))
+            .entity(KEY_TRANSACTION.getId())
             .metric(KT_METRIC.name().toLowerCase())
-            .terms(ImmutableList.of(
-                Terms.builder()
-                    .duration(TERMS_CONFIGURATION.getDurationTerm())
-                    .operator(TERMS_CONFIGURATION.getOperatorTerm())
-                    .priority(TERMS_CONFIGURATION.getPriorityTerm())
-                    .threshold(TERMS_CONFIGURATION.getThresholdTerm())
-                    .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
-                    .build()
-                )
+            .term(Terms.builder()
+                .duration(TERMS_CONFIGURATION.getDurationTerm())
+                .operator(TERMS_CONFIGURATION.getOperatorTerm())
+                .priority(TERMS_CONFIGURATION.getPriorityTerm())
+                .threshold(TERMS_CONFIGURATION.getThresholdTerm())
+                .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
+                .build()
             );
     }
 }

@@ -8,7 +8,7 @@ import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannelConfiguratio
 import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannelLinks;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
-import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
@@ -32,10 +32,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
-    private ChannelSynchronizer testee;
-    private ChannelConfiguration configuration = createConfiguration();
-
-    private static final String POLICY_NAME = "policyName";
+        private static final String POLICY_NAME = "policyName";
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
 
     private static final String EMAIL_CHANNEL_NAME = "emailChannel";
@@ -54,9 +51,12 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     private static final AlertsChannel EMAIL_ALERT_CHANNEL_DIFFERENT = createAlertChannel(3, "different", "email", ALERT_CHANNEL_CONFIG);
     private static final AlertsChannel SLACK_ALERT_CHANNEL_SAME = createAlertChannel(4, SLACK_CHANNEL_NAME, "slack", SLACK_CHANNEL_CONFIG);
 
+    private ChannelSynchronizer testee;
+    private static final PolicyConfiguration CONFIGURATION = createConfiguration();
+
     @Before
     public void setUp() {
-        testee = new ChannelSynchronizer(apiMock, configuration);
+        testee = new ChannelSynchronizer(apiMock);
 
         when(alertsChannelsApiMock.create(EMAIL_CHANNEL_CONFIG_MAPPED)).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
         when(alertsChannelsApiMock.create(SLACK_CHANNEL_CONFIG_MAPPED)).thenReturn(SLACK_ALERT_CHANNEL_SAME);
@@ -73,7 +73,23 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         expectedException.expectMessage(format("Policy %s does not exist", POLICY_NAME));
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
+    }
+
+    @Test
+    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+            .policyName(POLICY_NAME)
+            .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        InOrder order = inOrder(alertsChannelsApiMock);
+        order.verify(alertsChannelsApiMock).list();
+        order.verifyNoMoreInteractions();
     }
 
     @Test
@@ -81,7 +97,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // given
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsChannelsApiMock);
@@ -95,7 +111,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAMEINSTANCE, EMAIL_ALERT_CHANNEL_DIFFERENT));
         when(alertsChannelsApiMock.deleteFromPolicy(POLICY.getId(), EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId())).thenReturn(EMAIL_ALERT_CHANNEL_SAMEINSTANCE);
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsChannelsApiMock);
@@ -112,7 +128,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME, EMAIL_ALERT_CHANNEL_DIFFERENT));
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsChannelsApiMock);
@@ -134,7 +150,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
             .build();
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
@@ -157,7 +173,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
             .build();
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
@@ -188,10 +204,11 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         return AlertsChannel.builder().id(id).name(name).type(type).configuration(config).links(alertChannelLinks).build();
     }
 
-    private ChannelConfiguration createConfiguration() {
-        return ChannelConfiguration.builder()
+    private static PolicyConfiguration createConfiguration() {
+        return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
-            .channels(ImmutableList.of(EMAIL_CHANNEL, SLACK_CHANNEL))
+            .channel(EMAIL_CHANNEL)
+            .channel(SLACK_CHANNEL)
             .build();
     }
 }

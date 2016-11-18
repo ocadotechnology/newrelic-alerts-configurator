@@ -4,7 +4,7 @@ import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannel;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicyChannels;
-import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
@@ -22,27 +22,28 @@ import static java.lang.String.format;
 @Slf4j
 class ChannelSynchronizer {
     private final NewRelicApi api;
-    private final ChannelConfiguration config;
 
-    ChannelSynchronizer(@NonNull NewRelicApi api, @NonNull ChannelConfiguration config) {
+    ChannelSynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
-        this.config = config;
     }
 
-    void sync() {
+    void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing alerts channels for policy {}...", config.getPolicyName());
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
-        Set<Integer> policyChannelsToCleanup = createOrUpdatePolicyAlertsChannels(policy);
+        List<AlertsChannel> alertsChannelsFromConfig = config.getChannels().stream()
+            .map(this::createAlertsChannel)
+            .collect(Collectors.toList());
+        Set<Integer> policyChannelsToCleanup = createOrUpdatePolicyAlertsChannels(policy, alertsChannelsFromConfig);
         cleanupPolicyAlertsChannels(policy, policyChannelsToCleanup);
 
         LOG.info("Alerts channels for policy {} synchronized", config.getPolicyName());
     }
 
-    private Set<Integer> createOrUpdatePolicyAlertsChannels(AlertsPolicy policy) {
+    private Set<Integer> createOrUpdatePolicyAlertsChannels(AlertsPolicy policy, List<AlertsChannel> alertsChannelsFromConfig) {
         List<AlertsChannel> allAlertsChannels = api.getAlertsChannelsApi().list();
 
         Set<Integer> policyChannelsToCleanup = allAlertsChannels.stream()
@@ -52,9 +53,6 @@ class ChannelSynchronizer {
 
         Set<Integer> policyChannelsToUpdate = new LinkedHashSet<>();
 
-        List<AlertsChannel> alertsChannelsFromConfig = config.getChannels().stream()
-            .map(this::createAlertsChannel)
-            .collect(Collectors.toList());
 
         for (AlertsChannel alertsChannelFromConfig : alertsChannelsFromConfig) {
             List<AlertsChannel> sameInstanceChannels = allAlertsChannels.stream()
