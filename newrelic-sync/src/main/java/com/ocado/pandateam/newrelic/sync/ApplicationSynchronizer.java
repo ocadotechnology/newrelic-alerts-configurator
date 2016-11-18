@@ -6,15 +6,14 @@ import com.ocado.pandateam.newrelic.api.model.applications.ApplicationSettings;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
+@Slf4j
 class ApplicationSynchronizer {
-    private static final Logger LOG = Logger.getLogger(ApplicationSynchronizer.class.getName());
-
     private final NewRelicApi api;
     private final ApplicationConfiguration config;
 

@@ -10,20 +10,19 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
+@Slf4j
 class ConditionSynchronizer {
-    private static final Logger LOG = Logger.getLogger(ConditionSynchronizer.class.getName());
-
     private final NewRelicApi api;
     private final ConditionConfiguration config;
 
