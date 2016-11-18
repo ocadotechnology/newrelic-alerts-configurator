@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.api;
 
-import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
+import com.ocado.pandateam.newrelic.api.internal.NewRelicInternalApi;
 import lombok.Getter;
 
 /**
@@ -37,11 +37,11 @@ public class NewRelicApi {
      * @param apiKey  API Key for given NewRelic account
      */
     public NewRelicApi(String hostUrl, String apiKey) {
-        NewRelicRestClient client = new NewRelicRestClient(hostUrl, apiKey);
-        applicationsApi = new ApplicationsApi(client);
-        alertsChannelsApi = new AlertsChannelsApi(client);
-        alertsPoliciesApi = new AlertsPoliciesApi(client);
-        alertsConditionsApi = new AlertsConditionsApi(client);
-        alertsExternalServiceConditionsApi = new AlertsExternalServiceConditionsApi(client);
+        NewRelicInternalApi internalApi = new NewRelicInternalApi(hostUrl, apiKey);
+        applicationsApi = internalApi.getApplicationsApi();
+        alertsChannelsApi = internalApi.getAlertsChannelsApi();
+        alertsPoliciesApi = internalApi.getAlertsPoliciesApi();
+        alertsConditionsApi = internalApi.getAlertsConditionsApi();
+        alertsExternalServiceConditionsApi = internalApi.getAlertsExternalServiceConditionsApi();
     }
 }

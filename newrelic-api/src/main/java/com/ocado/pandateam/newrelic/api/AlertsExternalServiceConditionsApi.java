@@ -1,25 +1,11 @@
 package com.ocado.pandateam.newrelic.api;
 
-import com.mashape.unirest.request.HttpRequest;
-import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
-import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceConditionList;
-import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceConditionWrapper;
 
 import java.util.List;
 
-public class AlertsExternalServiceConditionsApi extends ApiBase {
-
-    private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
-    private static final String CONDITION_URL = "/v2/alerts_external_service_conditions/{condition_id}.json";
-    private static final String CONDITION_POLICY_URL = "/v2/alerts_external_service_conditions/policies/{policy_id}.json";
-
-    AlertsExternalServiceConditionsApi(NewRelicRestClient api) {
-        super(api);
-    }
-
+public interface AlertsExternalServiceConditionsApi {
     /**
      * Lists Alerts Conditions for external services for the given policy.
      *
@@ -27,10 +13,7 @@ public class AlertsExternalServiceConditionsApi extends ApiBase {
      * @return list of all existing {@link AlertsExternalServiceCondition} from the given policy
      * @throws NewRelicApiException when received error response
      */
-    public List<AlertsExternalServiceCondition> list(int policyId) throws NewRelicApiException {
-        HttpRequest request = api.get(CONDITIONS_URL).queryString("policy_id", policyId);
-        return api.asObject(request, AlertsExternalServiceConditionList.class).getList();
-    }
+    List<AlertsExternalServiceCondition> list(int policyId) throws NewRelicApiException;
 
     /**
      * Creates Alerts Condition for external service instance within specified policy.
@@ -40,13 +23,8 @@ public class AlertsExternalServiceConditionsApi extends ApiBase {
      * @return created {@link AlertsExternalServiceCondition}
      * @throws NewRelicApiException when received error response
      */
-    public AlertsExternalServiceCondition create(int policyId, AlertsExternalServiceCondition condition)
-            throws NewRelicApiException {
-        RequestBodyEntity request = api.post(CONDITION_POLICY_URL)
-                .routeParam("policy_id", String.valueOf(policyId))
-                .body(new AlertsExternalServiceConditionWrapper(condition));
-        return api.asObject(request, AlertsExternalServiceConditionWrapper.class).getExternalServiceCondition();
-    }
+    AlertsExternalServiceCondition create(int policyId, AlertsExternalServiceCondition condition)
+            throws NewRelicApiException;
 
     /**
      * Updates Alerts Condition for external service definition.
@@ -56,13 +34,8 @@ public class AlertsExternalServiceConditionsApi extends ApiBase {
      * @return created {@link AlertsExternalServiceCondition}
      * @throws NewRelicApiException when received error response
      */
-    public AlertsExternalServiceCondition update(int conditionId, AlertsExternalServiceCondition condition)
-            throws NewRelicApiException {
-        RequestBodyEntity request = api.put(CONDITION_URL)
-                .routeParam("condition_id", String.valueOf(conditionId))
-                .body(new AlertsExternalServiceConditionWrapper(condition));
-        return api.asObject(request, AlertsExternalServiceConditionWrapper.class).getExternalServiceCondition();
-    }
+    AlertsExternalServiceCondition update(int conditionId, AlertsExternalServiceCondition condition)
+            throws NewRelicApiException;
 
     /**
      * Deletes Alerts Condition for external service.
@@ -71,8 +44,5 @@ public class AlertsExternalServiceConditionsApi extends ApiBase {
      * @return deleted {@link AlertsExternalServiceCondition}
      * @throws NewRelicApiException when received error response
      */
-    public AlertsExternalServiceCondition delete(int conditionId) throws NewRelicApiException {
-        HttpRequest request = api.delete(CONDITION_URL).routeParam("condition_id", String.valueOf(conditionId));
-        return api.asObject(request, AlertsExternalServiceConditionWrapper.class).getExternalServiceCondition();
-    }
+    AlertsExternalServiceCondition delete(int conditionId) throws NewRelicApiException;
 }

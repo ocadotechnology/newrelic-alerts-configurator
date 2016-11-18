@@ -1,25 +1,11 @@
 package com.ocado.pandateam.newrelic.api;
 
-import com.mashape.unirest.request.HttpRequest;
-import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
-import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
-import com.ocado.pandateam.newrelic.api.model.conditions.AlertsConditionList;
-import com.ocado.pandateam.newrelic.api.model.conditions.AlertsConditionWrapper;
 
 import java.util.List;
 
-public class AlertsConditionsApi extends ApiBase {
-
-    private static final String CONDITIONS_URL = "/v2/alerts_conditions";
-    private static final String CONDITION_URL = "/v2/alerts_conditions/{condition_id}.json";
-    private static final String CONDITION_POLICY_URL = "/v2/alerts_conditions/policies/{policy_id}.json";
-
-    AlertsConditionsApi(NewRelicRestClient api) {
-        super(api);
-    }
-
+public interface AlertsConditionsApi {
     /**
      * Lists Alerts Conditions for the given policy.
      *
@@ -27,10 +13,7 @@ public class AlertsConditionsApi extends ApiBase {
      * @return list of all existing {@link AlertsCondition} from the given policy
      * @throws NewRelicApiException when received error response
      */
-    public List<AlertsCondition> list(int policyId) throws NewRelicApiException {
-        HttpRequest request = api.get(CONDITIONS_URL).queryString("policy_id", policyId);
-        return api.asObject(request, AlertsConditionList.class).getList();
-    }
+    List<AlertsCondition> list(int policyId) throws NewRelicApiException;
 
     /**
      * Creates Alerts Condition instance within specified policy.
@@ -40,12 +23,7 @@ public class AlertsConditionsApi extends ApiBase {
      * @return created {@link AlertsCondition}
      * @throws NewRelicApiException when received error response
      */
-    public AlertsCondition create(int policyId, AlertsCondition condition) throws NewRelicApiException {
-        RequestBodyEntity request = api.post(CONDITION_POLICY_URL)
-                .routeParam("policy_id", String.valueOf(policyId))
-                .body(new AlertsConditionWrapper(condition));
-        return api.asObject(request, AlertsConditionWrapper.class).getCondition();
-    }
+    AlertsCondition create(int policyId, AlertsCondition condition) throws NewRelicApiException;
 
     /**
      * Updates Alerts Condition definition.
@@ -55,12 +33,7 @@ public class AlertsConditionsApi extends ApiBase {
      * @return created {@link AlertsCondition}
      * @throws NewRelicApiException when received error response
      */
-    public AlertsCondition update(int conditionId, AlertsCondition condition) throws NewRelicApiException {
-        RequestBodyEntity request = api.put(CONDITION_URL)
-                .routeParam("condition_id", String.valueOf(conditionId))
-                .body(new AlertsConditionWrapper(condition));
-        return api.asObject(request, AlertsConditionWrapper.class).getCondition();
-    }
+    AlertsCondition update(int conditionId, AlertsCondition condition) throws NewRelicApiException;
 
     /**
      * Deletes Alerts Condition.
@@ -69,8 +42,5 @@ public class AlertsConditionsApi extends ApiBase {
      * @return deleted {@link AlertsCondition}
      * @throws NewRelicApiException when received error response
      */
-    public AlertsCondition delete(int conditionId) throws NewRelicApiException {
-        HttpRequest request = api.delete(CONDITION_URL).routeParam("condition_id", String.valueOf(conditionId));
-        return api.asObject(request, AlertsConditionWrapper.class).getCondition();
-    }
+    AlertsCondition delete(int conditionId) throws NewRelicApiException;
 }

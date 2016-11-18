@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
-public class NewRelicRequestConstants {
+class NewRelicRequestConstants {
 
     static final String CONTENT_TYPE_HEADER = "Content-Type";
 
@@ -12,5 +12,5 @@ public class NewRelicRequestConstants {
 
     static final String APPLICATION_JSON_UTF_8 = "application/json;charset=UTF-8";
 
-    public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+    static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
 }
