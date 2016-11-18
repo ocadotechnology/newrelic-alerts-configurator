@@ -21,6 +21,8 @@ public class NewRelicApi {
 
     private final AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApi;
 
+    private final KeyTransactionsApi keyTransactionsApi;
+
     /**
      * NewRelic API constructor.
      *
@@ -43,5 +45,6 @@ public class NewRelicApi {
         alertsPoliciesApi = internalApi.getAlertsPoliciesApi();
         alertsConditionsApi = internalApi.getAlertsConditionsApi();
         alertsExternalServiceConditionsApi = internalApi.getAlertsExternalServiceConditionsApi();
+        keyTransactionsApi = internalApi.getKeyTransactionsApi();
     }
 }
