@@ -5,6 +5,8 @@ import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannelConfiguratio
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Map;
+
 import static java.lang.String.format;
 
 public final class ChannelUtils {
@@ -27,10 +29,19 @@ public final class ChannelUtils {
             && StringUtils.equals(alertsChannelConfiguration1.getRecipients(), alertsChannelConfiguration2.getRecipients())
             && StringUtils.equals(alertsChannelConfiguration1.getPayloadType(), alertsChannelConfiguration2.getPayloadType())
             && StringUtils.equals(alertsChannelConfiguration1.getPayload(), alertsChannelConfiguration2.getPayload())
-            && alertsChannelConfiguration1.getHeaders().equals(alertsChannelConfiguration2.getHeaders())
+            && headersEquals(alertsChannelConfiguration1.getHeaders(), alertsChannelConfiguration2.getHeaders())
             && StringUtils.equals(alertsChannelConfiguration1.getBaseUrl(), alertsChannelConfiguration2.getBaseUrl())
             && StringUtils.equals(alertsChannelConfiguration1.getAuthUsername(), alertsChannelConfiguration2.getAuthUsername())
             && StringUtils.equals(alertsChannelConfiguration1.getAuthPassword(), alertsChannelConfiguration2.getAuthPassword());
+    }
+
+    private static boolean headersEquals(Map<String, String> headers1, Map<String, String> headers2) {
+        if (headers1 == null && headers2 == null) {
+            return true;
+        } else if (headers1 != null && headers2 != null) {
+            return headers1.equals(headers2);
+        }
+        return false;
     }
 
     public static AlertsChannelConfiguration generateAlertsChannelConfiguration(Channel channel) {
