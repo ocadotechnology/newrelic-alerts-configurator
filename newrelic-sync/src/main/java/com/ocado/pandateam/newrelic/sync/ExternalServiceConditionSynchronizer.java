@@ -31,7 +31,7 @@ class ExternalServiceConditionSynchronizer {
     }
 
     void sync() {
-        LOG.info(format("Synchronizing external service alerts conditions for policy %s...", config.getPolicyName()));
+        LOG.info("Synchronizing external service alerts conditions for policy {}...", config.getPolicyName());
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
@@ -45,7 +45,7 @@ class ExternalServiceConditionSynchronizer {
 
         cleanupOldAlertsExternalServiceConditions(policy, allAlertsExternalServiceConditions,
             updatedAlertsExternalServiceConditionsIds);
-        LOG.info(format("External service alerts conditions for policy %s synchronized!", config.getPolicyName()));
+        LOG.info("External service alerts conditions for policy {} synchronized", config.getPolicyName());
     }
 
     private List<Integer> createOrUpdateAlertsExternalServiceConditions(AlertsPolicy policy,
@@ -63,14 +63,14 @@ class ExternalServiceConditionSynchronizer {
                 if (alertsConditionToUpdate.isPresent()) {
                     AlertsExternalServiceCondition updatedCondition = api.getAlertsExternalServiceConditionsApi().update(
                         alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
-                    LOG.info(format("External service alerts condition %s (id: %d) updated for policy %s (id: %d)",
-                        updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId()));
+                    LOG.info("External service alerts condition {} (id: {}) updated for policy {} (id: {})",
+                        updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId());
                     updatedAlertConditions.add(updatedCondition);
                 } else {
                     AlertsExternalServiceCondition newCondition = api.getAlertsExternalServiceConditionsApi().create(
                         policy.getId(), alertConditionFromConfig);
-                    LOG.info(format("External service alerts condition %s (id: %d) created for policy %s (id: %d)",
-                        newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId()));
+                    LOG.info("External service alerts condition {} (id: {}) created for policy {} (id: {})",
+                        newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId());
                 }
             }
         );
@@ -88,8 +88,8 @@ class ExternalServiceConditionSynchronizer {
             .forEach(
                 alertsCondition -> {
                     api.getAlertsExternalServiceConditionsApi().delete(alertsCondition.getId());
-                    LOG.info(format("External service alerts condition %s (id: %d) removed from policy %s (id: %d)",
-                        alertsCondition.getName(), alertsCondition.getId(), policy.getName(), policy.getId()));
+                    LOG.info("External service alerts condition {} (id: {}) removed from policy {} (id: {})",
+                        alertsCondition.getName(), alertsCondition.getId(), policy.getName(), policy.getId());
                 }
             );
     }

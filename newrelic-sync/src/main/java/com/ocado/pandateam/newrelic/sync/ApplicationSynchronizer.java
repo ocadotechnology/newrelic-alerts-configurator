@@ -23,7 +23,7 @@ class ApplicationSynchronizer {
     }
 
     void sync() {
-        LOG.info(format("Synchronizing application %s...", config.getApplicationName()));
+        LOG.info("Synchronizing application {}...", config.getApplicationName());
 
         Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());
         Application application = applicationOptional.orElseThrow(
@@ -41,7 +41,7 @@ class ApplicationSynchronizer {
             .build();
 
         api.getApplicationsApi().update(application.getId(), applicationUpdate);
-        LOG.info(format("Application %s synchronized!", config.getApplicationName()));
+        LOG.info("Application {} synchronized", config.getApplicationName());
     }
 
 }

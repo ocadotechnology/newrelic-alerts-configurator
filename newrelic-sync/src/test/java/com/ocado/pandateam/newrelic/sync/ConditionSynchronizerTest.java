@@ -22,14 +22,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.InOrder;
 
 import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
@@ -103,10 +103,11 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
-        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
-        verifyNoMoreInteractions(alertsConditionsApiMock);
+        InOrder order = inOrder(alertsConditionsApiMock);
+        order.verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
+        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
+        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
+        order.verifyNoMoreInteractions();
     }
 
     @Test
@@ -121,10 +122,11 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsConditionsApiMock).update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED));
-        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
-        verifyNoMoreInteractions(alertsConditionsApiMock);
+        InOrder order = inOrder(alertsConditionsApiMock);
+        order.verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
+        order.verify(alertsConditionsApiMock).update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED));
+        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
+        order.verifyNoMoreInteractions();
     }
 
     @Test
@@ -138,11 +140,12 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
-        verify(alertsConditionsApiMock).delete(eq(ALERTS_CONDITION_DIFFERENT.getId()));
-        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
-        verifyNoMoreInteractions(alertsConditionsApiMock);
+        InOrder order = inOrder(alertsConditionsApiMock);
+        order.verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
+        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
+        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
+        order.verify(alertsConditionsApiMock).delete(eq(ALERTS_CONDITION_DIFFERENT.getId()));
+        order.verifyNoMoreInteractions();
     }
 
     private static ConditionConfiguration createConfiguration() {

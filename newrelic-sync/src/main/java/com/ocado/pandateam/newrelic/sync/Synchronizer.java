@@ -26,39 +26,34 @@ public class Synchronizer {
     public void sync() {
         NewRelicApi api = new NewRelicApi(apiKey);
         if (applicationConfigurations != null) {
-            applicationConfigurations.stream().forEach(
-                configuration -> {
-                    ApplicationSynchronizer synchronizer = new ApplicationSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
+            for (ApplicationConfiguration configuration : applicationConfigurations) {
+                ApplicationSynchronizer synchronizer = new ApplicationSynchronizer(api, configuration);
+                synchronizer.sync();
+            }
         }
         if (policyConfigurations != null) {
-            policyConfigurations.stream().forEach(
-                configuration -> {
-                    PolicySynchronizer synchronizer = new PolicySynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
+            for (PolicyConfiguration configuration : policyConfigurations) {
+                PolicySynchronizer synchronizer = new PolicySynchronizer(api, configuration);
+                synchronizer.sync();
+            }
         }
         if (conditionConfigurations != null) {
-            conditionConfigurations.stream().forEach(
-                configuration -> {
-                    ConditionSynchronizer synchronizer = new ConditionSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
+            for (ConditionConfiguration configuration : conditionConfigurations) {
+                ConditionSynchronizer synchronizer = new ConditionSynchronizer(api, configuration);
+                synchronizer.sync();
+            }
         }
         if (externalServiceConditionConfigurations != null) {
-            externalServiceConditionConfigurations.stream().forEach(
-                configuration -> {
-                    ExternalServiceConditionSynchronizer synchronizer = new ExternalServiceConditionSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
+            for (ExternalServiceConditionConfiguration configuration : externalServiceConditionConfigurations) {
+                ExternalServiceConditionSynchronizer synchronizer = new ExternalServiceConditionSynchronizer(api, configuration);
+                synchronizer.sync();
+            }
         }
         if (channelConfigurations != null) {
-            channelConfigurations.stream().forEach(
-                configuration -> {
-                    ChannelSynchronizer synchronizer = new ChannelSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
+            for (ChannelConfiguration configuration : channelConfigurations) {
+                ChannelSynchronizer synchronizer = new ChannelSynchronizer(api, configuration);
+                synchronizer.sync();
+            }
         }
     }
 

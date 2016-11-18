@@ -32,11 +32,7 @@ abstract class AbstractSynchronizerTest {
     KeyTransactionsApi keyTransactionsApiMock;
 
     @Before
-    public void setUpApi() {
-        mockApi();
-    }
-
-    private void mockApi() {
+    public void mockApi() {
         when(apiMock.getApplicationsApi()).thenReturn(applicationsApiMock);
         when(apiMock.getAlertsChannelsApi()).thenReturn(alertsChannelsApiMock);
         when(apiMock.getAlertsPoliciesApi()).thenReturn(alertsPoliciesApiMock);

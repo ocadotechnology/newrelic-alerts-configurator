@@ -20,14 +20,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.InOrder;
 
 import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 public class ExternalServiceConditionSynchronizerTest extends AbstractSynchronizerTest {
@@ -62,14 +61,14 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
     @Before
     public void setUp() {
         testee = new ExternalServiceConditionSynchronizer(apiMock, configuration);
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
         when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.of(APPLICATION));
     }
 
     @Test
     public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
@@ -82,51 +81,54 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
     @Test
     public void shouldCreateCondition() {
         // given
-        when(alertsExternalServiceConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of());
-        when(alertsExternalServiceConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED)))
+        when(alertsExternalServiceConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of());
+        when(alertsExternalServiceConditionsApiMock.create(POLICY.getId(), ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED))
             .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_SAME);
 
         // when
         testee.sync();
 
         // then
-        verify(alertsExternalServiceConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsExternalServiceConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED));
-        verifyNoMoreInteractions(alertsExternalServiceConditionsApiMock);
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsExternalServiceConditionsApiMock).create(POLICY.getId(), ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldUpdateCondition() {
         // given
-        when(alertsExternalServiceConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED));
-        when(alertsExternalServiceConditionsApiMock.update(eq(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED)))
+        when(alertsExternalServiceConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED));
+        when(alertsExternalServiceConditionsApiMock.update(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED.getId(), ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED))
             .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED);
 
         // when
         testee.sync();
 
         // then
-        verify(alertsExternalServiceConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsExternalServiceConditionsApiMock).update(eq(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED));
-        verifyNoMoreInteractions(alertsExternalServiceConditionsApiMock);
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsExternalServiceConditionsApiMock).update(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED.getId(), ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldRemoveOldCondition() {
         // given
-        when(alertsExternalServiceConditionsApiMock.list(eq(POLICY.getId())))
+        when(alertsExternalServiceConditionsApiMock.list(POLICY.getId()))
             .thenReturn(ImmutableList.of(ALERTS_EXTERNAL_SERVICE_CONDITION_DIFFERENT));
-        when(alertsExternalServiceConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED)))
+        when(alertsExternalServiceConditionsApiMock.create(POLICY.getId(), ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED))
             .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_SAME);
 
         // when
         testee.sync();
 
         // then
-        verify(alertsExternalServiceConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsExternalServiceConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED));
-        verify(alertsExternalServiceConditionsApiMock).delete(eq(ALERTS_EXTERNAL_SERVICE_CONDITION_DIFFERENT.getId()));
-        verifyNoMoreInteractions(alertsExternalServiceConditionsApiMock);
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsExternalServiceConditionsApiMock).create(POLICY.getId(), ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED);
+        order.verify(alertsExternalServiceConditionsApiMock).delete(ALERTS_EXTERNAL_SERVICE_CONDITION_DIFFERENT.getId());
+        order.verifyNoMoreInteractions();
     }
 
     private static ExternalServiceConditionConfiguration createConfiguration() {

@@ -18,15 +18,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.InOrder;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
@@ -59,15 +58,15 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public void setUp() {
         testee = new ChannelSynchronizer(apiMock, configuration);
 
-        when(alertsChannelsApiMock.create(eq(EMAIL_CHANNEL_CONFIG_MAPPED))).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
-        when(alertsChannelsApiMock.create(eq(SLACK_CHANNEL_CONFIG_MAPPED))).thenReturn(SLACK_ALERT_CHANNEL_SAME);
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
+        when(alertsChannelsApiMock.create(EMAIL_CHANNEL_CONFIG_MAPPED)).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
+        when(alertsChannelsApiMock.create(SLACK_CHANNEL_CONFIG_MAPPED)).thenReturn(SLACK_ALERT_CHANNEL_SAME);
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
     }
 
     @Test
     public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
@@ -85,8 +84,9 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verifyChannelsAdded();
-        verifyNoMoreInteractions(alertsChannelsApiMock);
+        InOrder order = inOrder(alertsChannelsApiMock);
+        verifyChannelsAdded(order);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
@@ -98,12 +98,13 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verify(alertsChannelsApiMock).list();
-        verify(alertsChannelsApiMock).deleteFromPolicy(eq(POLICY.getId()), eq(EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId()));
-        verify(alertsChannelsApiMock).delete(eq(EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId()));
-        verify(alertsChannelsApiMock).create(eq(EMAIL_CHANNEL_CONFIG_MAPPED));
-        verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL_CONFIG_MAPPED));
-        verifyNoMoreInteractions(alertsChannelsApiMock);
+        InOrder order = inOrder(alertsChannelsApiMock);
+        order.verify(alertsChannelsApiMock).list();
+        order.verify(alertsChannelsApiMock).create(EMAIL_CHANNEL_CONFIG_MAPPED);
+        order.verify(alertsChannelsApiMock).create(SLACK_CHANNEL_CONFIG_MAPPED);
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId());
+        order.verify(alertsChannelsApiMock).delete(EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId());
+        order.verifyNoMoreInteractions();
     }
 
     @Test
@@ -114,9 +115,10 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verify(alertsChannelsApiMock).list();
-        verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL_CONFIG_MAPPED));
-        verifyNoMoreInteractions(alertsChannelsApiMock);
+        InOrder order = inOrder(alertsChannelsApiMock);
+        order.verify(alertsChannelsApiMock).list();
+        order.verify(alertsChannelsApiMock).create(SLACK_CHANNEL_CONFIG_MAPPED);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
@@ -135,10 +137,11 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verifyChannelsAdded();
-        verify(alertsPoliciesApiMock).updateChannels(eq(expected));
-        verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId());
-        verifyNoMoreInteractions(alertsChannelsApiMock);
+        InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
+        verifyChannelsAdded(order);
+        order.verify(alertsPoliciesApiMock).updateChannels(expected);
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId());
+        order.verifyNoMoreInteractions();
     }
 
     @Test
@@ -157,17 +160,18 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verifyChannelsAdded();
-        verify(alertsPoliciesApiMock).updateChannels(eq(expected));
-        verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId());
-        verify(alertsChannelsApiMock).delete(channelWithOnlyCurrentPolicyId.getId());
-        verifyNoMoreInteractions(alertsChannelsApiMock);
+        InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
+        verifyChannelsAdded(order);
+        order.verify(alertsPoliciesApiMock).updateChannels(expected);
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId());
+        order.verify(alertsChannelsApiMock).delete(channelWithOnlyCurrentPolicyId.getId());
+        order.verifyNoMoreInteractions();
     }
 
-    private void verifyChannelsAdded() {
-        verify(alertsChannelsApiMock).list();
-        verify(alertsChannelsApiMock).create(eq(EMAIL_CHANNEL_CONFIG_MAPPED));
-        verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL_CONFIG_MAPPED));
+    private void verifyChannelsAdded(InOrder order) {
+        order.verify(alertsChannelsApiMock).list();
+        order.verify(alertsChannelsApiMock).create(EMAIL_CHANNEL_CONFIG_MAPPED);
+        order.verify(alertsChannelsApiMock).create(SLACK_CHANNEL_CONFIG_MAPPED);
     }
 
     private static AlertsChannel createAlertChannel(String name, String type, AlertsChannelConfiguration config) {

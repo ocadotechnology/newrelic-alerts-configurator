@@ -12,7 +12,6 @@ import org.junit.rules.ExpectedException;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +37,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
     @Test
     public void shouldThrowException_whenApplicationDoesNotExist() {
         // given
-        when(applicationsApiMock.getByName(eq(APPLICATION_NAME))).thenReturn(Optional.empty());
+        when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.empty());
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
@@ -51,7 +50,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
     @Test
     public void shouldUpdateApplication() {
         // given
-        when(applicationsApiMock.getByName(eq(APPLICATION_NAME))).thenReturn(Optional.of(APPLICATION));
+        when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.of(APPLICATION));
 
         ApplicationSettings expectedSettings = ApplicationSettings.builder()
             .appApdexThreshold(APP_APDEX_THRESHOLD)
@@ -67,7 +66,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
         testee.sync();
 
         // then
-        verify(applicationsApiMock).update(eq(APPLICATION.getId()), eq(expectedApplicationUpdate));
+        verify(applicationsApiMock).update(APPLICATION.getId(), expectedApplicationUpdate);
     }
 
     private ApplicationConfiguration createConfiguration() {

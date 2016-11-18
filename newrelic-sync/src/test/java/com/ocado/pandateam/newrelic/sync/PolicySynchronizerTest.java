@@ -4,12 +4,11 @@ import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 
 import java.util.Optional;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 public class PolicySynchronizerTest extends AbstractSynchronizerTest {
@@ -29,45 +28,48 @@ public class PolicySynchronizerTest extends AbstractSynchronizerTest {
     @Test
     public void shouldCreateNewPolicy_whenPolicyDoesNotExist() {
         // given
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
         AlertsPolicy expectedPolicy = AlertsPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
 
         // when
         testee.sync();
 
         // then
-        verify(alertsPoliciesApiMock).getByName(eq(POLICY_NAME));
-        verify(alertsPoliciesApiMock).create(eq(expectedPolicy));
-        verifyNoMoreInteractions(alertsPoliciesApiMock);
+        InOrder order = inOrder(alertsPoliciesApiMock);
+        order.verify(alertsPoliciesApiMock).getByName(POLICY_NAME);
+        order.verify(alertsPoliciesApiMock).create(expectedPolicy);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldDeleteAndCreateNewPolicy_whenPolicyUpdated() {
         // given
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(ALERT_POLICY_DIFFERENT));
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(ALERT_POLICY_DIFFERENT));
         AlertsPolicy expectedPolicy = AlertsPolicy.builder().name(POLICY_NAME).incidentPreference(INCIDENT_PREFERENCE.name()).build();
 
         // when
         testee.sync();
 
         // then
-        verify(alertsPoliciesApiMock).getByName(eq(POLICY_NAME));
-        verify(alertsPoliciesApiMock).delete(ALERT_POLICY_DIFFERENT.getId());
-        verify(alertsPoliciesApiMock).create(eq(expectedPolicy));
-        verifyNoMoreInteractions(alertsPoliciesApiMock);
+        InOrder order = inOrder(alertsPoliciesApiMock);
+        order.verify(alertsPoliciesApiMock).getByName(POLICY_NAME);
+        order.verify(alertsPoliciesApiMock).delete(ALERT_POLICY_DIFFERENT.getId());
+        order.verify(alertsPoliciesApiMock).create(expectedPolicy);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldDoNothing_whenPolicyNotUpdated() {
         // given
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(ALERT_POLICY_SAME));
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(ALERT_POLICY_SAME));
 
         // when
         testee.sync();
 
         // then
-        verify(alertsPoliciesApiMock).getByName(eq(POLICY_NAME));
-        verifyNoMoreInteractions(alertsPoliciesApiMock);
+        InOrder order = inOrder(alertsPoliciesApiMock);
+        order.verify(alertsPoliciesApiMock).getByName(POLICY_NAME);
+        order.verifyNoMoreInteractions();
     }
 
     private static AlertsPolicy createAlertPolicy(int id, PolicyConfiguration.IncidentPreference incidentPreference) {
