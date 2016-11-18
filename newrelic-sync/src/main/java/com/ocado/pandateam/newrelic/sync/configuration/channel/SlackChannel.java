@@ -13,9 +13,4 @@ public class SlackChannel implements Channel {
     @NonNull
     private String slackUrl;
     private String slackChannel;
-
-    @Override
-    public String getTypeString() {
-        return type.name().toLowerCase();
-    }
 }

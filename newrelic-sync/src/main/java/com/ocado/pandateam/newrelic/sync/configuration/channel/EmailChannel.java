@@ -13,9 +13,4 @@ public class EmailChannel implements Channel {
     @NonNull
     private String emailAddress;
     private Boolean includeJsonAttachment;
-
-    @Override
-    public String getTypeString() {
-        return type.name().toLowerCase();
-    }
 }
