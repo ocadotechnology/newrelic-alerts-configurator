@@ -95,7 +95,7 @@ public class Main {
                     Collections.singletonList(
                         EmailChannel.builder()
                             .channelName("Panda team")
-                            .emailAddress("core-services-internal-xd@ocado.com")
+                            .emailAddress("core-services-xd@ocado.com")
                             .includeJsonAttachment(false)
                             .build()
                     ))
