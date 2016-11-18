@@ -86,13 +86,13 @@ class NewRelicRestClient {
     }
 
     private void logRequest(BaseRequest request) {
-        log.info("{} {}",
+        LOG.info("{} {}",
                 request.getHttpRequest().getHttpMethod(),
                 request.getHttpRequest().getUrl());
     }
 
     private <T> void logResponse(BaseRequest request, HttpResponse<T> response) {
-        log.info("{} {}: {} {}",
+        LOG.info("{} {}: {} {}",
                 request.getHttpRequest().getHttpMethod(),
                 request.getHttpRequest().getUrl(),
                 response.getStatus(),
@@ -101,9 +101,9 @@ class NewRelicRestClient {
 
     private <T> void logResponseBody(HttpResponse<T> response) {
         try {
-            log.info("{}", IOUtils.toString(response.getRawBody(), StandardCharsets.UTF_8));
+            LOG.info("{}", IOUtils.toString(response.getRawBody(), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            log.error("Failed to log response body", e);
+            LOG.error("Failed to log response body", e);
         }
     }
 

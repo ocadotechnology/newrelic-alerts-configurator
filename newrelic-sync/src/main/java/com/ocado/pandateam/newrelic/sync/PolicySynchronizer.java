@@ -4,16 +4,15 @@ import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 
+@Slf4j
 class PolicySynchronizer {
-    private static final Logger LOG = Logger.getLogger(PolicySynchronizer.class.getName());
-
     private final NewRelicApi api;
     private final PolicyConfiguration config;
 

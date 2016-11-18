@@ -9,19 +9,18 @@ import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
+@Slf4j
 class ChannelSynchronizer {
-    private static final Logger LOG = Logger.getLogger(ChannelSynchronizer.class.getName());
-
     private final NewRelicApi api;
     private final ChannelConfiguration config;
 
