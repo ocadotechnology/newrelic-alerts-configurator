@@ -9,11 +9,11 @@ public interface KeyTransactionsApi {
     /**
      * Gets {@link KeyTransaction} object using its name.
      *
-     * @param name name of the key transaction registered in NewRelic
+     * @param keyTransactionName name of the key transaction registered in NewRelic
      * @return Optional containing {@link KeyTransaction} object, or empty if transaction not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
-    Optional<KeyTransaction> getByName(String name);
+    Optional<KeyTransaction> getByName(String keyTransactionName);
 
     /**
      * Gets {@link KeyTransaction} object using its name.

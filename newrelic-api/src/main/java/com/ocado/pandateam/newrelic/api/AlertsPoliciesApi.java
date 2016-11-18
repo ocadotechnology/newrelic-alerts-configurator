@@ -10,11 +10,11 @@ public interface AlertsPoliciesApi {
     /**
      * Gets {@link AlertsPolicy} object using its name.
      *
-     * @param name name of the alert policy registered in NewRelic
+     * @param alertsPolicyName name of the alert policy registered in NewRelic
      * @return Optional containing {@link AlertsPolicy} object, or empty if alert policy not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
-    Optional<AlertsPolicy> getByName(String name) throws NewRelicApiException;
+    Optional<AlertsPolicy> getByName(String alertsPolicyName) throws NewRelicApiException;
 
     /**
      * Creates Alerts Policy instance.

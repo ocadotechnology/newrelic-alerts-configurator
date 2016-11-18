@@ -18,8 +18,8 @@ class DefaultKeyTransactionsApi extends ApiBase implements KeyTransactionsApi {
     }
 
     @Override
-    public Optional<KeyTransaction> getByName(String name) {
-        HttpRequest request = api.get(KEY_TRANSACTIONS_URL).queryString("filter[name]", name);
+    public Optional<KeyTransaction> getByName(String keyTransactionName) {
+        HttpRequest request = api.get(KEY_TRANSACTIONS_URL).queryString("filter[name]", keyTransactionName);
         return api.asObject(request, KeyTransactionList.class).getSingle();
     }
 

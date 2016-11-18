@@ -9,11 +9,11 @@ public interface ApplicationsApi {
     /**
      * Gets {@link Application} object using its name.
      *
-     * @param name name of the application registered in NewRelic
+     * @param applicationName name of the application registered in NewRelic
      * @return Optional containing {@link Application} object, or empty if application not found
      * @throws NewRelicApiException when more than one response returned or received error response
      */
-    Optional<Application> getByName(String name) throws NewRelicApiException;
+    Optional<Application> getByName(String applicationName) throws NewRelicApiException;
 
     /**
      * Updates {@link Application} object.

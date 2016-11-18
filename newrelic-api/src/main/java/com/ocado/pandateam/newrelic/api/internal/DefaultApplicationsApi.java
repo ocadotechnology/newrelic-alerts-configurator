@@ -20,8 +20,8 @@ public class DefaultApplicationsApi extends ApiBase implements ApplicationsApi {
     }
 
     @Override
-    public Optional<Application> getByName(String name) throws NewRelicApiException {
-        HttpRequest request = api.get(APPLICATIONS_URL).queryString("filter[name]", name);
+    public Optional<Application> getByName(String applicationName) throws NewRelicApiException {
+        HttpRequest request = api.get(APPLICATIONS_URL).queryString("filter[name]", applicationName);
         return api.asObject(request, ApplicationList.class).getSingle();
     }
 
