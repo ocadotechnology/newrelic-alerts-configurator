@@ -4,9 +4,9 @@ import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.ApplicationsApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
+import com.ocado.pandateam.newrelic.api.internal.model.ApplicationList;
+import com.ocado.pandateam.newrelic.api.internal.model.ApplicationWrapper;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
-import com.ocado.pandateam.newrelic.api.model.applications.ApplicationList;
-import com.ocado.pandateam.newrelic.api.model.applications.ApplicationWrapper;
 
 import java.util.Optional;
 

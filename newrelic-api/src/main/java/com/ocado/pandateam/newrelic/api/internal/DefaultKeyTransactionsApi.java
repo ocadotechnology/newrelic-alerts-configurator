@@ -2,9 +2,9 @@ package com.ocado.pandateam.newrelic.api.internal;
 
 import com.mashape.unirest.request.HttpRequest;
 import com.ocado.pandateam.newrelic.api.KeyTransactionsApi;
+import com.ocado.pandateam.newrelic.api.internal.model.KeyTransactionList;
+import com.ocado.pandateam.newrelic.api.internal.model.KeyTransactionWrapper;
 import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
-import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransactionList;
-import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransactionWrapper;
 
 import java.util.Optional;
 
