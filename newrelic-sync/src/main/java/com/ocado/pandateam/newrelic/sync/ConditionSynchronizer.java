@@ -32,7 +32,7 @@ class ConditionSynchronizer {
     }
 
     void sync() {
-        LOG.info(format("Synchronizing conditions for policy %s...", config.getPolicyName()));
+        LOG.info(format("Synchronizing alerts conditions for policy %s...", config.getPolicyName()));
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
@@ -43,7 +43,7 @@ class ConditionSynchronizer {
         List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(policy, allAlertsConditions);
 
         cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
-        LOG.info(format("Conditions for policy %s synchronized!", config.getPolicyName()));
+        LOG.info(format("Alerts conditions for policy %s synchronized!", config.getPolicyName()));
     }
 
     private List<Integer> createOrUpdateAlertsConditions(AlertsPolicy policy,
@@ -61,13 +61,13 @@ class ConditionSynchronizer {
                 if (alertsConditionToUpdate.isPresent()) {
                     AlertsCondition updatedCondition = api.getAlertsConditionsApi().update(
                         alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
-                    LOG.info(format("Alert condition %s (id: %d) updated for policy %s (id: %d)",
+                    LOG.info(format("Alerts condition %s (id: %d) updated for policy %s (id: %d)",
                         updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId()));
                     updatedAlertConditions.add(updatedCondition);
                 } else {
                     AlertsCondition newCondition = api.getAlertsConditionsApi().create(
                         policy.getId(), alertConditionFromConfig);
-                    LOG.info(format("Alert condition %s (id: %d) created for policy %s (id: %d)",
+                    LOG.info(format("Alerts condition %s (id: %d) created for policy %s (id: %d)",
                         newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId()));
                 }
             }
@@ -85,7 +85,7 @@ class ConditionSynchronizer {
             .forEach(
                 alertsCondition -> {
                     api.getAlertsConditionsApi().delete(alertsCondition.getId());
-                    LOG.info(format("Alert condition %s (id: %d) removed from policy %s (id: %d)",
+                    LOG.info(format("Alerts condition %s (id: %d) removed from policy %s (id: %d)",
                         alertsCondition.getName(), alertsCondition.getId(), policy.getName(), policy.getId()));
                 }
             );

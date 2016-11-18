@@ -30,7 +30,7 @@ class ChannelSynchronizer {
     }
 
     void sync() {
-        LOG.info(format("Synchronizing channels for policy %s...", config.getPolicyName()));
+        LOG.info(format("Synchronizing alerts channels for policy %s...", config.getPolicyName()));
 
         Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
         AlertsPolicy policy = policyOptional.orElseThrow(
@@ -39,7 +39,7 @@ class ChannelSynchronizer {
         Set<Integer> policyChannelsToCleanup = createOrUpdatePolicyAlertsChannels(policy);
         cleanupPolicyAlertsChannels(policy, policyChannelsToCleanup);
 
-        LOG.info(format("Channels for policy %s synchronized!", config.getPolicyName()));
+        LOG.info(format("Alerts channels for policy %s synchronized!", config.getPolicyName()));
     }
 
     private Set<Integer> createOrUpdatePolicyAlertsChannels(AlertsPolicy policy) {
@@ -67,7 +67,7 @@ class ChannelSynchronizer {
                     .findFirst()
                     .orElseGet(() -> {
                         AlertsChannel newChannel = api.getAlertsChannelsApi().create(alertsChannelFromConfig);
-                        LOG.info(format("Channel %s (id: %d) created!", newChannel.getName(), newChannel.getId()));
+                        LOG.info(format("Alerts channel %s (id: %d) created!", newChannel.getName(), newChannel.getId()));
                         return newChannel;
                     });
 
@@ -100,14 +100,14 @@ class ChannelSynchronizer {
         policyChannelsToCleanup.stream().forEach(
             policyChannelId -> {
                 AlertsChannel removed = api.getAlertsChannelsApi().deleteFromPolicy(policy.getId(), policyChannelId);
-                LOG.info(format("Channel %s (id: %d) removed from policy %s (id: %d)!",
+                LOG.info(format("Alerts channel %s (id: %d) removed from policy %s (id: %d)!",
                     removed.getName(), removed.getId(), policy.getName(), policy.getId()));
 
                 List<Integer> currentChannelPolicyIds = removed.getLinks().getPolicyIds();
                 currentChannelPolicyIds.remove(policy.getId());
                 if (currentChannelPolicyIds.isEmpty()) {
                     api.getAlertsChannelsApi().delete(removed.getId());
-                    LOG.info(format("Channel %s (id: %d) removed!", removed.getName(), removed.getId()));
+                    LOG.info(format("Alerts channel %s (id: %d) removed!", removed.getName(), removed.getId()));
                 }
             }
         );
