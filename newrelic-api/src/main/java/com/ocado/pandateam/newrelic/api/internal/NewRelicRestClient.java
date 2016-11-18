@@ -10,6 +10,10 @@ import com.mashape.unirest.request.HttpRequestWithBody;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiHttpException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.ACCEPT_HEADER;
 import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.APPLICATION_JSON;
@@ -23,7 +27,7 @@ class NewRelicRestClient {
     private final String hostUrl;
     private final String apiKey;
 
-    public NewRelicRestClient(String hostUrl, String apiKey) {
+    NewRelicRestClient(String hostUrl, String apiKey) {
         this.hostUrl = hostUrl;
         this.apiKey = apiKey;
         Unirest.setObjectMapper(new NewRelicRequestMapper());
@@ -95,10 +99,19 @@ class NewRelicRestClient {
                 response.getStatusText());
     }
 
+    private <T> void logResponseBody(HttpResponse<T> response) {
+        try {
+            log.info("{}", IOUtils.toString(response.getRawBody(), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            log.error("Failed to log response body", e);
+        }
+    }
+
     private <T> T handleResponse(BaseRequest request, HttpResponse<T> response) throws NewRelicApiHttpException {
         if (200 <= response.getStatus() && response.getStatus() < 300) {
             return response.getBody();
         } else {
+            logResponseBody(response);
             throw new NewRelicApiHttpException(request, response);
         }
     }
