@@ -13,15 +13,15 @@ public final class ChannelUtils {
     private ChannelUtils() {
     }
 
-    public static boolean sameInstance(AlertsChannel alertChannel1, AlertsChannel alertChannel2) {
-        return StringUtils.equals(alertChannel1.getName(), alertChannel2.getName())
-            && StringUtils.equals(alertChannel1.getType(), alertChannel2.getType());
+    public static boolean sameInstance(AlertsChannel alertsChannel1, AlertsChannel alertsChannel2) {
+        return StringUtils.equals(alertsChannel1.getName(), alertsChannel2.getName())
+            && StringUtils.equals(alertsChannel1.getType(), alertsChannel2.getType());
     }
 
-    public static boolean same(AlertsChannel alertChannel1, AlertsChannel alertChannel2) {
-        AlertsChannelConfiguration alertsChannelConfiguration1 = alertChannel1.getConfiguration();
-        AlertsChannelConfiguration alertsChannelConfiguration2 = alertChannel2.getConfiguration();
-        return sameInstance(alertChannel1, alertChannel2)
+    public static boolean same(AlertsChannel alertsChannel1, AlertsChannel alertsChannel2) {
+        AlertsChannelConfiguration alertsChannelConfiguration1 = alertsChannel1.getConfiguration();
+        AlertsChannelConfiguration alertsChannelConfiguration2 = alertsChannel2.getConfiguration();
+        return sameInstance(alertsChannel1, alertsChannel2)
             && StringUtils.equals(alertsChannelConfiguration1.getUserId(), alertsChannelConfiguration2.getUserId())
             && StringUtils.equals(alertsChannelConfiguration1.getChannel(), alertsChannelConfiguration2.getChannel())
             && StringUtils.equals(alertsChannelConfiguration1.getUrl(), alertsChannelConfiguration2.getUrl())
