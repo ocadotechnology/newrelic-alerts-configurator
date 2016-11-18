@@ -18,7 +18,7 @@ import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants
 import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.X_API_KEY_HEADER;
 
 @Slf4j
-public class NewRelicRestClient {
+class NewRelicRestClient {
 
     private final String hostUrl;
     private final String apiKey;
@@ -29,35 +29,35 @@ public class NewRelicRestClient {
         Unirest.setObjectMapper(new NewRelicRequestMapper());
     }
 
-    public GetRequest get(String url) {
+    GetRequest get(String url) {
         return prepareRequest(Unirest.get(hostUrl + url));
     }
 
-    public HttpRequestWithBody put(String url) {
+    HttpRequestWithBody put(String url) {
         return put(url, APPLICATION_JSON_UTF_8);
     }
 
-    public HttpRequestWithBody put(String url, String contentType) {
+    HttpRequestWithBody put(String url, String contentType) {
         return prepareRequest(Unirest.put(hostUrl + url), contentType);
     }
 
-    public HttpRequestWithBody post(String url) {
+    HttpRequestWithBody post(String url) {
         return post(url, APPLICATION_JSON_UTF_8);
     }
 
-    public HttpRequestWithBody post(String url, String contentType) {
+    HttpRequestWithBody post(String url, String contentType) {
         return prepareRequest(Unirest.post(hostUrl + url), contentType);
     }
 
-    public HttpRequest delete(String url) {
+    HttpRequest delete(String url) {
         return delete(url, APPLICATION_JSON_UTF_8);
     }
 
-    public HttpRequest delete(String url, String contentType) {
+    HttpRequest delete(String url, String contentType) {
         return prepareRequest(Unirest.delete(hostUrl + url), contentType);
     }
 
-    public <T> T asObject(BaseRequest request, Class<T> responseType) throws NewRelicApiException {
+    <T> T asObject(BaseRequest request, Class<T> responseType) throws NewRelicApiException {
         try {
             logRequest(request);
             HttpResponse<T> response = request.asObject(responseType);

@@ -1,6 +1,7 @@
-package com.ocado.pandateam.newrelic.api.model.conditions.external;
+package com.ocado.pandateam.newrelic.api.internal.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 import lombok.Value;
 
 @Value

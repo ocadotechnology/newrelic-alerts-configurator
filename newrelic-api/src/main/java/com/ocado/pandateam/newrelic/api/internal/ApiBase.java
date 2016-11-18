@@ -1,6 +1,4 @@
-package com.ocado.pandateam.newrelic.api;
-
-import com.ocado.pandateam.newrelic.api.internal.NewRelicRestClient;
+package com.ocado.pandateam.newrelic.api.internal;
 
 abstract class ApiBase {
 
