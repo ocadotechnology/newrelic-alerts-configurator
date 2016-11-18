@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,8 +29,7 @@ class ChannelSynchronizer {
     void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing alerts channels for policy {}...", config.getPolicyName());
 
-        Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
-        AlertsPolicy policy = policyOptional.orElseThrow(
+        AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
         List<AlertsChannel> alertsChannelsFromConfig = config.getChannels().stream()

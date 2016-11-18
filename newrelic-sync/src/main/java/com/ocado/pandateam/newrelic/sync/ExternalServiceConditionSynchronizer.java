@@ -31,8 +31,7 @@ class ExternalServiceConditionSynchronizer {
     void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing external service alerts conditions for policy {}...", config.getPolicyName());
 
-        Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
-        AlertsPolicy policy = policyOptional.orElseThrow(
+        AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
 

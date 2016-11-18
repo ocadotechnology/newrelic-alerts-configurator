@@ -8,8 +8,6 @@ import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
-
 import static java.lang.String.format;
 
 @Slf4j
@@ -23,8 +21,7 @@ class ApplicationSynchronizer {
     void sync(@NonNull ApplicationConfiguration config) {
         LOG.info("Synchronizing application {}...", config.getApplicationName());
 
-        Optional<Application> applicationOptional = api.getApplicationsApi().getByName(config.getApplicationName());
-        Application application = applicationOptional.orElseThrow(
+        Application application = api.getApplicationsApi().getByName(config.getApplicationName()).orElseThrow(
             () -> new NewRelicSyncException(format("Application %s does not exist", config.getApplicationName())));
 
         ApplicationSettings settings = ApplicationSettings.builder()
