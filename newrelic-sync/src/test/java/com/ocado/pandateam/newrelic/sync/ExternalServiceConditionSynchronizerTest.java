@@ -78,6 +78,22 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
     }
 
     @Test
+    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+            .policyName(POLICY_NAME)
+            .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verifyNoMoreInteractions();
+    }
+
+    @Test
     public void shouldCreateCondition() {
         // given
         when(alertsExternalServiceConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of());

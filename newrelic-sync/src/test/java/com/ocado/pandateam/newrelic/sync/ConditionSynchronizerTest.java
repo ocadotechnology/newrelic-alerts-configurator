@@ -27,7 +27,6 @@ import org.mockito.InOrder;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
@@ -73,7 +72,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     @Before
     public void setUp() {
         testee = new ConditionSynchronizer(apiMock);
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
         when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.of(APPLICATION));
         when(keyTransactionsApiMock.getByName(KEY_TRANSACTION_NAME)).thenReturn(Optional.of(KEY_TRANSACTION));
     }
@@ -81,7 +80,7 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     @Test
     public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
@@ -92,58 +91,74 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
+    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+            .policyName(POLICY_NAME)
+            .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        InOrder order = inOrder(alertsConditionsApiMock);
+        order.verify(alertsConditionsApiMock).list(POLICY.getId());
+        order.verifyNoMoreInteractions();
+    }
+
+    @Test
     public void shouldCreateCondition() {
         // given
-        when(alertsConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of());
-        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_SAME);
-        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
+        when(alertsConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of());
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_SAME);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED)).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
-        order.verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
-        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
-        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
+        order.verify(alertsConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_MAPPED);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED);
         order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldUpdateCondition() {
         // given
-        when(alertsConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of(ALERTS_CONDITION_UPDATED));
-        when(alertsConditionsApiMock.update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_UPDATED);
-        when(alertsConditionsApiMock.update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_UPDATED);
-        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
+        when(alertsConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of(ALERTS_CONDITION_UPDATED));
+        when(alertsConditionsApiMock.update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_UPDATED);
+        when(alertsConditionsApiMock.update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_UPDATED);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED)).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
-        order.verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
-        order.verify(alertsConditionsApiMock).update(eq(ALERTS_CONDITION_UPDATED.getId()), eq(ALERTS_CONDITION_MAPPED));
-        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
+        order.verify(alertsConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsConditionsApiMock).update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_MAPPED);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED);
         order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldRemoveOldCondition() {
         // given
-        when(alertsConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of(ALERTS_CONDITION_DIFFERENT));
-        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED))).thenReturn(ALERTS_CONDITION_SAME);
-        when(alertsConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED))).thenReturn(ALERTS_CONDITION_KT_SAME);
+        when(alertsConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of(ALERTS_CONDITION_DIFFERENT));
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_SAME);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED)).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync(CONFIGURATION);
 
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
-        order.verify(alertsConditionsApiMock).list(eq(POLICY.getId()));
-        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_MAPPED));
-        order.verify(alertsConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_CONDITION_KT_MAPPED));
-        order.verify(alertsConditionsApiMock).delete(eq(ALERTS_CONDITION_DIFFERENT.getId()));
+        order.verify(alertsConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_MAPPED);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED);
+        order.verify(alertsConditionsApiMock).delete(ALERTS_CONDITION_DIFFERENT.getId());
         order.verifyNoMoreInteractions();
     }
 
