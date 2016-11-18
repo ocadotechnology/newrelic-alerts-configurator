@@ -1,6 +1,7 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannel;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannelConfiguration;
@@ -92,11 +93,13 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public void shouldRemoveSameInstanceChannelsAndCreateNewOne_whenChannelUpdated() {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAMEINSTANCE, EMAIL_ALERT_CHANNEL_DIFFERENT));
+        when(alertsChannelsApiMock.deleteFromPolicy(POLICY.getId(), EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId())).thenReturn(EMAIL_ALERT_CHANNEL_SAMEINSTANCE);
         // when
         testee.sync();
 
         // then
         verify(alertsChannelsApiMock).list();
+        verify(alertsChannelsApiMock).deleteFromPolicy(eq(POLICY.getId()), eq(EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId()));
         verify(alertsChannelsApiMock).delete(eq(EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId()));
         verify(alertsChannelsApiMock).create(eq(EMAIL_CHANNEL_CONFIG_MAPPED));
         verify(alertsChannelsApiMock).create(eq(SLACK_CHANNEL_CONFIG_MAPPED));
@@ -125,7 +128,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
             .policyId(POLICY.getId())
-            .channelIds(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
+            .channelIds(ImmutableSet.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
             .build();
 
         // when
@@ -147,7 +150,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
 
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
             .policyId(POLICY.getId())
-            .channelIds(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
+            .channelIds(ImmutableSet.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
             .build();
 
         // when

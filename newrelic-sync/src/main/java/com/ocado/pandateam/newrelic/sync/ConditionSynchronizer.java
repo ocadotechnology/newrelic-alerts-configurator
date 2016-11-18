@@ -49,7 +49,6 @@ class ConditionSynchronizer {
 
     private List<Integer> createOrUpdateAlertsConditions(AlertsPolicy policy,
                                                          List<AlertsCondition> allAlertsConditions) {
-
         List<AlertsCondition> alertsConditionsFromConfig = config.getConditions().stream()
             .map(this::createAlertsCondition)
             .collect(Collectors.toList());
@@ -74,6 +73,7 @@ class ConditionSynchronizer {
                 }
             }
         );
+
         return updatedAlertConditions.stream()
             .map(AlertsCondition::getId)
             .collect(Collectors.toList());
@@ -118,6 +118,8 @@ class ConditionSynchronizer {
                         }
                     )
                     .collect(Collectors.toList());
+            case APM_KT:
+                // TODO: No API for key transactions
             default:
                 throw new NewRelicSyncException(format("Could not get entities for condition %s", condition.getConditionName()));
         }
