@@ -210,7 +210,7 @@ What you can set in term configuration:
 
 Example term configuration:
 ```java
-TermConfiguration term = TermsConfiguration.builder()
+TermsConfiguration term = TermsConfiguration.builder()
     .durationTerm(DurationTerm.DURATION_5)
     .operatorTerm(OperatorTerm.BELOW)
     .priorityTerm(PriorityTerm.CRITICAL)
