@@ -28,7 +28,7 @@ public class AlertsChannel {
 
     public boolean sameInstance(AlertsChannel other) {
         return StringUtils.equals(this.getName(), other.getName())
-            && StringUtils.equals(this.getType(), other.getType());
+                && StringUtils.equals(this.getType(), other.getType());
     }
 
     public boolean same(AlertsChannel other) {
