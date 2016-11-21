@@ -1,7 +1,7 @@
 # NewRelic Alerts synchronizer
 NewRelic Alerts synchronizer can be used for configuration and synchronization of NewRelic alerts for your application.
 
-### How to use NewRelic Alerts synchronizer
+## How to use NewRelic Alerts synchronizer
 
 First step is to create Synchronizer instance using simple constructor accepting API key for given NewRelic account:
 ```java
@@ -25,7 +25,7 @@ synchronizer.sync();
 ```
 That's all!
 
-### Application configuration
+## Application configuration
 To configure your application in NewRelic you just need to create and pass your application configuration to NewRelic Alerts synchronizer.
 Application configuration can be created using simple builder:
 ```java
@@ -49,7 +49,7 @@ ApplicationConfiguration configuration = ApplicationConfiguration.builder()
     .build();
 ```
 
-### Policy configuration
+## Policy configuration
 To configure your alerts policy in NewRelic you just need to create and pass your policy configuration to NewRelic Alerts synchronizer.
 Policy configuration can be created using simple builder:
 ```java
@@ -81,12 +81,12 @@ PolicyConfiguration configuration = PolicyConfiguration.builder()
     .build()
 ```
 
-#### Alerts condition
+### Alerts condition
 Currently supported types of alerts policy conditions are:
 - APM application metric condition
 - APM key transaction metric condition
 
-##### APM application metric condition
+#### APM application metric condition
 To create APM application metric condition for your alerts policy use simple builder:
 ```java
 ApmAppCondition.builder()
@@ -120,7 +120,7 @@ Condition apmAppCondition = ApmAppCondition.builder()
     .build();
 ```
 
-##### APM key transaction metric condition
+#### APM key transaction metric condition
 To create APM key transaction metric condition for your alerts policy use simple builder:
 ```java
 ApmKeyTransactionCondition.builder()
@@ -149,11 +149,11 @@ Condition apmKeyTransactionCondition = ApmKeyTransactionCondition.builder()
     .build();
 ```
 
-#### Alerts external service condition
+### Alerts external service condition
 Currently supported types of alerts policy external service conditions are:
 - APM external service condition
 
-##### APM external service condition
+#### APM external service condition
 To create APM external service condition for your alerts policy use simple builder:
 ```java
 ApmExternalServiceCondition.builder()
@@ -182,7 +182,7 @@ ExternalServiceCondition apmExternalServiceCondition = ApmExternalServiceConditi
     .build();
 ```
 
-#### Term
+### Term
 Terms are used both in alerts conditions and alerts external service conditions.
 To create term configuration for condition use simple builder:
 ```java
@@ -219,12 +219,12 @@ TermsConfiguration term = TermsConfiguration.builder()
     .build();
 ```
 
-#### Notification channel
+### Notification channel
 Currently supported types of alerts notification channels are:
 - Email channel
 - Slack channel
 
-##### Email channel
+#### Email channel
 To create email channel use simple builder:
 ```java
 EmailChannel.builder()
@@ -244,7 +244,7 @@ Channel emailChannel = EmailChannel.builder()
     .build();
 ```
 
-##### Slack channel
+#### Slack channel
 To create slack channel use simple builder:
 ```java
 SlackChannel.builder()
