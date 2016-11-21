@@ -16,7 +16,7 @@ public final class TermsUtils {
 
     private static Terms mapTerms(TermsConfiguration termsConfiguration) {
         return Terms.builder()
-            .duration(String.valueOf(termsConfiguration.getDurationTerm()))
+            .duration(String.valueOf(termsConfiguration.getDurationTerm().getDuration()))
             .operator(termsConfiguration.getOperatorTerm().name().toLowerCase())
             .priority(termsConfiguration.getPriorityTerm().name().toLowerCase())
             .threshold(String.valueOf(termsConfiguration.getThresholdTerm()))
