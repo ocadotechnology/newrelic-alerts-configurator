@@ -1,5 +1,6 @@
 package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
+import com.ocado.pandateam.newrelic.sync.configuration.channel.internal.SlackChannelTypeSupport;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
