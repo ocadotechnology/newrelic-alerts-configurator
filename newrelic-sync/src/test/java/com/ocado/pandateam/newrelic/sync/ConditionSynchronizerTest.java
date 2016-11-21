@@ -60,11 +60,11 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     private static final Application APPLICATION = Application.builder().id(1).name(APPLICATION_NAME).build();
 
     private static final AlertsCondition ALERTS_CONDITION_SAME = createDefaultAlertsConditionBuilder().id(1).build();
-    private static final AlertsCondition ALERTS_CONDITION_MAPPED = createDefaultAlertsConditionBuilder().build();
+    private static final AlertsCondition ALERTS_CONDITION_FROM_CONFIG = createDefaultAlertsConditionBuilder().build();
     private static final AlertsCondition ALERTS_CONDITION_UPDATED = createDefaultAlertsConditionBuilder().id(2).enabled(!ENABLED).build();
     private static final AlertsCondition ALERTS_CONDITION_DIFFERENT = createDefaultAlertsConditionBuilder().id(3).name("different").build();
     private static final AlertsCondition ALERTS_CONDITION_KT_SAME = createAlertsKtConditionBuilder().id(15).build();
-    private static final AlertsCondition ALERTS_CONDITION_KT_MAPPED = createAlertsKtConditionBuilder().build();
+    private static final AlertsCondition ALERTS_CONDITION_KT_FROM_CONFIG = createAlertsKtConditionBuilder().build();
 
     private ConditionSynchronizer testee;
     private static final PolicyConfiguration CONFIGURATION = createConfiguration();
@@ -110,8 +110,8 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     public void shouldCreateCondition() {
         // given
         when(alertsConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of());
-        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_SAME);
-        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED)).thenReturn(ALERTS_CONDITION_KT_SAME);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG)).thenReturn(ALERTS_CONDITION_SAME);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_FROM_CONFIG)).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync(CONFIGURATION);
@@ -119,8 +119,8 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
         order.verify(alertsConditionsApiMock).list(POLICY.getId());
-        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_MAPPED);
-        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_FROM_CONFIG);
         order.verifyNoMoreInteractions();
     }
 
@@ -128,9 +128,9 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     public void shouldUpdateCondition() {
         // given
         when(alertsConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of(ALERTS_CONDITION_UPDATED));
-        when(alertsConditionsApiMock.update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_UPDATED);
-        when(alertsConditionsApiMock.update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_UPDATED);
-        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED)).thenReturn(ALERTS_CONDITION_KT_SAME);
+        when(alertsConditionsApiMock.update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_FROM_CONFIG)).thenReturn(ALERTS_CONDITION_UPDATED);
+        when(alertsConditionsApiMock.update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_FROM_CONFIG)).thenReturn(ALERTS_CONDITION_UPDATED);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_FROM_CONFIG)).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync(CONFIGURATION);
@@ -138,8 +138,8 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
         order.verify(alertsConditionsApiMock).list(POLICY.getId());
-        order.verify(alertsConditionsApiMock).update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_MAPPED);
-        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED);
+        order.verify(alertsConditionsApiMock).update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_FROM_CONFIG);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_FROM_CONFIG);
         order.verifyNoMoreInteractions();
     }
 
@@ -147,8 +147,8 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
     public void shouldRemoveOldCondition() {
         // given
         when(alertsConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of(ALERTS_CONDITION_DIFFERENT));
-        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_MAPPED)).thenReturn(ALERTS_CONDITION_SAME);
-        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED)).thenReturn(ALERTS_CONDITION_KT_SAME);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG)).thenReturn(ALERTS_CONDITION_SAME);
+        when(alertsConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_KT_FROM_CONFIG)).thenReturn(ALERTS_CONDITION_KT_SAME);
 
         // when
         testee.sync(CONFIGURATION);
@@ -156,8 +156,8 @@ public class ConditionSynchronizerTest extends AbstractSynchronizerTest {
         // then
         InOrder order = inOrder(alertsConditionsApiMock);
         order.verify(alertsConditionsApiMock).list(POLICY.getId());
-        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_MAPPED);
-        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_MAPPED);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG);
+        order.verify(alertsConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_KT_FROM_CONFIG);
         order.verify(alertsConditionsApiMock).delete(ALERTS_CONDITION_DIFFERENT.getId());
         order.verifyNoMoreInteractions();
     }

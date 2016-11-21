@@ -13,4 +13,11 @@ public class EmailChannel implements Channel {
     @NonNull
     private String emailAddress;
     private Boolean includeJsonAttachment;
+
+    private final ChannelTypeSupport channelTypeSupport = new EmailChannelTypeSupport(this);
+
+    @Override
+    public ChannelTypeSupport getChannelTypeSupport() {
+        return channelTypeSupport;
+    }
 }

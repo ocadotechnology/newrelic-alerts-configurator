@@ -13,4 +13,11 @@ public class SlackChannel implements Channel {
     @NonNull
     private String slackUrl;
     private String slackChannel;
+
+    private final ChannelTypeSupport channelTypeSupport = new SlackChannelTypeSupport(this);
+
+    @Override
+    public ChannelTypeSupport getChannelTypeSupport() {
+        return channelTypeSupport;
+    }
 }
