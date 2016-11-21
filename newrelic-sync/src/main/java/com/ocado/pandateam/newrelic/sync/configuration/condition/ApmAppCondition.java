@@ -28,21 +28,20 @@ public class ApmAppCondition implements Condition {
     private Collection<TermsConfiguration> terms;
 
     @Override
-    public String getTypeString() {
-        return type.getTypeString();
-    }
-
-    @Override
-    public String getMetric() {
+    public String getMetricAsString() {
         return metric.name().toLowerCase();
     }
 
     @Override
-    public String getConditionScope() {
+    public String getConditionScopeAsString() {
         return conditionScope.name().toLowerCase();
     }
 
     public enum Metric {
         APDEX, ERROR_PERCENTAGE, RESPONSE_TIME_WEB, RESPONSE_TIME_BACKGROUND, THROUGHPUT_WEB, THROUGHPUT_BACKGROUND, USER_DEFINED
+    }
+
+    public enum ConditionScope {
+        APPLICATION, INSTANCE
     }
 }

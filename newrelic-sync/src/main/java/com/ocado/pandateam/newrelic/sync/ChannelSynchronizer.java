@@ -45,7 +45,7 @@ class ChannelSynchronizer {
         Set<Integer> policyChannelsToUpdate = new LinkedHashSet<>();
 
         for (Channel channelFromConfig : channelsFromConfig) {
-            AlertsChannel alertsChannelFromConfig = createAlertsChannel(channelFromConfig);
+            AlertsChannel alertsChannelFromConfig = toAlertsChannel(channelFromConfig);
             Collection<AlertsChannel> sameInstanceAlertsChannels = getSameInstanceAlertsChannels(allAlertsChannels,
                 alertsChannelFromConfig);
 
@@ -86,14 +86,16 @@ class ChannelSynchronizer {
         return sameInstanceChannels.stream()
             .filter(alertsChannelFromConfig::same)
             .findAny()
-            .orElseGet(() -> {
-                AlertsChannel newChannel = api.getAlertsChannelsApi().create(alertsChannelFromConfig);
-                LOG.info("Alerts channel {} (id: {}) created", newChannel.getName(), newChannel.getId());
-                return newChannel;
-            });
+            .orElseGet(() -> createAlertsChannel(alertsChannelFromConfig));
     }
 
-    private AlertsChannel createAlertsChannel(Channel channel) {
+    private AlertsChannel createAlertsChannel(AlertsChannel alertsChannelFromConfig) {
+        AlertsChannel newChannel = api.getAlertsChannelsApi().create(alertsChannelFromConfig);
+        LOG.info("Alerts channel {} (id: {}) created", newChannel.getName(), newChannel.getId());
+        return newChannel;
+    }
+
+    private AlertsChannel toAlertsChannel(Channel channel) {
         return AlertsChannel.builder()
             .name(channel.getChannelName())
             .type(channel.getTypeString())

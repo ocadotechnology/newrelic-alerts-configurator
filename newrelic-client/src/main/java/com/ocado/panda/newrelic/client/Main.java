@@ -7,7 +7,6 @@ import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmAppCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
-import com.ocado.pandateam.newrelic.sync.configuration.condition.ConditionScope;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.DurationTerm;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.OperatorTerm;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.PriorityTerm;
@@ -63,7 +62,7 @@ public class Main {
             .enabled(true)
             .entities(Collections.singletonList(APPLICATION_NAME))
             .metric(ApmAppCondition.Metric.APDEX)
-            .conditionScope(ConditionScope.APPLICATION)
+            .conditionScope(ApmAppCondition.ConditionScope.APPLICATION)
             .term(TermsConfiguration.builder()
                 .durationTerm(DurationTerm.DURATION_5)
                 .operatorTerm(OperatorTerm.BELOW)

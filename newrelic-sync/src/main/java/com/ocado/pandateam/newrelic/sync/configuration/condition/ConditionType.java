@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ConditionType {
     APM_APP("apm_app_metric"),
-    APM_KT("apm_kt_metric");
+    APM_KEY_TRANSACTION("apm_kt_metric");
 
     String typeString;
 

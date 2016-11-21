@@ -1,13 +1,13 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
-import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
+import com.ocado.pandateam.newrelic.sync.internal.EntityIdProvider;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,9 +23,11 @@ import static java.lang.String.format;
 @Slf4j
 class ExternalServiceConditionSynchronizer {
     private final NewRelicApi api;
+    private final EntityIdProvider entityIdProvider;
 
     ExternalServiceConditionSynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
+        this.entityIdProvider = new EntityIdProvider(api);
     }
 
     void sync(@NonNull PolicyConfiguration config) {
@@ -50,7 +52,7 @@ class ExternalServiceConditionSynchronizer {
                                                                         Collection<AlertsExternalServiceCondition> allAlertsConditions) {
         List<AlertsExternalServiceCondition> updatedAlertConditions = new LinkedList<>();
         for (ExternalServiceCondition alertsConditionFromConfig : conditionsFromConfig) {
-            AlertsExternalServiceCondition alertConditionFromConfig = createAlertsExternalServiceCondition(alertsConditionFromConfig);
+            AlertsExternalServiceCondition alertConditionFromConfig = toAlertsExternalServiceCondition(alertsConditionFromConfig);
             Optional<AlertsExternalServiceCondition> alertsConditionToUpdate = findAlertsExternalServiceConditionToUpdate(
                 allAlertsConditions, alertConditionFromConfig);
 
@@ -106,7 +108,7 @@ class ExternalServiceConditionSynchronizer {
             );
     }
 
-    private AlertsExternalServiceCondition createAlertsExternalServiceCondition(ExternalServiceCondition condition) {
+    private AlertsExternalServiceCondition toAlertsExternalServiceCondition(ExternalServiceCondition condition) {
         return AlertsExternalServiceCondition.builder()
             .type(condition.getTypeString())
             .name(condition.getConditionName())
@@ -123,14 +125,7 @@ class ExternalServiceConditionSynchronizer {
         switch (condition.getType()) {
             case APM:
                 return condition.getEntities().stream()
-                    .map(
-                        entity -> {
-                            Optional<Application> applicationOptional = api.getApplicationsApi().getByName(entity);
-                            Application application = applicationOptional.orElseThrow(
-                                () -> new NewRelicSyncException(format("Application %s does not exist", entity)));
-                            return application.getId();
-                        }
-                    )
+                    .map(entityIdProvider::getApplicationId)
                     .collect(Collectors.toList());
             default:
                 throw new NewRelicSyncException(format("Could not get entities for external service alerts condition %s",

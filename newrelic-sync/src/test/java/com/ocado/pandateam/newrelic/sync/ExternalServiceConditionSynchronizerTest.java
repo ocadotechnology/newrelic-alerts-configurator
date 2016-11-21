@@ -182,11 +182,11 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
             .metric(METRIC.name().toLowerCase())
             .externalServiceUrl(EXTERNAL_SERVICE_URL)
             .term(Terms.builder()
-                .duration(TERMS_CONFIGURATION.getDurationTerm())
-                .operator(TERMS_CONFIGURATION.getOperatorTerm())
-                .priority(TERMS_CONFIGURATION.getPriorityTerm())
-                .threshold(TERMS_CONFIGURATION.getThresholdTerm())
-                .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
+                .duration(String.valueOf(TERMS_CONFIGURATION.getDurationTerm()))
+                .operator(TERMS_CONFIGURATION.getOperatorTerm().name().toLowerCase())
+                .priority(TERMS_CONFIGURATION.getPriorityTerm().name().toLowerCase())
+                .threshold(String.valueOf(TERMS_CONFIGURATION.getThresholdTerm()))
+                .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm().name().toLowerCase())
                 .build()
             );
     }

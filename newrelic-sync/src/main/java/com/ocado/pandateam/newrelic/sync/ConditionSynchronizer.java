@@ -1,14 +1,13 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
-import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
-import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
+import com.ocado.pandateam.newrelic.sync.internal.EntityIdProvider;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,9 +23,11 @@ import static java.lang.String.format;
 @Slf4j
 class ConditionSynchronizer {
     private final NewRelicApi api;
+    private final EntityIdProvider entityIdProvider;
 
     ConditionSynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
+        this.entityIdProvider = new EntityIdProvider(api);
     }
 
     void sync(@NonNull PolicyConfiguration config) {
@@ -48,7 +49,7 @@ class ConditionSynchronizer {
                                                          Collection<AlertsCondition> allAlertsConditions) {
         List<AlertsCondition> updatedAlertConditions = new LinkedList<>();
         for (Condition conditionFromConfig : conditionsFromConfig) {
-            AlertsCondition alertConditionFromConfig = createAlertsCondition(conditionFromConfig);
+            AlertsCondition alertConditionFromConfig = toAlertsCondition(conditionFromConfig);
             Optional<AlertsCondition> alertsConditionToUpdate = findAlertsConditionToUpdate(allAlertsConditions,
                 alertConditionFromConfig);
 
@@ -102,14 +103,14 @@ class ConditionSynchronizer {
             );
     }
 
-    private AlertsCondition createAlertsCondition(Condition condition) {
+    private AlertsCondition toAlertsCondition(Condition condition) {
         return AlertsCondition.builder()
-            .type(condition.getTypeString())
+            .type(condition.getType().getTypeString())
             .name(condition.getConditionName())
             .enabled(condition.isEnabled())
             .entities(getEntities(condition))
-            .metric(condition.getMetric())
-            .conditionScope(condition.getConditionScope())
+            .metric(condition.getMetricAsString())
+            .conditionScope(condition.getConditionScopeAsString())
             .runbookUrl(condition.getRunBookUrl())
             .terms(TermsUtils.createTerms(condition.getTerms()))
             .build();
@@ -119,25 +120,11 @@ class ConditionSynchronizer {
         switch (condition.getType()) {
             case APM_APP:
                 return condition.getEntities().stream()
-                    .map(
-                        entity -> {
-                            Optional<Application> applicationOptional = api.getApplicationsApi().getByName(entity);
-                            Application application = applicationOptional.orElseThrow(
-                                () -> new NewRelicSyncException(format("Application %s does not exist", entity)));
-                            return application.getId();
-                        }
-                    )
+                    .map(entityIdProvider::getApplicationId)
                     .collect(Collectors.toList());
-            case APM_KT:
+            case APM_KEY_TRANSACTION:
                 return condition.getEntities().stream()
-                    .map(
-                        entity -> {
-                            Optional<KeyTransaction> ktOptional = api.getKeyTransactionsApi().getByName(entity);
-                            KeyTransaction kt = ktOptional.orElseThrow(
-                                () -> new NewRelicSyncException(format("Key transaction %s does not exist", entity)));
-                            return kt.getId();
-                        }
-                    )
+                    .map(entityIdProvider::getKeyTransactionId)
                     .collect(Collectors.toList());
             default:
                 throw new NewRelicSyncException(format("Could not get entities for condition %s", condition.getConditionName()));

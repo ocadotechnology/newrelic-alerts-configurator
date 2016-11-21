@@ -10,8 +10,8 @@ import java.util.Collection;
 
 @Getter
 @Builder
-public class ApmKtCondition implements Condition {
-    private final ConditionType type = ConditionType.APM_KT;
+public class ApmKeyTransactionCondition implements Condition {
+    private final ConditionType type = ConditionType.APM_KEY_TRANSACTION;
     @NonNull
     private String conditionName;
     private boolean enabled;
@@ -26,18 +26,8 @@ public class ApmKtCondition implements Condition {
     private Collection<TermsConfiguration> terms;
 
     @Override
-    public String getTypeString() {
-        return type.getTypeString();
-    }
-
-    @Override
-    public String getMetric() {
+    public String getMetricAsString() {
         return metric.name().toLowerCase();
-    }
-
-    @Override
-    public String getConditionScope() {
-        return null;
     }
 
     public enum Metric {
