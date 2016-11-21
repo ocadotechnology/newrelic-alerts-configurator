@@ -22,7 +22,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class PaginationTest {
-    //Link:
 
     @ClassRule
     public static final WireMockClassRule WIRE_MOCK = new WireMockClassRule(6766);
@@ -49,7 +48,7 @@ public class PaginationTest {
     public void shouldGetPaginatedChannelsCorrectly() throws IOException, NewRelicApiException {
 
         // given
-        newRelicReturnsApplications();
+        newRelicReturnsPaginatedChannels();
 
         // when
         List<AlertsChannel> channels = testee.list();
@@ -58,7 +57,7 @@ public class PaginationTest {
         Assert.assertEquals(2, channels.size());
     }
 
-    private void newRelicReturnsApplications() throws UnsupportedEncodingException {
+    private void newRelicReturnsPaginatedChannels() throws UnsupportedEncodingException {
         WIRE_MOCK.addStubMapping(
                 get(urlPathEqualTo("/v2/alerts_channels.json"))
                         .withHeader("X-Api-Key", equalTo("secret"))
