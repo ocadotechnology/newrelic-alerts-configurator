@@ -2,9 +2,9 @@ package com.ocado.pandateam.newrelic.api.internal;
 
 abstract class ApiBase {
 
-    protected final NewRelicRestClient api;
+    protected final NewRelicPageableClient api;
 
-    ApiBase(NewRelicRestClient api) {
+    ApiBase(NewRelicPageableClient api) {
         this.api = api;
     }
 }

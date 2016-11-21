@@ -10,12 +10,12 @@ import com.ocado.pandateam.newrelic.api.model.applications.Application;
 
 import java.util.Optional;
 
-public class DefaultApplicationsApi extends ApiBase implements ApplicationsApi {
+class DefaultApplicationsApi extends ApiBase implements ApplicationsApi {
 
     private static final String APPLICATIONS_URL = "/v2/applications.json";
     private static final String APPLICATION_URL = "/v2/applications/{application_id}.json";
 
-    DefaultApplicationsApi(NewRelicRestClient api) {
+    DefaultApplicationsApi(NewRelicPageableClient api) {
         super(api);
     }
 

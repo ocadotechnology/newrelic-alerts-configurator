@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 
 import static com.ocado.pandateam.newrelic.api.internal.NewRelicRequestConstants.APPLICATION_X_WWW_FORM_URLENCODED;
 
-public class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesApi {
+class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesApi {
 
     private static final String POLICIES_URL = "/v2/alerts_policies.json";
     private static final String POLICY_URL = "/v2/alerts_policies/{policy_id}.json";
     private static final String POLICY_CHANNELS_URL = "/v2/alerts_policy_channels.json";
 
-    DefaultAlertsPoliciesApi(NewRelicRestClient api) {
+    DefaultAlertsPoliciesApi(NewRelicPageableClient api) {
         super(api);
     }
 

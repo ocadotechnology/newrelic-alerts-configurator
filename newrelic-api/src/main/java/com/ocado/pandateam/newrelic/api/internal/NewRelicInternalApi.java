@@ -35,7 +35,7 @@ public class NewRelicInternalApi {
      * @param apiKey  API Key for given NewRelic account
      */
     public NewRelicInternalApi(String hostUrl, String apiKey) {
-        NewRelicRestClient client = new NewRelicRestClient(hostUrl, apiKey);
+        NewRelicPageableClient client = new NewRelicPageableClient(new NewRelicRestClient(hostUrl, apiKey));
         applicationsApi = new DefaultApplicationsApi(client);
         alertsChannelsApi = new DefaultAlertsChannelsApi(client);
         alertsPoliciesApi = new DefaultAlertsPoliciesApi(client);

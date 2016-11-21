@@ -13,7 +13,7 @@ class DefaultKeyTransactionsApi extends ApiBase implements KeyTransactionsApi {
     private static final String KEY_TRANSACTIONS_URL = "/v2/key_transactions.json";
     private static final String KEY_TRANSACTION_URL = "/v2/key_transactions/{key_transaction_id}.json";
 
-    DefaultKeyTransactionsApi(NewRelicRestClient api) {
+    DefaultKeyTransactionsApi(NewRelicPageableClient api) {
         super(api);
     }
 

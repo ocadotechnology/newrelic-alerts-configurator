@@ -1,30 +1,38 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
-import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.ocado.pandateam.newrelic.api.AlertsChannelsApi;
 import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsChannelList;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsChannelWrapper;
+import com.ocado.pandateam.newrelic.api.internal.pagination.PageableRequest;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannel;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
+class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
 
     private static final String CHANNELS_URL = "/v2/alerts_channels.json";
     private static final String CHANNEL_URL = "/v2/alerts_channels/{channel_id}.json";
     private static final String POLICY_CHANNELS_URL = "/v2/alerts_policy_channels.json";
 
-    DefaultAlertsChannelsApi(NewRelicRestClient api) {
+    DefaultAlertsChannelsApi(NewRelicPageableClient api) {
         super(api);
     }
 
     @Override
     public List<AlertsChannel> list() throws NewRelicApiException {
-        GetRequest request = api.get(CHANNELS_URL);
-        return api.asObject(request, AlertsChannelList.class).getList();
+        PageableRequest request = api.getPageable(CHANNELS_URL);
+        return api.asPageable(request, AlertsChannelList.class,
+                alertsChannels -> new AlertsChannelList(
+                        alertsChannels
+                                .stream()
+                                .map(AlertsChannelList::getList)
+                                .flatMap(Collection::stream)
+                                .collect(Collectors.toList()))).getList();
     }
 
     @Override

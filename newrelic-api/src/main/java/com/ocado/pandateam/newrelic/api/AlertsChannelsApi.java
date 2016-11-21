@@ -8,6 +8,7 @@ import java.util.List;
 public interface AlertsChannelsApi {
     /**
      * Lists all existing Alerts Channels.
+     * This method supports pagination - which means it returns list of entries combined from all pages.
      *
      * @return list of all existing {@link AlertsChannel} from NewRelic
      * @throws NewRelicApiException when received error response

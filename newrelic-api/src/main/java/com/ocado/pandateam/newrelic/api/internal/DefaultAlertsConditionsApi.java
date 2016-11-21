@@ -10,13 +10,13 @@ import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 
 import java.util.List;
 
-public class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi {
+class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi {
 
     private static final String CONDITIONS_URL = "/v2/alerts_conditions";
     private static final String CONDITION_URL = "/v2/alerts_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_conditions/policies/{policy_id}.json";
 
-    DefaultAlertsConditionsApi(NewRelicRestClient api) {
+    DefaultAlertsConditionsApi(NewRelicPageableClient api) {
         super(api);
     }
 

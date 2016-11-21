@@ -10,13 +10,13 @@ import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternal
 
 import java.util.List;
 
-public class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements AlertsExternalServiceConditionsApi {
+class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements AlertsExternalServiceConditionsApi {
 
     private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
     private static final String CONDITION_URL = "/v2/alerts_external_service_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_external_service_conditions/policies/{policy_id}.json";
 
-    DefaultAlertsExternalServiceConditionsApi(NewRelicRestClient api) {
+    DefaultAlertsExternalServiceConditionsApi(NewRelicPageableClient api) {
         super(api);
     }
 
