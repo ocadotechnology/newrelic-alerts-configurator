@@ -15,7 +15,7 @@ public class SlackChannelTypeSupport implements ChannelTypeSupport {
         SlackChannel slackChannel = (SlackChannel) channel;
         return AlertsChannelConfiguration.builder()
             .url(slackChannel.getSlackUrl())
-            .channel(slackChannel.getSlackChannel())
+            .channel(slackChannel.getTeamChannel())
             .build();
     }
 }

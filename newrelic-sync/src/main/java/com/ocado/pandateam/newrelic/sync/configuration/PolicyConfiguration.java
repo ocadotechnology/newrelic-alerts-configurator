@@ -5,6 +5,7 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ExternalServiceCondition;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Singular;
 
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.Collections;
 @Getter
 @Builder
 public class PolicyConfiguration {
+    @NonNull
     private String policyName;
     private IncidentPreference incidentPreference;
     @Singular

@@ -19,6 +19,10 @@ public class Synchronizer {
     private Collection<ApplicationConfiguration> applicationConfigurations = Collections.emptyList();
     private Collection<PolicyConfiguration> policyConfigurations = Collections.emptyList();
 
+    /**
+     * NewRelic Alerts synchronizer constructor
+     * @param apiKey API Key for given NewRelic account
+     */
     public Synchronizer(@NonNull String apiKey) {
         NewRelicApi api = new NewRelicApi(apiKey);
         applicationSynchronizer = new ApplicationSynchronizer(api);
@@ -40,6 +44,10 @@ public class Synchronizer {
         this.channelSynchronizer = channelSynchronizer;
     }
 
+    /**
+     * Synchronizes configurations (see {@link Synchronizer#setApplicationConfigurations(Collection)}
+     * and {@link Synchronizer#setPolicyConfigurations(Collection)}
+     */
     public void sync() {
         for (ApplicationConfiguration applicationConfiguration : applicationConfigurations) {
             applicationSynchronizer.sync(applicationConfiguration);
@@ -53,10 +61,18 @@ public class Synchronizer {
         }
     }
 
+    /**
+     * @param applicationConfigurations collection of application configurations to synchronize
+     * @see ApplicationConfiguration
+     */
     public void setApplicationConfigurations(@NonNull Collection<ApplicationConfiguration> applicationConfigurations) {
         this.applicationConfigurations = applicationConfigurations;
     }
 
+    /**
+     * @param policyConfigurations collection of policy configurations to synchronize
+     * @see PolicyConfiguration
+     */
     public void setPolicyConfigurations(@NonNull Collection<PolicyConfiguration> policyConfigurations) {
         this.policyConfigurations = policyConfigurations;
     }

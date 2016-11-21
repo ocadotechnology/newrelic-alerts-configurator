@@ -13,7 +13,7 @@ public class SlackChannel implements Channel {
     private String channelName;
     @NonNull
     private String slackUrl;
-    private String slackChannel;
+    private String teamChannel;
 
     private final ChannelTypeSupport channelTypeSupport = new SlackChannelTypeSupport(this);
 

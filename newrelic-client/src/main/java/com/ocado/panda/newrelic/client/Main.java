@@ -60,7 +60,7 @@ public class Main {
         return ApmAppCondition.builder()
             .conditionName("Apdex score (Low)")
             .enabled(true)
-            .entities(Collections.singletonList(APPLICATION_NAME))
+            .entity(APPLICATION_NAME)
             .metric(ApmAppCondition.Metric.APDEX)
             .conditionScope(ApmAppCondition.ConditionScope.APPLICATION)
             .term(TermsConfiguration.builder()
