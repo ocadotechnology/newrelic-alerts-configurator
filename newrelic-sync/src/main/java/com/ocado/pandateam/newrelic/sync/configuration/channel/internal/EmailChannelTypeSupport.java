@@ -5,6 +5,7 @@ import com.ocado.pandateam.newrelic.sync.configuration.channel.Channel;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.ChannelTypeSupport;
 import com.ocado.pandateam.newrelic.sync.configuration.channel.EmailChannel;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.BooleanUtils;
 
 @AllArgsConstructor
 public class EmailChannelTypeSupport implements ChannelTypeSupport {
@@ -13,9 +14,11 @@ public class EmailChannelTypeSupport implements ChannelTypeSupport {
     @Override
     public AlertsChannelConfiguration generateAlertsChannelConfiguration() {
         EmailChannel emailChannel = (EmailChannel) channel;
-        return AlertsChannelConfiguration.builder()
-            .recipients(emailChannel.getEmailAddress())
-            .includeJsonAttachment(emailChannel.getIncludeJsonAttachment())
-            .build();
+        AlertsChannelConfiguration.AlertsChannelConfigurationBuilder builder = AlertsChannelConfiguration.builder();
+        builder.recipients(emailChannel.getEmailAddress());
+        if (BooleanUtils.isTrue(emailChannel.getIncludeJsonAttachment())) {
+            builder.includeJsonAttachment(emailChannel.getIncludeJsonAttachment());
+        }
+        return builder.build();
     }
 }
