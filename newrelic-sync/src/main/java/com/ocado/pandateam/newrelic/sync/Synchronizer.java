@@ -2,83 +2,78 @@ package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
 import com.ocado.pandateam.newrelic.sync.configuration.ApplicationConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.ChannelConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.ExternalServiceConditionConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import lombok.NonNull;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class Synchronizer {
-    private final String apiKey;
+    private final ApplicationSynchronizer applicationSynchronizer;
+    private final PolicySynchronizer policySynchronizer;
+    private final ConditionSynchronizer conditionSynchronizer;
+    private final ExternalServiceConditionSynchronizer externalServiceConditionSynchronizer;
+    private final ChannelSynchronizer channelSynchronizer;
 
-    private Collection<ApplicationConfiguration> applicationConfigurations;
-    private Collection<PolicyConfiguration> policyConfigurations;
-    private Collection<ConditionConfiguration> conditionConfigurations;
-    private Collection<ExternalServiceConditionConfiguration> externalServiceConditionConfigurations;
-    private Collection<ChannelConfiguration> channelConfigurations;
 
+    private Collection<ApplicationConfiguration> applicationConfigurations = Collections.emptyList();
+    private Collection<PolicyConfiguration> policyConfigurations = Collections.emptyList();
+
+    /**
+     * NewRelic Alerts synchronizer constructor
+     * @param apiKey API Key for given NewRelic account
+     */
     public Synchronizer(@NonNull String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public void sync() {
         NewRelicApi api = new NewRelicApi(apiKey);
-        if (applicationConfigurations != null) {
-            applicationConfigurations.stream().forEach(
-                configuration -> {
-                    ApplicationSynchronizer synchronizer = new ApplicationSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
+        applicationSynchronizer = new ApplicationSynchronizer(api);
+        policySynchronizer = new PolicySynchronizer(api);
+        conditionSynchronizer = new ConditionSynchronizer(api);
+        externalServiceConditionSynchronizer = new ExternalServiceConditionSynchronizer(api);
+        channelSynchronizer = new ChannelSynchronizer(api);
+    }
+
+    Synchronizer(ApplicationSynchronizer applicationSynchronizer,
+                 PolicySynchronizer policySynchronizer,
+                 ConditionSynchronizer conditionSynchronizer,
+                 ExternalServiceConditionSynchronizer externalServiceConditionSynchronizer,
+                 ChannelSynchronizer channelSynchronizer) {
+        this.applicationSynchronizer = applicationSynchronizer;
+        this.policySynchronizer = policySynchronizer;
+        this.conditionSynchronizer = conditionSynchronizer;
+        this.externalServiceConditionSynchronizer = externalServiceConditionSynchronizer;
+        this.channelSynchronizer = channelSynchronizer;
+    }
+
+    /**
+     * Synchronizes configurations (see {@link Synchronizer#setApplicationConfigurations(Collection)}
+     * and {@link Synchronizer#setPolicyConfigurations(Collection)}
+     */
+    public void sync() {
+        for (ApplicationConfiguration applicationConfiguration : applicationConfigurations) {
+            applicationSynchronizer.sync(applicationConfiguration);
         }
-        if (policyConfigurations != null) {
-            policyConfigurations.stream().forEach(
-                configuration -> {
-                    PolicySynchronizer synchronizer = new PolicySynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
-        }
-        if (conditionConfigurations != null) {
-            conditionConfigurations.stream().forEach(
-                configuration -> {
-                    ConditionSynchronizer synchronizer = new ConditionSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
-        }
-        if (externalServiceConditionConfigurations != null) {
-            externalServiceConditionConfigurations.stream().forEach(
-                configuration -> {
-                    ExternalServiceConditionSynchronizer synchronizer = new ExternalServiceConditionSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
-        }
-        if (channelConfigurations != null) {
-            channelConfigurations.stream().forEach(
-                configuration -> {
-                    ChannelSynchronizer synchronizer = new ChannelSynchronizer(api, configuration);
-                    synchronizer.sync();
-                });
+
+        for (PolicyConfiguration configuration : policyConfigurations) {
+            policySynchronizer.sync(configuration);
+            conditionSynchronizer.sync(configuration);
+            externalServiceConditionSynchronizer.sync(configuration);
+            channelSynchronizer.sync(configuration);
         }
     }
 
-    public void setApplicationConfigurations(Collection<ApplicationConfiguration> applicationConfigurations) {
+    /**
+     * @param applicationConfigurations collection of application configurations to synchronize
+     * @see ApplicationConfiguration
+     */
+    public void setApplicationConfigurations(@NonNull Collection<ApplicationConfiguration> applicationConfigurations) {
         this.applicationConfigurations = applicationConfigurations;
     }
 
-    public void setPolicyConfigurations(Collection<PolicyConfiguration> policyConfigurations) {
+    /**
+     * @param policyConfigurations collection of policy configurations to synchronize
+     * @see PolicyConfiguration
+     */
+    public void setPolicyConfigurations(@NonNull Collection<PolicyConfiguration> policyConfigurations) {
         this.policyConfigurations = policyConfigurations;
-    }
-
-    public void setChannelConfigurations(Collection<ChannelConfiguration> channelConfigurations) {
-        this.channelConfigurations = channelConfigurations;
-    }
-
-    public void setExternalServiceConditionConfigurations(Collection<ExternalServiceConditionConfiguration> externalServiceConditionConfigurations) {
-        this.externalServiceConditionConfigurations = externalServiceConditionConfigurations;
-    }
-
-    public void setConditionConfigurations(Collection<ConditionConfiguration> conditionConfigurations) {
-        this.conditionConfigurations = conditionConfigurations;
     }
 }

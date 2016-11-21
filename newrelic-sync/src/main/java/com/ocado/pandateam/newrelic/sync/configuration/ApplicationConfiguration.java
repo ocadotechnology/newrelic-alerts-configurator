@@ -12,12 +12,4 @@ public class ApplicationConfiguration {
     private float appApdexThreshold;
     private float endUserApdexThreshold;
     private boolean enableRealUserMonitoring;
-
-    public ApplicationConfiguration(String applicationName, float appApdexThreshold, float endUserApdexThreshold,
-                                    boolean enableRealUserMonitoring) {
-        this.applicationName = applicationName;
-        this.appApdexThreshold = appApdexThreshold;
-        this.endUserApdexThreshold = endUserApdexThreshold;
-        this.enableRealUserMonitoring = enableRealUserMonitoring;
-    }
 }

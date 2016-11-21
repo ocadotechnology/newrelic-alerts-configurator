@@ -16,11 +16,11 @@ public final class TermsUtils {
 
     private static Terms mapTerms(TermsConfiguration termsConfiguration) {
         return Terms.builder()
-            .duration(termsConfiguration.getDurationTerm())
-            .operator(termsConfiguration.getOperatorTerm())
-            .priority(termsConfiguration.getPriorityTerm())
-            .threshold(termsConfiguration.getThresholdTerm())
-            .timeFunction(termsConfiguration.getTimeFunctionTerm())
+            .duration(String.valueOf(termsConfiguration.getDurationTerm().getDuration()))
+            .operator(termsConfiguration.getOperatorTerm().name().toLowerCase())
+            .priority(termsConfiguration.getPriorityTerm().name().toLowerCase())
+            .threshold(String.valueOf(termsConfiguration.getThresholdTerm()))
+            .timeFunction(termsConfiguration.getTimeFunctionTerm().name().toLowerCase())
             .build();
     }
 }

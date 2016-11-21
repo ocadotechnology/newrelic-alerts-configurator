@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Singular;
 import lombok.Value;
 
 import java.util.Collection;
@@ -24,6 +25,7 @@ public class AlertsExternalServiceCondition {
     @JsonProperty
     Boolean enabled;
     @JsonProperty
+    @Singular
     Collection<Integer> entities;
     @JsonProperty
     String metric;
@@ -32,5 +34,6 @@ public class AlertsExternalServiceCondition {
     @JsonProperty("external_service_url")
     String externalServiceUrl;
     @JsonProperty
+    @Singular
     Collection<Terms> terms;
 }

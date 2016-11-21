@@ -5,7 +5,7 @@ import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
-import com.ocado.pandateam.newrelic.sync.configuration.ExternalServiceConditionConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmAppCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmExternalServiceCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ExternalServiceCondition;
@@ -20,22 +20,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.InOrder;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 public class ExternalServiceConditionSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
-
-    private ExternalServiceConditionSynchronizer testee;
-    private ExternalServiceConditionConfiguration configuration = createConfiguration();
 
     private static final String POLICY_NAME = "policyName";
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
@@ -54,89 +49,107 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
 
     private static final ExternalServiceCondition EXTERNAL_SERVICE_CONDITION = createCondition(CONDITION_NAME);
     private static final Application APPLICATION = Application.builder().id(1).name(APPLICATION_NAME).build();
-    private static final AlertsExternalServiceCondition ALERTS_EXTERNAL_SERVICE_CONDITION_SAME = createDefaultAlertsConditionBuilder().id(1).build();
-    private static final AlertsExternalServiceCondition ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED = createDefaultAlertsConditionBuilder().build();
-    private static final AlertsExternalServiceCondition ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED = createDefaultAlertsConditionBuilder().id(2).enabled(!ENABLED).build();
-    private static final AlertsExternalServiceCondition ALERTS_EXTERNAL_SERVICE_CONDITION_DIFFERENT = createDefaultAlertsConditionBuilder().id(3).name("different").build();
+    private static final AlertsExternalServiceCondition ALERTS_CONDITION_SAME = createDefaultAlertsConditionBuilder().id(1).build();
+    private static final AlertsExternalServiceCondition ALERTS_CONDITION_FROM_CONFIG = createDefaultAlertsConditionBuilder().build();
+    private static final AlertsExternalServiceCondition ALERTS_CONDITION_UPDATED = createDefaultAlertsConditionBuilder().id(2).enabled(!ENABLED).build();
+    private static final AlertsExternalServiceCondition ALERTS_CONDITION_DIFFERENT = createDefaultAlertsConditionBuilder().id(3).name("different").build();
+
+    private ExternalServiceConditionSynchronizer testee;
+    private static final PolicyConfiguration CONFIGURATION = createConfiguration();
 
     @Before
     public void setUp() {
-        testee = new ExternalServiceConditionSynchronizer(apiMock, configuration);
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.of(POLICY));
+        testee = new ExternalServiceConditionSynchronizer(apiMock);
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
         when(applicationsApiMock.getByName(APPLICATION_NAME)).thenReturn(Optional.of(APPLICATION));
     }
 
     @Test
     public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
-        when(alertsPoliciesApiMock.getByName(eq(POLICY_NAME))).thenReturn(Optional.empty());
+        when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
         expectedException.expectMessage(format("Policy %s does not exist", POLICY_NAME));
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
+    }
+
+    @Test
+    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+            .policyName(POLICY_NAME)
+            .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldCreateCondition() {
         // given
-        when(alertsExternalServiceConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of());
-        when(alertsExternalServiceConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED)))
-            .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_SAME);
+        when(alertsExternalServiceConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of());
+        when(alertsExternalServiceConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG))
+            .thenReturn(ALERTS_CONDITION_SAME);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
-        verify(alertsExternalServiceConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsExternalServiceConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED));
-        verifyNoMoreInteractions(alertsExternalServiceConditionsApiMock);
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsExternalServiceConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldUpdateCondition() {
         // given
-        when(alertsExternalServiceConditionsApiMock.list(eq(POLICY.getId()))).thenReturn(ImmutableList.of(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED));
-        when(alertsExternalServiceConditionsApiMock.update(eq(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED)))
-            .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED);
+        when(alertsExternalServiceConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of(ALERTS_CONDITION_UPDATED));
+        when(alertsExternalServiceConditionsApiMock.update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_FROM_CONFIG))
+            .thenReturn(ALERTS_CONDITION_UPDATED);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
-        verify(alertsExternalServiceConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsExternalServiceConditionsApiMock).update(eq(ALERTS_EXTERNAL_SERVICE_CONDITION_UPDATED.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED));
-        verifyNoMoreInteractions(alertsExternalServiceConditionsApiMock);
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsExternalServiceConditionsApiMock).update(ALERTS_CONDITION_UPDATED.getId(), ALERTS_CONDITION_FROM_CONFIG);
+        order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldRemoveOldCondition() {
         // given
-        when(alertsExternalServiceConditionsApiMock.list(eq(POLICY.getId())))
-            .thenReturn(ImmutableList.of(ALERTS_EXTERNAL_SERVICE_CONDITION_DIFFERENT));
-        when(alertsExternalServiceConditionsApiMock.create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED)))
-            .thenReturn(ALERTS_EXTERNAL_SERVICE_CONDITION_SAME);
+        when(alertsExternalServiceConditionsApiMock.list(POLICY.getId()))
+            .thenReturn(ImmutableList.of(ALERTS_CONDITION_DIFFERENT));
+        when(alertsExternalServiceConditionsApiMock.create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG))
+            .thenReturn(ALERTS_CONDITION_SAME);
 
         // when
-        testee.sync();
+        testee.sync(CONFIGURATION);
 
         // then
-        verify(alertsExternalServiceConditionsApiMock).list(eq(POLICY.getId()));
-        verify(alertsExternalServiceConditionsApiMock).create(eq(POLICY.getId()), eq(ALERTS_EXTERNAL_SERVICE_CONDITION_MAPPED));
-        verify(alertsExternalServiceConditionsApiMock).delete(eq(ALERTS_EXTERNAL_SERVICE_CONDITION_DIFFERENT.getId()));
-        verifyNoMoreInteractions(alertsExternalServiceConditionsApiMock);
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verify(alertsExternalServiceConditionsApiMock).list(POLICY.getId());
+        order.verify(alertsExternalServiceConditionsApiMock).create(POLICY.getId(), ALERTS_CONDITION_FROM_CONFIG);
+        order.verify(alertsExternalServiceConditionsApiMock).delete(ALERTS_CONDITION_DIFFERENT.getId());
+        order.verifyNoMoreInteractions();
     }
 
-    private static ExternalServiceConditionConfiguration createConfiguration() {
-        return ExternalServiceConditionConfiguration.builder()
+    private static PolicyConfiguration createConfiguration() {
+        return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
-            .externalServiceConditions(
-                Collections.singletonList(
-                    EXTERNAL_SERVICE_CONDITION
-                )
-            )
+            .externalServiceCondition(EXTERNAL_SERVICE_CONDITION)
             .build();
     }
 
@@ -153,14 +166,10 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
         return ApmExternalServiceCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
-            .entities(Collections.singletonList(APPLICATION_NAME))
+            .entity(APPLICATION_NAME)
             .metric(METRIC)
             .externalServiceUrl(EXTERNAL_SERVICE_URL)
-            .terms(
-                Collections.singletonList(
-                    TERMS_CONFIGURATION
-                )
-            )
+            .term(TERMS_CONFIGURATION)
             .build();
     }
 
@@ -169,18 +178,16 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
             .type(ExternalServiceConditionType.APM.getTypeString())
             .name(CONDITION_NAME)
             .enabled(ENABLED)
-            .entities(ImmutableList.of(APPLICATION.getId()))
+            .entity(APPLICATION.getId())
             .metric(METRIC.name().toLowerCase())
             .externalServiceUrl(EXTERNAL_SERVICE_URL)
-            .terms(ImmutableList.of(
-                Terms.builder()
-                    .duration(TERMS_CONFIGURATION.getDurationTerm())
-                    .operator(TERMS_CONFIGURATION.getOperatorTerm())
-                    .priority(TERMS_CONFIGURATION.getPriorityTerm())
-                    .threshold(TERMS_CONFIGURATION.getThresholdTerm())
-                    .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm())
-                    .build()
-                )
+            .term(Terms.builder()
+                .duration(String.valueOf(TERMS_CONFIGURATION.getDurationTerm().getDuration()))
+                .operator(TERMS_CONFIGURATION.getOperatorTerm().name().toLowerCase())
+                .priority(TERMS_CONFIGURATION.getPriorityTerm().name().toLowerCase())
+                .threshold(String.valueOf(TERMS_CONFIGURATION.getThresholdTerm()))
+                .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm().name().toLowerCase())
+                .build()
             );
     }
 }

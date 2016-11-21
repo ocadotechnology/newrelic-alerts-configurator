@@ -1,9 +1,11 @@
 package com.ocado.pandateam.newrelic.sync.configuration.condition.terms;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
 
 @Builder
+@Getter
 public class TermsConfiguration {
     @NonNull
     private DurationTerm durationTerm;
@@ -15,24 +17,4 @@ public class TermsConfiguration {
     private Float thresholdTerm;
     @NonNull
     private TimeFunctionTerm timeFunctionTerm;
-
-    public String getDurationTerm() {
-        return String.valueOf(durationTerm.duration);
-    }
-
-    public String getOperatorTerm() {
-        return operatorTerm.name().toLowerCase();
-    }
-
-    public String getPriorityTerm() {
-        return priorityTerm.name().toLowerCase();
-    }
-
-    public String getThresholdTerm() {
-        return String.valueOf(thresholdTerm);
-    }
-
-    public String getTimeFunctionTerm() {
-        return timeFunctionTerm.name().toLowerCase();
-    }
 }

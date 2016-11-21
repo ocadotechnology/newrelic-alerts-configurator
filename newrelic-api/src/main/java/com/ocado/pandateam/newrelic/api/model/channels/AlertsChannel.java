@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
 
 /**
  * See <a href="https://rpm.newrelic.com/api/explore/alerts_channels/list">Doc</a>
@@ -22,4 +25,13 @@ public class AlertsChannel {
     AlertsChannelConfiguration configuration;
     @JsonProperty
     AlertsChannelLinks links;
+
+    public boolean sameInstance(AlertsChannel other) {
+        return StringUtils.equals(this.getName(), other.getName())
+            && StringUtils.equals(this.getType(), other.getType());
+    }
+
+    public boolean same(AlertsChannel other) {
+        return sameInstance(other) && Objects.equals(this.getConfiguration(), other.getConfiguration());
+    }
 }

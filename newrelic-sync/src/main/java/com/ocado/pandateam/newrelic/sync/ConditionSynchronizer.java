@@ -1,14 +1,13 @@
 package com.ocado.pandateam.newrelic.sync;
 
 import com.ocado.pandateam.newrelic.api.NewRelicApi;
-import com.ocado.pandateam.newrelic.api.model.applications.Application;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
-import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
-import com.ocado.pandateam.newrelic.sync.configuration.ConditionConfiguration;
+import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.Condition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.pandateam.newrelic.sync.exception.NewRelicSyncException;
+import com.ocado.pandateam.newrelic.sync.internal.EntityIdProvider;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,81 +23,94 @@ import static java.lang.String.format;
 @Slf4j
 class ConditionSynchronizer {
     private final NewRelicApi api;
-    private final ConditionConfiguration config;
+    private final EntityIdProvider entityIdProvider;
 
-    ConditionSynchronizer(@NonNull NewRelicApi api, @NonNull ConditionConfiguration config) {
+    ConditionSynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
-        this.config = config;
+        this.entityIdProvider = new EntityIdProvider(api);
     }
 
-    void sync() {
-        LOG.info(format("Synchronizing conditions for policy %s...", config.getPolicyName()));
+    void sync(@NonNull PolicyConfiguration config) {
+        LOG.info("Synchronizing alerts conditions for policy {}...", config.getPolicyName());
 
-        Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
-        AlertsPolicy policy = policyOptional.orElseThrow(
+        AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
-
         List<AlertsCondition> allAlertsConditions = api.getAlertsConditionsApi().list(policy.getId());
-        List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(policy, allAlertsConditions);
+        List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(
+            policy, config.getConditions(), allAlertsConditions);
 
         cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
-        LOG.info(format("Conditions for policy %s synchronized!", config.getPolicyName()));
+        LOG.info("Alerts conditions for policy {} synchronized", config.getPolicyName());
     }
 
     private List<Integer> createOrUpdateAlertsConditions(AlertsPolicy policy,
-                                                         List<AlertsCondition> allAlertsConditions) {
-        List<AlertsCondition> alertsConditionsFromConfig = config.getConditions().stream()
-            .map(this::createAlertsCondition)
-            .collect(Collectors.toList());
-
+                                                         Collection<Condition> conditionsFromConfig,
+                                                         Collection<AlertsCondition> allAlertsConditions) {
         List<AlertsCondition> updatedAlertConditions = new LinkedList<>();
-        alertsConditionsFromConfig.stream().forEach(
-            alertConditionFromConfig -> {
-                Optional<AlertsCondition> alertsConditionToUpdate = allAlertsConditions.stream()
-                    .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
-                    .findFirst();
-                if (alertsConditionToUpdate.isPresent()) {
-                    AlertsCondition updatedCondition = api.getAlertsConditionsApi().update(
-                        alertsConditionToUpdate.get().getId(), alertConditionFromConfig);
-                    LOG.info(format("Alert condition %s (id: %d) updated for policy %s (id: %d)",
-                        updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId()));
-                    updatedAlertConditions.add(updatedCondition);
-                } else {
-                    AlertsCondition newCondition = api.getAlertsConditionsApi().create(
-                        policy.getId(), alertConditionFromConfig);
-                    LOG.info(format("Alert condition %s (id: %d) created for policy %s (id: %d)",
-                        newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId()));
-                }
+        for (Condition conditionFromConfig : conditionsFromConfig) {
+            AlertsCondition alertConditionFromConfig = toAlertsCondition(conditionFromConfig);
+            Optional<AlertsCondition> alertsConditionToUpdate = findAlertsConditionToUpdate(allAlertsConditions,
+                alertConditionFromConfig);
+
+            if (alertsConditionToUpdate.isPresent()) {
+                AlertsCondition updatedCondition = updateAlertsCondition(policy, alertConditionFromConfig,
+                    alertsConditionToUpdate.get());
+                updatedAlertConditions.add(updatedCondition);
+            } else {
+                createAlertsCondition(policy, alertConditionFromConfig);
             }
-        );
+        }
 
         return updatedAlertConditions.stream()
             .map(AlertsCondition::getId)
             .collect(Collectors.toList());
     }
 
+    private Optional<AlertsCondition> findAlertsConditionToUpdate(Collection<AlertsCondition> allAlertsConditions,
+                                                                  AlertsCondition alertConditionFromConfig) {
+        return allAlertsConditions.stream()
+            .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
+            .findAny();
+    }
+
+    private void createAlertsCondition(AlertsPolicy policy, AlertsCondition alertConditionFromConfig) {
+        AlertsCondition newCondition = api.getAlertsConditionsApi().create(
+            policy.getId(), alertConditionFromConfig);
+        LOG.info("Alerts condition {} (id: {}) created for policy {} (id: {})",
+            newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId());
+    }
+
+    private AlertsCondition updateAlertsCondition(AlertsPolicy policy, AlertsCondition alertConditionFromConfig,
+                                                  AlertsCondition alertsConditionToUpdate) {
+        AlertsCondition updatedCondition = api.getAlertsConditionsApi().update(
+            alertsConditionToUpdate.getId(), alertConditionFromConfig);
+        LOG.info("Alerts condition {} (id: {}) updated for policy {} (id: {})",
+            updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId());
+        return updatedCondition;
+    }
+
     private void cleanupOldAlertsConditions(AlertsPolicy policy, List<AlertsCondition> allAlertsConditions,
-                                            List<Integer> updatedAlertsConditionsIds) {
+                                            Collection<Integer> updatedAlertsConditionsIds) {
         allAlertsConditions.stream()
             .filter(alertsCondition -> !updatedAlertsConditionsIds.contains(alertsCondition.getId()))
             .forEach(
                 alertsCondition -> {
                     api.getAlertsConditionsApi().delete(alertsCondition.getId());
-                    LOG.info(format("Alert condition %s (id: %d) removed from policy %s (id: %d)",
-                        alertsCondition.getName(), alertsCondition.getId(), policy.getName(), policy.getId()));
+                    LOG.info("Alerts condition {} (id: {}) removed from policy {} (id: {})",
+                        alertsCondition.getName(), alertsCondition.getId(), policy.getName(), policy.getId());
                 }
             );
     }
 
-    private AlertsCondition createAlertsCondition(Condition condition) {
+    private AlertsCondition toAlertsCondition(Condition condition) {
         return AlertsCondition.builder()
-            .type(condition.getTypeString())
+            .type(condition.getType().getTypeString())
             .name(condition.getConditionName())
             .enabled(condition.isEnabled())
             .entities(getEntities(condition))
-            .metric(condition.getMetric())
-            .conditionScope(condition.getConditionScope())
+            .metric(condition.getMetricAsString())
+            .conditionScope(condition.getConditionScopeAsString())
             .runbookUrl(condition.getRunBookUrl())
             .terms(TermsUtils.createTerms(condition.getTerms()))
             .build();
@@ -108,25 +120,11 @@ class ConditionSynchronizer {
         switch (condition.getType()) {
             case APM_APP:
                 return condition.getEntities().stream()
-                    .map(
-                        entity -> {
-                            Optional<Application> applicationOptional = api.getApplicationsApi().getByName(entity);
-                            Application application = applicationOptional.orElseThrow(
-                                () -> new NewRelicSyncException(format("Application %s does not exist", entity)));
-                            return application.getId();
-                        }
-                    )
+                    .map(entityIdProvider::getApplicationId)
                     .collect(Collectors.toList());
-            case APM_KT:
+            case APM_KEY_TRANSACTION:
                 return condition.getEntities().stream()
-                    .map(
-                        entity -> {
-                            Optional<KeyTransaction> ktOptional = api.getKeyTransactionsApi().getByName(entity);
-                            KeyTransaction kt = ktOptional.orElseThrow(
-                                () -> new NewRelicSyncException(format("Key transaction %s does not exist", entity)));
-                            return kt.getId();
-                        }
-                    )
+                    .map(entityIdProvider::getKeyTransactionId)
                     .collect(Collectors.toList());
             default:
                 throw new NewRelicSyncException(format("Could not get entities for condition %s", condition.getConditionName()));

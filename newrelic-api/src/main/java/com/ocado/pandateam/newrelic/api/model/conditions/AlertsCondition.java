@@ -3,6 +3,7 @@ package com.ocado.pandateam.newrelic.api.model.conditions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Singular;
 import lombok.Value;
 
 import java.util.Collection;
@@ -26,6 +27,7 @@ public class AlertsCondition {
     @JsonProperty
     Boolean enabled;
     @JsonProperty
+    @Singular
     Collection<Integer> entities;
     @JsonProperty
     String metric;
@@ -34,6 +36,7 @@ public class AlertsCondition {
     @JsonProperty("runbook_url")
     String runbookUrl;
     @JsonProperty
+    @Singular
     Collection<Terms> terms;
     @JsonProperty("user_defined")
     UserDefined userDefined;

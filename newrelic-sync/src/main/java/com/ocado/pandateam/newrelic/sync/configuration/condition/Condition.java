@@ -6,12 +6,14 @@ import java.util.Collection;
 
 public interface Condition {
     ConditionType getType();
-    String getTypeString();
     String getConditionName();
     boolean isEnabled();
     Collection<String> getEntities();
-    String getMetric();
-    String getConditionScope();
+    String getMetricAsString();
     String getRunBookUrl();
     Collection<TermsConfiguration> getTerms();
+
+    default String getConditionScopeAsString() {
+        return null;
+    }
 }

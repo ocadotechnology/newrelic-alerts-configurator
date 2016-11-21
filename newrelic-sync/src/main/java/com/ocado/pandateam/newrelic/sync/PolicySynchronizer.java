@@ -14,34 +14,32 @@ import static java.lang.String.format;
 @Slf4j
 class PolicySynchronizer {
     private final NewRelicApi api;
-    private final PolicyConfiguration config;
 
-    PolicySynchronizer(@NonNull NewRelicApi api, @NonNull PolicyConfiguration config) {
-        this.config = config;
+    PolicySynchronizer(@NonNull NewRelicApi api) {
         this.api = api;
     }
 
-    void sync() {
-        LOG.info(format("Synchronizing policy %s...", config.getPolicyName()));
+    void sync(@NonNull PolicyConfiguration config) {
+        LOG.info("Synchronizing policy {}...", config.getPolicyName());
 
         AlertsPolicy alertsPolicyFromConfig = AlertsPolicy.builder()
             .name(config.getPolicyName())
             .incidentPreference(config.getIncidentPreference())
             .build();
 
-        Optional<AlertsPolicy> policyOptional = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
+        Optional<AlertsPolicy> policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName());
 
-        if (policyOptional.isPresent()) {
-            AlertsPolicy oldPolicy = policyOptional.get();
+        if (policy.isPresent()) {
+            AlertsPolicy oldPolicy = policy.get();
             if (!StringUtils.equals(alertsPolicyFromConfig.getIncidentPreference(), oldPolicy.getIncidentPreference())) {
                 api.getAlertsPoliciesApi().delete(oldPolicy.getId());
                 api.getAlertsPoliciesApi().create(alertsPolicyFromConfig);
-                LOG.info(format("Policy %s updated!", config.getPolicyName()));
+                LOG.info(format("Policy %s updated", config.getPolicyName()));
             }
         } else {
             api.getAlertsPoliciesApi().create(alertsPolicyFromConfig);
-            LOG.info(format("Policy %s created!", config.getPolicyName()));
+            LOG.info("Policy {} created", config.getPolicyName());
         }
-        LOG.info(format("Policy %s synchronized!", config.getPolicyName()));
+        LOG.info("Policy {} synchronized", config.getPolicyName());
     }
 }
