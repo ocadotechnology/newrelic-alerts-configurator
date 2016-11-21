@@ -23,34 +23,36 @@ class PageableResponse {
     private String prev;
 
     PageableResponse(HttpResponse response) {
-        String[] links = response.getHeaders().getFirst(LINK_HEADER).split(LINK_DELIMITER);
-        for (String link : links) {
-            String[] segments = link.split(LINK_PARAM_DELIMITER);
-            if (segments.length < 2)
-                continue;
-
-            String linkPart = segments[0].trim();
-            if (!linkPart.startsWith("<") || !linkPart.endsWith(">"))
-                continue;
-            linkPart = linkPart.substring(1, linkPart.length() - 1);
-
-            for (int i = 1; i < segments.length; i++) {
-                String[] rel = segments[i].trim().split("=");
-                if (rel.length < 2 || !META_REL.equals(rel[0]))
+        if (response.getHeaders().containsKey(LINK_HEADER)) {
+            String[] links = response.getHeaders().getFirst(LINK_HEADER).split(LINK_DELIMITER);
+            for (String link : links) {
+                String[] segments = link.split(LINK_PARAM_DELIMITER);
+                if (segments.length < 2)
                     continue;
 
-                String relValue = rel[1];
-                if (relValue.startsWith("\"") && relValue.endsWith("\""))
-                    relValue = relValue.substring(1, relValue.length() - 1);
+                String linkPart = segments[0].trim();
+                if (!linkPart.startsWith("<") || !linkPart.endsWith(">"))
+                    continue;
+                linkPart = linkPart.substring(1, linkPart.length() - 1);
 
-                if (META_FIRST.equals(relValue))
-                    first = linkPart;
-                else if (META_LAST.equals(relValue))
-                    last = linkPart;
-                else if (META_NEXT.equals(relValue))
-                    next = linkPart;
-                else if (META_PREV.equals(relValue))
-                    prev = linkPart;
+                for (int i = 1; i < segments.length; i++) {
+                    String[] rel = segments[i].trim().split("=");
+                    if (rel.length < 2 || !META_REL.equals(rel[0]))
+                        continue;
+
+                    String relValue = rel[1];
+                    if (relValue.startsWith("\"") && relValue.endsWith("\""))
+                        relValue = relValue.substring(1, relValue.length() - 1);
+
+                    if (META_FIRST.equals(relValue))
+                        first = linkPart;
+                    else if (META_LAST.equals(relValue))
+                        last = linkPart;
+                    else if (META_NEXT.equals(relValue))
+                        next = linkPart;
+                    else if (META_PREV.equals(relValue))
+                        prev = linkPart;
+                }
             }
         }
     }
