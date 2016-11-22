@@ -20,7 +20,7 @@ public interface AlertsChannelsApi {
      * <p>
      * Although New Relic returns list of channels in its response this method assumes there will be exactly one channel returned.
      *
-     * @param channel - channel definition to be created
+     * @param channel channel definition to be created
      * @return created {@link AlertsChannel}
      * @throws NewRelicApiException when received error response or when multiple channels created
      */
@@ -29,7 +29,7 @@ public interface AlertsChannelsApi {
     /**
      * Deletes Alerts Channel.
      *
-     * @param channelId - id of the channel to be deleted
+     * @param channelId id of the channel to be deleted
      * @return deleted {@link AlertsChannel}
      * @throws NewRelicApiException when received error response
      */
@@ -38,8 +38,8 @@ public interface AlertsChannelsApi {
     /**
      * Removes Alerts Channel from Policy definition.
      *
-     * @param policyId  - id of the policy to be updated
-     * @param channelId - id of the channel to be removed from the given policy
+     * @param policyId  id of the policy to be updated
+     * @param channelId id of the channel to be removed from the given policy
      * @return {@link AlertsChannel} for the given channel id regardless of being part of the specified policy
      * @throws NewRelicApiException when received error response
      */

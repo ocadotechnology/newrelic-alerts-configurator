@@ -19,8 +19,8 @@ public interface ApplicationsApi {
      * Updates {@link Application} object.
      *
      * @param applicationId id of the application to be updated
-     * @param application   application definition to be updated.
-     * @return updated {@link Application}.
+     * @param application   application definition to be updated
+     * @return updated {@link Application}
      * @throws NewRelicApiException when received error response
      */
     Application update(int applicationId, Application application) throws NewRelicApiException;
