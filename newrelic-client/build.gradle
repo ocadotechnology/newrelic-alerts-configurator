@@ -4,7 +4,7 @@ run {
     mainClassName = "com.ocado.panda.newrelic.client.Main"
 
     //https://issues.gradle.org/browse/GRADLE-2718
-    if (System.getenv("NEW_RELIC_API_KEY")) {
-        args System.getenv("NEW_RELIC_API_KEY")
+    if (System.getenv("NEW_RELIC_API_KEY") && System.getenv("PANDA_TEAM_SLACK_CHANNEL_HOOK")) {
+        args System.getenv("NEW_RELIC_API_KEY"), System.getenv("PANDA_TEAM_SLACK_CHANNEL_HOOK")
     }
 }

@@ -16,6 +16,7 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.OperatorT
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.PriorityTerm;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConfiguration;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TimeFunctionTerm;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,16 +26,25 @@ public class Main {
     private static final String POLICY_NAME = "User Management";
 
     public static void main(String[] args) {
-        if (args.length == 0 || args[0].length() == 0) {
+        assertArgsCorrect(args);
+
+        String apiKey = args[0];
+        String pandaTeamSlackChannelHook = args[1];
+
+        Synchronizer synchronizer = new Synchronizer(apiKey);
+        synchronizer.setApplicationConfigurations(createApplicationConfigurations());
+        synchronizer.setPolicyConfigurations(createPolicyConfigurations(pandaTeamSlackChannelHook));
+
+        synchronizer.sync();
+
+    }
+
+    private static void assertArgsCorrect(String[] args) {
+        if (args.length == 0 || StringUtils.isEmpty(args[0])) {
             throw new IllegalArgumentException("Missing API key");
-        } else {
-            String apiKey = args[0];
-
-            Synchronizer synchronizer = new Synchronizer(apiKey);
-            synchronizer.setApplicationConfigurations(createApplicationConfigurations());
-            synchronizer.setPolicyConfigurations(createPolicyConfigurations());
-
-            synchronizer.sync();
+        }
+        if (args.length == 1 || StringUtils.isEmpty(args[1])) {
+            throw new IllegalArgumentException("Missing Panda team slack channel hook");
         }
     }
 
@@ -49,7 +59,7 @@ public class Main {
         );
     }
 
-    private static Collection<PolicyConfiguration> createPolicyConfigurations() {
+    private static Collection<PolicyConfiguration> createPolicyConfigurations(String pandaTeamSlackChannelHook) {
         return Collections.singleton(
             PolicyConfiguration.builder()
                 .policyName(POLICY_NAME)
@@ -59,6 +69,7 @@ public class Main {
                 .externalServiceCondition(kmsAverageResponseConditionConfiguration())
                 .externalServiceCondition(kmsMaximumResponseConditionConfiguration())
                 .channel(emailChannelConfiguration())
+                .channel(slackChannelConfiguration(pandaTeamSlackChannelHook))
                 .build()
         );
     }
@@ -167,11 +178,11 @@ public class Main {
             .build();
     }
 
-    private static Channel slackChannelConfiguration() {
-        // TODO
+    private static Channel slackChannelConfiguration(String pandaTeamSlackChannelHook) {
         return SlackChannel.builder()
             .channelName("Panda team - slack")
-            .slackUrl("")
+            .slackUrl(pandaTeamSlackChannelHook)
+            .teamChannel("panda-team")
             .build();
     }
 }
