@@ -4,6 +4,14 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConf
 
 import java.util.Collection;
 
+/**
+ * Alerts condition configuration.
+ * Implementations:
+ * <ul>
+ *     <li>{@link ApmAppCondition}</li>
+ *     <li>{@link ApmKeyTransactionCondition}</li>
+ * </ul>
+ */
 public interface Condition {
     ConditionType getType();
     String getConditionName();

@@ -1,5 +1,13 @@
 package com.ocado.pandateam.newrelic.sync.configuration.channel;
 
+/**
+ * Notification channel configuration.
+ * Implementations:
+ * <ul>
+ *     <li>{@link EmailChannel}</li>
+ *     <li>{@link SlackChannel}</li>
+ * </ul>
+ */
 public interface Channel {
     ChannelType getType();
     String getChannelName();

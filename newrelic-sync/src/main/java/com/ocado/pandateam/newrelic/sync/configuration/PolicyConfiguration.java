@@ -11,16 +11,42 @@ import lombok.Singular;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Policy configuration.
+ * Configuration parameters:
+ * <ul>
+ *     <li>{@link #policyName}</li>
+ *     <li>{@link #incidentPreference} (optional)</li>
+ *     <li>{@link #channels} (optional)</li>
+ *     <li>{@link #conditions} (optional)</li>
+ *     <li>{@link #externalServiceConditions} (optional)</li>
+ * </ul>
+ */
 @Getter
 @Builder
 public class PolicyConfiguration {
+    /**
+     * Your policy name
+     */
     @NonNull
     private String policyName;
+    /**
+     * Rollup strategy options for your alerts policy
+     */
     private IncidentPreference incidentPreference;
+    /**
+     * Collection of {@link Channel} configurations
+     */
     @Singular
     private Collection<Channel> channels = Collections.emptyList();
+    /**
+     * Collection of {@link Condition} configurations
+     */
     @Singular
     private Collection<Condition> conditions = Collections.emptyList();
+    /**
+     * Collection of {@link ExternalServiceCondition} configurations
+     */
     @Singular
     private Collection<ExternalServiceCondition> externalServiceConditions = Collections.emptyList();
 

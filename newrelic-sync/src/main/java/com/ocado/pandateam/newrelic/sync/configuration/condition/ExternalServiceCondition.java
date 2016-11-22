@@ -4,6 +4,13 @@ import com.ocado.pandateam.newrelic.sync.configuration.condition.terms.TermsConf
 
 import java.util.Collection;
 
+/**
+ * Alerts external service condition configuration.
+ * Implementations:
+ * <ul>
+ *     <li>{@link ApmExternalServiceCondition}</li>
+ * </ul>
+ */
 public interface ExternalServiceCondition {
     ExternalServiceConditionType getType();
     String getTypeString();
