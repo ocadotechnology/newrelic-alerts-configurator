@@ -21,7 +21,7 @@ public class ApmExternalServiceCondition implements ExternalServiceCondition {
     @NonNull
     private String externalServiceUrl;
     @NonNull
-    private ApmAppCondition.Metric metric;
+    private Metric metric;
     private String runBookUrl;
     @NonNull
     @Singular

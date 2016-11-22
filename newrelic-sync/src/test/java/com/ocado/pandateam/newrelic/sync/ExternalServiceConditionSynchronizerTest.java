@@ -6,7 +6,6 @@ import com.ocado.pandateam.newrelic.api.model.conditions.Terms;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocado.pandateam.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.pandateam.newrelic.sync.configuration.PolicyConfiguration;
-import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmAppCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ApmExternalServiceCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ExternalServiceCondition;
 import com.ocado.pandateam.newrelic.sync.configuration.condition.ExternalServiceConditionType;
@@ -35,7 +34,7 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
     private static final String POLICY_NAME = "policyName";
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
 
-    private static final ApmAppCondition.Metric METRIC = ApmAppCondition.Metric.APDEX;
+    private static final ApmExternalServiceCondition.Metric METRIC = ApmExternalServiceCondition.Metric.RESPONSE_TIME_AVERAGE;
     private static final String CONDITION_NAME = "conditionName";
     private static final boolean ENABLED = true;
     private static final String APPLICATION_NAME = "applicationName";
