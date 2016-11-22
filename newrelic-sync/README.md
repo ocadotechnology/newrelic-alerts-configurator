@@ -204,7 +204,7 @@ What you can set in term configuration:
 - priority - Severity level for given term in condition. Possible values are:
     - Critical
     - Warning
-- time function - Possible values are:
+- time function - Time function in which threshold term have to be reached in duration term to trigger an event. Possible values are:
     - All (for at least)
     - Any (at least once in)
 - threshold - Threshold that the monitored value must be compared to using the operator term for an event to be triggered.
