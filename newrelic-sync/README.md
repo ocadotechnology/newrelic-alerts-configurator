@@ -167,7 +167,7 @@ What you can set for APM external service condition:
     - Response time (minimum)
     - Response time (maximum)
     - Throughput
-- external service url - 
+- external service url - URL of the external service to be monitored. This string must not include the protocol.
 - run book url (optional) - The runbook URL to display in notifications.
 - terms - Collection of terms used for alerts condition.
 
@@ -177,6 +177,7 @@ ExternalServiceCondition apmExternalServiceCondition = ApmExternalServiceConditi
     .conditionName("Condition name")
     .enabled(true)
     .entity("Application name")
+    .externalServiceUrl("externalServiceUrl")
     .metric(ApmExternalServiceCondition.Metric.RESPONSE_TIME_AVERAGE)
     .term(term)
     .build();
