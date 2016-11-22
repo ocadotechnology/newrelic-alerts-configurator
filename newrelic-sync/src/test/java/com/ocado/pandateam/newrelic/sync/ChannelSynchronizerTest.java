@@ -109,6 +109,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAMEINSTANCE, EMAIL_ALERT_CHANNEL_DIFFERENT));
         when(alertsChannelsApiMock.deleteFromPolicy(POLICY.getId(), EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId())).thenReturn(EMAIL_ALERT_CHANNEL_SAMEINSTANCE);
+
         // when
         testee.sync(CONFIGURATION);
 
@@ -126,6 +127,7 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public void shouldNotRemoveChannel_whenChannelNotUpdated() {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME, EMAIL_ALERT_CHANNEL_DIFFERENT));
+
         // when
         testee.sync(CONFIGURATION);
 

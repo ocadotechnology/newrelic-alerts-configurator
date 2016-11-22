@@ -9,7 +9,7 @@ public interface AlertsConditionsApi {
     /**
      * Lists Alerts Conditions for the given policy.
      *
-     * @param policyId - id of the policy containing alerts conditions
+     * @param policyId id of the policy containing alerts conditions
      * @return list of all existing {@link AlertsCondition} from the given policy
      * @throws NewRelicApiException when received error response
      */
@@ -18,8 +18,8 @@ public interface AlertsConditionsApi {
     /**
      * Creates Alerts Condition instance within specified policy.
      *
-     * @param policyId  - id of the policy to be updated
-     * @param condition - condition definition to be created
+     * @param policyId  id of the policy to be updated
+     * @param condition condition definition to be created
      * @return created {@link AlertsCondition}
      * @throws NewRelicApiException when received error response
      */
@@ -28,8 +28,8 @@ public interface AlertsConditionsApi {
     /**
      * Updates Alerts Condition definition.
      *
-     * @param conditionId - id of the condition to be updated
-     * @param condition   - condition definition to be updated
+     * @param conditionId id of the condition to be updated
+     * @param condition   condition definition to be updated
      * @return created {@link AlertsCondition}
      * @throws NewRelicApiException when received error response
      */
@@ -38,7 +38,7 @@ public interface AlertsConditionsApi {
     /**
      * Deletes Alerts Condition.
      *
-     * @param conditionId - id of the condition to be updated
+     * @param conditionId id of the condition to be updated
      * @return deleted {@link AlertsCondition}
      * @throws NewRelicApiException when received error response
      */

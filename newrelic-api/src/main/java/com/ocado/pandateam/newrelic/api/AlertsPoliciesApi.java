@@ -19,7 +19,7 @@ public interface AlertsPoliciesApi {
     /**
      * Creates Alerts Policy instance.
      *
-     * @param policy - policy definition to be created
+     * @param policy policy definition to be created
      * @return created {@link AlertsPolicy}
      * @throws NewRelicApiException when received error response
      */
@@ -28,7 +28,7 @@ public interface AlertsPoliciesApi {
     /**
      * Deletes Alerts Policy instance.
      *
-     * @param policyId - id of the policy to be removed
+     * @param policyId id of the policy to be removed
      * @return deleted {@link AlertsPolicy}
      * @throws NewRelicApiException when received error response
      */
@@ -37,7 +37,7 @@ public interface AlertsPoliciesApi {
     /**
      * Associates given channels to the policy. This method does not remove previously linked channel but not provided in the list.
      *
-     * @param channels - {@link AlertsPolicyChannels} object mapping policy id to the list of channels ids
+     * @param channels {@link AlertsPolicyChannels} object mapping policy id to the list of channels ids
      * @return {@link AlertsPolicyChannels} when successfully set
      * @throws NewRelicApiException when received error response
      */
