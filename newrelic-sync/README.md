@@ -33,7 +33,7 @@ ApplicationConfiguration.builder()
 ```
 What you can set in your configuration:
 - application name - Your application name.
-- application apdex threshold (optional) - Set apdex threshold for applciation.
+- application apdex threshold (optional) - Set apdex threshold for application.
 - end user apdex threshold (optional) - Set apdex threshold for end user.
 - real user monitoring enabled (optional) - If real user monitoring is enabled. Default value is false.
 
