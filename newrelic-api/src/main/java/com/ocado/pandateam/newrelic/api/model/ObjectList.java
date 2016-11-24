@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.api.model;
 
-import com.ocado.pandateam.newrelic.api.NewRelicApiException;
+import com.ocado.pandateam.newrelic.api.internal.NewRelicApiException;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.api;
+package com.ocado.pandateam.newrelic.api.internal;
 
 public class NewRelicApiException extends RuntimeException {
 
