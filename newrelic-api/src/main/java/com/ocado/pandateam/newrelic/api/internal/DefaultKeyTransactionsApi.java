@@ -1,7 +1,7 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
 import com.ocado.pandateam.newrelic.api.KeyTransactionsApi;
-import com.ocado.pandateam.newrelic.api.internal.jersey.NewRelicClient;
+import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.pandateam.newrelic.api.internal.model.KeyTransactionList;
 import com.ocado.pandateam.newrelic.api.internal.model.KeyTransactionWrapper;
 import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;

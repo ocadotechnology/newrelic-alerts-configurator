@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.api.internal.jersey;
+package com.ocado.pandateam.newrelic.api.internal.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-public class NewRelicClientInterceptor implements ClientRequestFilter, ClientResponseFilter {
+class NewRelicClientInterceptor implements ClientRequestFilter, ClientResponseFilter {
 
     private static final String X_API_KEY_HEADER = "X-Api-Key";
 
     private final String apiKey;
 
-    public NewRelicClientInterceptor(String apiKey) {
+    NewRelicClientInterceptor(String apiKey) {
         this.apiKey = apiKey;
     }
 

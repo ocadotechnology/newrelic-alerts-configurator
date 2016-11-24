@@ -1,4 +1,4 @@
-package com.ocado.pandateam.newrelic.api.internal.jersey;
+package com.ocado.pandateam.newrelic.api.internal.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;

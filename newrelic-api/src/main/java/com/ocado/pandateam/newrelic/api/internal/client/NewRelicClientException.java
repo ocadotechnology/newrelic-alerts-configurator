@@ -1,12 +1,12 @@
-package com.ocado.pandateam.newrelic.api.internal.jersey;
+package com.ocado.pandateam.newrelic.api.internal.client;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientResponseContext;
 
-public class NewRelicClientException extends ProcessingException {
+class NewRelicClientException extends ProcessingException {
 
-    public NewRelicClientException(ClientRequestContext request, ClientResponseContext response) {
+    NewRelicClientException(ClientRequestContext request, ClientResponseContext response) {
         super(formatMessage(request, response));
 
     }

@@ -1,6 +1,6 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
-import com.ocado.pandateam.newrelic.api.internal.jersey.NewRelicClient;
+import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Link;

@@ -6,7 +6,7 @@ import com.ocado.pandateam.newrelic.api.AlertsExternalServiceConditionsApi;
 import com.ocado.pandateam.newrelic.api.AlertsPoliciesApi;
 import com.ocado.pandateam.newrelic.api.ApplicationsApi;
 import com.ocado.pandateam.newrelic.api.KeyTransactionsApi;
-import com.ocado.pandateam.newrelic.api.internal.jersey.NewRelicClient;
+import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 import lombok.Getter;
 
 /**

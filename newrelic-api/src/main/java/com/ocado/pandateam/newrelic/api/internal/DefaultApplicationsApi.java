@@ -1,7 +1,7 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
 import com.ocado.pandateam.newrelic.api.ApplicationsApi;
-import com.ocado.pandateam.newrelic.api.internal.jersey.NewRelicClient;
+import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.pandateam.newrelic.api.internal.model.ApplicationList;
 import com.ocado.pandateam.newrelic.api.internal.model.ApplicationWrapper;
 import com.ocado.pandateam.newrelic.api.model.applications.Application;
