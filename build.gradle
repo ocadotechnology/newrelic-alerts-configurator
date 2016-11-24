@@ -1,5 +1,5 @@
 allprojects {
-    group = 'com.ocado.pandateam.newrelic.alerts'
+    group = 'com.ocado.panda.newrelic.alerts'
     version = '0.1-SNAPSHOT'
 
     apply plugin: 'java'
