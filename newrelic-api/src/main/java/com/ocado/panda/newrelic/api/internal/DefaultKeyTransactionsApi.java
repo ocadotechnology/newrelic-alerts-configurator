@@ -5,10 +5,12 @@ import com.ocado.panda.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.panda.newrelic.api.internal.model.KeyTransactionList;
 import com.ocado.panda.newrelic.api.internal.model.KeyTransactionWrapper;
 import com.ocado.panda.newrelic.api.model.transactions.KeyTransaction;
+import org.glassfish.jersey.uri.UriComponent;
 
 import java.util.Optional;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static org.glassfish.jersey.uri.UriComponent.Type.QUERY_PARAM_SPACE_ENCODED;
 
 class DefaultKeyTransactionsApi extends ApiBase implements KeyTransactionsApi {
 
@@ -21,9 +23,10 @@ class DefaultKeyTransactionsApi extends ApiBase implements KeyTransactionsApi {
 
     @Override
     public Optional<KeyTransaction> getByName(String keyTransactionName) {
+        String keyTransactionNameEncoded = UriComponent.encode(keyTransactionName, QUERY_PARAM_SPACE_ENCODED);
         return client
                 .target(KEY_TRANSACTIONS_URL)
-                .queryParam("filter[name]", keyTransactionName)
+                .queryParam("filter[name]", keyTransactionNameEncoded)
                 .request(APPLICATION_JSON_TYPE)
                 .get(KeyTransactionList.class)
                 .getSingle();
