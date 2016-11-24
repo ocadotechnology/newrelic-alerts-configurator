@@ -1,6 +1,5 @@
 package com.ocado.pandateam.newrelic.api;
 
-import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 
 import java.util.List;

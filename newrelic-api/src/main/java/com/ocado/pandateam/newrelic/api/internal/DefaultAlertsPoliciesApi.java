@@ -1,7 +1,7 @@
 package com.ocado.pandateam.newrelic.api.internal;
 
 import com.ocado.pandateam.newrelic.api.AlertsPoliciesApi;
-import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
+import com.ocado.pandateam.newrelic.api.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsPolicyChannelsWrapper;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsPolicyList;

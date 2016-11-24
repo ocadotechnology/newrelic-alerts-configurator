@@ -1,6 +1,5 @@
 package com.ocado.pandateam.newrelic.api;
 
-import com.ocado.pandateam.newrelic.api.exception.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.transactions.KeyTransaction;
 
 import java.util.Optional;
