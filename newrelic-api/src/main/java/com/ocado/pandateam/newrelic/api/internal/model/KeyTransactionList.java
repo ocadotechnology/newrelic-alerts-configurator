@@ -13,4 +13,9 @@ import java.util.List;
 public class KeyTransactionList extends ObjectList<KeyTransaction> {
     @JsonProperty("key_transactions")
     List<KeyTransaction> list;
+
+    @Override
+    public KeyTransactionList merge(ObjectList<KeyTransaction> list) {
+        return new KeyTransactionList(mergeList(list));
+    }
 }

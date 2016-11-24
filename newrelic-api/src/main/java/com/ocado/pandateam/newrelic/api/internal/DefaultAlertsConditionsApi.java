@@ -4,7 +4,6 @@ import com.ocado.pandateam.newrelic.api.AlertsConditionsApi;
 import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsConditionList;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsConditionWrapper;
-import com.ocado.pandateam.newrelic.api.model.ObjectList;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 
 import javax.ws.rs.client.Entity;
@@ -27,7 +26,7 @@ class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi 
         return getPageable(
                 client.target(CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
                 AlertsConditionList.class,
-                (list1, list2) -> new AlertsConditionList(ObjectList.merge(list1, list2))).getList();
+                AlertsConditionList::merge).getList();
     }
 
     @Override

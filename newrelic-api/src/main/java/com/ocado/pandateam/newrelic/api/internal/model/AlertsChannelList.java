@@ -13,4 +13,9 @@ import java.util.List;
 public class AlertsChannelList extends ObjectList<AlertsChannel> {
     @JsonProperty("channels")
     List<AlertsChannel> list;
+
+    @Override
+    public AlertsChannelList merge(ObjectList<AlertsChannel> list) {
+        return new AlertsChannelList(mergeList(list));
+    }
 }

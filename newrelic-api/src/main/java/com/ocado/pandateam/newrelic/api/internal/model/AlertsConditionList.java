@@ -13,4 +13,9 @@ import java.util.List;
 public class AlertsConditionList extends ObjectList<AlertsCondition> {
     @JsonProperty("conditions")
     List<AlertsCondition> list;
+
+    @Override
+    public AlertsConditionList merge(ObjectList<AlertsCondition> list) {
+        return new AlertsConditionList(mergeList(list));
+    }
 }

@@ -13,4 +13,9 @@ import java.util.List;
 public class AlertsExternalServiceConditionList extends ObjectList<AlertsExternalServiceCondition> {
     @JsonProperty("external_service_conditions")
     List<AlertsExternalServiceCondition> list;
+
+    @Override
+    public AlertsExternalServiceConditionList merge(ObjectList<AlertsExternalServiceCondition> list) {
+        return new AlertsExternalServiceConditionList(mergeList(list));
+    }
 }

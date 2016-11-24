@@ -13,4 +13,9 @@ import java.util.List;
 public class ApplicationList extends ObjectList<Application> {
     @JsonProperty("applications")
     List<Application> list;
+
+    @Override
+    public ApplicationList merge(ObjectList<Application> list) {
+        return new ApplicationList(mergeList(list));
+    }
 }

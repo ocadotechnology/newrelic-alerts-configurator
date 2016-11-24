@@ -13,4 +13,9 @@ import java.util.List;
 public class AlertsPolicyList extends ObjectList<AlertsPolicy> {
     @JsonProperty("policies")
     List<AlertsPolicy> list;
+
+    @Override
+    public AlertsPolicyList merge(ObjectList<AlertsPolicy> list) {
+        return new AlertsPolicyList(mergeList(list));
+    }
 }

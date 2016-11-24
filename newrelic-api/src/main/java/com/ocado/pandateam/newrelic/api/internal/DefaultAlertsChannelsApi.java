@@ -4,7 +4,6 @@ import com.ocado.pandateam.newrelic.api.AlertsChannelsApi;
 import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsChannelList;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsChannelWrapper;
-import com.ocado.pandateam.newrelic.api.model.ObjectList;
 import com.ocado.pandateam.newrelic.api.model.channels.AlertsChannel;
 
 import javax.ws.rs.client.Entity;
@@ -24,8 +23,10 @@ class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
 
     @Override
     public List<AlertsChannel> list() throws NewRelicApiException {
-        return getPageable(client.target(CHANNELS_URL).request(APPLICATION_JSON_TYPE), AlertsChannelList.class,
-                (list1, list2) -> new AlertsChannelList(ObjectList.merge(list1, list2))).getList();
+        return getPageable(
+                client.target(CHANNELS_URL).request(APPLICATION_JSON_TYPE),
+                AlertsChannelList.class,
+                AlertsChannelList::merge).getList();
     }
 
     @Override

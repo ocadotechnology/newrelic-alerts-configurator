@@ -4,7 +4,6 @@ import com.ocado.pandateam.newrelic.api.AlertsExternalServiceConditionsApi;
 import com.ocado.pandateam.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsExternalServiceConditionList;
 import com.ocado.pandateam.newrelic.api.internal.model.AlertsExternalServiceConditionWrapper;
-import com.ocado.pandateam.newrelic.api.model.ObjectList;
 import com.ocado.pandateam.newrelic.api.model.conditions.external.AlertsExternalServiceCondition;
 
 import javax.ws.rs.client.Entity;
@@ -27,7 +26,7 @@ class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements Alert
         return getPageable(
                 client.target(CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
                 AlertsExternalServiceConditionList.class,
-                (list1, list2) -> new AlertsExternalServiceConditionList(ObjectList.merge(list1, list2))).getList();
+                AlertsExternalServiceConditionList::merge).getList();
     }
 
     @Override

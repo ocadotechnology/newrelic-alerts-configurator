@@ -8,7 +8,6 @@ class NewRelicClientException extends ProcessingException {
 
     NewRelicClientException(ClientRequestContext request, ClientResponseContext response) {
         super(formatMessage(request, response));
-
     }
 
     private static String formatMessage(ClientRequestContext request, ClientResponseContext response) {

@@ -17,7 +17,7 @@ abstract class ApiBase {
         this.client = client;
     }
 
-    protected <T> T getPageable(Builder request, Class<T> responseType, BiFunction<T, T, T> accumulator) {
+    <T> T getPageable(Builder request, Class<T> responseType, BiFunction<T, T, T> accumulator) {
         Response response = request.get();
         T responseBody = response.readEntity(responseType);
         Link next = response.getLink("next");
