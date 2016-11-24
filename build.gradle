@@ -1,6 +1,6 @@
 allprojects {
     group = 'com.ocado.panda.newrelic.alerts'
-    version = '0.2-SNAPSHOT'
+    version = '0.3-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -13,7 +13,6 @@ allprojects {
 project(':newrelic-api') {
     dependencies {
         compile 'commons-io:commons-io:2.5'
-        compile 'com.mashape.unirest:unirest-java:1.4.9'
         compile 'org.glassfish.jersey.core:jersey-client:2.24.1'
         compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.24.1'
         compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
