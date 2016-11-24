@@ -20,7 +20,7 @@ public abstract class ObjectList<T> {
 
     public abstract List<T> getList();
 
-    public Optional<T> getSingle() throws NewRelicApiException {
+    public Optional<T> getSingle() {
         List<T> list = getList();
         if (list.isEmpty()) {
             return Optional.empty();

@@ -22,7 +22,7 @@ class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi 
     }
 
     @Override
-    public List<AlertsCondition> list(int policyId) throws NewRelicApiException {
+    public List<AlertsCondition> list(int policyId) {
         return getPageable(
                 client.target(CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
                 AlertsConditionList.class,
@@ -30,7 +30,7 @@ class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi 
     }
 
     @Override
-    public AlertsCondition create(int policyId, AlertsCondition condition) throws NewRelicApiException {
+    public AlertsCondition create(int policyId, AlertsCondition condition) {
         return client
                 .target(CONDITION_POLICY_URL)
                 .resolveTemplate("policy_id", policyId)
@@ -41,7 +41,7 @@ class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi 
     }
 
     @Override
-    public AlertsCondition update(int conditionId, AlertsCondition condition) throws NewRelicApiException {
+    public AlertsCondition update(int conditionId, AlertsCondition condition) {
         return client
                 .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)
@@ -52,7 +52,7 @@ class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi 
     }
 
     @Override
-    public AlertsCondition delete(int conditionId) throws NewRelicApiException {
+    public AlertsCondition delete(int conditionId) {
         return client
                 .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)

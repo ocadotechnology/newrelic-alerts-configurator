@@ -22,7 +22,7 @@ class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements Alert
     }
 
     @Override
-    public List<AlertsExternalServiceCondition> list(int policyId) throws NewRelicApiException {
+    public List<AlertsExternalServiceCondition> list(int policyId) {
         return getPageable(
                 client.target(CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
                 AlertsExternalServiceConditionList.class,
@@ -30,8 +30,7 @@ class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements Alert
     }
 
     @Override
-    public AlertsExternalServiceCondition create(int policyId, AlertsExternalServiceCondition condition)
-            throws NewRelicApiException {
+    public AlertsExternalServiceCondition create(int policyId, AlertsExternalServiceCondition condition) {
         return client
                 .target(CONDITION_POLICY_URL)
                 .resolveTemplate("policy_id", policyId)
@@ -42,8 +41,7 @@ class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements Alert
     }
 
     @Override
-    public AlertsExternalServiceCondition update(int conditionId, AlertsExternalServiceCondition condition)
-            throws NewRelicApiException {
+    public AlertsExternalServiceCondition update(int conditionId, AlertsExternalServiceCondition condition) {
         return client
                 .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)
@@ -54,7 +52,7 @@ class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements Alert
     }
 
     @Override
-    public AlertsExternalServiceCondition delete(int conditionId) throws NewRelicApiException {
+    public AlertsExternalServiceCondition delete(int conditionId) {
         return client
                 .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)

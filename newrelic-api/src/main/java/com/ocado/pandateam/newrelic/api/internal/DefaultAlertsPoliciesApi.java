@@ -27,7 +27,7 @@ class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesApi {
     }
 
     @Override
-    public Optional<AlertsPolicy> getByName(String alertsPolicyName) throws NewRelicApiException {
+    public Optional<AlertsPolicy> getByName(String alertsPolicyName) {
         return client
                 .target(POLICIES_URL)
                 .queryParam("filter[name]", alertsPolicyName)
@@ -37,7 +37,7 @@ class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesApi {
     }
 
     @Override
-    public AlertsPolicy create(AlertsPolicy policy) throws NewRelicApiException {
+    public AlertsPolicy create(AlertsPolicy policy) {
         return client
                 .target(POLICIES_URL)
                 .request(APPLICATION_JSON_TYPE)
@@ -46,7 +46,7 @@ class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesApi {
     }
 
     @Override
-    public AlertsPolicy delete(int policyId) throws NewRelicApiException {
+    public AlertsPolicy delete(int policyId) {
         return client
                 .target(POLICY_URL)
                 .resolveTemplate("policy_id", policyId)
@@ -56,7 +56,7 @@ class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesApi {
     }
 
     @Override
-    public AlertsPolicyChannels updateChannels(AlertsPolicyChannels channels) throws NewRelicApiException {
+    public AlertsPolicyChannels updateChannels(AlertsPolicyChannels channels) {
         MultivaluedMap<String, String> form = new MultivaluedHashMap<>();
         form.putSingle("policy_id", String.valueOf(channels.getPolicyId()));
         form.putSingle("channel_ids",

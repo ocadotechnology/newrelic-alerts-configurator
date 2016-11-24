@@ -1,6 +1,5 @@
 package com.ocado.pandateam.newrelic.api;
 
-import com.ocado.pandateam.newrelic.api.internal.NewRelicApiException;
 import com.ocado.pandateam.newrelic.api.model.conditions.AlertsCondition;
 
 import java.util.List;
@@ -11,9 +10,8 @@ public interface AlertsConditionsApi {
      *
      * @param policyId id of the policy containing alerts conditions
      * @return list of all existing {@link AlertsCondition} from the given policy
-     * @throws NewRelicApiException when received error response
      */
-    List<AlertsCondition> list(int policyId) throws NewRelicApiException;
+    List<AlertsCondition> list(int policyId);
 
     /**
      * Creates Alerts Condition instance within specified policy.
@@ -21,9 +19,8 @@ public interface AlertsConditionsApi {
      * @param policyId  id of the policy to be updated
      * @param condition condition definition to be created
      * @return created {@link AlertsCondition}
-     * @throws NewRelicApiException when received error response
      */
-    AlertsCondition create(int policyId, AlertsCondition condition) throws NewRelicApiException;
+    AlertsCondition create(int policyId, AlertsCondition condition);
 
     /**
      * Updates Alerts Condition definition.
@@ -31,16 +28,14 @@ public interface AlertsConditionsApi {
      * @param conditionId id of the condition to be updated
      * @param condition   condition definition to be updated
      * @return created {@link AlertsCondition}
-     * @throws NewRelicApiException when received error response
      */
-    AlertsCondition update(int conditionId, AlertsCondition condition) throws NewRelicApiException;
+    AlertsCondition update(int conditionId, AlertsCondition condition);
 
     /**
      * Deletes Alerts Condition.
      *
      * @param conditionId id of the condition to be updated
      * @return deleted {@link AlertsCondition}
-     * @throws NewRelicApiException when received error response
      */
-    AlertsCondition delete(int conditionId) throws NewRelicApiException;
+    AlertsCondition delete(int conditionId);
 }

@@ -22,7 +22,7 @@ class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
     }
 
     @Override
-    public List<AlertsChannel> list() throws NewRelicApiException {
+    public List<AlertsChannel> list() {
         return getPageable(
                 client.target(CHANNELS_URL).request(APPLICATION_JSON_TYPE),
                 AlertsChannelList.class,
@@ -30,7 +30,7 @@ class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
     }
 
     @Override
-    public AlertsChannel create(AlertsChannel channel) throws NewRelicApiException {
+    public AlertsChannel create(AlertsChannel channel) {
         return client
                 .target(CHANNELS_URL)
                 .request(APPLICATION_JSON_TYPE)
@@ -40,7 +40,7 @@ class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
     }
 
     @Override
-    public AlertsChannel delete(int channelId) throws NewRelicApiException {
+    public AlertsChannel delete(int channelId) {
         return client
                 .target(CHANNEL_URL)
                 .resolveTemplate("channel_id", channelId)
@@ -50,7 +50,7 @@ class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
     }
 
     @Override
-    public AlertsChannel deleteFromPolicy(int policyId, int channelId) throws NewRelicApiException {
+    public AlertsChannel deleteFromPolicy(int policyId, int channelId) {
         return client
                 .target(POLICY_CHANNELS_URL)
                 .queryParam("policy_id", policyId)
