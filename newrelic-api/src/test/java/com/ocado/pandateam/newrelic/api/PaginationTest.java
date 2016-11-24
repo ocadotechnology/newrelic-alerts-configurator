@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -52,9 +54,12 @@ public class PaginationTest {
 
         // when
         List<AlertsChannel> channels = testee.list();
+        Set<Integer> channelsIds = channels.stream().map(AlertsChannel::getId).collect(Collectors.toSet());
 
         // then
         Assert.assertEquals(2, channels.size());
+        Assert.assertTrue(channelsIds.contains(1));
+        Assert.assertTrue(channelsIds.contains(2));
     }
 
     private void newRelicReturnsPaginatedChannels() throws UnsupportedEncodingException {
