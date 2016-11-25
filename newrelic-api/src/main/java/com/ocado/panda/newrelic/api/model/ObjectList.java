@@ -1,7 +1,5 @@
 package com.ocado.panda.newrelic.api.model;
 
-import com.ocado.panda.newrelic.api.internal.NewRelicApiException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +26,6 @@ public abstract class ObjectList<T> {
         if (list.size() == 1) {
             return Optional.of(list.get(0));
         }
-        throw new NewRelicApiException("Expected single element in the list but found: " + list.size());
+        throw new IllegalStateException("Expected single element in the list but found: " + list.size());
     }
 }

@@ -1,7 +1,6 @@
 package com.ocado.panda.newrelic.api;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.ocado.panda.newrelic.api.internal.NewRelicApiException;
 import com.ocado.panda.newrelic.api.model.applications.Application;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
@@ -43,7 +42,7 @@ public class NewRelicApiTest {
     }
 
     @Test
-    public void shouldGetApplicationCorrectly() throws IOException, NewRelicApiException {
+    public void shouldGetApplicationCorrectly() throws IOException {
 
         // given
         newRelicReturnsApplications();

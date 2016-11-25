@@ -1,7 +1,6 @@
 package com.ocado.panda.newrelic.api;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.ocado.panda.newrelic.api.internal.NewRelicApiException;
 import com.ocado.panda.newrelic.api.model.channels.AlertsChannel;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
@@ -47,7 +46,7 @@ public class PaginationTest {
     }
 
     @Test
-    public void shouldGetPaginatedChannelsCorrectly() throws IOException, NewRelicApiException {
+    public void shouldGetPaginatedChannelsCorrectly() throws IOException {
 
         // given
         newRelicReturnsPaginatedChannels();

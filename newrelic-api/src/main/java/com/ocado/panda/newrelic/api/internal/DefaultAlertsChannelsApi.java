@@ -36,7 +36,7 @@ class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
                 .request(APPLICATION_JSON_TYPE)
                 .post(Entity.entity(new AlertsChannelWrapper(channel), APPLICATION_JSON_TYPE), AlertsChannelList.class)
                 .getSingle()
-                .orElseThrow(() -> new NewRelicApiException("Failed to create channel"));
+                .orElseThrow(() -> new IllegalStateException("Failed to create channel: empty list returned"));
     }
 
     @Override
