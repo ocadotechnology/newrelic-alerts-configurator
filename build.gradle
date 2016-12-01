@@ -1,6 +1,6 @@
 allprojects {
     group = 'com.ocado.panda.newrelic.alerts'
-    version = '0.3-SNAPSHOT'
+    version = '0.4-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
