@@ -1,15 +1,15 @@
 package com.ocado.panda.newrelic.api.model.channels;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import java.util.Map;
 
 @Value
+@EqualsAndHashCode(exclude={"url"})
 @Builder
-@AllArgsConstructor
 public class AlertsChannelConfiguration {
     @JsonProperty("user_id")
     String userId;
