@@ -9,7 +9,7 @@ import lombok.Value;
 import java.util.Map;
 
 @Value
-@EqualsAndHashCode(exclude={"url"})
+@EqualsAndHashCode(exclude = {"url"})
 @Builder
 @AllArgsConstructor
 public class AlertsChannelConfiguration {

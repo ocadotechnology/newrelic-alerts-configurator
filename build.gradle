@@ -13,24 +13,18 @@ allprojects {
 project(':newrelic-api') {
     dependencies {
         compile 'commons-io:commons-io:2.5'
+        compile 'org.apache.commons:commons-lang3:3.5'
         compile 'org.glassfish.jersey.core:jersey-client:2.24.1'
         compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.24.1'
         compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.4'
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.4'
-        compile 'org.apache.commons:commons-lang3:3.5'
-
-        testCompile 'com.github.tomakehurst:wiremock:2.1.12'
     }
 }
 
 project(':newrelic-sync') {
     dependencies {
         compile project(':newrelic-api')
-        compile 'org.apache.commons:commons-lang3:3.5'
-
-        testCompile 'org.mockito:mockito-core:1.10.19'
-        testCompile 'com.google.guava:guava:20.0'
     }
 }
 
@@ -44,6 +38,9 @@ subprojects {
         compileOnly 'org.projectlombok:lombok:1.16.10'
         compile 'org.slf4j:slf4j-api:1.7.21'
         testCompile "junit:junit:4.12"
+        testCompile 'com.google.guava:guava:20.0'
+        testCompile 'org.mockito:mockito-core:1.10.19'
+        testCompile 'com.github.tomakehurst:wiremock:2.1.12'
     }
 
     task sourcesJar(type: Jar, dependsOn: classes) {

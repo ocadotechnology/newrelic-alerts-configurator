@@ -1,9 +1,9 @@
 package com.ocado.panda.newrelic.api.internal;
 
-import com.ocado.panda.newrelic.api.internal.model.AlertsChannelWrapper;
 import com.ocado.panda.newrelic.api.AlertsChannelsApi;
 import com.ocado.panda.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.panda.newrelic.api.internal.model.AlertsChannelList;
+import com.ocado.panda.newrelic.api.internal.model.AlertsChannelWrapper;
 import com.ocado.panda.newrelic.api.model.channels.AlertsChannel;
 
 import javax.ws.rs.client.Entity;
