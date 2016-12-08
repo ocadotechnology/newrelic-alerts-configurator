@@ -7,6 +7,8 @@ First step is to create Synchronizer instance using simple constructor accepting
 ```java
 Synchronizer synchronizer = new Synchronizer(yourApiKey);
 ```
+**Note that for some configurations you will need Admin User's New Relic API key.**
+
 Next step is to set configurations
  - application configuration
     ```java
