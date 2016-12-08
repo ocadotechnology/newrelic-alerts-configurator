@@ -64,8 +64,11 @@ subprojects {
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
-                version ver
+                if (project.hasProperty("build_version")) {
+                    project.version = project.getProperty("build_version")
+                }
             }
+
         }
         repositories {
             maven {
@@ -79,6 +82,12 @@ subprojects {
                     url 'http://maven.ocado.com/nexus/content/repositories/core-services-releases/'
                 }
             }
+        }
+    }
+
+    publish.doFirst {
+        if(!project.hasProperty("build_version")) {
+            throw new IllegalStateException("Missing <build_version> parameter")
         }
     }
 }
