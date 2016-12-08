@@ -1,6 +1,6 @@
 allprojects {
     group = 'com.ocado.panda.newrelic.alerts'
-    version = '0.4-SNAPSHOT'
+    version = '0.1-SNAPSHOT' // just a placeholder
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -64,6 +64,7 @@ subprojects {
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
+                version ver
             }
         }
         repositories {
