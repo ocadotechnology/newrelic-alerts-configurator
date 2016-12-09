@@ -229,6 +229,10 @@ Currently supported types of alerts notification channels are:
 - Email channel
 - Slack channel
 
+If notification channel with given name and type does exists - it will be updated
+If notification channel with given name and type does not exist - it will be created
+If you remove channel from your policy configuration, and it is not configured for any other policy - it will be deleted
+
 #### Email channel
 To create email channel use simple builder:
 ```java
