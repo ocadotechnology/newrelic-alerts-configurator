@@ -68,6 +68,7 @@ What you can set in your configuration:
 - channels (optional) - Collection of alerts channels which needs to be configured for your alerts policy. If no channels are set, your alerts policy won't have any alerts channels.
 
 If policy with given policy name exists - it will be updated.
+
 If policy with given policy name does not exist - it will be created.
 
 Example alerts policy configuration:
@@ -228,6 +229,12 @@ TermsConfiguration term = TermsConfiguration.builder()
 Currently supported types of alerts notification channels are:
 - Email channel
 - Slack channel
+
+If notification channel with given name and type does exists - it will be updated
+
+If notification channel with given name and type does not exist - it will be created
+
+If you remove channel from your policy configuration, and it is not configured for any other policy - it will be deleted
 
 #### Email channel
 To create email channel use simple builder:
