@@ -151,6 +151,8 @@ Condition apmKeyTransactionCondition = ApmKeyTransactionCondition.builder()
     .build();
 ```
 
+**Note that key transaction cannot be created via New Relic API. Before synchronizing a condition, key transaction needs to be manually created in New Relic.**
+
 ### Alerts external service condition
 Currently supported types of alerts policy external service conditions are:
 - APM external service condition
