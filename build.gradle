@@ -28,6 +28,15 @@ project(':newrelic-sync') {
     }
 }
 
+project(':newrelic-deployment') {
+    dependencies {
+        compile project(':newrelic-api')
+        compile 'org.slf4j:slf4j-simple:1.7.21'
+        compile 'org.slf4j:jcl-over-slf4j:1.7.21'
+        compile 'com.beust:jcommander:1.48'
+    }
+}
+
 subprojects {
     repositories {
         maven { url 'http://maven.ocado.com/nexus/content/repositories/central' }
