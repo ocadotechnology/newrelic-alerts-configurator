@@ -8,7 +8,7 @@ Executable JAR is located in `build/libs/newrelic-deployment-{version}-executabl
 
 ## Downloading from Maven repository
 
-curl -L http://maven.ocado.com/nexus/service/local/artifact/maven/redirect?r=core-services-snapshots&g=com.ocado.panda.newrelic.alerts&a=newrelic-deployment&c=executable&v=LATEST -o newrelic-deployment.jar
+`curl -L http://maven.ocado.com/nexus/service/local/artifact/maven/redirect?r=core-services-snapshots&g=com.ocado.panda.newrelic.alerts&a=newrelic-deployment&c=executable&v=LATEST -o newrelic-deployment.jar`
 
 ## Usage
 ```java -jar newrelic-deployment.jar --help```
