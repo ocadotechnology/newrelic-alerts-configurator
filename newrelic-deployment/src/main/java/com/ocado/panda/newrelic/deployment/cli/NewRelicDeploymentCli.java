@@ -40,6 +40,12 @@ public class NewRelicDeploymentCli {
     @Parameter(names = "--deploymentId", description = "Deployment Id to remove - required for 'remove' option")
     private Integer deploymentId;
 
+    @Parameter(names = "-debug", description = "Debug mode")
+    private boolean debug = false;
+
+    @Parameter(names = "--help", description = "Display usage description", help = true)
+    private boolean help;
+
     private Deployment getDeployment() {
         return Deployment.builder()
                 .revision(revision)
@@ -52,6 +58,9 @@ public class NewRelicDeploymentCli {
     public static void main(String[] args) {
         NewRelicDeploymentCli cli = new NewRelicDeploymentCli();
         if (parseMainArgument(args, cli)) {
+            if (!cli.debug) {
+                // TODO: disable logging
+            }
             switch (cli.action) {
                 case list:
                     listDeployments(cli);
@@ -64,12 +73,12 @@ public class NewRelicDeploymentCli {
                     break;
             }
         } else {
-            printUsage(cli);
+            printUsage();
         }
     }
 
-    private static void printUsage(NewRelicDeploymentCli cli) {
-        JCommander jCommander = new JCommander(cli);
+    private static void printUsage() {
+        JCommander jCommander = new JCommander(new NewRelicDeploymentCli());
         jCommander.setProgramName(NewRelicDeploymentCli.class.getSimpleName());
         jCommander.usage();
     }
@@ -77,6 +86,9 @@ public class NewRelicDeploymentCli {
     private static boolean parseMainArgument(String[] args, NewRelicDeploymentCli cli) {
         try {
             new JCommander(cli, args);
+            if (cli.help) {
+                return false;
+            }
             switch (cli.action) {
                 case list:
                     break;

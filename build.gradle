@@ -10,6 +10,15 @@ allprojects {
     compileJava.options.encoding = 'UTF-8'
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    }
+}
+
 project(':newrelic-api') {
     dependencies {
         compile 'commons-io:commons-io:2.5'
@@ -34,6 +43,20 @@ project(':newrelic-deployment') {
         compile 'org.slf4j:slf4j-simple:1.7.21'
         compile 'org.slf4j:jcl-over-slf4j:1.7.21'
         compile 'com.beust:jcommander:1.48'
+    }
+    apply plugin: 'application'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    mainClassName = 'com.ocado.panda.newrelic.deployment.cli.NewRelicDeploymentCli'
+    shadowJar {
+        classifier = 'executable'
+    }
+    build.dependsOn shadowJar
+    publishing {
+        publications {
+            shadow(MavenPublication) {
+                from components.shadow
+            }
+        }
     }
 }
 
