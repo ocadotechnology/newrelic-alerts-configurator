@@ -8,7 +8,7 @@ See [newrelic-sync/README.md](https://gitlab.tech.lastmile.com/internal-open-sou
 
 ## Mark deployments
 
-See [newrelic-deployments/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-deployments) for more details of how to mark deployments.
+See [newrelic-deployments/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-deployment) for more details of how to mark deployments.
 
 ## Build and publish:
 
