@@ -40,7 +40,7 @@ public class NewRelicDeploymentCli {
     @Parameter(names = "--deploymentId", description = "Deployment Id to remove - required for 'remove' option")
     private Integer deploymentId;
 
-    @Parameter(names = "-debug", description = "Debug mode")
+    @Parameter(names = "--debug", description = "Debug mode")
     private boolean debug = false;
 
     @Parameter(names = "--help", description = "Display usage description", help = true)
@@ -58,8 +58,10 @@ public class NewRelicDeploymentCli {
     public static void main(String[] args) {
         NewRelicDeploymentCli cli = new NewRelicDeploymentCli();
         if (parseMainArgument(args, cli)) {
-            if (!cli.debug) {
-                // TODO: disable logging
+            if (cli.debug) {
+                System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO");
+            } else {
+                System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
             }
             switch (cli.action) {
                 case list:
