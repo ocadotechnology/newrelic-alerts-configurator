@@ -18,7 +18,7 @@ See [newrelic-deployments/README.md](https://gitlab.tech.lastmile.com/internal-o
 
 ## Build and publish:
 
-    ```
-    ./gradlew clean publish -Pbuild_version=<build_version>
-    ```
-    If build_verison contains "-SNAPSHOT" suffix, it will be published to snapshot repository. Release repository will be used otherwise.
+```
+./gradlew clean publish -Pbuild_version=<build_version>
+```
+If build_verison contains "-SNAPSHOT" suffix, it will be published to snapshot repository. Release repository will be used otherwise.
