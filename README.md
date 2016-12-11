@@ -6,7 +6,7 @@ Contains:
 - Deployment marker
 
 ## New Relic API wrapper
-See [newrelic-api/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-api) for more details of how to use New Relic API wrapper.
+See [newrelic-api/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-api) for more details of New Relic API wrapper.
 
 ## Alerts Synchronizer
     
