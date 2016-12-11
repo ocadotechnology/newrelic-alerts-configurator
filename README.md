@@ -1,10 +1,16 @@
 # NewRelic Alerts
 
-NewRelic alert configuration library and API wrapper.
+Contains:
+- New Relic API wrapper
+- Alerts Synchronizer
+- Deployment marker
+
+## New Relic API wrapper
+See [newrelic-api/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-api) for more details of how to use New Relic API wrapper.
 
 ## Alerts Synchronizer
     
-See [newrelic-sync/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-sync) for more details of how to use new relic alerts synchronizer.
+See [newrelic-sync/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-sync) for more details of how to use New Relic alerts synchronizer.
 
 ## Mark deployments
 
