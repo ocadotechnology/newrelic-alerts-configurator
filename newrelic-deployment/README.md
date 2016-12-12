@@ -8,37 +8,38 @@ Executable JAR is located in `build/libs/newrelic-deployment-{version}-executabl
 
 ## Downloading from Maven repository
 
-curl -L http://maven.ocado.com/nexus/service/local/artifact/maven/redirect?r=core-services-snapshots&g=com.ocado.panda.newrelic.alerts&a=newrelic-deployment&c=executable&v=LATEST -o newrelic-deployment.jar
+`curl -L http://maven.ocado.com/nexus/service/local/artifact/maven/redirect?r=core-services-snapshots&g=com.ocado.panda.newrelic.alerts&a=newrelic-deployment&c=executable&v=LATEST -o newrelic-deployment.jar`
 
 ## Usage
 ```java -jar newrelic-deployment.jar --help```
 
 Should print:
-```Usage: NewRelicDeploymentCli [options]
-     Options:
-     * --action
-          Action to perform
-          Possible Values: [list, mark, remove]
-     * --api-key
-          NewRelic admin API key
-     * --application
-          Application name in NewRelic
-       --changelog
-          Deployment changelog - optional for 'mark' option
-       --debug
-          Debug mode
-          Default: false
-       --deploymentId
-          Deployment Id to remove - required for 'remove' option
-       --description
-          Deployment description - optional for 'mark' option
-       --help
-          Display usage description
-          Default: false
-       --revision
-          Deployment revision - required for 'mark' option
-       --user
-          Deployment user - optional for 'mark' option
+```
+Usage: NewRelicDeploymentCli [options]
+  Options:
+  * --action
+       Action to perform
+       Possible Values: [list, mark, remove]
+  * --api-key
+       NewRelic admin API key
+  * --application
+       Application name in NewRelic
+    --changelog
+       Deployment changelog - optional for 'mark' option
+    --debug
+       Debug mode
+       Default: false
+    --deploymentId
+       Deployment Id to remove - required for 'remove' option
+    --description
+       Deployment description - optional for 'mark' option
+    --help
+       Display usage description
+       Default: false
+    --revision
+       Deployment revision - required for 'mark' option
+    --user
+       Deployment user - optional for 'mark' option
 ```
 
 ## Listing deployments
