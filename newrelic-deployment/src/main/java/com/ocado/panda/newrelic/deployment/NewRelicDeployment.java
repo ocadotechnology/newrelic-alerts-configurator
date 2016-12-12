@@ -22,18 +22,22 @@ public class NewRelicDeployment {
     }
 
     public List<Deployment> list(String applicationName) {
-        int applicationId = getApplicationByName(applicationName).getId();
+        int applicationId = getApplicationByName(sanitize(applicationName)).getId();
         return api.getDeploymentsApi().list(applicationId);
     }
 
     public Deployment mark(String applicationName, Deployment deployment) {
-        int applicationId = getApplicationByName(applicationName).getId();
+        int applicationId = getApplicationByName(sanitize(applicationName)).getId();
         return api.getDeploymentsApi().create(applicationId, deployment);
     }
 
     public Deployment remove(String applicationName, Integer deploymentId) {
-        int applicationId = getApplicationByName(applicationName).getId();
+        int applicationId = getApplicationByName(sanitize(applicationName)).getId();
         return api.getDeploymentsApi().delete(applicationId, deploymentId);
+    }
+
+    private static String sanitize(String input) {
+        return input.replace('{', '(').replace('}', ')');
     }
 
 }
