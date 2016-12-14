@@ -20,6 +20,10 @@ See [newrelic-deployments/README.md](https://gitlab.tech.lastmile.com/internal-o
 
 ## Build and publish:
 
+Set environment variables: `MAVEN_REPO_USERNAME`, `MAVEN_REPO_PASSWORD`.
+
+Then execute:
+
 ```
 ./gradlew clean publish -Pbuild_version=<build_version>
 ```
