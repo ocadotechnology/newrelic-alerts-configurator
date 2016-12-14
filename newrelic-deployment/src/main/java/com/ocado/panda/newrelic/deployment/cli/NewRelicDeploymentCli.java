@@ -16,13 +16,13 @@ public class NewRelicDeploymentCli {
         list, mark, remove
     }
 
-    @Parameter(names = {"--api-key"}, description = "NewRelic admin API key", required = true)
+    @Parameter(names = "--api-key", description = "NewRelic admin API key", required = true)
     private String newRelicApiKey;
 
-    @Parameter(names = {"--application"}, description = "Application name in NewRelic", required = true)
+    @Parameter(names = "--application", description = "Application name in NewRelic", required = true)
     private String applicationName;
 
-    @Parameter(names = {"--action"}, description = "Action to perform", required = true)
+    @Parameter(names = "--action", description = "Action to perform", required = true)
     private Action action;
 
     @Parameter(names = "--revision", description = "Deployment revision - required for 'mark' option")
@@ -40,8 +40,8 @@ public class NewRelicDeploymentCli {
     @Parameter(names = "--deploymentId", description = "Deployment Id to remove - required for 'remove' option")
     private Integer deploymentId;
 
-    @Parameter(names = "--debug", description = "Debug mode")
-    private boolean debug = false;
+    @Parameter(names = "--verbose", description = "Verbose mode")
+    private boolean verbose = false;
 
     @Parameter(names = "--help", description = "Display usage description", help = true)
     private boolean help;
@@ -57,12 +57,15 @@ public class NewRelicDeploymentCli {
 
     public static void main(String[] args) {
         NewRelicDeploymentCli cli = new NewRelicDeploymentCli();
-        if (parseMainArgument(args, cli)) {
-            if (cli.debug) {
-                System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO");
-            } else {
-                System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
-            }
+        parseMainArgument(args, cli);
+        if (cli.verbose) {
+            System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "INFO");
+        } else {
+            System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN");
+        }
+        if (cli.help) {
+            printUsage();
+        } else {
             switch (cli.action) {
                 case list:
                     listDeployments(cli);
@@ -74,8 +77,6 @@ public class NewRelicDeploymentCli {
                     removeDeployment(cli);
                     break;
             }
-        } else {
-            printUsage();
         }
     }
 
@@ -85,26 +86,25 @@ public class NewRelicDeploymentCli {
         jCommander.usage();
     }
 
-    private static boolean parseMainArgument(String[] args, NewRelicDeploymentCli cli) {
+    private static void parseMainArgument(String[] args, NewRelicDeploymentCli cli) {
         try {
             new JCommander(cli, args);
-            if (cli.help) {
-                return false;
+            if (!cli.help) {
+                switch (cli.action) {
+                    case list:
+                        break;
+                    case mark:
+                        assertParameterRequired(cli.action, cli.revision, "--revision");
+                        break;
+                    case remove:
+                        assertParameterRequired(cli.action, cli.deploymentId, "--deploymentId");
+                        break;
+                }
             }
-            switch (cli.action) {
-                case list:
-                    break;
-                case mark:
-                    assertParameterRequired(cli.action, cli.revision, "--revision");
-                    break;
-                case remove:
-                    assertParameterRequired(cli.action, cli.deploymentId, "--deploymentId");
-                    break;
-            }
-            return true;
         } catch (ParameterException e) {
             System.err.println(e.getMessage());
-            return false;
+            System.err.println("Tip: type --help to see usage");
+            System.exit(1);
         }
     }
 
@@ -127,6 +127,7 @@ public class NewRelicDeploymentCli {
                 cli.getDeployment()
         );
         System.out.println("Deployment marked: " + deployment);
+        System.out.println("Deployment ID: " + deployment.getId());
     }
 
     private static void removeDeployment(NewRelicDeploymentCli cli) {
