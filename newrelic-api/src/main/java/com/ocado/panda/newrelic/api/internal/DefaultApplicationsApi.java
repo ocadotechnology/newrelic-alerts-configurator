@@ -7,9 +7,8 @@ import com.ocado.panda.newrelic.api.internal.model.ApplicationWrapper;
 import com.ocado.panda.newrelic.api.model.applications.Application;
 
 import javax.ws.rs.client.Entity;
-import java.util.List;
+import javax.ws.rs.client.Invocation;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
@@ -24,19 +23,13 @@ class DefaultApplicationsApi extends ApiBase implements ApplicationsApi {
 
     @Override
     public Optional<Application> getByName(String applicationName) {
-        ApplicationList applicationList = client
+        Invocation.Builder builder = client
                 .target(APPLICATIONS_URL)
                 .queryParam("filter[name]", applicationName)
-                .request(APPLICATION_JSON_TYPE)
-                .get(ApplicationList.class);
-
-        List<Application> applications = applicationList.getList().stream()
+                .request(APPLICATION_JSON_TYPE);
+        return getPageable(builder, ApplicationList.class)
                 .filter(application -> application.getName().equals(applicationName))
-                .collect(Collectors.toList());
-
-        applicationList = new ApplicationList(applications);
-
-        return applicationList.getSingle();
+                .getSingle();
     }
 
     @Override

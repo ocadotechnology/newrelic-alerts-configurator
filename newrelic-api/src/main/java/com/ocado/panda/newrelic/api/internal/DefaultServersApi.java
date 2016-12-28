@@ -8,9 +8,8 @@ import com.ocado.panda.newrelic.api.internal.model.ServerWrapper;
 import com.ocado.panda.newrelic.api.model.servers.Server;
 import org.glassfish.jersey.uri.UriComponent;
 
-import java.util.List;
+import javax.ws.rs.client.Invocation;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.glassfish.jersey.uri.UriComponent.Type.QUERY_PARAM_SPACE_ENCODED;
@@ -26,19 +25,13 @@ class DefaultServersApi extends ApiBase implements ServersApi {
     @Override
     public Optional<Server> getByName(String serverName) {
         String serverNameEncoded = UriComponent.encode(serverName, QUERY_PARAM_SPACE_ENCODED);
-
-        ServerList serverList = client
+        Invocation.Builder builder = client
                 .target(SERVERS_URL)
                 .queryParam("filter[name]", serverNameEncoded)
-                .request(APPLICATION_JSON_TYPE)
-                .get(ServerList.class);
-
-        List<Server> servers = serverList.getList().stream()
+                .request(APPLICATION_JSON_TYPE);
+        return getPageable(builder, ServerList.class)
                 .filter(application -> application.getName().equals(serverName))
-                .collect(Collectors.toList());
-
-        serverList = new ServerList(servers);
-        return serverList.getSingle();
+                .getSingle();
     }
 
     @Override

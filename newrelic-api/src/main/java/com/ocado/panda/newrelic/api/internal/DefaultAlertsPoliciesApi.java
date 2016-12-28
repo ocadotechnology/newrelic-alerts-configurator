@@ -9,9 +9,9 @@ import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.panda.newrelic.api.model.policies.AlertsPolicyChannels;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,19 +29,13 @@ class DefaultAlertsPoliciesApi extends ApiBase implements AlertsPoliciesApi {
 
     @Override
     public Optional<AlertsPolicy> getByName(String alertsPolicyName) {
-        AlertsPolicyList alertsPolicyList = client
+        Invocation.Builder builder = client
                 .target(POLICIES_URL)
                 .queryParam("filter[name]", alertsPolicyName)
-                .request(APPLICATION_JSON_TYPE)
-                .get(AlertsPolicyList.class);
-
-        List<AlertsPolicy> alertsPolicies = alertsPolicyList.getList().stream()
+                .request(APPLICATION_JSON_TYPE);
+        return getPageable(builder, AlertsPolicyList.class)
                 .filter(alertsPolicy -> alertsPolicy.getName().equals(alertsPolicyName))
-                .collect(Collectors.toList());
-
-        alertsPolicyList = new AlertsPolicyList(alertsPolicies);
-
-        return alertsPolicyList.getSingle();
+                .getSingle();
     }
 
     @Override

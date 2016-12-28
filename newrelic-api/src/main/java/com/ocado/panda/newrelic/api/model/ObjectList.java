@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,5 +40,10 @@ public abstract class ObjectList<T, LT extends ObjectList<T, LT>> {
                 list.items.stream())
                 .collect(Collectors.toList());
         return constructor.apply(mergedItems);
+    }
+
+    public final LT filter(Predicate<? super T> predicate) {
+        List<T> filteredItems = items.stream().filter(predicate).collect(Collectors.toList());
+        return constructor.apply(filteredItems);
     }
 }

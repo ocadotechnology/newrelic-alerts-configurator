@@ -12,6 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -24,20 +25,20 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultAlertsPoliciesApiTest {
-
     @Mock
-    private Invocation.Builder builderMock;
-
+    private Response responseMock;
     private AlertsPoliciesApi testee;
 
     @Before
     public void setUp() {
         NewRelicClient clientMock = mock(NewRelicClient.class);
         WebTarget webTargetMock = mock(WebTarget.class);
+        Invocation.Builder builderMock = mock(Invocation.Builder.class);
 
         when(clientMock.target("/v2/alerts_policies.json")).thenReturn(webTargetMock);
         when(webTargetMock.queryParam("filter[name]", "policy")).thenReturn(webTargetMock);
         when(webTargetMock.request(APPLICATION_JSON_TYPE)).thenReturn(builderMock);
+        when(builderMock.get()).thenReturn(responseMock);
 
         testee = new DefaultAlertsPoliciesApi(clientMock);
     }
@@ -46,7 +47,7 @@ public class DefaultAlertsPoliciesApiTest {
     public void shouldReturnPolicyWhenClientReturnsNotUniqueResult() throws Exception {
 
         // given
-        when(builderMock.get(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(asList(
+        when(responseMock.readEntity(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(asList(
                 AlertsPolicy.builder().name("policy").build(),
                 AlertsPolicy.builder().name("policy1").build()
         )));
@@ -62,7 +63,7 @@ public class DefaultAlertsPoliciesApiTest {
     public void shouldNotReturnPolicyWhenClientReturnsNotMatchingResult() throws Exception {
 
         // given
-        when(builderMock.get(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(Collections.singletonList(
+        when(responseMock.readEntity(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(Collections.singletonList(
                 AlertsPolicy.builder().name("policy1").build()
         )));
 
@@ -77,7 +78,7 @@ public class DefaultAlertsPoliciesApiTest {
     public void shouldNotReturnPolicyWhenClientReturnsEmptyList() throws Exception {
 
         // given
-        when(builderMock.get(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(Collections.emptyList()));
+        when(responseMock.readEntity(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(Collections.emptyList()));
 
         // when
         Optional<AlertsPolicy> policyOptional = testee.getByName("policy");

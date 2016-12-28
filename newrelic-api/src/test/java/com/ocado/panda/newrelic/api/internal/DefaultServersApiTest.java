@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoRule;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -25,20 +26,20 @@ import static org.mockito.Mockito.when;
 public class DefaultServersApiTest {
     @Rule
     public final MockitoRule mockito = MockitoJUnit.rule();
-
     @Mock
-    private Invocation.Builder builderMock;
-
+    private Response responseMock;
     private ServersApi testee;
 
     @Before
     public void setUp() {
         NewRelicClient clientMock = mock(NewRelicClient.class);
         WebTarget webTargetMock = mock(WebTarget.class);
+        Invocation.Builder builderMock = mock(Invocation.Builder.class);
 
         when(clientMock.target("/v2/servers.json")).thenReturn(webTargetMock);
         when(webTargetMock.queryParam("filter[name]", "server")).thenReturn(webTargetMock);
         when(webTargetMock.request(APPLICATION_JSON_TYPE)).thenReturn(builderMock);
+        when(builderMock.get()).thenReturn(responseMock);
 
         testee = new DefaultServersApi(clientMock);
     }
@@ -47,7 +48,7 @@ public class DefaultServersApiTest {
     public void shouldReturnServerWhenClientReturnsNotUniqueResult() throws Exception {
 
         // given
-        when(builderMock.get(ServerList.class)).thenReturn(new ServerList(asList(
+        when(responseMock.readEntity(ServerList.class)).thenReturn(new ServerList(asList(
                 Server.builder().name("server").build(),
                 Server.builder().name("server1").build()
         )));
@@ -63,7 +64,7 @@ public class DefaultServersApiTest {
     public void shouldNotReturnServerWhenClientReturnsNotMatchingResult() throws Exception {
 
         // given
-        when(builderMock.get(ServerList.class)).thenReturn(new ServerList(Collections.singletonList(
+        when(responseMock.readEntity(ServerList.class)).thenReturn(new ServerList(Collections.singletonList(
                 Server.builder().name("server1").build()
         )));
 
@@ -78,7 +79,7 @@ public class DefaultServersApiTest {
     public void shouldNotReturnServerWhenClientReturnsEmptyList() throws Exception {
 
         // given
-        when(builderMock.get(ServerList.class)).thenReturn(new ServerList(Collections.emptyList()));
+        when(responseMock.readEntity(ServerList.class)).thenReturn(new ServerList(Collections.emptyList()));
 
         // when
         Optional<Server> serverOptional = testee.getByName("server");
