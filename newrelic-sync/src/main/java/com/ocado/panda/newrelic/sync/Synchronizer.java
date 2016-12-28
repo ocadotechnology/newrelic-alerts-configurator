@@ -3,6 +3,7 @@ package com.ocado.panda.newrelic.sync;
 import com.ocado.panda.newrelic.api.NewRelicApi;
 import com.ocado.panda.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
+import com.ocado.panda.newrelic.sync.internal.entities.EntityResolver;
 import lombok.NonNull;
 
 import java.util.Collection;
@@ -27,8 +28,8 @@ public class Synchronizer {
         NewRelicApi api = new NewRelicApi(apiKey);
         applicationSynchronizer = new ApplicationSynchronizer(api);
         policySynchronizer = new PolicySynchronizer(api);
-        conditionSynchronizer = new ConditionSynchronizer(api);
-        externalServiceConditionSynchronizer = new ExternalServiceConditionSynchronizer(api);
+        conditionSynchronizer = new ConditionSynchronizer(api, EntityResolver.defaultInstance());
+        externalServiceConditionSynchronizer = new ExternalServiceConditionSynchronizer(api, EntityResolver.defaultInstance());
         channelSynchronizer = new ChannelSynchronizer(api);
     }
 

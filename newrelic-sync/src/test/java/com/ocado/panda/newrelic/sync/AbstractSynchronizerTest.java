@@ -8,14 +8,16 @@ import com.ocado.panda.newrelic.api.ApplicationsApi;
 import com.ocado.panda.newrelic.api.KeyTransactionsApi;
 import com.ocado.panda.newrelic.api.NewRelicApi;
 import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.Rule;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-abstract class AbstractSynchronizerTest {
+public abstract class AbstractSynchronizerTest {
+    @Rule
+    public final MockitoRule mockito = MockitoJUnit.rule();
     @Mock
     NewRelicApi apiMock;
     @Mock
