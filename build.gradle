@@ -1,6 +1,6 @@
 allprojects {
     group = 'com.ocado.panda.newrelic.alerts'
-    version = '1.1.0-SNAPSHOT' // just a placeholder
+    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '1.1.0-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -97,9 +97,6 @@ subprojects {
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
-                if (project.hasProperty("build_version")) {
-                    project.version = project.getProperty("build_version")
-                }
             }
 
         }
