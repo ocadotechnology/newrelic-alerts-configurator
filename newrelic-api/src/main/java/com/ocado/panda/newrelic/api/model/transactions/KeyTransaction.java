@@ -1,7 +1,6 @@
 package com.ocado.panda.newrelic.api.model.transactions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ocado.panda.newrelic.api.model.applications.ApplicationLinks;
 import com.ocado.panda.newrelic.api.model.applications.ApplicationSummary;
 import com.ocado.panda.newrelic.api.model.applications.EndUserSummary;
 import lombok.AllArgsConstructor;
@@ -34,5 +33,5 @@ public class KeyTransaction {
     @JsonProperty("end_user_summary")
     EndUserSummary endUserSummary;
     @JsonProperty
-    ApplicationLinks links;
+    KeyTransactionLinks links;
 }
