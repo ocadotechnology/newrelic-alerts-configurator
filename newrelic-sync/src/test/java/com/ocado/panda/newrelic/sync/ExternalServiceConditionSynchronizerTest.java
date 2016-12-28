@@ -67,7 +67,6 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
     @Test
     public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
-        // given
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
 
         // then - exception
