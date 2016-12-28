@@ -1,6 +1,6 @@
 allprojects {
     group = 'com.ocado.panda.newrelic.alerts'
-    version = '1.0.2-SNAPSHOT' // just a placeholder
+    version = '1.1.0-SNAPSHOT' // just a placeholder
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -73,6 +73,7 @@ subprojects {
         testCompile 'com.google.guava:guava:20.0'
         testCompile 'org.mockito:mockito-core:1.10.19'
         testCompile 'com.github.tomakehurst:wiremock:2.1.12'
+        testCompile 'org.assertj:assertj-core:3.6.1'
     }
 
     task sourcesJar(type: Jar, dependsOn: classes) {

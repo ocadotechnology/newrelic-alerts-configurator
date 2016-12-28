@@ -10,8 +10,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -24,20 +25,20 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultApplicationsApiTest {
-
     @Mock
-    private Builder builderMock;
-
+    private Response responseMock;
     private ApplicationsApi testee;
 
     @Before
     public void setUp() {
         NewRelicClient clientMock = mock(NewRelicClient.class);
         WebTarget webTargetMock = mock(WebTarget.class);
+        Invocation.Builder builderMock = mock(Invocation.Builder.class);
 
         when(clientMock.target("/v2/applications.json")).thenReturn(webTargetMock);
         when(webTargetMock.queryParam("filter[name]", "app")).thenReturn(webTargetMock);
         when(webTargetMock.request(APPLICATION_JSON_TYPE)).thenReturn(builderMock);
+        when(builderMock.get()).thenReturn(responseMock);
 
         testee = new DefaultApplicationsApi(clientMock);
     }
@@ -46,7 +47,7 @@ public class DefaultApplicationsApiTest {
     public void shouldReturnApplicationWhenClientReturnsNotUniqueResult() throws Exception {
 
         // given
-        when(builderMock.get(ApplicationList.class)).thenReturn(new ApplicationList(asList(
+        when(responseMock.readEntity(ApplicationList.class)).thenReturn(new ApplicationList(asList(
                 Application.builder().name("app").build(),
                 Application.builder().name("app1").build()
         )));
@@ -62,7 +63,7 @@ public class DefaultApplicationsApiTest {
     public void shouldNotReturnApplicationWhenClientReturnsNotMatchingResult() throws Exception {
 
         // given
-        when(builderMock.get(ApplicationList.class)).thenReturn(new ApplicationList(Collections.singletonList(
+        when(responseMock.readEntity(ApplicationList.class)).thenReturn(new ApplicationList(Collections.singletonList(
                 Application.builder().name("app1").build()
         )));
 
@@ -77,7 +78,7 @@ public class DefaultApplicationsApiTest {
     public void shouldNotReturnApplicationWhenClientReturnsEmptyList() throws Exception {
 
         // given
-        when(builderMock.get(ApplicationList.class)).thenReturn(new ApplicationList(Collections.emptyList()));
+        when(responseMock.readEntity(ApplicationList.class)).thenReturn(new ApplicationList(Collections.emptyList()));
 
         // when
         Optional<Application> applicationOptional = testee.getByName("app");

@@ -3,11 +3,11 @@ package com.ocado.panda.newrelic.sync;
 import com.ocado.panda.newrelic.api.NewRelicApi;
 import com.ocado.panda.newrelic.api.model.conditions.AlertsCondition;
 import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.condition.Condition;
 import com.ocado.panda.newrelic.sync.configuration.condition.terms.TermsUtils;
-import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.exception.NewRelicSyncException;
-import com.ocado.panda.newrelic.sync.internal.EntityIdProvider;
+import com.ocado.panda.newrelic.sync.internal.entities.EntityResolver;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,11 +23,11 @@ import static java.lang.String.format;
 @Slf4j
 class ConditionSynchronizer {
     private final NewRelicApi api;
-    private final EntityIdProvider entityIdProvider;
+    private final EntityResolver entityResolver;
 
-    ConditionSynchronizer(@NonNull NewRelicApi api) {
+    ConditionSynchronizer(@NonNull NewRelicApi api, @NonNull EntityResolver entityResolver) {
         this.api = api;
-        this.entityIdProvider = new EntityIdProvider(api);
+        this.entityResolver = entityResolver;
     }
 
     void sync(@NonNull PolicyConfiguration config) {
@@ -108,27 +108,12 @@ class ConditionSynchronizer {
             .type(condition.getType().getTypeString())
             .name(condition.getConditionName())
             .enabled(condition.isEnabled())
-            .entities(getEntities(condition))
+            .entities(entityResolver.resolveEntities(api, condition))
             .metric(condition.getMetricAsString())
             .conditionScope(condition.getConditionScopeAsString())
             .runbookUrl(condition.getRunBookUrl())
             .terms(TermsUtils.createTerms(condition.getTerms()))
             .build();
-    }
-
-    private Collection<Integer> getEntities(Condition condition) {
-        switch (condition.getType()) {
-            case APM_APP:
-                return condition.getEntities().stream()
-                    .map(entityIdProvider::getApplicationId)
-                    .collect(Collectors.toList());
-            case APM_KEY_TRANSACTION:
-                return condition.getEntities().stream()
-                    .map(entityIdProvider::getKeyTransactionId)
-                    .collect(Collectors.toList());
-            default:
-                throw new NewRelicSyncException(format("Could not get entities for condition %s", condition.getConditionName()));
-        }
     }
 
     private static boolean sameInstance(AlertsCondition alertsCondition1, AlertsCondition alertsCondition2) {

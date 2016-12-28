@@ -7,6 +7,7 @@ import com.ocado.panda.newrelic.api.AlertsPoliciesApi;
 import com.ocado.panda.newrelic.api.ApplicationsApi;
 import com.ocado.panda.newrelic.api.DeploymentsApi;
 import com.ocado.panda.newrelic.api.KeyTransactionsApi;
+import com.ocado.panda.newrelic.api.ServersApi;
 import com.ocado.panda.newrelic.api.internal.client.NewRelicClient;
 import lombok.Getter;
 
@@ -32,6 +33,8 @@ public class NewRelicInternalApi {
 
     private final DeploymentsApi deploymentsApi;
 
+    private final ServersApi serversApi;
+
     /**
      * NewRelic API constructor.
      *
@@ -47,5 +50,6 @@ public class NewRelicInternalApi {
         alertsExternalServiceConditionsApi = new DefaultAlertsExternalServiceConditionsApi(client);
         keyTransactionsApi = new DefaultKeyTransactionsApi(client);
         deploymentsApi = new DefaultDeploymentsApi(client);
+        serversApi = new DefaultServersApi(client);
     }
 }

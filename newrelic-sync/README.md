@@ -88,6 +88,7 @@ PolicyConfiguration configuration = PolicyConfiguration.builder()
 Currently supported types of alerts policy conditions are:
 - APM application metric condition
 - APM key transaction metric condition
+- Server metric condition
 
 #### APM application metric condition
 To create APM application metric condition for your alerts policy use simple builder:
@@ -153,6 +154,35 @@ Condition apmKeyTransactionCondition = ApmKeyTransactionCondition.builder()
 ```
 
 **Note that key transaction cannot be created via New Relic API. Before synchronizing a condition, key transaction needs to be manually created in New Relic.**
+
+#### Server metric condition
+To create server metric condition for your alerts policy use simple builder:
+```java
+ServerMetricCondition.builder()
+```
+What you can set for server metric condition:
+- condition name - Name of your server metric condition.
+- enabled (optional) - If your server metric condition is enabled. Default is false.
+- entities - Collection of server names for which this condition is applied. If server with given name does not exist exception will be thrown.
+- metric - Metric used in given condition. Possible values are:
+    - CPU percentage
+    - Disk I/O percentage
+    - Memory percentage
+    - Fullest disk percentage
+    - Load average one minute
+- run book url (optional) - The runbook URL to display in notifications.
+- terms - Collection of terms used for alerts condition.
+
+Example server metric condition configuration:
+```java
+Condition serverMetricCondition = ServerMetricCondition.builder()
+    .conditionName("Condition name")
+    .enabled(true)
+    .entity("some-host")
+    .metric(ServerMetricCondition.Metric.CPU_PERCENTAGE)
+    .term(term)
+    .build();
+```
 
 ### Alerts external service condition
 Currently supported types of alerts policy external service conditions are:

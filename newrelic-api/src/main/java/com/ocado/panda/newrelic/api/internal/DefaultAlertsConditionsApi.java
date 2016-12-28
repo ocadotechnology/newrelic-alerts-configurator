@@ -25,8 +25,8 @@ class DefaultAlertsConditionsApi extends ApiBase implements AlertsConditionsApi 
     public List<AlertsCondition> list(int policyId) {
         return getPageable(
                 client.target(CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
-                AlertsConditionList.class,
-                AlertsConditionList::merge).getList();
+                AlertsConditionList.class)
+                .getList();
     }
 
     @Override

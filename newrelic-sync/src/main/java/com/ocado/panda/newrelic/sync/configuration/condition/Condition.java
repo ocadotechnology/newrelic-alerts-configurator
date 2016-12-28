@@ -10,6 +10,7 @@ import java.util.Collection;
  * <ul>
  *     <li>{@link ApmAppCondition}</li>
  *     <li>{@link ApmKeyTransactionCondition}</li>
+ *     <li>{@link ServersMetricCondition}</li>
  * </ul>
  */
 public interface Condition {

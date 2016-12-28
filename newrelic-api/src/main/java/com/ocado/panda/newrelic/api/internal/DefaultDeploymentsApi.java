@@ -26,8 +26,8 @@ class DefaultDeploymentsApi extends ApiBase implements DeploymentsApi {
                 client.target(DEPLOYMENTS_URL)
                         .resolveTemplate("application_id", applicationId)
                         .request(APPLICATION_JSON_TYPE),
-                DeploymentsList.class,
-                DeploymentsList::merge).getList();
+                DeploymentsList.class)
+                .getList();
     }
 
     @Override

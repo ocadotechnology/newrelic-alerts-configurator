@@ -25,6 +25,8 @@ public class NewRelicApi {
 
     private final DeploymentsApi deploymentsApi;
 
+    private final ServersApi serversApi;
+
     /**
      * NewRelic API constructor.
      *
@@ -49,5 +51,6 @@ public class NewRelicApi {
         alertsExternalServiceConditionsApi = internalApi.getAlertsExternalServiceConditionsApi();
         keyTransactionsApi = internalApi.getKeyTransactionsApi();
         deploymentsApi = internalApi.getDeploymentsApi();
+        serversApi = internalApi.getServersApi();
     }
 }

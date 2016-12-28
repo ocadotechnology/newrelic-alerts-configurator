@@ -25,8 +25,8 @@ class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
     public List<AlertsChannel> list() {
         return getPageable(
                 client.target(CHANNELS_URL).request(APPLICATION_JSON_TYPE),
-                AlertsChannelList.class,
-                AlertsChannelList::merge).getList();
+                AlertsChannelList.class)
+                .getList();
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.condition.ExternalServiceCondition;
 import com.ocado.panda.newrelic.sync.configuration.condition.terms.TermsUtils;
 import com.ocado.panda.newrelic.sync.exception.NewRelicSyncException;
-import com.ocado.panda.newrelic.sync.internal.EntityIdProvider;
+import com.ocado.panda.newrelic.sync.internal.entities.EntityResolver;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,11 +23,11 @@ import static java.lang.String.format;
 @Slf4j
 class ExternalServiceConditionSynchronizer {
     private final NewRelicApi api;
-    private final EntityIdProvider entityIdProvider;
+    private final EntityResolver entityResolver;
 
-    ExternalServiceConditionSynchronizer(@NonNull NewRelicApi api) {
+    ExternalServiceConditionSynchronizer(@NonNull NewRelicApi api, @NonNull EntityResolver entityResolver) {
         this.api = api;
-        this.entityIdProvider = new EntityIdProvider(api);
+        this.entityResolver = entityResolver;
     }
 
     void sync(@NonNull PolicyConfiguration config) {
@@ -112,24 +112,12 @@ class ExternalServiceConditionSynchronizer {
             .type(condition.getTypeString())
             .name(condition.getConditionName())
             .enabled(condition.isEnabled())
-            .entities(getEntities(condition))
+            .entities(entityResolver.resolveEntities(api, condition))
             .metric(condition.getMetric())
             .externalServiceUrl(condition.getExternalServiceUrl())
             .runbookUrl(condition.getRunBookUrl())
             .terms(TermsUtils.createTerms(condition.getTerms()))
             .build();
-    }
-
-    private Collection<Integer> getEntities(ExternalServiceCondition condition) {
-        switch (condition.getType()) {
-            case APM:
-                return condition.getEntities().stream()
-                    .map(entityIdProvider::getApplicationId)
-                    .collect(Collectors.toList());
-            default:
-                throw new NewRelicSyncException(format("Could not get entities for external service alerts condition %s",
-                    condition.getConditionName()));
-        }
     }
 
     private static boolean sameInstance(AlertsExternalServiceCondition alertsCondition1,

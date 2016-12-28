@@ -3,5 +3,5 @@ build/
 .idea/
 classes/
 *.iml
-
+out/
 
