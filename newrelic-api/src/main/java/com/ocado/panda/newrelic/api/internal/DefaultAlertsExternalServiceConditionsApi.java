@@ -25,8 +25,8 @@ class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements Alert
     public List<AlertsExternalServiceCondition> list(int policyId) {
         return getPageable(
                 client.target(CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
-                AlertsExternalServiceConditionList.class,
-                AlertsExternalServiceConditionList::merge).getList();
+                AlertsExternalServiceConditionList.class)
+                .getList();
     }
 
     @Override
