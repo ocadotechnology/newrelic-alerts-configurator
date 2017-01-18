@@ -25,4 +25,9 @@ public interface Condition {
     default String getConditionScopeAsString() {
         return null;
     }
+
+    default UserDefinedConfiguration getUserDefinedMetric() {
+        return null;
+    }
+
 }
