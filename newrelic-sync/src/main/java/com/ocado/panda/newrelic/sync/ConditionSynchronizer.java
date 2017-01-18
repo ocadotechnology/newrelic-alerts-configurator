@@ -6,6 +6,7 @@ import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.condition.Condition;
 import com.ocado.panda.newrelic.sync.configuration.condition.terms.TermsUtils;
+import com.ocado.panda.newrelic.sync.configuration.condition.terms.UserDefinedUtils;
 import com.ocado.panda.newrelic.sync.exception.NewRelicSyncException;
 import com.ocado.panda.newrelic.sync.internal.entities.EntityResolver;
 import lombok.NonNull;
@@ -113,6 +114,7 @@ class ConditionSynchronizer {
             .conditionScope(condition.getConditionScopeAsString())
             .runbookUrl(condition.getRunBookUrl())
             .terms(TermsUtils.createTerms(condition.getTerms()))
+            .userDefined(UserDefinedUtils.createUserDefined(condition.getUserDefinedMetric()))
             .build();
     }
 
