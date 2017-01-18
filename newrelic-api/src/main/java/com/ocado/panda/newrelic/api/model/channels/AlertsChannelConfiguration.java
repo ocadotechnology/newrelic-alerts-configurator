@@ -35,4 +35,6 @@ public class AlertsChannelConfiguration {
     String authUsername;
     @JsonProperty("auth_password")
     String authPassword;
+    @JsonProperty("service_key")
+    String serviceKey;
 }
