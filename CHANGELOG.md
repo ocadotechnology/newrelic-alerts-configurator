@@ -1,4 +1,4 @@
-# 1.2.0
+# 1.2.0 (19.01.2017)
 - Added PagerDuty channel support
 
 # 1.1.2

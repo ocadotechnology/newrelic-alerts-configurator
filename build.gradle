@@ -9,7 +9,7 @@ buildscript {
 
 allprojects {
     group = 'com.ocado.panda.newrelic.alerts'
-    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '1.2.0-SNAPSHOT'
+    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '1.2.1-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
