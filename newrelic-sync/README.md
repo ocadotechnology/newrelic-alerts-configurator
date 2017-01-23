@@ -259,6 +259,8 @@ TermsConfiguration term = TermsConfiguration.builder()
 Currently supported types of alerts notification channels are:
 - Email channel
 - Slack channel
+- Webhook channel
+- PagerDuty channel
 
 If notification channel with given name and type does exists - it will be updated
 
@@ -304,5 +306,27 @@ Channel slackChannel = SlackChannel.builder()
     .channelName("Channel name")
     .slackUrl("https://hooks.slack.com/services/...")
     .teamName("My team slack name")
+    .build();
+```
+
+#### Webhook channel
+To create webhook channel use simple builder:
+```java
+WebhookChannel.builder()
+```
+
+What you can set in webhook channel configuration:
+- channel name - Name of your alerts channel.
+- base URL - URL webhook address to which alert event should be sent.
+- auth username - User name for BASIC authorization (optional)
+- auth password - User password for BASIC authorization (optional)
+
+Example email channel configuration:
+```java
+Channel webhookChannel = WebhookChannel.builder()
+    .channelName("Channel name")
+    .baseUrl("https://example.com/webhook/abcd123")
+    .authUsername('john.doea')
+    .authPassword('starwars1')
     .build();
 ```
