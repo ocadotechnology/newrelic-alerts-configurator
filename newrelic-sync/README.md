@@ -321,12 +321,31 @@ What you can set in webhook channel configuration:
 - auth username - User name for BASIC authorization (optional)
 - auth password - User password for BASIC authorization (optional)
 
-Example email channel configuration:
+Example webhook channel configuration:
 ```java
 Channel webhookChannel = WebhookChannel.builder()
     .channelName("Channel name")
     .baseUrl("https://example.com/webhook/abcd123")
     .authUsername('john.doea')
     .authPassword('starwars1')
+    .build();
+```
+
+
+#### PagerDuty channel
+To create [PagerDuty](https://www.pagerduty.com/) channel use simple builder:
+```java
+PagerDutyChannel.builder()
+```
+
+What you can set in PagerDUty channel configuration:
+- channel name - Name of your alerts channel.
+- serviceKey - Service key integration ID defined in PagerDuty.
+
+Example PagerDuty channel configuration:
+```java
+Channel pagerDutyChannel = PagerDutyChannel.builder()
+    .channelName("Channel name")
+    .serviceKey('1234-5678-ABCD-XYZ')
     .build();
 ```
