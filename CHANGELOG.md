@@ -1,4 +1,4 @@
-# 1.2.1
+# 1.3.0 (24.01.2017)
 - Added UserDefined condition type support for `ApmAppCondition` and `ServersMetricCondition`
 
 # 1.2.0 (19.01.2017)
