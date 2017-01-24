@@ -1,3 +1,6 @@
+# 1.2.1
+- Added UserDefined condition type support for `ApmAppCondition` and `ServersMetricCondition`
+
 # 1.2.0 (19.01.2017)
 - Added PagerDuty channel support
 

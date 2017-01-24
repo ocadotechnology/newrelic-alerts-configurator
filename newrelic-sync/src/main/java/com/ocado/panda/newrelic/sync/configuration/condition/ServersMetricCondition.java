@@ -18,6 +18,7 @@ import java.util.Collection;
  *     <li>{@link #metric}</li>
  *     <li>{@link #runBookUrl}</li>
  *     <li>{@link #terms}</li>
+ *     <li>{@link #userDefinedConfiguration}</li>
  * </ul>
  */
 @Getter
@@ -55,13 +56,22 @@ public class ServersMetricCondition implements Condition {
     @NonNull
     @Singular
     private Collection<TermsConfiguration> terms;
+    /**
+     * Configuration for user defined metric. Should be provided when {@link #metric} is set to USER_DEFINED
+     */
+    private UserDefinedConfiguration userDefinedConfiguration;
 
     @Override
     public String getMetricAsString() {
         return metric.name().toLowerCase();
     }
 
+    @Override
+    public UserDefinedConfiguration getUserDefinedMetric() {
+        return userDefinedConfiguration;
+    }
+
     public enum Metric {
-        CPU_PERCENTAGE, DISK_IO_PERCENTAGE, MEMORY_PERCENTAGE, FULLEST_DISK_PERCENTAGE, LOAD_AVERAGE_ONE_MINUTE
+        CPU_PERCENTAGE, DISK_IO_PERCENTAGE, MEMORY_PERCENTAGE, FULLEST_DISK_PERCENTAGE, LOAD_AVERAGE_ONE_MINUTE, USER_DEFINED
     }
 }

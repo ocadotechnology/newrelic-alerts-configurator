@@ -19,6 +19,7 @@ import java.util.Collection;
  *     <li>{@link #conditionScope}</li>
  *     <li>{@link #runBookUrl}</li>
  *     <li>{@link #terms}</li>
+ *     <li>{@link #userDefinedConfiguration}</li>
  * </ul>
  */
 @Getter
@@ -61,6 +62,10 @@ public class ApmAppCondition implements Condition {
     @NonNull
     @Singular
     private Collection<TermsConfiguration> terms;
+    /**
+     * Configuration for user defined metric. Should be provided when {@link #metric} is set to USER_DEFINED
+     */
+    private UserDefinedConfiguration userDefinedConfiguration;
 
     @Override
     public String getMetricAsString() {
@@ -72,11 +77,17 @@ public class ApmAppCondition implements Condition {
         return conditionScope.name().toLowerCase();
     }
 
+    @Override
+    public UserDefinedConfiguration getUserDefinedMetric() {
+        return userDefinedConfiguration;
+    }
+
     public enum Metric {
-        APDEX, ERROR_PERCENTAGE, RESPONSE_TIME_WEB, RESPONSE_TIME_BACKGROUND, THROUGHPUT_WEB, THROUGHPUT_BACKGROUND
+        APDEX, ERROR_PERCENTAGE, RESPONSE_TIME_WEB, RESPONSE_TIME_BACKGROUND, THROUGHPUT_WEB, THROUGHPUT_BACKGROUND, USER_DEFINED
     }
 
     public enum ConditionScope {
         APPLICATION, INSTANCE
     }
+
 }
