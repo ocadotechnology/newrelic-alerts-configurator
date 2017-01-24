@@ -29,7 +29,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,7 +50,7 @@ public class ApmUserDefinedConditionSynchronizerTest extends AbstractSynchronize
     private static final PolicyConfiguration CONFIGURATION = createConfiguration();
 
     @Captor
-    private ArgumentCaptor<AlertsCondition> argumentCaptor;
+    private ArgumentCaptor<AlertsCondition> alertsConditionCaptor;
     @Mock
     private EntityResolver entityResolverMock;
 
@@ -66,13 +65,16 @@ public class ApmUserDefinedConditionSynchronizerTest extends AbstractSynchronize
 
     @Test
     public void shouldCorrectlyCreateUserDefinedCondition() throws Exception {
+        //given
         when(alertsConditionsApiMock.list(POLICY.getId())).thenReturn(ImmutableList.of());
-        when(alertsConditionsApiMock.create(eq(POLICY.getId()), any(AlertsCondition.class))).thenReturn(mock(AlertsCondition.class));
+        when(alertsConditionsApiMock.create(eq(POLICY.getId()), any(AlertsCondition.class))).thenReturn(AlertsCondition.builder().build());
 
+        //when
         testee.sync(CONFIGURATION);
-        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), argumentCaptor.capture());
 
-        AlertsCondition result = argumentCaptor.getValue();
+        //then
+        verify(alertsConditionsApiMock).create(eq(POLICY.getId()), alertsConditionCaptor.capture());
+        AlertsCondition result = alertsConditionCaptor.getValue();
         assertThat(result.getConditionScope()).isEqualTo("application");
         assertThat(result.getType()).isEqualTo("apm_app_metric");
         assertThat(result.getName()).isEqualTo(CONDITION_NAME);

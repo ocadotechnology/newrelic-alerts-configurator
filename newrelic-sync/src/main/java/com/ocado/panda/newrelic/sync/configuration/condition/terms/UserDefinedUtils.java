@@ -3,7 +3,7 @@ package com.ocado.panda.newrelic.sync.configuration.condition.terms;
 import com.ocado.panda.newrelic.api.model.conditions.UserDefined;
 import com.ocado.panda.newrelic.sync.configuration.condition.UserDefinedConfiguration;
 
-public class UserDefinedUtils {
+public final class UserDefinedUtils {
 
     private UserDefinedUtils() {
 

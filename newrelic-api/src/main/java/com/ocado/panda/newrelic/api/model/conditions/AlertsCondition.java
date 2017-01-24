@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Singular;
 import lombok.Value;
-import lombok.experimental.NonFinal;
 
 import java.util.Collection;
 
@@ -18,7 +17,6 @@ import java.util.Collection;
 @Value
 @Builder
 @AllArgsConstructor
-@NonFinal
 public class AlertsCondition {
     @JsonProperty
     Integer id;
