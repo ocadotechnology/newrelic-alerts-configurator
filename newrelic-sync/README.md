@@ -106,11 +106,13 @@ What you can set for APM application metric condition:
     - Response time (background)
     - Throughput (web)
     - Throughput (background)
+    - User defined
 - condition scope - Possible values are:
     -  Application - The average of all application instances' data is used during evaluation.
     -  Instance - Each application instance's data is evaluated individually
 - run book url (optional) - The runbook URL to display in notifications.
 - terms - Collection of terms used for alerts condition.
+- user defined configuration - configuration for user defined metric.
 
 Example APM application metric condition configuration:
 ```java
@@ -170,8 +172,10 @@ What you can set for server metric condition:
     - Memory percentage
     - Fullest disk percentage
     - Load average one minute
+    - User defined
 - run book url (optional) - The runbook URL to display in notifications.
 - terms - Collection of terms used for alerts condition.
+- user defined configuration - configuration for user defined metric.
 
 Example server metric condition configuration:
 ```java
@@ -215,6 +219,17 @@ ExternalServiceCondition apmExternalServiceCondition = ApmExternalServiceConditi
     .externalServiceUrl("externalServiceUrl")
     .metric(ApmExternalServiceCondition.Metric.RESPONSE_TIME_AVERAGE)
     .term(term)
+    .build();
+```
+
+### User defined configuration
+User defined configuration allows to use custom (user defined) metric in alert definition.
+
+Example user defined configuration:
+```java
+UserDefinedConfiguration config = UserDefinedConfiguration.builder()
+    .metric("MY_CUSTOM_METRIC")
+    .valueFunction(UserDefinedConfiguration.ValueFunction.MAX)
     .build();
 ```
 
