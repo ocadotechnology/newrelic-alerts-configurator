@@ -47,10 +47,10 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
             .slackUrl("url")
             .build();
 
-    private static final AlertsChannel CONFIGURED_EMAIL_CHANNEL = createAlertChannel(EMAIL_CHANNEL);
-    private static final AlertsChannel CONFIGURED_SLACK_CHANNEL = createAlertChannel(SLACK_CHANNEL);
-    private static final AlertsChannel SAVED_EMAIL_CHANNEL = createAlertChannel(1, EMAIL_CHANNEL);
-    private static final AlertsChannel SAVED_SLACK_CHANNEL = createAlertChannel(2, SLACK_CHANNEL);
+    private final AlertsChannel configuredEmailChannel = createAlertChannel(EMAIL_CHANNEL);
+    private final AlertsChannel configuredSlackChannel = createAlertChannel(SLACK_CHANNEL);
+    private final AlertsChannel savedEmailChannel = createAlertChannel(1, EMAIL_CHANNEL);
+    private final AlertsChannel savedSlackChannel = createAlertChannel(2, SLACK_CHANNEL);
 
     private ChannelSynchronizer testee;
 
@@ -58,8 +58,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public void setUp() {
         testee = new ChannelSynchronizer(apiMock);
 
-        when(alertsChannelsApiMock.create(CONFIGURED_EMAIL_CHANNEL)).thenReturn(SAVED_EMAIL_CHANNEL);
-        when(alertsChannelsApiMock.create(CONFIGURED_SLACK_CHANNEL)).thenReturn(SAVED_SLACK_CHANNEL);
+        when(alertsChannelsApiMock.create(configuredEmailChannel)).thenReturn(savedEmailChannel);
+        when(alertsChannelsApiMock.create(configuredSlackChannel)).thenReturn(savedSlackChannel);
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
     }
 
@@ -110,8 +110,8 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // then
         InOrder order = inOrder(alertsChannelsApiMock);
         order.verify(alertsChannelsApiMock).list();
-        order.verify(alertsChannelsApiMock).create(CONFIGURED_EMAIL_CHANNEL);
-        order.verify(alertsChannelsApiMock).create(CONFIGURED_SLACK_CHANNEL);
+        order.verify(alertsChannelsApiMock).create(configuredEmailChannel);
+        order.verify(alertsChannelsApiMock).create(configuredSlackChannel);
         order.verifyNoMoreInteractions();
     }
 
@@ -127,9 +127,9 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         when(alertsChannelsApiMock.create(updatedEmailAlertChannel))
                 .thenReturn(createAlertChannel(updatedEmailChannelId, updatedEmailChannel));
 
-        AlertsChannel emailChannelInPolicy = channelInPolicy(SAVED_EMAIL_CHANNEL, POLICY_ID);
+        AlertsChannel emailChannelInPolicy = channelInPolicy(savedEmailChannel, POLICY_ID);
         when(alertsChannelsApiMock.list())
-                .thenReturn(ImmutableList.of(emailChannelInPolicy, channelInPolicy(SAVED_SLACK_CHANNEL, POLICY_ID)));
+                .thenReturn(ImmutableList.of(emailChannelInPolicy, channelInPolicy(savedSlackChannel, POLICY_ID)));
         when(alertsChannelsApiMock.deleteFromPolicy(POLICY_ID, emailChannelInPolicy.getId()))
                 .thenReturn(emailChannelInPolicy);
 
@@ -145,25 +145,25 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // then
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
                 .policyId(POLICY_ID)
-                .channelIds(ImmutableSet.of(updatedEmailChannelId, SAVED_SLACK_CHANNEL.getId()))
+                .channelIds(ImmutableSet.of(updatedEmailChannelId, savedSlackChannel.getId()))
                 .build();
 
         InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
         order.verify(alertsChannelsApiMock).list();
         order.verify(alertsChannelsApiMock).create(updatedEmailAlertChannel);
         order.verify(alertsPoliciesApiMock).updateChannels(expected);
-        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, SAVED_EMAIL_CHANNEL.getId());
-        order.verify(alertsChannelsApiMock).delete(SAVED_EMAIL_CHANNEL.getId());
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, savedEmailChannel.getId());
+        order.verify(alertsChannelsApiMock).delete(savedEmailChannel.getId());
         order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldNotRemoveUnsuedChannel_whenChannelBelongsToDifferentPolicy() {
         // given
-        AlertsChannel emailChannelInPolicy = channelInPolicy(SAVED_EMAIL_CHANNEL, POLICY_ID, POLICY_ID + 1);
+        AlertsChannel emailChannelInPolicy = channelInPolicy(savedEmailChannel, POLICY_ID, POLICY_ID + 1);
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(
                 emailChannelInPolicy,
-                channelInPolicy(SAVED_SLACK_CHANNEL, POLICY_ID)
+                channelInPolicy(savedSlackChannel, POLICY_ID)
         ));
         when(alertsChannelsApiMock.deleteFromPolicy(POLICY_ID, emailChannelInPolicy.getId()))
                 .thenReturn(emailChannelInPolicy);
@@ -178,23 +178,23 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // then
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
                 .policyId(POLICY_ID)
-                .channelIds(ImmutableSet.of(SAVED_SLACK_CHANNEL.getId()))
+                .channelIds(ImmutableSet.of(savedSlackChannel.getId()))
                 .build();
 
         InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
         order.verify(alertsChannelsApiMock).list();
         order.verify(alertsPoliciesApiMock).updateChannels(expected);
-        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, SAVED_EMAIL_CHANNEL.getId());
-        order.verify(alertsChannelsApiMock, never()).delete(SAVED_EMAIL_CHANNEL.getId());
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, savedEmailChannel.getId());
+        order.verify(alertsChannelsApiMock, never()).delete(savedEmailChannel.getId());
         order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldRemoveUnusedPolicyChannel() {
         // given
-        AlertsChannel emailChannelInPolicy = channelInPolicy(SAVED_EMAIL_CHANNEL, POLICY_ID);
+        AlertsChannel emailChannelInPolicy = channelInPolicy(savedEmailChannel, POLICY_ID);
         when(alertsChannelsApiMock.list())
-                .thenReturn(ImmutableList.of(emailChannelInPolicy, channelInPolicy(SAVED_SLACK_CHANNEL, POLICY_ID)));
+                .thenReturn(ImmutableList.of(emailChannelInPolicy, channelInPolicy(savedSlackChannel, POLICY_ID)));
         when(alertsChannelsApiMock.deleteFromPolicy(POLICY_ID, emailChannelInPolicy.getId()))
                 .thenReturn(emailChannelInPolicy);
 
@@ -208,27 +208,27 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
         // then
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
                 .policyId(POLICY_ID)
-                .channelIds(ImmutableSet.of(SAVED_SLACK_CHANNEL.getId()))
+                .channelIds(ImmutableSet.of(savedSlackChannel.getId()))
                 .build();
 
         InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
         order.verify(alertsChannelsApiMock).list();
         order.verify(alertsPoliciesApiMock).updateChannels(expected);
-        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, SAVED_EMAIL_CHANNEL.getId());
-        order.verify(alertsChannelsApiMock).delete(SAVED_EMAIL_CHANNEL.getId());
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, savedEmailChannel.getId());
+        order.verify(alertsChannelsApiMock).delete(savedEmailChannel.getId());
         order.verifyNoMoreInteractions();
     }
 
-    private static AlertsChannel createAlertChannel(Channel channel) {
+    private AlertsChannel createAlertChannel(Channel channel) {
         return createAlertChannel(null, channel);
     }
 
-    private static AlertsChannel createAlertChannel(Integer id, Channel channel) {
+    private AlertsChannel createAlertChannel(Integer id, Channel channel) {
         return AlertsChannel.builder()
                 .id(id)
                 .name(channel.getChannelName())
                 .type(channel.getTypeString())
-                .configuration(channel.getChannelTypeSupport().generateAlertsChannelConfiguration())
+                .configuration(channel.getChannelTypeSupport().generateAlertsChannelConfiguration(apiMock))
                 .links(new AlertsChannelLinks(emptyList()))
                 .build();
     }

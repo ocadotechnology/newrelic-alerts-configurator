@@ -1,5 +1,6 @@
 package com.ocado.panda.newrelic.sync.configuration.channel.internal;
 
+import com.ocado.panda.newrelic.api.NewRelicApi;
 import com.ocado.panda.newrelic.api.model.channels.AlertsChannelConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.channel.Channel;
 import com.ocado.panda.newrelic.sync.configuration.channel.ChannelTypeSupport;
@@ -11,7 +12,7 @@ public class PagerDutyChannelTypeSupport implements ChannelTypeSupport {
     private Channel channel;
 
     @Override
-    public AlertsChannelConfiguration generateAlertsChannelConfiguration() {
+    public AlertsChannelConfiguration generateAlertsChannelConfiguration(NewRelicApi api) {
         PagerDutyChannel pagerDutyChannel = (PagerDutyChannel) channel;
         return AlertsChannelConfiguration.builder()
                 .serviceKey(pagerDutyChannel.getServiceKey())

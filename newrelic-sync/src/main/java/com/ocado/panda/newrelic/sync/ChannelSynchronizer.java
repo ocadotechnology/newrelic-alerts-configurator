@@ -85,7 +85,7 @@ class ChannelSynchronizer {
         return AlertsChannel.builder()
             .name(channel.getChannelName())
             .type(channel.getTypeString())
-            .configuration(channel.getChannelTypeSupport().generateAlertsChannelConfiguration())
+            .configuration(channel.getChannelTypeSupport().generateAlertsChannelConfiguration(api))
             .build();
     }
 
