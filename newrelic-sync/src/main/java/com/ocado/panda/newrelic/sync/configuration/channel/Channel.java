@@ -7,6 +7,7 @@ package com.ocado.panda.newrelic.sync.configuration.channel;
  *     <li>{@link EmailChannel}</li>
  *     <li>{@link SlackChannel}</li>
  *     <li>{@link WebhookChannel}</li>
+ *     <li>{@link UserChannel}</li>
  * </ul>
  */
 public interface Channel {

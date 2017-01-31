@@ -276,12 +276,13 @@ Currently supported types of alerts notification channels are:
 - Slack channel
 - Webhook channel
 - PagerDuty channel
+- NewRelic user channel
 
 If notification channel with given name and type does exists - it will be updated
 
 If notification channel with given name and type does not exist - it will be created
 
-If you remove channel from your policy configuration, and it is not configured for any other policy - it will be deleted
+If you remove channel from your policy configuration, and it is not configured for any other policy - it will be deleted (except for NewRelic user channel).
 
 #### Email channel
 To create email channel use simple builder:
@@ -362,5 +363,22 @@ Example PagerDuty channel configuration:
 Channel pagerDutyChannel = PagerDutyChannel.builder()
     .channelName("Channel name")
     .serviceKey('1234-5678-ABCD-XYZ')
+    .build();
+```
+
+
+#### NewRelic user channel
+To create NewRelic user channel use simple builder:
+```java
+UserChannel.builder()
+```
+
+What you can set in NewRelic user channel:
+- email address - NewRelic user's email address 
+
+Example email channel configuration:
+```java
+Channel userChannel = UserChannel.builder()
+    .userEmail("your-email-address@ocado.com")
     .build();
 ```

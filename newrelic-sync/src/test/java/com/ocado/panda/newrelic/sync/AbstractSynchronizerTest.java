@@ -8,6 +8,7 @@ import com.ocado.panda.newrelic.api.ApplicationsApi;
 import com.ocado.panda.newrelic.api.KeyTransactionsApi;
 import com.ocado.panda.newrelic.api.NewRelicApi;
 import com.ocado.panda.newrelic.api.ServersApi;
+import com.ocado.panda.newrelic.api.UsersApi;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.Mock;
@@ -34,6 +35,8 @@ public abstract class AbstractSynchronizerTest {
     @Mock
     KeyTransactionsApi keyTransactionsApiMock;
     @Mock
+    UsersApi usersApiMock;
+    @Mock
     ServersApi serversApiMock;
 
     @Before
@@ -45,5 +48,6 @@ public abstract class AbstractSynchronizerTest {
         when(apiMock.getAlertsExternalServiceConditionsApi()).thenReturn(alertsExternalServiceConditionsApiMock);
         when(apiMock.getKeyTransactionsApi()).thenReturn(keyTransactionsApiMock);
         when(apiMock.getServersApi()).thenReturn(serversApiMock);
+        when(apiMock.getUsersApi()).thenReturn(usersApiMock);
     }
 }

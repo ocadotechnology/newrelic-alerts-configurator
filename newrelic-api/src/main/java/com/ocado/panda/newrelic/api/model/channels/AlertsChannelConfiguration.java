@@ -14,7 +14,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class AlertsChannelConfiguration {
     @JsonProperty("user_id")
-    String userId;
+    Integer userId;
     @JsonProperty
     String channel;
     @JsonProperty
