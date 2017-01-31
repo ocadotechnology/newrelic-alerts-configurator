@@ -3,10 +3,8 @@ package com.ocado.panda.newrelic.api.model.channels;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Objects;
 
 /**
  * See <a href="https://rpm.newrelic.com/api/explore/alerts_channels/list">Doc</a>
@@ -14,6 +12,7 @@ import java.util.Objects;
 @Value
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(of = {"name", "type", "configuration"})
 public class AlertsChannel {
     @JsonProperty
     Integer id;
@@ -25,13 +24,4 @@ public class AlertsChannel {
     AlertsChannelConfiguration configuration;
     @JsonProperty
     AlertsChannelLinks links;
-
-    public boolean sameInstance(AlertsChannel other) {
-        return StringUtils.equals(this.getName(), other.getName())
-                && StringUtils.equals(this.getType(), other.getType());
-    }
-
-    public boolean same(AlertsChannel other) {
-        return sameInstance(other) && Objects.equals(this.getConfiguration(), other.getConfiguration());
-    }
 }

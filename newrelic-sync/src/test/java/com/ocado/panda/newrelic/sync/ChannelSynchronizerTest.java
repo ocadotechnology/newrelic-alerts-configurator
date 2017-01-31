@@ -2,9 +2,7 @@ package com.ocado.panda.newrelic.sync;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.ocado.panda.newrelic.api.model.channels.AlertsChannel;
-import com.ocado.panda.newrelic.api.model.channels.AlertsChannelConfiguration;
 import com.ocado.panda.newrelic.api.model.channels.AlertsChannelLinks;
 import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.panda.newrelic.api.model.policies.AlertsPolicyChannels;
@@ -19,46 +17,49 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
-        private static final String POLICY_NAME = "policyName";
-    private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
+    private static final int POLICY_ID = 42;
+    private static final String POLICY_NAME = "policyName";
+    private static final AlertsPolicy POLICY = AlertsPolicy.builder()
+            .id(POLICY_ID)
+            .name(POLICY_NAME)
+            .build();
 
     private static final String EMAIL_CHANNEL_NAME = "emailChannel";
     private static final String SLACK_CHANNEL_NAME = "slackChannel";
-    private static final Channel EMAIL_CHANNEL = EmailChannel.builder().channelName(EMAIL_CHANNEL_NAME).emailAddress("recipents").build();
-    private static final Channel SLACK_CHANNEL = SlackChannel.builder().channelName(SLACK_CHANNEL_NAME).slackUrl("url").build();
+    private static final Channel EMAIL_CHANNEL = EmailChannel.builder()
+            .channelName(EMAIL_CHANNEL_NAME)
+            .emailAddress("recipients")
+            .build();
+    private static final Channel SLACK_CHANNEL = SlackChannel.builder()
+            .channelName(SLACK_CHANNEL_NAME)
+            .slackUrl("url")
+            .build();
 
-    private static final AlertsChannelConfiguration EMAIL_CHANNEL_CONFIG = EMAIL_CHANNEL.getChannelTypeSupport().generateAlertsChannelConfiguration();
-    private static final AlertsChannelConfiguration SLACK_CHANNEL_CONFIG = SLACK_CHANNEL.getChannelTypeSupport().generateAlertsChannelConfiguration();
-    private static final AlertsChannelConfiguration ALERT_CHANNEL_CONFIG = AlertsChannelConfiguration.builder().build();
-
-    private static final AlertsChannel EMAIL_CHANNEL_FROM_CONFIG = createAlertChannel(EMAIL_CHANNEL_NAME, EMAIL_CHANNEL.getTypeString(), EMAIL_CHANNEL_CONFIG);
-    private static final AlertsChannel SLACK_CHANNEL_FROM_CONFIG = createAlertChannel(SLACK_CHANNEL_NAME, SLACK_CHANNEL.getTypeString(), SLACK_CHANNEL_CONFIG);
-    private static final AlertsChannel EMAIL_ALERT_CHANNEL_SAME = createAlertChannel(1, EMAIL_CHANNEL_NAME, "email", EMAIL_CHANNEL_CONFIG);
-    private static final AlertsChannel EMAIL_ALERT_CHANNEL_SAMEINSTANCE = createAlertChannel(2, EMAIL_CHANNEL_NAME, "email", ALERT_CHANNEL_CONFIG);
-    private static final AlertsChannel EMAIL_ALERT_CHANNEL_DIFFERENT = createAlertChannel(3, "different", "email", ALERT_CHANNEL_CONFIG);
-    private static final AlertsChannel SLACK_ALERT_CHANNEL_SAME = createAlertChannel(4, SLACK_CHANNEL_NAME, "slack", SLACK_CHANNEL_CONFIG);
+    private static final AlertsChannel CONFIGURED_EMAIL_CHANNEL = createAlertChannel(EMAIL_CHANNEL);
+    private static final AlertsChannel CONFIGURED_SLACK_CHANNEL = createAlertChannel(SLACK_CHANNEL);
+    private static final AlertsChannel SAVED_EMAIL_CHANNEL = createAlertChannel(1, EMAIL_CHANNEL);
+    private static final AlertsChannel SAVED_SLACK_CHANNEL = createAlertChannel(2, SLACK_CHANNEL);
 
     private ChannelSynchronizer testee;
-    private static final PolicyConfiguration CONFIGURATION = createConfiguration();
 
     @Before
     public void setUp() {
         testee = new ChannelSynchronizer(apiMock);
 
-        when(alertsChannelsApiMock.create(EMAIL_CHANNEL_FROM_CONFIG)).thenReturn(EMAIL_ALERT_CHANNEL_SAME);
-        when(alertsChannelsApiMock.create(SLACK_CHANNEL_FROM_CONFIG)).thenReturn(SLACK_ALERT_CHANNEL_SAME);
+        when(alertsChannelsApiMock.create(CONFIGURED_EMAIL_CHANNEL)).thenReturn(SAVED_EMAIL_CHANNEL);
+        when(alertsChannelsApiMock.create(CONFIGURED_SLACK_CHANNEL)).thenReturn(SAVED_SLACK_CHANNEL);
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
     }
 
@@ -66,24 +67,27 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
+        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .build();
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
         expectedException.expectMessage(format("Policy %s does not exist", POLICY_NAME));
 
         // when
-        testee.sync(CONFIGURATION);
+        testee.sync(policyConfiguration);
     }
 
     @Test
     public void shouldDoNothing_whenNoChannelsInConfiguration() {
         // given
-        PolicyConfiguration config = PolicyConfiguration.builder()
-            .policyName(POLICY_NAME)
-            .build();
+        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .build();
 
         // when
-        testee.sync(config);
+        testee.sync(policyConfiguration);
 
         // then
         InOrder order = inOrder(alertsChannelsApiMock);
@@ -92,124 +96,150 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     }
 
     @Test
-    public void shouldAddChannels() {
+    public void shouldCreateRequiredChannels() {
         // given
+        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .channel(EMAIL_CHANNEL)
+                .channel(SLACK_CHANNEL)
+                .build();
 
         // when
-        testee.sync(CONFIGURATION);
-
-        // then
-        InOrder order = inOrder(alertsChannelsApiMock);
-        verifyChannelsAdded(order);
-        order.verifyNoMoreInteractions();
-    }
-
-    @Test
-    public void shouldRemoveSameInstanceChannelsAndCreateNewOne_whenChannelUpdated() {
-        // given
-        when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAMEINSTANCE, EMAIL_ALERT_CHANNEL_DIFFERENT));
-        when(alertsChannelsApiMock.deleteFromPolicy(POLICY.getId(), EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId())).thenReturn(EMAIL_ALERT_CHANNEL_SAMEINSTANCE);
-
-        // when
-        testee.sync(CONFIGURATION);
+        testee.sync(policyConfiguration);
 
         // then
         InOrder order = inOrder(alertsChannelsApiMock);
         order.verify(alertsChannelsApiMock).list();
-        order.verify(alertsChannelsApiMock).create(EMAIL_CHANNEL_FROM_CONFIG);
-        order.verify(alertsChannelsApiMock).create(SLACK_CHANNEL_FROM_CONFIG);
-        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId());
-        order.verify(alertsChannelsApiMock).delete(EMAIL_ALERT_CHANNEL_SAMEINSTANCE.getId());
+        order.verify(alertsChannelsApiMock).create(CONFIGURED_EMAIL_CHANNEL);
+        order.verify(alertsChannelsApiMock).create(CONFIGURED_SLACK_CHANNEL);
         order.verifyNoMoreInteractions();
     }
 
     @Test
-    public void shouldNotRemoveChannel_whenChannelNotUpdated() {
+    public void shouldRemoveOldChannelsAndCreateNewOne_whenChannelUpdated() {
         // given
-        when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(EMAIL_ALERT_CHANNEL_SAME, EMAIL_ALERT_CHANNEL_DIFFERENT));
+        int updatedEmailChannelId = 10;
+        EmailChannel updatedEmailChannel = EmailChannel.builder()
+                .channelName(EMAIL_CHANNEL_NAME)
+                .emailAddress("different recipients")
+                .build();
+        AlertsChannel updatedEmailAlertChannel = createAlertChannel(updatedEmailChannel);
+        when(alertsChannelsApiMock.create(updatedEmailAlertChannel))
+                .thenReturn(createAlertChannel(updatedEmailChannelId, updatedEmailChannel));
+
+        AlertsChannel emailChannelInPolicy = channelInPolicy(SAVED_EMAIL_CHANNEL, POLICY_ID);
+        when(alertsChannelsApiMock.list())
+                .thenReturn(ImmutableList.of(emailChannelInPolicy, channelInPolicy(SAVED_SLACK_CHANNEL, POLICY_ID)));
+        when(alertsChannelsApiMock.deleteFromPolicy(POLICY_ID, emailChannelInPolicy.getId()))
+                .thenReturn(emailChannelInPolicy);
+
+        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .channel(updatedEmailChannel)
+                .channel(SLACK_CHANNEL)
+                .build();
 
         // when
-        testee.sync(CONFIGURATION);
+        testee.sync(policyConfiguration);
 
         // then
-        InOrder order = inOrder(alertsChannelsApiMock);
-        order.verify(alertsChannelsApiMock).list();
-        order.verify(alertsChannelsApiMock).create(SLACK_CHANNEL_FROM_CONFIG);
-        order.verifyNoMoreInteractions();
-    }
-
-    @Test
-    public void shouldUpdateAlertPolicyChannels() {
-        // given
-        AlertsChannel channelWithOnlyCurrentPolicyId = createAlertChannel(6, "different", "email", ALERT_CHANNEL_CONFIG, Lists.newArrayList(POLICY.getId(), 100));
-        when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(channelWithOnlyCurrentPolicyId));
-        when(alertsChannelsApiMock.deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId())).thenReturn(channelWithOnlyCurrentPolicyId);
-
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
-            .policyId(POLICY.getId())
-            .channelIds(ImmutableSet.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
-            .build();
+                .policyId(POLICY_ID)
+                .channelIds(ImmutableSet.of(updatedEmailChannelId, SAVED_SLACK_CHANNEL.getId()))
+                .build();
+
+        InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
+        order.verify(alertsChannelsApiMock).list();
+        order.verify(alertsChannelsApiMock).create(updatedEmailAlertChannel);
+        order.verify(alertsPoliciesApiMock).updateChannels(expected);
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, SAVED_EMAIL_CHANNEL.getId());
+        order.verify(alertsChannelsApiMock).delete(SAVED_EMAIL_CHANNEL.getId());
+        order.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void shouldNotRemoveUnsuedChannel_whenChannelBelongsToDifferentPolicy() {
+        // given
+        AlertsChannel emailChannelInPolicy = channelInPolicy(SAVED_EMAIL_CHANNEL, POLICY_ID, POLICY_ID + 1);
+        when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(
+                emailChannelInPolicy,
+                channelInPolicy(SAVED_SLACK_CHANNEL, POLICY_ID)
+        ));
+        when(alertsChannelsApiMock.deleteFromPolicy(POLICY_ID, emailChannelInPolicy.getId()))
+                .thenReturn(emailChannelInPolicy);
 
         // when
-        testee.sync(CONFIGURATION);
+        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .channel(SLACK_CHANNEL)
+                .build();
+        testee.sync(policyConfiguration);
 
         // then
+        AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
+                .policyId(POLICY_ID)
+                .channelIds(ImmutableSet.of(SAVED_SLACK_CHANNEL.getId()))
+                .build();
+
         InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
-        verifyChannelsAdded(order);
+        order.verify(alertsChannelsApiMock).list();
         order.verify(alertsPoliciesApiMock).updateChannels(expected);
-        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId());
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, SAVED_EMAIL_CHANNEL.getId());
+        order.verify(alertsChannelsApiMock, never()).delete(SAVED_EMAIL_CHANNEL.getId());
         order.verifyNoMoreInteractions();
     }
 
     @Test
     public void shouldRemoveUnusedPolicyChannel() {
         // given
-        AlertsChannel channelWithOnlyCurrentPolicyId = createAlertChannel(6, "different", "email", ALERT_CHANNEL_CONFIG, Lists.newArrayList(POLICY.getId()));
-        when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(channelWithOnlyCurrentPolicyId));
-        when(alertsChannelsApiMock.deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId())).thenReturn(channelWithOnlyCurrentPolicyId);
-
-        AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
-            .policyId(POLICY.getId())
-            .channelIds(ImmutableSet.of(EMAIL_ALERT_CHANNEL_SAME.getId(), SLACK_ALERT_CHANNEL_SAME.getId()))
-            .build();
+        AlertsChannel emailChannelInPolicy = channelInPolicy(SAVED_EMAIL_CHANNEL, POLICY_ID);
+        when(alertsChannelsApiMock.list())
+                .thenReturn(ImmutableList.of(emailChannelInPolicy, channelInPolicy(SAVED_SLACK_CHANNEL, POLICY_ID)));
+        when(alertsChannelsApiMock.deleteFromPolicy(POLICY_ID, emailChannelInPolicy.getId()))
+                .thenReturn(emailChannelInPolicy);
 
         // when
-        testee.sync(CONFIGURATION);
+        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .channel(SLACK_CHANNEL)
+                .build();
+        testee.sync(policyConfiguration);
 
         // then
+        AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
+                .policyId(POLICY_ID)
+                .channelIds(ImmutableSet.of(SAVED_SLACK_CHANNEL.getId()))
+                .build();
+
         InOrder order = inOrder(alertsChannelsApiMock, alertsPoliciesApiMock);
-        verifyChannelsAdded(order);
+        order.verify(alertsChannelsApiMock).list();
         order.verify(alertsPoliciesApiMock).updateChannels(expected);
-        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY.getId(), channelWithOnlyCurrentPolicyId.getId());
-        order.verify(alertsChannelsApiMock).delete(channelWithOnlyCurrentPolicyId.getId());
+        order.verify(alertsChannelsApiMock).deleteFromPolicy(POLICY_ID, SAVED_EMAIL_CHANNEL.getId());
+        order.verify(alertsChannelsApiMock).delete(SAVED_EMAIL_CHANNEL.getId());
         order.verifyNoMoreInteractions();
     }
 
-    private void verifyChannelsAdded(InOrder order) {
-        order.verify(alertsChannelsApiMock).list();
-        order.verify(alertsChannelsApiMock).create(EMAIL_CHANNEL_FROM_CONFIG);
-        order.verify(alertsChannelsApiMock).create(SLACK_CHANNEL_FROM_CONFIG);
+    private static AlertsChannel createAlertChannel(Channel channel) {
+        return createAlertChannel(null, channel);
     }
 
-    private static AlertsChannel createAlertChannel(String name, String type, AlertsChannelConfiguration config) {
-        return AlertsChannel.builder().name(name).type(type).configuration(config).build();
+    private static AlertsChannel createAlertChannel(Integer id, Channel channel) {
+        return AlertsChannel.builder()
+                .id(id)
+                .name(channel.getChannelName())
+                .type(channel.getTypeString())
+                .configuration(channel.getChannelTypeSupport().generateAlertsChannelConfiguration())
+                .links(new AlertsChannelLinks(emptyList()))
+                .build();
     }
 
-    private static AlertsChannel createAlertChannel(int id, String name, String type, AlertsChannelConfiguration config) {
-        AlertsChannelLinks alertChannelLinks = new AlertsChannelLinks(Collections.emptyList());
-        return AlertsChannel.builder().id(id).name(name).type(type).configuration(config).links(alertChannelLinks).build();
-    }
-
-    private static AlertsChannel createAlertChannel(int id, String name, String type, AlertsChannelConfiguration config, List<Integer> policyIds) {
-        AlertsChannelLinks alertChannelLinks = new AlertsChannelLinks(policyIds);
-        return AlertsChannel.builder().id(id).name(name).type(type).configuration(config).links(alertChannelLinks).build();
-    }
-
-    private static PolicyConfiguration createConfiguration() {
-        return PolicyConfiguration.builder()
-            .policyName(POLICY_NAME)
-            .channel(EMAIL_CHANNEL)
-            .channel(SLACK_CHANNEL)
-            .build();
+    private static AlertsChannel channelInPolicy(AlertsChannel channel, Integer... policyIds) {
+        return AlertsChannel.builder()
+                .id(channel.getId())
+                .name(channel.getName())
+                .type(channel.getType())
+                .configuration(channel.getConfiguration())
+                .links(new AlertsChannelLinks(ImmutableList.copyOf(policyIds)))
+                .build();
     }
 }

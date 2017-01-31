@@ -7,6 +7,7 @@ import com.ocado.panda.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.channel.Channel;
 import com.ocado.panda.newrelic.sync.exception.NewRelicSyncException;
+import jersey.repackaged.com.google.common.collect.Lists;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,18 +47,10 @@ class ChannelSynchronizer {
 
         for (Channel channelFromConfig : channelsFromConfig) {
             AlertsChannel alertsChannelFromConfig = toAlertsChannel(channelFromConfig);
-            Collection<AlertsChannel> sameInstanceAlertsChannels = getSameInstanceAlertsChannels(allAlertsChannels,
-                alertsChannelFromConfig);
-
-            AlertsChannel syncedChannel = findSameOrCreate(alertsChannelFromConfig, sameInstanceAlertsChannels);
-
-            policyChannelsToCleanup.addAll(sameInstanceAlertsChannels.stream()
-                .map(AlertsChannel::getId)
-                .collect(Collectors.toList()));
+            AlertsChannel syncedChannel = findSameOrCreate(alertsChannelFromConfig, allAlertsChannels);
             policyChannelsToUpdate.add(syncedChannel.getId());
-            policyChannelsToCleanup.remove(syncedChannel.getId());
         }
-
+        policyChannelsToCleanup.removeAll(policyChannelsToUpdate);
 
         api.getAlertsPoliciesApi().updateChannels(
             AlertsPolicyChannels.builder()
@@ -75,16 +68,9 @@ class ChannelSynchronizer {
             .collect(Collectors.toSet());
     }
 
-    private Collection<AlertsChannel> getSameInstanceAlertsChannels(List<AlertsChannel> allAlertsChannels,
-                                                                      AlertsChannel alertsChannelFromConfig) {
-        return allAlertsChannels.stream()
-            .filter(alertsChannelFromConfig::sameInstance)
-            .collect(Collectors.toList());
-    }
-
     private AlertsChannel findSameOrCreate(AlertsChannel alertsChannelFromConfig, Collection<AlertsChannel> sameInstanceChannels) {
         return sameInstanceChannels.stream()
-            .filter(alertsChannelFromConfig::same)
+            .filter(alertsChannelFromConfig::equals)
             .findAny()
             .orElseGet(() -> createAlertsChannel(alertsChannelFromConfig));
     }
@@ -114,7 +100,7 @@ class ChannelSynchronizer {
         LOG.info("Alerts channel {} (id: {}) removed from policy {} (id: {})",
             removed.getName(), removed.getId(), policy.getName(), policy.getId());
 
-        List<Integer> currentChannelPolicyIds = removed.getLinks().getPolicyIds();
+        List<Integer> currentChannelPolicyIds = Lists.newArrayList(removed.getLinks().getPolicyIds());
         currentChannelPolicyIds.remove(policy.getId());
         if (currentChannelPolicyIds.isEmpty()) {
             api.getAlertsChannelsApi().delete(removed.getId());

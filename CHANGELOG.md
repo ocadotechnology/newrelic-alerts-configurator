@@ -1,3 +1,6 @@
+# current version
+- Simplified channel synchronization logic
+
 # 1.3.0 (24.01.2017)
 - Added UserDefined condition type support for `ApmAppCondition` and `ServersMetricCondition`
 
