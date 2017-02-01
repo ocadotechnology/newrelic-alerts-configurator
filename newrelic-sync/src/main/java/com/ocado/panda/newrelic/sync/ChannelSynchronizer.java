@@ -7,10 +7,10 @@ import com.ocado.panda.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.channel.Channel;
 import com.ocado.panda.newrelic.sync.exception.NewRelicSyncException;
-import jersey.repackaged.com.google.common.collect.Lists;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -100,7 +100,7 @@ class ChannelSynchronizer {
         LOG.info("Alerts channel {} (id: {}) removed from policy {} (id: {})",
             removed.getName(), removed.getId(), policy.getName(), policy.getId());
 
-        List<Integer> currentChannelPolicyIds = Lists.newArrayList(removed.getLinks().getPolicyIds());
+        List<Integer> currentChannelPolicyIds = new ArrayList<>(removed.getLinks().getPolicyIds());
         currentChannelPolicyIds.remove(policy.getId());
         if (currentChannelPolicyIds.isEmpty()) {
             api.getAlertsChannelsApi().delete(removed.getId());
