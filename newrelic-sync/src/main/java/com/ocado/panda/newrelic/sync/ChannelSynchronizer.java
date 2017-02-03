@@ -22,7 +22,6 @@ import static java.lang.String.format;
 
 @Slf4j
 class ChannelSynchronizer {
-    private static final String USER_CHANNEL_TYPE = ChannelType.USER.name().toLowerCase();
     private final NewRelicApi api;
 
     ChannelSynchronizer(@NonNull NewRelicApi api) {
@@ -134,6 +133,7 @@ class ChannelSynchronizer {
     }
 
     private static boolean isUserChannel(AlertsChannel removed) {
-        return USER_CHANNEL_TYPE.equals(removed.getType());
+        String userChannelType = ChannelType.USER.name().toLowerCase();
+        return userChannelType.equals(removed.getType());
     }
 }
