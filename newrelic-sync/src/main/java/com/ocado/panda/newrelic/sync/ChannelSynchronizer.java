@@ -53,12 +53,12 @@ class ChannelSynchronizer {
         Set<Integer> policyChannels = new LinkedHashSet<>();
 
         for (Channel channelFromConfig : channelsFromConfig) {
-            AlertsChannel requiredChannels = toAlertsChannel(channelFromConfig);
+            AlertsChannel requestedChannel = toAlertsChannel(channelFromConfig);
             AlertsChannel syncedChannel;
-            if (isUserChannel(requiredChannels)) {
-                syncedChannel = findUserChannel(requiredChannels, userChannels);
+            if (isUserChannel(requestedChannel)) {
+                syncedChannel = findUserChannel(requestedChannel, userChannels);
             } else {
-                syncedChannel = findSameOrCreate(requiredChannels, nonUserChannels);
+                syncedChannel = findSameOrCreate(requestedChannel, nonUserChannels);
             }
             policyChannels.add(syncedChannel.getId());
         }
