@@ -1,5 +1,6 @@
 package com.ocado.panda.newrelic.sync.configuration.channel.internal;
 
+import com.ocado.panda.newrelic.api.NewRelicApi;
 import com.ocado.panda.newrelic.api.model.channels.AlertsChannelConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.channel.Channel;
 import com.ocado.panda.newrelic.sync.configuration.channel.ChannelTypeSupport;
@@ -12,7 +13,7 @@ public class EmailChannelTypeSupport implements ChannelTypeSupport {
     private Channel channel;
 
     @Override
-    public AlertsChannelConfiguration generateAlertsChannelConfiguration() {
+    public AlertsChannelConfiguration generateAlertsChannelConfiguration(NewRelicApi api) {
         EmailChannel emailChannel = (EmailChannel) channel;
         AlertsChannelConfiguration.AlertsChannelConfigurationBuilder builder = AlertsChannelConfiguration.builder();
         builder.recipients(emailChannel.getEmailAddress());
