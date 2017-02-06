@@ -132,8 +132,8 @@ class ChannelSynchronizer {
         }
     }
 
-    private static boolean isUserChannel(AlertsChannel removed) {
+    private static boolean isUserChannel(AlertsChannel channel) {
         String userChannelType = ChannelType.USER.name().toLowerCase();
-        return userChannelType.equals(removed.getType());
+        return userChannelType.equals(channel.getType());
     }
 }
