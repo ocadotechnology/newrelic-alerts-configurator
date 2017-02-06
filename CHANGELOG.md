@@ -1,4 +1,4 @@
-# next version
+# 1.4.0 (06.02.2017)
 - Added support for user notification channel 
 - Simplified channel synchronization logic
 
