@@ -8,8 +8,8 @@ buildscript {
 }
 
 allprojects {
-    group = 'com.ocado.panda.newrelic.alerts'
-    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '1.4.1-SNAPSHOT'
+    group = 'com.ocadotechnology.newrelic'
+    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '2.0.0-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -80,7 +80,7 @@ subprojects {
     }
 }
 
-project(':newrelic-api') {
+project(':api') {
     dependencies {
         compile 'commons-io:commons-io:2.5'
         compile 'org.apache.commons:commons-lang3:3.5'
@@ -92,22 +92,22 @@ project(':newrelic-api') {
     }
 }
 
-project(':newrelic-sync') {
+project(':alert-config-uploader') {
     dependencies {
-        compile project(':newrelic-api')
+        compile project(':api')
     }
 }
 
-project(':newrelic-deployment') {
+project(':deployment-marker') {
     dependencies {
-        compile project(':newrelic-api')
+        compile project(':api')
         compile 'org.slf4j:slf4j-simple:1.7.21'
         compile 'org.slf4j:jcl-over-slf4j:1.7.21'
         compile 'com.beust:jcommander:1.48'
     }
     apply plugin: 'application'
     apply plugin: 'com.github.johnrengelman.shadow'
-    mainClassName = 'com.ocado.panda.newrelic.deployment.cli.NewRelicDeploymentCli'
+    mainClassName = 'com.ocado.newrelic.deploymentmarker.NewRelicDeploymentCli'
     shadowJar {
         classifier = 'executable'
     }
