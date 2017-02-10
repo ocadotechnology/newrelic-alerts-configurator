@@ -5,6 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
+/**
+ * Webhook channel configuration.
+ * Configuration parameters:
+ * <ul>
+ *     <li>{@link #channelName}</li>
+ *     <li>{@link #baseUrl}</li>
+ *     <li>{@link #authUsername} (optional)</li>
+ *     <li>{@link #authPassword} (optional)</li>
+ * </ul>
+ */
 @Builder
 @Getter
 public class WebhookChannel implements Channel {
