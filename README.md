@@ -1,13 +1,13 @@
-# NewRelic Alerts
+# NewRelic Tools
 
 Contains:
-- New Relic API wrapper
+- NewRelic API client
 - Alerts configuration uploader
 - Deployment marker
 
 ![](images/new_relic_library_diagram.png)
-## New Relic API wrapper
-See [api/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/api) for more details of New Relic API wrapper.
+## NewRelic API client
+See [api-client/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/api-client) for more details of New Relic API client.
 
 ## Alerts Synchronizer
     

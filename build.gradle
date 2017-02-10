@@ -80,7 +80,7 @@ subprojects {
     }
 }
 
-project(':api') {
+project(':api-client') {
     dependencies {
         compile 'commons-io:commons-io:2.5'
         compile 'org.apache.commons:commons-lang3:3.5'
@@ -94,13 +94,13 @@ project(':api') {
 
 project(':alert-config-uploader') {
     dependencies {
-        compile project(':api')
+        compile project(':api-client')
     }
 }
 
 project(':deployment-marker') {
     dependencies {
-        compile project(':api')
+        compile project(':api-client')
         compile 'org.slf4j:slf4j-simple:1.7.21'
         compile 'org.slf4j:jcl-over-slf4j:1.7.21'
         compile 'com.beust:jcommander:1.48'
