@@ -7,15 +7,15 @@ Contains:
 
 ![](images/new_relic_library_diagram.png)
 ## NewRelic API client
-See [api-client/README.md](api-client/) for more details of New Relic API client.
+See [api-client](api-client/) for more details of New Relic API client.
 
 ## Alerts Synchronizer
     
-See [alert-config-uploader/README.md](alert-config-uploader/) for more details of how to use New Relic alerts configuration uploader.
+See [alert-config-uploader](alert-config-uploader/) for more details of how to use New Relic alerts configuration uploader.
 
 ## Mark deployments
 
-See [deployment-marker/README.md](deployment-marker/) for more details of how to mark deployments.
+See [deployment-marker](deployment-marker/) for more details of how to mark deployments.
 
 
 ## Build and publish:
