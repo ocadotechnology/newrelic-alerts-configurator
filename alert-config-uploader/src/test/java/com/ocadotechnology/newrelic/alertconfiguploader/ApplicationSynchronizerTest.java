@@ -1,6 +1,5 @@
 package com.ocadotechnology.newrelic.alertconfiguploader;
 
-import com.ocado.newrelic.alertconfiguploader.ApplicationSynchronizer;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.ApplicationConfiguration;
 import com.ocadotechnology.newrelic.alertconfiguploader.exception.NewRelicSyncException;
 import com.ocadotechnology.newrelic.api.model.applications.Application;

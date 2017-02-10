@@ -2,7 +2,6 @@ package com.ocadotechnology.newrelic.alertconfiguploader;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.ocado.newrelic.alertconfiguploader.ChannelSynchronizer;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.channel.Channel;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.channel.EmailChannel;

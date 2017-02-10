@@ -1,7 +1,6 @@
 package com.ocadotechnology.newrelic.alertconfiguploader;
 
 import com.google.common.collect.ImmutableList;
-import com.ocado.newrelic.alertconfiguploader.ExternalServiceConditionSynchronizer;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.condition.ApmExternalServiceCondition;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.condition.ExternalServiceCondition;
