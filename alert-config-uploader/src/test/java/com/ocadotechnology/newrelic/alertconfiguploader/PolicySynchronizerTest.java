@@ -1,6 +1,5 @@
 package com.ocadotechnology.newrelic.alertconfiguploader;
 
-import com.ocado.newrelic.alertconfiguploader.PolicySynchronizer;
 import com.ocadotechnology.newrelic.alertconfiguploader.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.api.model.policies.AlertsPolicy;
 import org.junit.Before;
