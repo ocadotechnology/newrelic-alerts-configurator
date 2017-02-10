@@ -1,8 +1,8 @@
 package com.ocado.panda.newrelic.sync.internal.entities;
 
 
-import com.ocado.panda.newrelic.api.NewRelicApi;
-import com.ocado.panda.newrelic.api.model.servers.Server;
+import com.ocado.newrelic.api.NewRelicApi;
+import com.ocado.newrelic.api.model.servers.Server;
 import com.ocado.panda.newrelic.sync.exception.NewRelicSyncException;
 
 import java.util.Optional;

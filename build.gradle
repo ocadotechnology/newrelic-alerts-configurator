@@ -80,7 +80,7 @@ subprojects {
     }
 }
 
-project(':newrelic-api') {
+project(':api') {
     dependencies {
         compile 'commons-io:commons-io:2.5'
         compile 'org.apache.commons:commons-lang3:3.5'
@@ -94,13 +94,13 @@ project(':newrelic-api') {
 
 project(':newrelic-sync') {
     dependencies {
-        compile project(':newrelic-api')
+        compile project(':api')
     }
 }
 
 project(':newrelic-deployment') {
     dependencies {
-        compile project(':newrelic-api')
+        compile project(':api')
         compile 'org.slf4j:slf4j-simple:1.7.21'
         compile 'org.slf4j:jcl-over-slf4j:1.7.21'
         compile 'com.beust:jcommander:1.48'

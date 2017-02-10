@@ -1,6 +1,6 @@
 package com.ocado.panda.newrelic.sync;
 
-import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import org.junit.Before;
 import org.junit.Test;

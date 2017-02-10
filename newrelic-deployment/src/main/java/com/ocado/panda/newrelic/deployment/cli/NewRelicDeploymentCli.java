@@ -4,7 +4,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
-import com.ocado.panda.newrelic.api.model.deployments.Deployment;
+import com.ocado.newrelic.api.model.deployments.Deployment;
 import com.ocado.panda.newrelic.deployment.NewRelicDeployment;
 
 import java.util.List;

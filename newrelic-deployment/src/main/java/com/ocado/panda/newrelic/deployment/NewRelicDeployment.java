@@ -1,8 +1,8 @@
 package com.ocado.panda.newrelic.deployment;
 
-import com.ocado.panda.newrelic.api.NewRelicApi;
-import com.ocado.panda.newrelic.api.model.applications.Application;
-import com.ocado.panda.newrelic.api.model.deployments.Deployment;
+import com.ocado.newrelic.api.NewRelicApi;
+import com.ocado.newrelic.api.model.applications.Application;
+import com.ocado.newrelic.api.model.deployments.Deployment;
 import lombok.NonNull;
 
 import java.util.List;

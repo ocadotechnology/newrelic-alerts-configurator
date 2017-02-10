@@ -1,6 +1,6 @@
 package com.ocado.panda.newrelic.sync.configuration.condition.terms;
 
-import com.ocado.panda.newrelic.api.model.conditions.Terms;
+import com.ocado.newrelic.api.model.conditions.Terms;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

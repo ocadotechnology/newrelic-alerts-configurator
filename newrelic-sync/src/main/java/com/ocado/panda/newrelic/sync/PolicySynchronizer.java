@@ -1,7 +1,7 @@
 package com.ocado.panda.newrelic.sync;
 
-import com.ocado.panda.newrelic.api.NewRelicApi;
-import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.newrelic.api.NewRelicApi;
+import com.ocado.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package com.ocado.panda.newrelic.sync;
 
 import com.google.common.collect.ImmutableList;
-import com.ocado.panda.newrelic.api.model.conditions.AlertsCondition;
-import com.ocado.panda.newrelic.api.model.conditions.Terms;
-import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.newrelic.api.model.conditions.AlertsCondition;
+import com.ocado.newrelic.api.model.conditions.Terms;
+import com.ocado.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.condition.ApmAppCondition;
 import com.ocado.panda.newrelic.sync.configuration.condition.Condition;

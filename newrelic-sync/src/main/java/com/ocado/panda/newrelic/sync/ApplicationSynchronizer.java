@@ -1,8 +1,8 @@
 package com.ocado.panda.newrelic.sync;
 
-import com.ocado.panda.newrelic.api.NewRelicApi;
-import com.ocado.panda.newrelic.api.model.applications.Application;
-import com.ocado.panda.newrelic.api.model.applications.ApplicationSettings;
+import com.ocado.newrelic.api.NewRelicApi;
+import com.ocado.newrelic.api.model.applications.Application;
+import com.ocado.newrelic.api.model.applications.ApplicationSettings;
 import com.ocado.panda.newrelic.sync.configuration.ApplicationConfiguration;
 import com.ocado.panda.newrelic.sync.exception.NewRelicSyncException;
 import lombok.NonNull;

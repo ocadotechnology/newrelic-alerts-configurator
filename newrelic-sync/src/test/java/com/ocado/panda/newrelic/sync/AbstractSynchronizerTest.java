@@ -1,14 +1,14 @@
 package com.ocado.panda.newrelic.sync;
 
-import com.ocado.panda.newrelic.api.AlertsChannelsApi;
-import com.ocado.panda.newrelic.api.AlertsConditionsApi;
-import com.ocado.panda.newrelic.api.AlertsExternalServiceConditionsApi;
-import com.ocado.panda.newrelic.api.AlertsPoliciesApi;
-import com.ocado.panda.newrelic.api.ApplicationsApi;
-import com.ocado.panda.newrelic.api.KeyTransactionsApi;
-import com.ocado.panda.newrelic.api.NewRelicApi;
-import com.ocado.panda.newrelic.api.ServersApi;
-import com.ocado.panda.newrelic.api.UsersApi;
+import com.ocado.newrelic.api.AlertsChannelsApi;
+import com.ocado.newrelic.api.AlertsConditionsApi;
+import com.ocado.newrelic.api.AlertsExternalServiceConditionsApi;
+import com.ocado.newrelic.api.AlertsPoliciesApi;
+import com.ocado.newrelic.api.ApplicationsApi;
+import com.ocado.newrelic.api.KeyTransactionsApi;
+import com.ocado.newrelic.api.NewRelicApi;
+import com.ocado.newrelic.api.ServersApi;
+import com.ocado.newrelic.api.UsersApi;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.Mock;

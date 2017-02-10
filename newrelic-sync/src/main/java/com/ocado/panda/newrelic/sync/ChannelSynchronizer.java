@@ -1,9 +1,9 @@
 package com.ocado.panda.newrelic.sync;
 
-import com.ocado.panda.newrelic.api.NewRelicApi;
-import com.ocado.panda.newrelic.api.model.channels.AlertsChannel;
-import com.ocado.panda.newrelic.api.model.policies.AlertsPolicy;
-import com.ocado.panda.newrelic.api.model.policies.AlertsPolicyChannels;
+import com.ocado.newrelic.api.NewRelicApi;
+import com.ocado.newrelic.api.model.channels.AlertsChannel;
+import com.ocado.newrelic.api.model.policies.AlertsPolicy;
+import com.ocado.newrelic.api.model.policies.AlertsPolicyChannels;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.channel.Channel;
 import com.ocado.panda.newrelic.sync.configuration.channel.ChannelType;
