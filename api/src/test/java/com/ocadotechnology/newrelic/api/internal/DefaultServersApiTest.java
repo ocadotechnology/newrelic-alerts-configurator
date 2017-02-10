@@ -1,7 +1,6 @@
 package com.ocadotechnology.newrelic.api.internal;
 
 import com.ocadotechnology.newrelic.api.ServersApi;
-import com.ocadotechnology.newrelic.api.internal.DefaultServersApi;
 import com.ocadotechnology.newrelic.api.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.api.internal.model.ServerList;
 import com.ocadotechnology.newrelic.api.model.servers.Server;
@@ -27,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class DefaultServersApiTest {
     @Rule
     public final MockitoRule mockito = MockitoJUnit.rule();
+
     @Mock
     private Response responseMock;
     private ServersApi testee;
@@ -46,8 +46,7 @@ public class DefaultServersApiTest {
     }
 
     @Test
-    public void shouldReturnServerWhenClientReturnsNotUniqueResult() throws Exception {
-
+    public void getByName_shouldReturnServer_whenClientReturnsNotUniqueResult() throws Exception {
         // given
         when(responseMock.readEntity(ServerList.class)).thenReturn(new ServerList(asList(
                 Server.builder().name("server").build(),
@@ -62,7 +61,7 @@ public class DefaultServersApiTest {
     }
 
     @Test
-    public void shouldNotReturnServerWhenClientReturnsNotMatchingResult() throws Exception {
+    public void getByName_shouldNotReturnServer_whenClientReturnsNotMatchingResult() throws Exception {
 
         // given
         when(responseMock.readEntity(ServerList.class)).thenReturn(new ServerList(Collections.singletonList(
@@ -77,7 +76,7 @@ public class DefaultServersApiTest {
     }
 
     @Test
-    public void shouldNotReturnServerWhenClientReturnsEmptyList() throws Exception {
+    public void getByName_shouldNotReturnServer_whenClientReturnsEmptyList() throws Exception {
 
         // given
         when(responseMock.readEntity(ServerList.class)).thenReturn(new ServerList(Collections.emptyList()));

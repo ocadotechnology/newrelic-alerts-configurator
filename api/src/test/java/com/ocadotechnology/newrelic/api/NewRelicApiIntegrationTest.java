@@ -5,7 +5,6 @@ import com.ocadotechnology.newrelic.api.model.applications.Application;
 import com.ocadotechnology.newrelic.api.model.channels.AlertsChannel;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHeaders;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -19,24 +18,23 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NewRelicApiIntegrationTest {
-
     @ClassRule
     public static final WireMockClassRule WIRE_MOCK = new WireMockClassRule(6766);
 
     private static final String APPLICATION_JSON = "application/json";
-
     private static final Charset UTF_8 = Charset.forName("UTF-8");
 
     private NewRelicApi testee;
-
     private String applications;
-
     private String channels1;
-
     private String channels2;
 
     @Before
@@ -46,7 +44,6 @@ public class NewRelicApiIntegrationTest {
         applications = IOUtils.toString(NewRelicApiIntegrationTest.class.getResource("/applications.json"), UTF_8);
         channels1 = IOUtils.toString(NewRelicApiIntegrationTest.class.getResource("/channels1.json"), UTF_8);
         channels2 = IOUtils.toString(NewRelicApiIntegrationTest.class.getResource("/channels2.json"), UTF_8);
-
     }
 
     @Test
@@ -56,10 +53,10 @@ public class NewRelicApiIntegrationTest {
         newRelicReturnsApplications();
 
         // when
-        Optional<Application> app = testee.getApplicationsApi().getByName("user_management");
+        Optional<Application> app = testee.getApplicationsApi().getByName("application_name");
 
         // then
-        Assert.assertTrue(app.isPresent());
+        assertThat(app).isNotEmpty();
     }
 
     @Test
@@ -70,12 +67,10 @@ public class NewRelicApiIntegrationTest {
 
         // when
         List<AlertsChannel> channels = testee.getAlertsChannelsApi().list();
-        Set<Integer> channelsIds = channels.stream().map(AlertsChannel::getId).collect(Collectors.toSet());
 
         // then
-        Assert.assertEquals(2, channels.size());
-        Assert.assertTrue(channelsIds.contains(1));
-        Assert.assertTrue(channelsIds.contains(2));
+        Set<Integer> channelsIds = channels.stream().map(AlertsChannel::getId).collect(Collectors.toSet());
+        assertThat(channelsIds).containsExactlyInAnyOrder(1, 2);
     }
 
     private void newRelicReturnsApplications() throws UnsupportedEncodingException {
@@ -83,7 +78,7 @@ public class NewRelicApiIntegrationTest {
 
         WIRE_MOCK.addStubMapping(
                 get(urlPathEqualTo("/v2/applications.json"))
-                        .withQueryParam(queryParam, equalTo("user_management"))
+                        .withQueryParam(queryParam, equalTo("application_name"))
                         .withHeader("X-Api-Key", equalTo("secret"))
                         .willReturn(aResponse()
                                 .withStatus(SC_OK)
