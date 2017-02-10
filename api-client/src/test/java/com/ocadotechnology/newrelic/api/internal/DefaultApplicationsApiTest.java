@@ -1,15 +1,15 @@
 package com.ocadotechnology.newrelic.api.internal;
 
 import com.ocadotechnology.newrelic.api.ApplicationsApi;
-import com.ocadotechnology.newrelic.api.internal.DefaultApplicationsApi;
 import com.ocadotechnology.newrelic.api.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.api.internal.model.ApplicationList;
 import com.ocadotechnology.newrelic.api.model.applications.Application;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -19,13 +19,14 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DefaultApplicationsApiTest {
+    @Rule
+    public final MockitoRule mockito = MockitoJUnit.rule();
+
     @Mock
     private Response responseMock;
     private ApplicationsApi testee;
@@ -45,7 +46,7 @@ public class DefaultApplicationsApiTest {
     }
 
     @Test
-    public void shouldReturnApplicationWhenClientReturnsNotUniqueResult() throws Exception {
+    public void getByName_shouldReturnApplication_whenClientReturnsNotUniqueResult() throws Exception {
 
         // given
         when(responseMock.readEntity(ApplicationList.class)).thenReturn(new ApplicationList(asList(
@@ -57,11 +58,11 @@ public class DefaultApplicationsApiTest {
         Optional<Application> applicationOptional = testee.getByName("app");
 
         // then
-        assertTrue(applicationOptional.isPresent());
+        assertThat(applicationOptional).isNotEmpty();
     }
 
     @Test
-    public void shouldNotReturnApplicationWhenClientReturnsNotMatchingResult() throws Exception {
+    public void getByName_shouldNotReturnApplication_whenClientReturnsNotMatchingResult() throws Exception {
 
         // given
         when(responseMock.readEntity(ApplicationList.class)).thenReturn(new ApplicationList(Collections.singletonList(
@@ -72,11 +73,11 @@ public class DefaultApplicationsApiTest {
         Optional<Application> applicationOptional = testee.getByName("app");
 
         // then
-        assertFalse(applicationOptional.isPresent());
+        assertThat(applicationOptional).isEmpty();
     }
 
     @Test
-    public void shouldNotReturnApplicationWhenClientReturnsEmptyList() throws Exception {
+    public void getByName_shouldNotReturnApplication_whenClientReturnsEmptyList() throws Exception {
 
         // given
         when(responseMock.readEntity(ApplicationList.class)).thenReturn(new ApplicationList(Collections.emptyList()));
@@ -85,6 +86,6 @@ public class DefaultApplicationsApiTest {
         Optional<Application> applicationOptional = testee.getByName("app");
 
         // then
-        assertFalse(applicationOptional.isPresent());
+        assertThat(applicationOptional).isEmpty();
     }
 }

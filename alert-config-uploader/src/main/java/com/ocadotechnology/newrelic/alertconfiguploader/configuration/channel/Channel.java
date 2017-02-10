@@ -6,6 +6,7 @@ package com.ocadotechnology.newrelic.alertconfiguploader.configuration.channel;
  * <ul>
  *     <li>{@link EmailChannel}</li>
  *     <li>{@link SlackChannel}</li>
+ *     <li>{@link PagerDutyChannel}</li>
  *     <li>{@link WebhookChannel}</li>
  *     <li>{@link UserChannel}</li>
  * </ul>

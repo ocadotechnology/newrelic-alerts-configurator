@@ -2,7 +2,7 @@
   "applications": [
     {
       "id": 13930433,
-      "name": "user_management",
+      "name": "application_name",
       "language": "java",
       "health_status": "green",
       "reporting": true,

@@ -5,6 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
+/**
+ * PagerDuty channel configuration.
+ * Configuration parameters:
+ * <ul>
+ *     <li>{@link #channelName}</li>
+ *     <li>{@link #serviceKey}</li>
+ * </ul>
+ */
 @Builder
 @Getter
 public class PagerDutyChannel implements Channel {

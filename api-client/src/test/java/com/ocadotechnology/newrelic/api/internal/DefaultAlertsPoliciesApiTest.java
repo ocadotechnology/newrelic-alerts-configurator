@@ -1,15 +1,15 @@
 package com.ocadotechnology.newrelic.api.internal;
 
 import com.ocadotechnology.newrelic.api.AlertsPoliciesApi;
-import com.ocadotechnology.newrelic.api.internal.DefaultAlertsPoliciesApi;
 import com.ocadotechnology.newrelic.api.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.api.internal.model.AlertsPolicyList;
 import com.ocadotechnology.newrelic.api.model.policies.AlertsPolicy;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -19,13 +19,14 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DefaultAlertsPoliciesApiTest {
+    @Rule
+    public final MockitoRule mockito = MockitoJUnit.rule();
+
     @Mock
     private Response responseMock;
     private AlertsPoliciesApi testee;
@@ -45,7 +46,7 @@ public class DefaultAlertsPoliciesApiTest {
     }
 
     @Test
-    public void shouldReturnPolicyWhenClientReturnsNotUniqueResult() throws Exception {
+    public void getByName_shouldReturnPolicy_whenClientReturnsNotUniqueResult() throws Exception {
 
         // given
         when(responseMock.readEntity(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(asList(
@@ -57,11 +58,11 @@ public class DefaultAlertsPoliciesApiTest {
         Optional<AlertsPolicy> policyOptional = testee.getByName("policy");
 
         // then
-        assertTrue(policyOptional.isPresent());
+        assertThat(policyOptional).isNotEmpty();
     }
 
     @Test
-    public void shouldNotReturnPolicyWhenClientReturnsNotMatchingResult() throws Exception {
+    public void getByName_shouldNotReturnPolicy_whenClientReturnsNotMatchingResult() throws Exception {
 
         // given
         when(responseMock.readEntity(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(Collections.singletonList(
@@ -72,11 +73,11 @@ public class DefaultAlertsPoliciesApiTest {
         Optional<AlertsPolicy> policyOptional = testee.getByName("policy");
 
         // then
-        assertFalse(policyOptional.isPresent());
+        assertThat(policyOptional).isEmpty();
     }
 
     @Test
-    public void shouldNotReturnPolicyWhenClientReturnsEmptyList() throws Exception {
+    public void getByName_shouldNotReturnPolicy_whenClientReturnsEmptyList() throws Exception {
 
         // given
         when(responseMock.readEntity(AlertsPolicyList.class)).thenReturn(new AlertsPolicyList(Collections.emptyList()));
@@ -85,6 +86,6 @@ public class DefaultAlertsPoliciesApiTest {
         Optional<AlertsPolicy> policyOptional = testee.getByName("policy");
 
         // then
-        assertFalse(policyOptional.isPresent());
+        assertThat(policyOptional).isEmpty();
     }
 }
