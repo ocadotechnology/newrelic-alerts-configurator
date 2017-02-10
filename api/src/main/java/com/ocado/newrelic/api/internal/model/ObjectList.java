@@ -1,4 +1,4 @@
-package com.ocado.newrelic.api.model;
+package com.ocado.newrelic.api.internal.model;
 
 import lombok.EqualsAndHashCode;
 
