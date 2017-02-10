@@ -9,7 +9,7 @@ buildscript {
 
 allprojects {
     group = 'com.ocado.panda.newrelic.alerts'
-    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '1.4.1-SNAPSHOT'
+    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '2.0.0-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -92,7 +92,7 @@ project(':api') {
     }
 }
 
-project(':newrelic-sync') {
+project(':alert-config-uploader') {
     dependencies {
         compile project(':api')
     }

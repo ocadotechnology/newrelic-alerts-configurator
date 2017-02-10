@@ -2,7 +2,7 @@
 
 Contains:
 - New Relic API wrapper
-- Alerts Synchronizer
+- Alerts configuration uploader
 - Deployment marker
 
 ![](images/new_relic_library_diagram.png)
@@ -11,7 +11,7 @@ See [api/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrel
 
 ## Alerts Synchronizer
     
-See [newrelic-sync/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/newrelic-sync) for more details of how to use New Relic alerts synchronizer.
+See [alert-config-uploader/README.md](https://gitlab.tech.lastmile.com/internal-open-source/newrelic-alerts/tree/master/alert-config-uploader) for more details of how to use New Relic alerts configuration uploader.
 
 ## Mark deployments
 
