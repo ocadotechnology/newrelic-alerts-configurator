@@ -1,4 +1,4 @@
-package com.ocado.panda.newrelic.deployment;
+package com.ocado.newrelic.deploymentmarker;
 
 import com.ocado.newrelic.api.NewRelicApi;
 import com.ocado.newrelic.api.model.applications.Application;

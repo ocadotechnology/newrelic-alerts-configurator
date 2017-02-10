@@ -98,7 +98,7 @@ project(':newrelic-sync') {
     }
 }
 
-project(':newrelic-deployment') {
+project(':deployment-marker') {
     dependencies {
         compile project(':api')
         compile 'org.slf4j:slf4j-simple:1.7.21'
@@ -107,7 +107,7 @@ project(':newrelic-deployment') {
     }
     apply plugin: 'application'
     apply plugin: 'com.github.johnrengelman.shadow'
-    mainClassName = 'com.ocado.panda.newrelic.deployment.cli.NewRelicDeploymentCli'
+    mainClassName = 'com.ocado.newrelic.deploymentmarker.NewRelicDeploymentCli'
     shadowJar {
         classifier = 'executable'
     }

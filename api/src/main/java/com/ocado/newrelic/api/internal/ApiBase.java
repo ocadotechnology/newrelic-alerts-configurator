@@ -1,7 +1,7 @@
 package com.ocado.newrelic.api.internal;
 
 import com.ocado.newrelic.api.internal.client.NewRelicClient;
-import com.ocado.panda.newrelic.api.model.ObjectList;
+import com.ocado.newrelic.api.model.ObjectList;
 
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Link;

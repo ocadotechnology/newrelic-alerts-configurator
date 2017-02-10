@@ -6,7 +6,7 @@ import com.ocado.newrelic.api.model.channels.AlertsChannel;
 import com.ocado.newrelic.api.model.channels.AlertsChannelLinks;
 import com.ocado.newrelic.api.model.policies.AlertsPolicy;
 import com.ocado.newrelic.api.model.policies.AlertsPolicyChannels;
-import com.ocado.panda.newrelic.api.model.users.User;
+import com.ocado.newrelic.api.model.users.User;
 import com.ocado.panda.newrelic.sync.configuration.PolicyConfiguration;
 import com.ocado.panda.newrelic.sync.configuration.channel.Channel;
 import com.ocado.panda.newrelic.sync.configuration.channel.EmailChannel;

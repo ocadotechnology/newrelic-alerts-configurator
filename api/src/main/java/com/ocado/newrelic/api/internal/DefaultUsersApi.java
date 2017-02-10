@@ -5,7 +5,7 @@ import com.ocado.newrelic.api.UsersApi;
 import com.ocado.newrelic.api.internal.client.NewRelicClient;
 import com.ocado.newrelic.api.internal.model.UserList;
 import com.ocado.newrelic.api.internal.model.UserWrapper;
-import com.ocado.panda.newrelic.api.model.users.User;
+import com.ocado.newrelic.api.model.users.User;
 import org.glassfish.jersey.uri.UriComponent;
 
 import javax.ws.rs.client.Invocation;
