@@ -4,24 +4,24 @@ Application that can be used to mark deployments in NewRelic.
 ## Building
 ```../gradlew clean build```
 
-Executable JAR is located in `build/libs/newrelic-deployment-{version}-executable.jar`
+Executable JAR is located in `build/libs/deployment-marker-{version}-executable.jar`
 
 ## Downloading from Maven repository
 
 Using curl:
 
-```curl -L -o newrelic-deployment.jar http://maven.ocado.com/nexus/service/local/artifact/maven/redirect\?r\=core-services-releases\&g\=com.ocado.panda.newrelic.alerts\&a\=newrelic-deployment\&c\=executable\&v\=LATEST```
+```curl -L -o deployment-marker.jar http://maven.ocado.com/nexus/service/local/artifact/maven/redirect\?r\=core-services-releases\&g\=com.ocadotechnology.newrelic\&a\=deployment-marker\&c\=executable\&v\=LATEST```
 
 Using Maven:
 
 ```mvn dependency:get \
-    -Dartifact=com.ocado.panda.newrelic.alerts:newrelic-deployment:LATEST:jar:executable \
+    -Dartifact=com.ocadotechnology.newrelic:deployment-marker:LATEST:jar:executable \
     -DremoteRepositories=http://maven.ocado.com/nexus/content/groups/core-services-releases-group/ \
     -Dtransitive=false \
     -Ddest=./newrelic-deployment.jar```
 
 ## Usage
-```java -jar newrelic-deployment.jar --help```
+```java -jar deployment-marker.jar --help```
 
 Should print:
 ```
@@ -53,7 +53,7 @@ Usage: NewRelicDeploymentCli [options]
 ```
 
 ## Listing deployments
-```java -jar newrelic-deployment.jar --api-key=NEW_RELIC_API_KEY --action=list --application=APPLICATION_ID```
+```java -jar deployment-marker.jar --api-key=NEW_RELIC_API_KEY --action=list --application=APPLICATION_ID```
 
 Required parameters:
 * `--api-key`
@@ -64,7 +64,7 @@ Optional parameters:
 * `--debug`
 
 ## Marking new deployment
-```java -jar newrelic-deployment.jar --api-key=NEW_RELIC_ADMIN_API_KEY --action=mark --application=APPLICATION_ID --revision=REVISION_ID```
+```java -jar deployment-marker.jar --api-key=NEW_RELIC_ADMIN_API_KEY --action=mark --application=APPLICATION_ID --revision=REVISION_ID```
 
 Required parameters:
 * `--api-key`
@@ -80,7 +80,7 @@ Optional parameters:
 
 
 ## Removing deployment mark
-```java -jar newrelic-deployment.jar --api-key=NEW_RELIC_ADMIN_API_KEY --action=remove --application=APPLICATION_ID --deploymentId=DEPLOYMENT_ID```
+```java -jar deployment-marker.jar --api-key=NEW_RELIC_ADMIN_API_KEY --action=remove --application=APPLICATION_ID --deploymentId=DEPLOYMENT_ID```
 
 Required parameters:
 * `--api-key`
