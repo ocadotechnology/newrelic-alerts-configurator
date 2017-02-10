@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @Slf4j
-class ExternalServiceConditionSynchronizer {
+class ExternalServiceConditionConfigurator {
     private final NewRelicApi api;
     private final EntityResolver entityResolver;
 
-    ExternalServiceConditionSynchronizer(@NonNull NewRelicApi api, @NonNull EntityResolver entityResolver) {
+    ExternalServiceConditionConfigurator(@NonNull NewRelicApi api, @NonNull EntityResolver entityResolver) {
         this.api = api;
         this.entityResolver = entityResolver;
     }

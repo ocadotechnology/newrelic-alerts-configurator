@@ -1,22 +1,12 @@
 # NewRelic Tools
 
-Contains:
-- NewRelic API client
-- Alerts configuration uploader
-- Deployment marker
-
-![](images/new_relic_library_diagram.png)
-## NewRelic API client
-See [api-client](api-client/) for more details of New Relic API client.
-
-## Alerts Synchronizer
-    
-See [alert-config-uploader](alert-config-uploader/) for more details of how to use New Relic alerts configuration uploader.
-
-## Mark deployments
-
-See [deployment-marker](deployment-marker/) for more details of how to mark deployments.
-
+This project contains following tools useful for developers that monitor their application using New Relic:
+- [NewRelic API client](api-client/)
+  Client for New Relic rest API
+- [Alerts configurator](configurator/)
+  Library that allows configure New Relic alerts from code. This is especially useful if you have multiple applications or instances which you want to monitor in similar way.
+- [Deployment marker](deployment-marker/)
+  Simple tool that allows to easily mark deployments in New Relic.
 
 ## Build and publish:
 

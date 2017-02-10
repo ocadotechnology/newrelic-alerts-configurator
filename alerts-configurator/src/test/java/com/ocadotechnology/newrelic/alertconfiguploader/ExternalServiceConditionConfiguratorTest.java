@@ -26,7 +26,7 @@ import static java.lang.String.format;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
-public class ExternalServiceConditionSynchronizerTest extends AbstractSynchronizerTest {
+public class ExternalServiceConditionConfiguratorTest extends AbstractConfiguratorTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
@@ -52,7 +52,7 @@ public class ExternalServiceConditionSynchronizerTest extends AbstractSynchroniz
     @Mock
     private EntityResolver entityResolverMock;
     @InjectMocks
-    private ExternalServiceConditionSynchronizer testee;
+    private ExternalServiceConditionConfigurator testee;
 
     @Before
     public void setUp() {

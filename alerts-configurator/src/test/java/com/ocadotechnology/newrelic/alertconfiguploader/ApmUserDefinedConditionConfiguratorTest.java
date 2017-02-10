@@ -28,7 +28,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ApmUserDefinedConditionSynchronizerTest extends AbstractSynchronizerTest {
+public class ApmUserDefinedConditionConfiguratorTest extends AbstractConfiguratorTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
     private static final String POLICY_NAME = "policyName";
@@ -51,7 +51,7 @@ public class ApmUserDefinedConditionSynchronizerTest extends AbstractSynchronize
     private EntityResolver entityResolverMock;
 
     @InjectMocks
-    private ConditionSynchronizer testee;
+    private ConditionConfigurator testee;
 
     @Before
     public void setUp() {

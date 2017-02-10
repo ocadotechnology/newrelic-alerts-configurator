@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @Slf4j
-class ConditionSynchronizer {
+class ConditionConfigurator {
     private final NewRelicApi api;
     private final EntityResolver entityResolver;
 
-    ConditionSynchronizer(@NonNull NewRelicApi api, @NonNull EntityResolver entityResolver) {
+    ConditionConfigurator(@NonNull NewRelicApi api, @NonNull EntityResolver entityResolver) {
         this.api = api;
         this.entityResolver = entityResolver;
     }

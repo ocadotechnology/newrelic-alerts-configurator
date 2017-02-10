@@ -15,11 +15,11 @@ import static java.lang.String.format;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
+public class ApplicationConfiguratorTest extends AbstractConfiguratorTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
-    private ApplicationSynchronizer testee;
+    private ApplicationConfigurator testee;
     private static final ApplicationConfiguration CONFIGURATION = createConfiguration();
 
     private static final String APPLICATION_NAME = "appName";
@@ -31,7 +31,7 @@ public class ApplicationSynchronizerTest extends AbstractSynchronizerTest {
 
     @Before
     public void setUp() {
-        testee = new ApplicationSynchronizer(apiMock);
+        testee = new ApplicationConfigurator(apiMock);
     }
 
     @Test

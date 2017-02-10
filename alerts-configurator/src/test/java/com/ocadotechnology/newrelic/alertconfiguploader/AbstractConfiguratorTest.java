@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.when;
 
-public abstract class AbstractSynchronizerTest {
+public abstract class AbstractConfiguratorTest {
     @Rule
     public final MockitoRule mockito = MockitoJUnit.rule();
     @Mock

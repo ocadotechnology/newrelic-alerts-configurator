@@ -92,7 +92,7 @@ project(':api-client') {
     }
 }
 
-project(':alert-config-uploader') {
+project(':alerts-configurator') {
     dependencies {
         compile project(':api-client')
     }

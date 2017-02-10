@@ -11,10 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import static java.lang.String.format;
 
 @Slf4j
-class ApplicationSynchronizer {
+class ApplicationConfigurator {
     private final NewRelicApi api;
 
-    ApplicationSynchronizer(@NonNull NewRelicApi api) {
+    ApplicationConfigurator(@NonNull NewRelicApi api) {
         this.api = api;
     }
 

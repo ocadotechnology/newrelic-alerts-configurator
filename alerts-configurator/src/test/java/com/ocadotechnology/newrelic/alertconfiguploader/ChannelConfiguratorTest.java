@@ -26,7 +26,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
 import static org.mockito.Mockito.*;
 
-public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
+public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
@@ -60,11 +60,11 @@ public class ChannelSynchronizerTest extends AbstractSynchronizerTest {
     private final AlertsChannel savedSlackChannel = createAlertChannel(2, SLACK_CHANNEL);
     private AlertsChannel savedUserChannel;
 
-    private ChannelSynchronizer testee;
+    private ChannelConfigurator testee;
 
     @Before
     public void setUp() {
-        testee = new ChannelSynchronizer(apiMock);
+        testee = new ChannelConfigurator(apiMock);
 
         when(alertsChannelsApiMock.create(configuredEmailChannel)).thenReturn(savedEmailChannel);
         when(alertsChannelsApiMock.create(configuredSlackChannel)).thenReturn(savedSlackChannel);

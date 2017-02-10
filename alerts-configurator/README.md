@@ -1,34 +1,37 @@
-# NewRelic Alerts synchronizer
-NewRelic Alerts synchronizer can be used for configuration and synchronization of NewRelic alerts for your application.
+# NewRelic Alerts configurator
 
-## How to use NewRelic Alerts synchronizer
+NewRelic Alerts configurator can be used for configuration and synchronization of NewRelic alerts for your application. Instead of defining alerts through UI you can define them in code.
 
-First step is to create Synchronizer instance using simple constructor accepting API key for given NewRelic account:
+![](images/new_relic_library_diagram.png)
+
+## How to use NewRelic Alerts configurator
+
+First step is to create Configurator instance using simple constructor accepting API key for given NewRelic account:
 ```java
-Synchronizer synchronizer = new Synchronizer(yourApiKey);
+Configurator configurator = new Configurator(yourApiKey);
 ```
 **Note that for some configurations you will need Admin User's New Relic API key.**
 
 Next step is to set configurations
  - application configuration
     ```java
-    synchronizer.setApplicationConfigurations(yourApplicationConfigurationsCollection);
+    configurator.setApplicationConfigurations(yourApplicationConfigurationsCollection);
     ```
 
  - policy configuration
     ```java
-    synchronizer.setPolicyConfigurations(yourPolicyConfigurationsCollection);
+    configurator.setPolicyConfigurations(yourPolicyConfigurationsCollection);
     ```
 Both methods accept Java Collections of configurations.
 
-In last step run single method on Synchronizer and synchronize your configuration:
+In last step run single method on Configurator and synchronize your configuration:
 ```java
-synchronizer.sync();
+configurator.sync();
 ```
 That's all!
 
 ## Application configuration
-To configure your application in NewRelic you just need to create and pass your application configuration to NewRelic Alerts synchronizer.
+To configure your application in NewRelic you just need to create and pass your application configuration to NewRelic Alerts configurator.
 Application configuration can be created using simple builder:
 ```java
 ApplicationConfiguration.builder()
@@ -52,7 +55,7 @@ ApplicationConfiguration configuration = ApplicationConfiguration.builder()
 ```
 
 ## Policy configuration
-To configure your alerts policy in NewRelic you just need to create and pass your policy configuration to NewRelic Alerts synchronizer.
+To configure your alerts policy in NewRelic you just need to create and pass your policy configuration to NewRelic Alerts configurator.
 Policy configuration can be created using simple builder:
 ```java
 PolicyConfiguration.builder()

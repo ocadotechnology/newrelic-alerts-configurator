@@ -11,18 +11,18 @@ import java.util.Optional;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
-public class PolicySynchronizerTest extends AbstractSynchronizerTest {
+public class PolicyConfiguratorTest extends AbstractConfiguratorTest {
     private static final String POLICY_NAME = "policyName";
     private static final PolicyConfiguration.IncidentPreference INCIDENT_PREFERENCE = PolicyConfiguration.IncidentPreference.PER_CONDITION;
     private static final AlertsPolicy ALERT_POLICY_SAME = createAlertPolicy(1, INCIDENT_PREFERENCE);
     private static final AlertsPolicy ALERT_POLICY_DIFFERENT = createAlertPolicy(2, PolicyConfiguration.IncidentPreference.PER_POLICY);
 
-    private PolicySynchronizer testee;
+    private PolicyConfigurator testee;
     private static final PolicyConfiguration CONFIGURATION = createConfiguration();
 
     @Before
     public void setUp() {
-        testee = new PolicySynchronizer(apiMock);
+        testee = new PolicyConfigurator(apiMock);
     }
 
     @Test

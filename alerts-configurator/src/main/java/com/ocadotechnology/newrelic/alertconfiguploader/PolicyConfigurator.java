@@ -12,10 +12,10 @@ import java.util.Optional;
 import static java.lang.String.format;
 
 @Slf4j
-class PolicySynchronizer {
+class PolicyConfigurator {
     private final NewRelicApi api;
 
-    PolicySynchronizer(@NonNull NewRelicApi api) {
+    PolicyConfigurator(@NonNull NewRelicApi api) {
         this.api = api;
     }
 

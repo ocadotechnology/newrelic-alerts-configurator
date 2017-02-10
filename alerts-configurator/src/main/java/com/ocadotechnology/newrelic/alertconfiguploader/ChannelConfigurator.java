@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @Slf4j
-class ChannelSynchronizer {
+class ChannelConfigurator {
     private final NewRelicApi api;
 
-    ChannelSynchronizer(@NonNull NewRelicApi api) {
+    ChannelConfigurator(@NonNull NewRelicApi api) {
         this.api = api;
     }
 
@@ -39,7 +39,7 @@ class ChannelSynchronizer {
     private Set<Integer> createOrUpdatePolicyAlertsChannels(AlertsPolicy policy, Collection<Channel> channelsFromConfig) {
         List<AlertsChannel> allAlertsChannels = api.getAlertsChannelsApi().list();
         List<AlertsChannel> userChannels = allAlertsChannels.stream()
-                .filter(ChannelSynchronizer::isUserChannel)
+                .filter(ChannelConfigurator::isUserChannel)
                 .collect(Collectors.toList());
         List<AlertsChannel> nonUserChannels = allAlertsChannels.stream()
                 .filter(c -> !isUserChannel(c))

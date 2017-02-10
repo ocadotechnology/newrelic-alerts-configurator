@@ -16,20 +16,20 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SynchronizerTest {
+public class ConfiguratorTest {
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 
     @Mock
-    private ApplicationSynchronizer applicationSynchronizerMock;
+    private ApplicationConfigurator applicationConfiguratorMock;
     @Mock
-    private PolicySynchronizer policySynchronizerMock;
+    private PolicyConfigurator policyConfiguratorMock;
     @Mock
-    private ConditionSynchronizer conditionSynchronizerMock;
+    private ConditionConfigurator conditionConfiguratorMock;
     @Mock
-    private ExternalServiceConditionSynchronizer externalServiceConditionSynchronizerMock;
+    private ExternalServiceConditionConfigurator externalServiceConditionConfiguratorMock;
     @Mock
-    private ChannelSynchronizer channelSynchronizerMock;
+    private ChannelConfigurator channelConfiguratorMock;
 
     @Mock
     private ApplicationConfiguration applicationConfigurationMock;
@@ -37,15 +37,15 @@ public class SynchronizerTest {
     private PolicyConfiguration policyConfigurationMock;
 
 
-    private Synchronizer testee;
+    private Configurator testee;
 
     @Before
     public void setUp() {
-        testee = new Synchronizer(applicationSynchronizerMock,
-            policySynchronizerMock,
-            conditionSynchronizerMock,
-            externalServiceConditionSynchronizerMock,
-            channelSynchronizerMock);
+        testee = new Configurator(applicationConfiguratorMock,
+            policyConfiguratorMock,
+            conditionConfiguratorMock,
+            externalServiceConditionConfiguratorMock,
+            channelConfiguratorMock);
     }
 
 
@@ -58,7 +58,7 @@ public class SynchronizerTest {
         expectedException.expectMessage("apiKey");
 
         // when
-        new Synchronizer(null);
+        new Configurator(null);
     }
 
     @Test
@@ -69,11 +69,11 @@ public class SynchronizerTest {
         testee.sync();
 
         // then
-        InOrder order = inOrder(applicationSynchronizerMock,
-            policySynchronizerMock,
-            conditionSynchronizerMock,
-            externalServiceConditionSynchronizerMock,
-            channelSynchronizerMock);
+        InOrder order = inOrder(applicationConfiguratorMock,
+            policyConfiguratorMock,
+            conditionConfiguratorMock,
+            externalServiceConditionConfiguratorMock,
+            channelConfiguratorMock);
         order.verifyNoMoreInteractions();
     }
 
@@ -89,15 +89,15 @@ public class SynchronizerTest {
         testee.sync();
 
         // then
-        InOrder order = inOrder(applicationSynchronizerMock,
-            policySynchronizerMock,
-            conditionSynchronizerMock,
-            externalServiceConditionSynchronizerMock,
-            channelSynchronizerMock);
-        order.verify(applicationSynchronizerMock).sync(applicationConfigurationMock);
-        order.verify(applicationSynchronizerMock).sync(applicationConfigurationMock2);
-        order.verify(policySynchronizerMock).sync(policyConfigurationMock);
-        order.verify(policySynchronizerMock).sync(policyConfigurationMock2);
+        InOrder order = inOrder(applicationConfiguratorMock,
+            policyConfiguratorMock,
+            conditionConfiguratorMock,
+            externalServiceConditionConfiguratorMock,
+            channelConfiguratorMock);
+        order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock);
+        order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock2);
+        order.verify(policyConfiguratorMock).sync(policyConfigurationMock);
+        order.verify(policyConfiguratorMock).sync(policyConfigurationMock2);
     }
 
     @Test
@@ -109,15 +109,15 @@ public class SynchronizerTest {
         testee.sync();
 
         // then
-        InOrder order = inOrder(applicationSynchronizerMock,
-            policySynchronizerMock,
-            conditionSynchronizerMock,
-            externalServiceConditionSynchronizerMock,
-            channelSynchronizerMock);
-        order.verify(policySynchronizerMock).sync(policyConfigurationMock);
-        order.verify(conditionSynchronizerMock).sync(policyConfigurationMock);
-        order.verify(externalServiceConditionSynchronizerMock).sync(policyConfigurationMock);
-        order.verify(channelSynchronizerMock).sync(policyConfigurationMock);
+        InOrder order = inOrder(applicationConfiguratorMock,
+            policyConfiguratorMock,
+            conditionConfiguratorMock,
+            externalServiceConditionConfiguratorMock,
+            channelConfiguratorMock);
+        order.verify(policyConfiguratorMock).sync(policyConfigurationMock);
+        order.verify(conditionConfiguratorMock).sync(policyConfigurationMock);
+        order.verify(externalServiceConditionConfiguratorMock).sync(policyConfigurationMock);
+        order.verify(channelConfiguratorMock).sync(policyConfigurationMock);
         order.verifyNoMoreInteractions();
     }
 }
