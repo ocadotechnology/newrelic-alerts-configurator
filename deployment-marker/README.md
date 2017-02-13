@@ -2,7 +2,9 @@
 Application that can be used to mark deployments in NewRelic.
   
 ## Building
-```../gradlew clean build```
+```
+../gradlew clean build
+```
 
 Executable JAR is located in `build/libs/deployment-marker-{version}-executable.jar`
 
@@ -10,50 +12,61 @@ Executable JAR is located in `build/libs/deployment-marker-{version}-executable.
 
 Using curl:
 
-```curl -L -o deployment-marker.jar http://maven.ocado.com/nexus/service/local/artifact/maven/redirect\?r\=core-services-releases\&g\=com.ocadotechnology.newrelic\&a\=deployment-marker\&c\=executable\&v\=LATEST```
+```
+curl -L -o deployment-marker.jar http://maven.ocado.com/nexus/service/local/artifact/maven/redirect\?r\=core-services-releases\&g\=com.ocadotechnology.newrelic\&a\=deployment-marker\&c\=executable\&v\=LATEST
+```
 
 Using Maven:
 
-```mvn dependency:get \
+```
+mvn dependency:get \
     -Dartifact=com.ocadotechnology.newrelic:deployment-marker:LATEST:jar:executable \
     -DremoteRepositories=http://maven.ocado.com/nexus/content/groups/core-services-releases-group/ \
     -Dtransitive=false \
-    -Ddest=./newrelic-deployment.jar```
+    -Ddest=./newrelic-deployment.jar
+```
 
 ## Usage
-```java -jar deployment-marker.jar --help```
+```
+java -jar deployment-marker.jar --help
+```
 
 Should print:
 ```
 Usage: NewRelicDeploymentCli [options]
   Options:
+  * --api-key
+       NewRelic admin API key
   * --action
        Action to perform
        Possible Values: [list, mark, remove]
-  * --api-key
-       NewRelic admin API key
   * --application
        Application name in NewRelic
     --changelog
        Deployment changelog - optional for 'mark' option
-    --debug
-       Debug mode
-       Default: false
     --deploymentId
        Deployment Id to remove - required for 'remove' option
     --description
        Deployment description - optional for 'mark' option
-    --help
-       Display usage description
-       Default: false
     --revision
        Deployment revision - required for 'mark' option
     --user
        Deployment user - optional for 'mark' option
+    --verbose
+       Verbose mode
+       Default: false
+    --help
+       Display usage description
+       Default: false
 ```
 
 ## Listing deployments
-```java -jar deployment-marker.jar --api-key=NEW_RELIC_API_KEY --action=list --application=APPLICATION_ID```
+```
+java -jar deployment-marker.jar \
+    --api-key=NEW_RELIC_API_KEY \
+    --action=list \
+    --application=APPLICATION_ID
+```
 
 Required parameters:
 * `--api-key`
@@ -61,10 +74,16 @@ Required parameters:
 * `--application`
 
 Optional parameters:
-* `--debug`
+* `--verbose`
 
 ## Marking new deployment
-```java -jar deployment-marker.jar --api-key=NEW_RELIC_ADMIN_API_KEY --action=mark --application=APPLICATION_ID --revision=REVISION_ID```
+```
+java -jar deployment-marker.jar \
+    --api-key=NEW_RELIC_ADMIN_API_KEY \
+    --action=mark \
+    --application=APPLICATION_ID \
+    --revision=REVISION_ID
+```
 
 Required parameters:
 * `--api-key`
@@ -73,14 +92,20 @@ Required parameters:
 * `--revision`
 
 Optional parameters:
-* `--debug`
+* `--verbose`
 * `--changelog`
 * `--description`
 * `--user`
 
 
 ## Removing deployment mark
-```java -jar deployment-marker.jar --api-key=NEW_RELIC_ADMIN_API_KEY --action=remove --application=APPLICATION_ID --deploymentId=DEPLOYMENT_ID```
+```
+java -jar deployment-marker.jar \
+    --api-key=NEW_RELIC_ADMIN_API_KEY \
+    --action=remove \
+    --application=APPLICATION_ID \
+    --deploymentId=DEPLOYMENT_ID
+```
 
 Required parameters:
 * `--api-key`
@@ -89,4 +114,4 @@ Required parameters:
 * `--deploymentId`
 
 Optional parameters:
-* `--debug`
+* `--verbose`
