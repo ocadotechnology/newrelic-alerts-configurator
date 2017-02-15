@@ -12,6 +12,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Link;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.databind.DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider.DEFAULT_ANNOTATIONS;
 
@@ -36,6 +37,7 @@ public class NewRelicClient {
     private JacksonJsonProvider createMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         mapper.setSerializationInclusion(NON_NULL);
         mapper.registerModule(new Jdk8Module());
         mapper.registerModule(new JavaTimeModule());

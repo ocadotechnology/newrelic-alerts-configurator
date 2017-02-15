@@ -25,8 +25,11 @@ public class AlertsChannelConfiguration {
     String recipients;
     @JsonProperty("payload_type")
     String payloadType;
+    /**
+     * Payload object can be a <code>String</code> or a <code>Map&lt;String, String&gt;</code>.
+     */
     @JsonProperty
-    String payload;
+    Object payload;
     @JsonProperty
     Map<String, String> headers;
     @JsonProperty("base_url")

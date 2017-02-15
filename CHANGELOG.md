@@ -1,3 +1,9 @@
+# 2.0.0 (15.02.2017)
+- Changed groupdId and artifactId
+- Changed packages to `com.ocadotechnology.newrelic`
+- Changed `AlertsChannelConfiguration` field `payload` to type `Object`
+- JSON deserialization configured to convert empty string into null POJO reference 
+
 # 1.4.0 (06.02.2017)
 - Added support for user notification channel 
 - Simplified channel synchronization logic
