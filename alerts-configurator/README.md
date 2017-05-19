@@ -1,6 +1,6 @@
 # NewRelic Alerts configurator
 
-NewRelic Alerts configurator can be used for configuration and synchronization of NewRelic alerts for your application. Instead of defining alerts through UI you can define them in code.
+NewRelic Alerts configurator can be used for configuration of NewRelic alerts for your application. Instead of defining alerts through UI you can define them in code.
 
 ![](images/new_relic_library_diagram.png)
 
@@ -24,7 +24,7 @@ Next step is to set configurations
     ```
 Both methods accept Java Collections of configurations.
 
-In last step run single method on Configurator and synchronize your configuration:
+In last step run single method on Configurator to synchronize your configuration:
 ```java
 configurator.sync();
 ```
@@ -158,7 +158,7 @@ Condition apmKeyTransactionCondition = ApmKeyTransactionCondition.builder()
     .build();
 ```
 
-**Note that key transaction cannot be created via New Relic API. Before synchronizing a condition, key transaction needs to be manually created in New Relic.**
+**Note that key transaction cannot be created via New Relic API. Before configuration of condition, key transaction needs to be manually created in New Relic.**
 
 #### Server metric condition
 To create server metric condition for your alerts policy use simple builder:
