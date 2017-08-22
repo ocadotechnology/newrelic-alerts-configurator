@@ -97,27 +97,3 @@ project(':alerts-configurator') {
         compile project(':api-client')
     }
 }
-
-project(':deployment-marker') {
-    dependencies {
-        compile project(':api-client')
-        compile 'org.slf4j:slf4j-simple:1.7.21'
-        compile 'org.slf4j:jcl-over-slf4j:1.7.21'
-        compile 'com.beust:jcommander:1.48'
-    }
-    apply plugin: 'application'
-    apply plugin: 'com.github.johnrengelman.shadow'
-    mainClassName = 'com.ocado.newrelic.deploymentmarker.NewRelicDeploymentCli'
-    shadowJar {
-        classifier = 'executable'
-    }
-    build.dependsOn shadowJar
-    publishing {
-        publications {
-            clear()
-            shadow(MavenPublication) {
-                from components.shadow
-            }
-        }
-    }
-}

@@ -5,8 +5,6 @@ This project contains following tools useful for developers that monitor their a
   Client for New Relic rest API
 - [Alerts configurator](alerts-configurator/)
   Library that allows configure New Relic alerts from code. This is especially useful if you have multiple applications or instances which you want to monitor in similar way.
-- [Deployment marker](deployment-marker/)
-  Simple tool that allows to easily mark deployments in New Relic.
 
 ## Build and publish:
 
