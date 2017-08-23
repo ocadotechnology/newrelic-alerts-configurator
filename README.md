@@ -1,15 +1,15 @@
 # NewRelic Alerts Configurator
 
-NewRelic Alerts Configurator can be used for configuration of NewRelic alerts for your application. Instead of defining alerts 
+NewRelic Alerts Configurator can be used to configure NewRelic alerts for your application. Instead of defining alerts 
 through UI you can define them in code.
-It allows you to automatize alerts configuration, easily recover them in case of wipeout and have full history of changes in your 
-version control system.
+It allows you to automatize alerts configuration, easily recover them in case of wipe out and have full history of changes in 
+your version control system.
 
 ![](images/new_relic_library_diagram.png)
 
 ## How to use NewRelic Alerts Configurator
 
-First step is to obtain API key for given NewRelic account and then create configuration like this:
+First step is to obtain API key for given NewRelic account. Then You can create configuration. In example:
 
 ```java
 // Create alert condition
@@ -33,13 +33,11 @@ Condition cpuCondition = ServersMetricCondition.builder()
 Channel emailChannel = EmailChannel.builder()
         .channelName("Team email")
         .emailAddress("my-team@my-company.com")
-        .includeJsonAttachment(true)
         .build();
 
 // Create policy
 PolicyConfiguration policy = PolicyConfiguration.builder()
         .policyName("My application policy")
-        .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
         .condition(cpuCondition)
         .channel(emailChannel)
         .build();
@@ -52,8 +50,8 @@ configurator.sync();
 
 That's all!
 
-This code will create alert policy that will raise critical alert whenever some-host's cpu usage will raise above 90% in last 5
- minutes. Information about alert will be also send to my-team@my-company.com
+This code creates alert policy that will raise critical alert whenever some-host's cpu usage will raise above 90% in last 5
+ minutes. Information about alert will be emailed to my-team@my-company.com
  
 More examples can be found in samples directory.
  

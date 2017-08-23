@@ -74,9 +74,12 @@ What you can set in your configuration:
     - Per policy (default)
     - Per condition
     - Per condition and target
-- conditions (optional) - Collection of alerts conditions which needs to be configured for your alerts policy. If no conditions are set, your alerts policy won't have any alerts conditions.
-- external service conditions (optional) - Collection of alerts external service conditions which needs to be configured for your alerts policy. If no external service conditions are set, your alerts policy won't have any alerts external service conditions.
-- channels (optional) - Collection of alerts channels which needs to be configured for your alerts policy. If no channels are set, your alerts policy won't have any alerts channels.
+- conditions (optional) - Collection of [alerts conditions](#alerts-condition) which needs to be configured for your alerts policy.
+  If no conditions are set, your alerts policy won't have any alerts conditions.
+- external service conditions (optional) - Collection of [alerts external service conditions](#alerts-external-service-condition)
+  which needs to be configured for your alerts policy. If no external service conditions are set, your alerts policy won't have any alerts external service conditions.
+- channels (optional) - Collection of [alerts channels](#notification-channel) which needs to be configured for your alerts policy.
+  If no channels are set, your alerts policy won't have any alerts channels.
 
 If policy with given policy name exists - it will be updated.
 
@@ -127,8 +130,8 @@ What you can set for APM application metric condition:
     -  Application - The average of all application instances' data is used during evaluation.
     -  Instance - Each application instance's data is evaluated individually
 - run book url (optional) - The runbook URL to display in notifications.
-- terms - Collection of terms used for alerts condition.
-- user defined configuration - configuration for user defined metric.
+- terms - Collection of [terms](#term) used for alerts condition.
+- user defined configuration - configuration for [user defined metric](#user-defined-configuration).
 
 Example APM application metric condition configuration:
 
@@ -162,7 +165,7 @@ What you can set for APM key transaction metric condition:
     - Response time
     - Throughput
 - run book url (optional) - The runbook URL to display in notifications.
-- terms - Collection of terms used for alerts condition.
+- terms - Collection of [terms](#term) used for alerts condition.
 
 Example APM key transaction metric condition configuration:
 
@@ -198,8 +201,8 @@ What you can set for server metric condition:
     - Load average one minute
     - User defined
 - run book url (optional) - The runbook URL to display in notifications.
-- terms - Collection of terms used for alerts condition.
-- user defined configuration - configuration for user defined metric.
+- terms - Collection of [terms](#term) used for alerts condition.
+- user defined configuration - configuration for [user defined metric](#user-defined-configuration).
 
 Example server metric condition configuration:
 
@@ -237,7 +240,7 @@ What you can set for APM external service condition:
     - Throughput
 - external service url - URL of the external service to be monitored. This string must not include the protocol.
 - run book url (optional) - The runbook URL to display in notifications.
-- terms - Collection of terms used for alerts condition.
+- terms - Collection of [terms](#term) used for alerts condition.
 
 Example APM external service condition configuration:
 
@@ -290,7 +293,7 @@ What you can set in term configuration:
     - Critical
     - Warning
 - time function - Time function in which threshold term have to be reached in duration term to trigger an event. Possible values are:
-    - All (for at least)
+    - All (for whole time)
     - Any (at least once in)
 - threshold - Threshold that the monitored value must be compared to using the operator term for an event to be triggered.
 
@@ -300,9 +303,9 @@ Example term configuration:
 TermsConfiguration term = TermsConfiguration.builder()
     .durationTerm(DurationTerm.DURATION_5)
     .operatorTerm(OperatorTerm.BELOW)
+    .thresholdTerm(0.8f)
     .priorityTerm(PriorityTerm.CRITICAL)
     .timeFunctionTerm(TimeFunctionTerm.ALL)
-    .thresholdTerm(0.8f)
     .build();
 ```
 
@@ -387,8 +390,8 @@ Example webhook channel configuration:
 Channel webhookChannel = WebhookChannel.builder()
     .channelName("Channel name")
     .baseUrl("https://example.com/webhook/abcd123")
-    .authUsername('john.doea')
-    .authPassword('starwars1')
+    .authUsername("john.doea")
+    .authPassword("starwars1")
     .build();
 ```
 
@@ -409,7 +412,7 @@ Example PagerDuty channel configuration:
 ```java
 Channel pagerDutyChannel = PagerDutyChannel.builder()
     .channelName("Channel name")
-    .serviceKey('1234-5678-ABCD-XYZ')
+    .serviceKey("1234-5678-ABCD-XYZ")
     .build();
 ```
 

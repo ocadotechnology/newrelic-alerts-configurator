@@ -6,7 +6,7 @@
   Code samples and test cases demonstrating the problem or steps to reproduce would be great help.
   
 #### Did you write a patch that fixes a bug?
-- Make sure issue describing bug is created.
+- Make sure issue describing bug exists.
 - Open a new GitHub [pull request](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/) with the 
   patch.
 
