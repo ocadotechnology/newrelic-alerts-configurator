@@ -97,3 +97,9 @@ project(':alerts-configurator') {
         compile project(':api-client')
     }
 }
+
+project(':sample') {
+    dependencies {
+        compile project(':alerts-configurator')
+    }
+}

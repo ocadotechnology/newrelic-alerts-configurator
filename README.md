@@ -53,7 +53,7 @@ That's all!
 This code creates alert policy that will raise critical alert whenever some-host's cpu usage will raise above 90% in last 5
  minutes. Information about alert will be emailed to my-team@my-company.com
  
-More examples can be found in samples directory.
+More examples can be found in [sample](sample/) directory.
  
 ## How to obtain New Relic REST API key
 
