@@ -63,6 +63,9 @@ public class Configurator {
     }
 
     /**
+     * Sets application configurations to synchronize. It will only update configurations that are already defined in NewRelic.
+     * It will not create new application configurations.
+     *
      * @param applicationConfigurations collection of application configurations to synchronize
      * @see ApplicationConfiguration
      */
@@ -71,6 +74,9 @@ public class Configurator {
     }
 
     /**
+     * Sets policy configurations to synchronize. If policy with the same name is already defined in NewRelic, it will be
+     * updated. New policy will be created otherwise.
+     *
      * @param policyConfigurations collection of policy configurations to synchronize
      * @see PolicyConfiguration
      */

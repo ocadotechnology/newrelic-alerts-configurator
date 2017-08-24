@@ -19,6 +19,9 @@ import java.util.Collection;
  *     <li>{@link #runBookUrl}</li>
  *     <li>{@link #terms}</li>
  * </ul>
+ *
+ * Note that key transactions cannot be created via NewRelic API. Before configuration of condition, key transaction needs to
+ * be manually created in New Relic. This class is only used to update key transaction configuration.
  */
 @Getter
 @Builder

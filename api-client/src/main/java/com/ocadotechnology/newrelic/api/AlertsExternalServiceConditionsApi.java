@@ -20,8 +20,7 @@ public interface AlertsExternalServiceConditionsApi {
      * @param condition condition definition to be created
      * @return created {@link AlertsExternalServiceCondition}
      */
-    AlertsExternalServiceCondition create(int policyId, AlertsExternalServiceCondition condition)
-    ;
+    AlertsExternalServiceCondition create(int policyId, AlertsExternalServiceCondition condition);
 
     /**
      * Updates Alerts Condition for external service definition.
@@ -30,8 +29,7 @@ public interface AlertsExternalServiceConditionsApi {
      * @param condition   condition definition to be updated
      * @return created {@link AlertsExternalServiceCondition}
      */
-    AlertsExternalServiceCondition update(int conditionId, AlertsExternalServiceCondition condition)
-    ;
+    AlertsExternalServiceCondition update(int conditionId, AlertsExternalServiceCondition condition);
 
     /**
      * Deletes Alerts Condition for external service.
