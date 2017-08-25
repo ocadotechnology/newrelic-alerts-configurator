@@ -14,7 +14,7 @@ import java.util.Collection;
  * <ul>
  *     <li>{@link #conditionName}</li>
  *     <li>{@link #enabled}</li>
- *     <li>{@link #entities}</li>
+ *     <li>{@link #applications}</li>
  *     <li>{@link #metric}</li>
  *     <li>{@link #conditionScope}</li>
  *     <li>{@link #runBookUrl}</li>
@@ -41,7 +41,7 @@ public class ApmAppCondition implements Condition {
      */
     @NonNull
     @Singular
-    private Collection<String> entities;
+    private Collection<String> applications;
     /**
      * Metric used in given condition
      */
@@ -68,6 +68,11 @@ public class ApmAppCondition implements Condition {
     private UserDefinedConfiguration userDefinedConfiguration;
 
     @Override
+    public Collection<String> getEntities() {
+        return getApplications();
+    }
+
+    @Override
     public String getMetricAsString() {
         return metric.name().toLowerCase();
     }
@@ -83,7 +88,8 @@ public class ApmAppCondition implements Condition {
     }
 
     public enum Metric {
-        APDEX, ERROR_PERCENTAGE, RESPONSE_TIME_WEB, RESPONSE_TIME_BACKGROUND, THROUGHPUT_WEB, THROUGHPUT_BACKGROUND, USER_DEFINED
+        APDEX, ERROR_PERCENTAGE, RESPONSE_TIME_WEB, RESPONSE_TIME_BACKGROUND, THROUGHPUT_WEB,
+        THROUGHPUT_BACKGROUND, USER_DEFINED
     }
 
     public enum ConditionScope {

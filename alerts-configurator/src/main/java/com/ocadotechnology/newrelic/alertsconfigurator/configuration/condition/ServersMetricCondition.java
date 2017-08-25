@@ -14,7 +14,7 @@ import java.util.Collection;
  * <ul>
  *     <li>{@link #conditionName}</li>
  *     <li>{@link #enabled}</li>
- *     <li>{@link #entities}</li>
+ *     <li>{@link #servers}</li>
  *     <li>{@link #metric}</li>
  *     <li>{@link #runBookUrl}</li>
  *     <li>{@link #terms}</li>
@@ -40,7 +40,7 @@ public class ServersMetricCondition implements Condition {
      */
     @NonNull
     @Singular
-    private Collection<String> entities;
+    private Collection<String> servers;
     /**
      * Metric used in given condition.
      */
@@ -62,6 +62,11 @@ public class ServersMetricCondition implements Condition {
     private UserDefinedConfiguration userDefinedConfiguration;
 
     @Override
+    public Collection<String> getEntities() {
+        return getServers();
+    }
+
+    @Override
     public String getMetricAsString() {
         return metric.name().toLowerCase();
     }
@@ -72,6 +77,7 @@ public class ServersMetricCondition implements Condition {
     }
 
     public enum Metric {
-        CPU_PERCENTAGE, DISK_IO_PERCENTAGE, MEMORY_PERCENTAGE, FULLEST_DISK_PERCENTAGE, LOAD_AVERAGE_ONE_MINUTE, USER_DEFINED
+        CPU_PERCENTAGE, DISK_IO_PERCENTAGE, MEMORY_PERCENTAGE, FULLEST_DISK_PERCENTAGE,
+        LOAD_AVERAGE_ONE_MINUTE, USER_DEFINED
     }
 }

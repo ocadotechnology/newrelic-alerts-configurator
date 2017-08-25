@@ -5,7 +5,11 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfi
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmAppCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.UserDefinedConfiguration;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.*;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.api.model.conditions.AlertsCondition;
 import com.ocadotechnology.newrelic.api.model.policies.AlertsPolicy;
@@ -35,8 +39,8 @@ public class ApmUserDefinedConditionConfiguratorTest extends AbstractConfigurato
     private static final String METRIC = "userDefined";
     private static final String CONDITION_NAME = "conditionName";
     private static final boolean ENABLED = true;
-    private static final String ENTITY_NAME = "entityName";
-    private static final int ENTITY_ID = 1;
+    private static final String APPLICATION_NAME = "applicationName";
+    private static final int APPLICATION_ENTITY_ID = 1;
 
     private static final ApmAppCondition.ConditionScope CONDITION_SCOPE = ApmAppCondition.ConditionScope.APPLICATION;
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
@@ -56,7 +60,7 @@ public class ApmUserDefinedConditionConfiguratorTest extends AbstractConfigurato
     @Before
     public void setUp() {
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
-        when(entityResolverMock.resolveEntities(apiMock, APP_CONDITION)).thenReturn(Collections.singletonList(ENTITY_ID));
+        when(entityResolverMock.resolveEntities(apiMock, APP_CONDITION)).thenReturn(Collections.singletonList(APPLICATION_ENTITY_ID));
     }
 
     @Test
@@ -75,7 +79,7 @@ public class ApmUserDefinedConditionConfiguratorTest extends AbstractConfigurato
         assertThat(result.getType()).isEqualTo("apm_app_metric");
         assertThat(result.getName()).isEqualTo(CONDITION_NAME);
         assertThat(result.getEnabled()).isEqualTo(true);
-        assertThat(result.getEntities()).containsExactly(ENTITY_ID);
+        assertThat(result.getEntities()).containsExactly(APPLICATION_ENTITY_ID);
         assertThat(result.getMetric()).isEqualTo("user_defined");
         assertThat(result.getTerms())
                 .extracting("duration", "operator", "priority", "threshold", "timeFunction")
@@ -104,7 +108,7 @@ public class ApmUserDefinedConditionConfiguratorTest extends AbstractConfigurato
         return ApmAppCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
-            .entity(ENTITY_NAME)
+            .application(APPLICATION_NAME)
             .metric(ApmAppCondition.Metric.USER_DEFINED)
             .conditionScope(CONDITION_SCOPE)
             .term(TERMS_CONFIGURATION)

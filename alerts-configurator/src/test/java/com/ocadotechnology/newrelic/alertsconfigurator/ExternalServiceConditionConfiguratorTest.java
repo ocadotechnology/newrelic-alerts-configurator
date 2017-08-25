@@ -5,7 +5,11 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfi
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmExternalServiceCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceConditionType;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.*;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.exception.NewRelicSyncException;
 import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.api.model.conditions.Terms;
@@ -36,8 +40,8 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
     private static final ApmExternalServiceCondition.Metric METRIC = ApmExternalServiceCondition.Metric.RESPONSE_TIME_AVERAGE;
     private static final String CONDITION_NAME = "conditionName";
     private static final boolean ENABLED = true;
-    private static final String ENTITY_NAME = "entityName";
-    private static final int ENTITY_ID = 1;
+    private static final String APPLICATION_NAME = "entityName";
+    private static final int APPLICATION_ENTITY_ID = 1;
     private static final String EXTERNAL_SERVICE_URL = "externalServiceUrl";
     private static final TermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
 
@@ -57,7 +61,7 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
     @Before
     public void setUp() {
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.of(POLICY));
-        when(entityResolverMock.resolveEntities(apiMock, EXTERNAL_SERVICE_CONDITION)).thenReturn(Collections.singletonList(ENTITY_ID));
+        when(entityResolverMock.resolveEntities(apiMock, EXTERNAL_SERVICE_CONDITION)).thenReturn(Collections.singletonList(APPLICATION_ENTITY_ID));
     }
 
     @Test
@@ -162,7 +166,7 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
         return ApmExternalServiceCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
-            .entity(ENTITY_NAME)
+            .application(APPLICATION_NAME)
             .metric(METRIC)
             .externalServiceUrl(EXTERNAL_SERVICE_URL)
             .term(TERMS_CONFIGURATION)
@@ -174,7 +178,7 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
             .type(ExternalServiceConditionType.APM.getTypeString())
             .name(CONDITION_NAME)
             .enabled(ENABLED)
-            .entity(ENTITY_ID)
+            .entity(APPLICATION_ENTITY_ID)
             .metric(METRIC.name().toLowerCase())
             .externalServiceUrl(EXTERNAL_SERVICE_URL)
             .term(Terms.builder()

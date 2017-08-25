@@ -41,10 +41,13 @@ public interface ExternalServiceCondition {
     boolean isEnabled();
 
     /**
-     * Returns collection of application names for which this condition is applied.
-     * If application with given name does not exist exception will be thrown.
+     * Returns collection of entities for which this condition is applied.
+     * The type of the entity depends on concrete condition implementation. This can be an application
+     * name or host name for example.
+     * <p>
+     * If entity with given name does not exist an exception will be thrown.
      *
-     * @return application names
+     * @return entity names
      */
     Collection<String> getEntities();
 

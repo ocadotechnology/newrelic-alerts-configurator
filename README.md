@@ -22,7 +22,7 @@ TermsConfiguration above90Percent = TermsConfiguration.builder()
 Condition cpuCondition = ServersMetricCondition.builder()
         .conditionName("CPU Usage")
         .enabled(true)
-        .entity("some-host")
+        .server("some-host")
         .metric(ServersMetricCondition.Metric.CPU_PERCENTAGE)
         .term(above90Percent)
         .build();

@@ -16,8 +16,8 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.t
 import java.util.Arrays;
 
 /**
- * Utility class used to obtain {@link Channel}, {@link Condition} or {@link ApplicationConfiguration} predefined with default
- * values.
+ * Utility class used to obtain {@link Channel}, {@link Condition} or {@link ApplicationConfiguration} predefined
+ * with default values.
  */
 public final class Defaults {
 
@@ -38,7 +38,7 @@ public final class Defaults {
         return ApmAppCondition.builder()
                 .conditionName("Apdex")
                 .enabled(true)
-                .entity(applicationName)
+                .application(applicationName)
                 .metric(ApmAppCondition.Metric.APDEX)
                 .conditionScope(ApmAppCondition.ConditionScope.APPLICATION)
                 // Raise critical if in the last 5 minutes apdex was below 0.7
@@ -66,7 +66,7 @@ public final class Defaults {
         return ServersMetricCondition.builder()
                 .conditionName("Fullest Disk %")
                 .enabled(true)
-                .entities(Arrays.asList(serverNames))
+                .servers(Arrays.asList(serverNames))
                 .metric(ServersMetricCondition.Metric.FULLEST_DISK_PERCENTAGE)
                 // Raise critical if in the last 5 minutes disk was over 80% full
                 .term(TermsConfiguration.builder()
@@ -93,7 +93,7 @@ public final class Defaults {
         return ServersMetricCondition.builder()
                 .conditionName("CPU Usage %")
                 .enabled(true)
-                .entities(Arrays.asList(serverNames))
+                .servers(Arrays.asList(serverNames))
                 .metric(ServersMetricCondition.Metric.CPU_PERCENTAGE)
                 // Raise critical if in the last 5 minutes cpu was over 90%
                 .term(TermsConfiguration.builder()

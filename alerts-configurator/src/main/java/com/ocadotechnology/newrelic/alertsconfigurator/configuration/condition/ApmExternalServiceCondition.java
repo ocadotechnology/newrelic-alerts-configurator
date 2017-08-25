@@ -14,7 +14,7 @@ import java.util.Collection;
  * <ul>
  *     <li>{@link #conditionName}</li>
  *     <li>{@link #enabled} (optional)</li>
- *     <li>{@link #entities}</li>
+ *     <li>{@link #applications}</li>
  *     <li>{@link #externalServiceUrl}</li>
  *     <li>{@link #metric}</li>
  *     <li>{@link #runBookUrl} (optional)</li>
@@ -40,7 +40,7 @@ public class ApmExternalServiceCondition implements ExternalServiceCondition {
      */
     @NonNull
     @Singular
-    private Collection<String> entities;
+    private Collection<String> applications;
     /**
      * URL of the external service to be monitored. This string must not include the protocol
      */
@@ -65,6 +65,11 @@ public class ApmExternalServiceCondition implements ExternalServiceCondition {
     @Override
     public String getTypeString() {
         return type.getTypeString();
+    }
+
+    @Override
+    public Collection<String> getEntities() {
+        return getApplications();
     }
 
     @Override
