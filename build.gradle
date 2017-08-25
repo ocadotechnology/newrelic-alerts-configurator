@@ -6,7 +6,7 @@ buildscript {
 
 allprojects {
     group = 'com.ocadotechnology.newrelic'
-    version = project.hasProperty('build_version') ? project.getProperty('build_version') : '2.0.1-SNAPSHOT'
+    version = getPublicationVersion()
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -14,6 +14,16 @@ allprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     compileJava.options.encoding = 'UTF-8'
+}
+
+private def getPublicationVersion() {
+    if (project.hasProperty('build_version')) {
+        def version = project.getProperty('build_version')
+        if (version) {
+            return version
+        }
+    }
+    return '2.0.1-SNAPSHOT'
 }
 
 subprojects {
@@ -67,12 +77,6 @@ subprojects {
                     url 'http://maven.ocado.com/nexus/content/repositories/core-services-releases/'
                 }
             }
-        }
-    }
-
-    publish.doFirst {
-        if (!project.hasProperty("build_version")) {
-            throw new IllegalStateException("Missing <build_version> parameter")
         }
     }
 }
