@@ -117,7 +117,7 @@ ApmAppCondition.builder()
 What you can set for APM application metric condition:
 - condition name - Name of your APM application metric condition.
 - enabled (optional) - If your APM application metric condition is enabled. Default is false.
-- entities - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
+- applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - Apdex
     - Error percentage
@@ -157,7 +157,7 @@ ApmKeyTransactionCondition.builder()
 What you can set for APM key transaction metric condition:
 - condition name - Name of your APM key transaction metric condition.
 - enabled (optional) - If your APM key transaction metric condition is enabled. Default is false.
-- entities - Collection of key transaction names for which this condition is applied. If key transaction with given name does not exist exception will be thrown.
+- keyTransactions - Collection of key transaction names for which this condition is applied. If key transaction with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - Apdex
     - Error percentage
@@ -192,7 +192,7 @@ ServersMetricCondition.builder()
 What you can set for server metric condition:
 - condition name - Name of your server metric condition.
 - enabled (optional) - If your server metric condition is enabled. Default is false.
-- entities - Collection of server names for which this condition is applied. If server with given name does not exist exception will be thrown.
+- servers - Collection of server names for which this condition is applied. If server with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - CPU percentage
     - Disk I/O percentage
@@ -232,7 +232,7 @@ ApmExternalServiceCondition.builder()
 What you can set for APM external service condition:
 - condition name - Name of your APM external service condition.
 - enabled (optional) - If your APM external service condition is enabled. Default is false.
-- entities - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
+- applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - Response time (average)
     - Response time (minimum)
