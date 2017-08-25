@@ -12,12 +12,12 @@ import com.ocadotechnology.newrelic.alertsconfigurator.sample.Defaults;
  *
  * <ul>
  *
- * <li> Raise warning alert if <b>apdex</b> falls below <tt>0.85</tt> </li>
- * <li> Raise critical alert if <b>apdex</b> falls below <tt>0.7</tt> </li>
- * <li> Send alert notification to <b>slack</b> to <tt>newrelic-alerts</tt> channel </li>
- * <li> Raise warning alert if <b>disk space</b> on application host raises above <tt>65%</tt> </li>
- * <li> Raise critical alert if <b>disk space</b> on application host raises above <tt>80%</tt> </li>
- * <li> Send alert notifications to <b>email</b> <tt>my-team@my-company.com</tt> </li>
+ * <li> Raise warning alert if <b>apdex</b> falls below {@code 0.85} </li>
+ * <li> Raise critical alert if <b>apdex</b> falls below {@code 0.7} </li>
+ * <li> Send alert notification to <b>slack</b> to {@code newrelic-alerts} channel </li>
+ * <li> Raise warning alert if <b>disk space</b> on application host raises above {@code 65%} </li>
+ * <li> Raise critical alert if <b>disk space</b> on application host raises above {@code 80%} </li>
+ * <li> Send alert notifications to <b>email</b> {@code my-team@my-company.com} </li>
  *
  * </ul>
  */

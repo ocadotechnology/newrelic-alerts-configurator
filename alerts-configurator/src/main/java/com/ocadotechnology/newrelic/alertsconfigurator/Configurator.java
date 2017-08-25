@@ -9,6 +9,20 @@ import lombok.NonNull;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Main class used in configuration process. It is responsible for synchronizing programmatically created definitions of
+ * application and policy configurations to NewRelic.
+ * <p>
+ *
+ * Example:
+ *
+ * <pre>
+ * Configurator configurator = new Configurator("NEW_RELIC_REST_API_KEY");
+ * configurator.setApplicationConfigurations(Arrays.asList(appConfig1, appConfig2));
+ * configurator.setPolicyConfigurations(Arrays.asList(policy1, policy2, policy3));
+ * configurator.sync();
+ * </pre>
+ */
 public class Configurator {
     private final ApplicationConfigurator applicationConfigurator;
     private final PolicyConfigurator policyConfigurator;
@@ -22,6 +36,7 @@ public class Configurator {
 
     /**
      * NewRelic Alerts configurator constructor
+     *
      * @param apiKey API Key for given NewRelic account
      */
     public Configurator(@NonNull String apiKey) {
@@ -47,7 +62,7 @@ public class Configurator {
 
     /**
      * Synchronizes configurations (see {@link Configurator#setApplicationConfigurations(Collection)}
-     * and {@link Configurator#setPolicyConfigurations(Collection)}
+     * and {@link Configurator#setPolicyConfigurations(Collection)})
      */
     public void sync() {
         for (ApplicationConfiguration applicationConfiguration : applicationConfigurations) {

@@ -12,9 +12,9 @@ import com.ocadotechnology.newrelic.alertsconfigurator.sample.Defaults;
  *
  * <ul>
  *
- * <li> Raise warning alert if <b>apdex</b> falls below <tt>0.85</tt> </li>
- * <li> Raise critical alert if <b>apdex</b> falls below <tt>0.7</tt> </li>
- * <li> Send alert notification to <b>slack</b> to <tt>newrelic-alerts</tt> channel </li>
+ * <li> Raise warning alert if <b>apdex</b> falls below {@code 0.85} </li>
+ * <li> Raise critical alert if <b>apdex</b> falls below {@code 0.7} </li>
+ * <li> Send alert notification to <b>slack</b> to {@code newrelic-alerts} channel </li>
  *
  * </ul>
  */

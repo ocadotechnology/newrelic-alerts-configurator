@@ -36,7 +36,7 @@ public interface ExternalServiceCondition {
     /**
      * Returns if condition is enabled.
      *
-     * @return <tt>true</tt> if condition is enabled, <tt>false</tt> otherwise
+     * @return {@code true} if condition is enabled, {@code false} otherwise
      */
     boolean isEnabled();
 
