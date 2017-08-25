@@ -16,7 +16,7 @@ import com.ocadotechnology.newrelic.alertsconfigurator.sample.Defaults;
  * <li> Raise critical alert if <b>apdex</b> falls below <tt>0.7</tt> </li>
  * <li> Send alert notification to <b>slack</b> to <tt>newrelic-alerts</tt> channel </li>
  * <li> Raise warning alert if <b>cpu usage</b> on application host raised above <tt>70%</tt> </li>
- * <li> Raise critical alert if <b>cpu usage*</b> on application host raised above <tt>90%</tt> </li>
+ * <li> Raise critical alert if <b>cpu usage</b> on application host raised above <tt>90%</tt> </li>
  * <li> Send alert notifications to <b>email</b> <tt>my-team@my-company.com</tt> </li>
  *
  * </ul>
@@ -33,7 +33,7 @@ public class Application3Configurator implements ApplicationConfigurator {
     @Override
     public PolicyConfiguration getPolicyConfigurations() {
         return PolicyConfiguration.builder()
-                .policyName("Application2 Policy")
+                .policyName("Application3 Policy")
                 .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
                 .condition(Defaults.apdexCondition(APPLICATION_NAME))
                 .condition(Defaults.cpuUsageCondition("app-3-host"))

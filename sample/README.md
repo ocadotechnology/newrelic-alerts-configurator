@@ -12,7 +12,10 @@ We have **3** applications:
 For **each** application we need to:
 - Raise warning alert if **apdex** falls below `0.85`
 - Raise critical alert if **apdex** falls below `0.7`
-- Send alert notification to **slack** to `newrelic-alerts` channel
+- Send alert notification on **slack** to `newrelic-alerts` channel
+- In application configuration **application apdex** threshold should be configured to `0.5f`
+- In application configuration **end user apdex** threshold should be configured to `0.7f`
+- Real user monitoring have to be enabled
 
 For **Application1** we need to additionally:
 - Raise warning alert if **disk space** on application host raises above `65%`

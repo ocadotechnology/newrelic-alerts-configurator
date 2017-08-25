@@ -126,7 +126,7 @@ public final class Defaults {
 
     public static Channel slackChannel() {
         return SlackChannel.builder()
-                .channelName("Myh Team - slack")
+                .channelName("My Team - slack")
                 .slackUrl("https://hooks.slack.com/services/aaaaaaaaa/bbbbbbbbb/cccccccccccccccccccccccc")
                 .teamChannel("newrelic-alerts")
                 .build();
