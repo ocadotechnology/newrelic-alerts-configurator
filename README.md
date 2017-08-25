@@ -5,11 +5,9 @@ through UI you can define them in code.
 It allows you to automatize alerts configuration, easily recover them in case of wipe out and have full history of changes in 
 your version control system.
 
-![](images/new_relic_library_diagram.png)
-
 ## How to use NewRelic Alerts Configurator
 
-First step is to obtain API key for given NewRelic account. Then You can create configuration. In example:
+First step is to obtain API key for given NewRelic account. Then You can create configuration. For example:
 
 ```java
 // Create alert condition
@@ -68,7 +66,7 @@ Detailed list of supported features can be found [here](alerts-configurator/).
 
 ## NewRelic API Client
 
-This project contains following tool useful for developers that monitor their application using New Relic:
+This project contains following library useful for developers that monitor their application using New Relic:
 - [NewRelic API client](api-client/)
   Client for New Relic rest API
 
@@ -80,17 +78,13 @@ To run tests call:
 ./gradlew test
 ```
 
-## Build and publish:
+## Build
 
-To publish set environment variables: `MAVEN_REPO_USERNAME`, `MAVEN_REPO_PASSWORD`.
-
-Then execute:
+To build call:
 
 ```bash
-./gradlew clean publish -Pbuild_version=<build_version>
+./gradlew clean build
 ```
-If build_version contains "-SNAPSHOT" suffix, it will be published to snapshot repository. Release repository will be used 
-otherwise.
 
 ## Contributing
 
