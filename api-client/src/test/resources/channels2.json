@@ -1,0 +1,14 @@
+{
+  "channels": [
+    {
+      "id": "2",
+      "name": "channel2",
+      "type": "email",
+      "links": {
+        "policy_ids": [
+          "0"
+        ]
+      }
+    }
+  ]
+}
