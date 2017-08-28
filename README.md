@@ -93,4 +93,4 @@ guidelines about how to proceed.
 
 ## License
 
-This product is licensed under Apache License 2.0. For details see [license file](LICENSE.md)
+This product is licensed under Apache License 2.0. For details see [license file](LICENSE)

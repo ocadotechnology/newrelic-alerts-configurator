@@ -28,7 +28,7 @@ private def getPublicationVersion() {
 
 subprojects {
     repositories {
-        maven { url 'http://maven.ocado.com/nexus/content/repositories/central' }
+        mavenCentral()
         mavenLocal()
     }
 
