@@ -51,7 +51,7 @@ That's all!
 This code creates alert policy that will raise critical alert whenever some-host's cpu usage will raise above 90% in last 5
  minutes. Information about alert will be emailed to my-team@my-company.com
  
-More examples can be found in [sample](sample/) directory.
+More examples can be found in [newrelic-alerts-configurator-examples](newrelic-alerts-configurator-examples) module.
  
 ## How to obtain New Relic REST API key
 
@@ -62,12 +62,12 @@ In above example we used **MY_REST_API_KEY**. Details on how to obtain it can be
 
 ## Features
 
-Detailed list of supported features can be found [here](alerts-configurator/).
+Detailed list of supported features can be found in [newrelic-alerts-configurator](newrelic-alerts-configurator/) module.
 
 ## NewRelic API Client
 
 This project contains following library useful for developers that monitor their application using New Relic:
-- [NewRelic API client](api-client/)
+- [NewRelic API client](newrelic-api-client/)
   Client for New Relic rest API
 
 ## Testing

@@ -5,7 +5,7 @@ buildscript {
 }
 
 allprojects {
-    group = 'com.ocadotechnology.newrelic'
+    group = 'com.ocadotechnology.newrelicalertsconfigurator'
     version = getPublicationVersion()
 
     apply plugin: 'java'
@@ -81,7 +81,7 @@ subprojects {
     }
 }
 
-project(':api-client') {
+project(':newrelic-api-client') {
     dependencies {
         compile 'commons-io:commons-io:2.5'
         compile 'org.apache.commons:commons-lang3:3.5'
@@ -93,14 +93,14 @@ project(':api-client') {
     }
 }
 
-project(':alerts-configurator') {
+project(':newrelic-alerts-configurator') {
     dependencies {
-        compile project(':api-client')
+        compile project(':newrelic-api-client')
     }
 }
 
-project(':sample') {
+project(':newrelic-alerts-configurator-examples') {
     dependencies {
-        compile project(':alerts-configurator')
+        compile project(':newrelic-alerts-configurator')
     }
 }
