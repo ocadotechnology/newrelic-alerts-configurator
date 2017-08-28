@@ -13,13 +13,14 @@ import java.util.stream.Collectors;
 
 public class Main {
 
+    public static final String STAGING_ENVIRONMENT_NEWRELIC_KEY = "KEY1";
+    public static final String PRODUCTION_ENVIRONMENT_NEWRELIC_KEY = "KEY2";
+
     public static void main(String[] args) {
         List<ApplicationConfigurator> appConfigurers = getApplicationConfigurers();
 
-        // In args we can pass NewRelic API Keys to multiple NewRelic accounts
-        for (String newRelicApiKey : args) {
-            configureAlerts(newRelicApiKey, appConfigurers);
-        }
+        configureAlerts(STAGING_ENVIRONMENT_NEWRELIC_KEY, appConfigurers);
+        configureAlerts(PRODUCTION_ENVIRONMENT_NEWRELIC_KEY, appConfigurers);
     }
 
     private static void configureAlerts(String newRelicApiKey, List<ApplicationConfigurator> applicationConfigurers) {
