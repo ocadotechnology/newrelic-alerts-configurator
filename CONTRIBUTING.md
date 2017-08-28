@@ -1,7 +1,7 @@
 ## How to contribute to NewRelic Alerts Configurator
 
 #### Did you find a bug?
-- Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/ocadotechnology/newrelic-tools/issues).
+- Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/ocadotechnology/newrelic-alerts-configurator/issues).
 - Open new issue. Include a title and description with as much information as possible. 
   Code samples and test cases demonstrating the problem or steps to reproduce would be a great help.
   
