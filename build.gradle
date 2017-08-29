@@ -41,6 +41,9 @@ subprojects {
         testCompile 'com.github.tomakehurst:wiremock:2.1.12'
         testCompile 'org.assertj:assertj-core:3.6.1'
     }
+}
+
+configure(subprojects.findAll {it.name != 'newrelic-alerts-configurator-examples'}) {
     if(project.hasProperty('release')) {
         task sourcesJar(type: Jar, dependsOn: classes) {
             classifier = 'sources'
