@@ -9,8 +9,8 @@ allprojects {
     version = getPublicationVersion()
 
     apply plugin: 'java'
-    apply plugin: 'maven-publish'
-
+    apply plugin: 'maven'
+    apply plugin: 'signing'
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     compileJava.options.encoding = 'UTF-8'
@@ -41,40 +41,71 @@ subprojects {
         testCompile 'com.github.tomakehurst:wiremock:2.1.12'
         testCompile 'org.assertj:assertj-core:3.6.1'
     }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-    }
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-                artifact sourcesJar
-                artifact javadocJar
-            }
+    if(project.hasProperty('release')) {
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
         }
-        repositories {
-            maven {
-                credentials {
-                    username System.getenv("MAVEN_REPO_USERNAME")
-                    password System.getenv("MAVEN_REPO_PASSWORD")
-                }
-                if (project.version.endsWith('-SNAPSHOT')) {
-                    url 'http://maven.ocado.com/nexus/content/repositories/core-services-snapshots/'
-                } else {
-                    url 'http://maven.ocado.com/nexus/content/repositories/core-services-releases/'
+
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from javadoc.destinationDir
+        }
+
+        artifacts {
+            archives javadocJar, sourcesJar
+        }
+    
+        signing {
+            required { !version.endsWith("-SNAPSHOT") && gradle.taskGraph.hasTask("uploadArchives") }
+            sign configurations.archives
+        }
+
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+                
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+
+                    pom.project {
+                        name 'NewRelic Alerts Configurator'
+                        packaging 'jar'
+                        // optionally artifactId can be defined here 
+                        description 'NewRelic Alerts Configurator can be used to configure NewRelic alerts for your application. Instead of defining alerts through UI you can define them in code. It allows you to automatize alerts configuration, easily recover them in case of wipe out and have full history of changes in your version control system.'
+                        url 'https://github.com/ocadotechnology/newrelic-alerts-configurator'
+
+                        scm {
+                            connection 'scm:git:git://github.com/ocadotechnology/newrelic-alerts-configurator.git'
+                            developerConnection 'scm:git:git@github.com:ocadotechnology/newrelic-alerts-configurator.git'
+                            url 'https://github.com/ocadotechnology/newrelic-alerts-configurator'
+                        }
+
+                        licenses {
+                            license {
+                                name 'The Apache License, Version 2.0'
+                                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            }
+                        }
+                        organization {
+                            name 'Ocado Technology'
+                            url 'http://www.ocadotechnology.com/'
+                        }
+                        developers {
+                            developer {
+                                id 'panda.team'
+                                name 'Panda Team'
+                                email 'panda.team@ocado.com'
+                            }
+                        }
+                    }
                 }
             }
         }
