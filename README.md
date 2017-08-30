@@ -60,6 +60,17 @@ In above example we used **MY_REST_API_KEY**. Details on how to obtain it can be
 
 **Note that for some configurations you will need Admin User's New Relic API key!**
 
+## Binaries
+
+Library is available in Maven Central
+```xml
+<dependency>
+    <groupId>com.ocadotechnology.newrelicalertsconfigurator</groupId>
+    <artifactId>newrelic-alerts-configurator</artifactId>
+    <version>2.0.1</version>
+</dependency>
+```
+
 ## Features
 
 Detailed list of supported features can be found in [newrelic-alerts-configurator](newrelic-alerts-configurator/) module.
