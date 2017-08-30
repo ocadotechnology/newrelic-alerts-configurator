@@ -43,7 +43,7 @@ subprojects {
     }
 }
 
-configure(subprojects.findAll {it.name != 'newrelic-alerts-configurator-examples'}) {
+configure(subprojects - project(':newrelic-alerts-configurator-examples')) {
     if(project.hasProperty('release')) {
         task sourcesJar(type: Jar, dependsOn: classes) {
             classifier = 'sources'
@@ -65,6 +65,10 @@ configure(subprojects.findAll {it.name != 'newrelic-alerts-configurator-examples
         }
 
         uploadArchives {
+            doFirst {
+                println "Uploading archive ${project.name} in version ${version}"
+            }
+
             repositories {
                 mavenDeployer {
                 
