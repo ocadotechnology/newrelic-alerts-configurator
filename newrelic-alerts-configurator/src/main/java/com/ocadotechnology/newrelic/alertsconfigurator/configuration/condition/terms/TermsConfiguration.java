@@ -18,7 +18,7 @@ import lombok.NonNull;
 @Getter
 public class TermsConfiguration {
     /**
-     * Time for the condition to persist before triggering an event
+     * Time (in minutes) for the condition to persist before triggering an event
      */
     @NonNull
     private DurationTerm durationTerm;

@@ -40,6 +40,8 @@ public class AlertsCondition {
     @JsonProperty
     @Singular
     Collection<Terms> terms;
+    @JsonProperty("violation_close_timer")
+    String violationCloseTimer;
     @JsonProperty("user_defined")
     UserDefined userDefined;
 }

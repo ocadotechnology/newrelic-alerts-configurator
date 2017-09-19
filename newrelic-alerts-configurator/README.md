@@ -131,6 +131,14 @@ What you can set for APM application metric condition:
     -  Instance - Each application instance's data is evaluated individually
 - run book url (optional) - The runbook URL to display in notifications.
 - terms - Collection of [terms](#term) used for alerts condition.
+- violation close timer - Duration (in hours) after which instance-based violations will automatically close.
+  This field is only required when condition scope is set to 'Instance'. Possible values are:
+    - 1
+    - 2
+    - 4
+    - 8
+    - 12
+    - 24
 - user defined configuration - configuration for [user defined metric](#user-defined-configuration).
 
 Example APM application metric condition configuration:

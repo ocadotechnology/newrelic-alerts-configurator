@@ -10,6 +10,7 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.t
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.violationclosetimer.ViolationCloseTimer;
 import com.ocadotechnology.newrelic.alertsconfigurator.exception.NewRelicSyncException;
 import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
@@ -42,7 +43,8 @@ public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
     private static final boolean ENABLED = true;
     private static final String APPLICATION_NAME = "applicationName";
     private static final int APPLICATION_ENTITY_ID = 1;
-    private static final ApmAppCondition.ConditionScope CONDITION_SCOPE = ApmAppCondition.ConditionScope.APPLICATION;
+    private static final ViolationCloseTimer VIOLATION_CLOSE_TIMER = ViolationCloseTimer.DURATION_1;
+    private static final ApmAppCondition.ConditionScope CONDITION_SCOPE = ApmAppCondition.ConditionScope.INSTANCE;
     private static final TermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
 
     private static final Condition APP_CONDITION = createAppCondition(CONDITION_NAME);
@@ -165,6 +167,7 @@ public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
             .application(APPLICATION_NAME)
             .metric(APP_METRIC)
             .conditionScope(CONDITION_SCOPE)
+            .violationCloseTimer(VIOLATION_CLOSE_TIMER)
             .term(TERMS_CONFIGURATION)
             .build();
     }
@@ -177,6 +180,7 @@ public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
             .entity(APPLICATION_ENTITY_ID)
             .metric(APP_METRIC.name().toLowerCase())
             .conditionScope(CONDITION_SCOPE.name().toLowerCase())
+            .violationCloseTimer(VIOLATION_CLOSE_TIMER.getDuration())
             .term(Terms.builder()
                     .duration(String.valueOf(TERMS_CONFIGURATION.getDurationTerm().getDuration()))
                     .operator(TERMS_CONFIGURATION.getOperatorTerm().name().toLowerCase())

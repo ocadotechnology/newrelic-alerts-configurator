@@ -114,6 +114,7 @@ class ConditionConfigurator {
             .conditionScope(condition.getConditionScopeAsString())
             .runbookUrl(condition.getRunBookUrl())
             .terms(TermsUtils.createTerms(condition.getTerms()))
+            .violationCloseTimer(condition.getViolationCloseTimerAsString())
             .userDefined(UserDefinedUtils.createUserDefined(condition.getUserDefinedMetric()))
             .build();
     }
