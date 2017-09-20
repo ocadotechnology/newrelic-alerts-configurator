@@ -84,6 +84,7 @@ public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
         // given
         PolicyConfiguration config = PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
+            .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
             .build();
 
         // when
@@ -166,6 +167,7 @@ public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
     private static PolicyConfiguration createConfiguration() {
         return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
+            .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
             .condition(APP_CONDITION)
             .build();
     }

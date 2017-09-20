@@ -24,7 +24,7 @@ class PolicyConfigurator {
 
         AlertsPolicy alertsPolicyFromConfig = AlertsPolicy.builder()
             .name(config.getPolicyName())
-            .incidentPreference(config.getIncidentPreference())
+            .incidentPreference(config.getIncidentPreference().name())
             .build();
 
         Optional<AlertsPolicy> policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName());

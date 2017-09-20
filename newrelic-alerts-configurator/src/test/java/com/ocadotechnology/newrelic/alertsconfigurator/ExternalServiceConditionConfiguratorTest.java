@@ -2,6 +2,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.google.common.collect.ImmutableList;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration.IncidentPreference;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmExternalServiceCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceConditionType;
@@ -35,7 +36,12 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
     public final ExpectedException expectedException = ExpectedException.none();
 
     private static final String POLICY_NAME = "policyName";
-    private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
+    private static final IncidentPreference INCIDENT_PREFERENCE = IncidentPreference.PER_POLICY;
+    private static final AlertsPolicy POLICY = AlertsPolicy.builder()
+            .id(42)
+            .name(POLICY_NAME)
+            .incidentPreference(INCIDENT_PREFERENCE.name())
+            .build();
 
     private static final ApmExternalServiceCondition.Metric METRIC = ApmExternalServiceCondition.Metric.RESPONSE_TIME_AVERAGE;
     private static final String CONDITION_NAME = "conditionName";
@@ -82,6 +88,7 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
         // given
         PolicyConfiguration config = PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
+            .incidentPreference(INCIDENT_PREFERENCE)
             .build();
 
         // when
@@ -149,6 +156,7 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
     private static PolicyConfiguration createConfiguration() {
         return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
+            .incidentPreference(INCIDENT_PREFERENCE)
             .externalServiceCondition(EXTERNAL_SERVICE_CONDITION)
             .build();
     }
