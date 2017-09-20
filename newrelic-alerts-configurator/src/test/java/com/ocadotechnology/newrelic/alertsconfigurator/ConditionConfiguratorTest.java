@@ -144,6 +144,25 @@ public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
         order.verifyNoMoreInteractions();
     }
 
+    @Test
+    public void shouldThrowException_whenConditionScopeInstanceButViolationCloseTimerIsNotSet() throws Exception {
+        // given
+
+        // then - exception
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("violationCloseTimer");
+
+        // when
+        ApmAppCondition.builder()
+                .conditionName("condition name")
+                .enabled(ENABLED)
+                .application(APPLICATION_NAME)
+                .metric(APP_METRIC)
+                .conditionScope(ApmAppCondition.ConditionScope.INSTANCE)
+                .term(TERMS_CONFIGURATION)
+                .build();
+    }
+
     private static PolicyConfiguration createConfiguration() {
         return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)

@@ -108,4 +108,18 @@ public class ApmAppCondition implements Condition {
         APPLICATION, INSTANCE
     }
 
+    public static class ApmAppConditionBuilder {
+        public ApmAppCondition build() {
+            validateViolationCloseTimer();
+            return new ApmAppCondition(conditionName, enabled, applications, metric, conditionScope,
+                    runBookUrl, terms, violationCloseTimer, userDefinedConfiguration);
+        }
+
+        private void validateViolationCloseTimer() {
+            if (conditionScope == ConditionScope.INSTANCE && violationCloseTimer == null) {
+                throw new NullPointerException("violationCloseTimer");
+            }
+        }
+    }
+
 }
