@@ -77,6 +77,14 @@ public interface Condition {
     }
 
     /**
+     * Returns time (in hours) after which instance-based violations will automatically close.
+     * @return violation close timer
+     */
+    default String getViolationCloseTimerAsString() {
+        return null;
+    }
+
+    /**
      * Returns configuration for user defined metric. Should be provided when metric is set to USER_DEFINED.
      *
      * @return user defined metric

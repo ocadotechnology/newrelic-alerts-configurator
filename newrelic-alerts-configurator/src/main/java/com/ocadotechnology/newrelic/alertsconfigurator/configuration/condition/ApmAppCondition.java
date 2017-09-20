@@ -1,6 +1,7 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.violationclosetimer.ViolationCloseTimer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -19,6 +20,7 @@ import java.util.Collection;
  *     <li>{@link #conditionScope}</li>
  *     <li>{@link #runBookUrl}</li>
  *     <li>{@link #terms}</li>
+ *     <li>{@link #violationCloseTimer}</li>
  *     <li>{@link #userDefinedConfiguration}</li>
  * </ul>
  */
@@ -63,6 +65,11 @@ public class ApmAppCondition implements Condition {
     @Singular
     private Collection<TermsConfiguration> terms;
     /**
+     * Duration (in hours) after which instance-based violations will automatically close.
+     * Required when {@link #conditionScope} is set to {@link ConditionScope#INSTANCE}
+     */
+    private ViolationCloseTimer violationCloseTimer;
+    /**
      * Configuration for user defined metric. Should be provided when {@link #metric} is set to USER_DEFINED
      */
     private UserDefinedConfiguration userDefinedConfiguration;
@@ -83,6 +90,11 @@ public class ApmAppCondition implements Condition {
     }
 
     @Override
+    public String getViolationCloseTimerAsString() {
+        return violationCloseTimer == null ? null : violationCloseTimer.getDuration();
+    }
+
+    @Override
     public UserDefinedConfiguration getUserDefinedMetric() {
         return userDefinedConfiguration;
     }
@@ -94,6 +106,20 @@ public class ApmAppCondition implements Condition {
 
     public enum ConditionScope {
         APPLICATION, INSTANCE
+    }
+
+    public static class ApmAppConditionBuilder {
+        public ApmAppCondition build() {
+            validateViolationCloseTimer();
+            return new ApmAppCondition(conditionName, enabled, applications, metric, conditionScope,
+                    runBookUrl, terms, violationCloseTimer, userDefinedConfiguration);
+        }
+
+        private void validateViolationCloseTimer() {
+            if (conditionScope == ConditionScope.INSTANCE && violationCloseTimer == null) {
+                throw new NullPointerException("violationCloseTimer");
+            }
+        }
     }
 
 }
