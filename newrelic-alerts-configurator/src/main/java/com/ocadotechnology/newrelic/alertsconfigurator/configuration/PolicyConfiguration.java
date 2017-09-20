@@ -33,6 +33,7 @@ public class PolicyConfiguration {
     /**
      * Rollup strategy options for your alerts policy
      */
+    @NonNull
     private IncidentPreference incidentPreference;
     /**
      * Collection of {@link Channel} configurations
@@ -49,10 +50,6 @@ public class PolicyConfiguration {
      */
     @Singular
     private Collection<ExternalServiceCondition> externalServiceConditions = Collections.emptyList();
-
-    public String getIncidentPreference() {
-        return incidentPreference == null ? null : incidentPreference.name();
-    }
 
     public enum IncidentPreference {
         PER_POLICY, PER_CONDITION, PER_CONDITION_AND_TARGET

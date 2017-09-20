@@ -3,6 +3,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration.IncidentPreference;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Channel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.EmailChannel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.SlackChannel;
@@ -19,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -32,9 +34,11 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
 
     private static final int POLICY_ID = 42;
     private static final String POLICY_NAME = "policyName";
+    private static final IncidentPreference INCIDENT_PREFERENCE = IncidentPreference.PER_POLICY;
     private static final AlertsPolicy POLICY = AlertsPolicy.builder()
             .id(POLICY_ID)
             .name(POLICY_NAME)
+            .incidentPreference(INCIDENT_PREFERENCE.name())
             .build();
 
     private static final String USER_EMAIL = "test@test";
@@ -82,9 +86,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
     public void shouldThrowException_whenPolicyDoesNotExist() {
         // given
         when(alertsPoliciesApiMock.getByName(POLICY_NAME)).thenReturn(Optional.empty());
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration();
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
@@ -97,9 +99,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
     @Test
     public void shouldDoNothing_whenNoChannelsInConfiguration() {
         // given
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration();
 
         // when
         testee.sync(policyConfiguration);
@@ -114,11 +114,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
     public void shouldCreateRequiredChannels() {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(savedUserChannel));
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channel(EMAIL_CHANNEL)
-                .channel(SLACK_CHANNEL)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration(EMAIL_CHANNEL, SLACK_CHANNEL);
 
         // when
         testee.sync(policyConfiguration);
@@ -158,11 +154,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
         when(alertsChannelsApiMock.deleteFromPolicy(POLICY_ID, emailChannelInPolicy.getId()))
                 .thenReturn(emailChannelInPolicy);
 
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channel(updatedEmailChannel)
-                .channel(SLACK_CHANNEL)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration(updatedEmailChannel, SLACK_CHANNEL);
 
         // when
         testee.sync(policyConfiguration);
@@ -195,10 +187,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
                 .thenReturn(emailChannelInPolicy);
 
         // when
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channel(SLACK_CHANNEL)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration(SLACK_CHANNEL);
         testee.sync(policyConfiguration);
 
         // then
@@ -228,10 +217,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
                 .thenReturn(emailChannelInPolicy);
 
         // when
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channel(SLACK_CHANNEL)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration(SLACK_CHANNEL);
         testee.sync(policyConfiguration);
 
         // then
@@ -251,10 +237,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
     @Test
     public void shouldThrowException_whenUserChannelDosNotExist() {
         // given
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channel(USER_CHANNEL)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration(USER_CHANNEL);
 
         // then - exception
         expectedException.expect(NewRelicSyncException.class);
@@ -268,10 +251,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
     public void shouldNotCreateUserChannel() {
         // given
         when(alertsChannelsApiMock.list()).thenReturn(ImmutableList.of(savedUserChannel));
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .channel(USER_CHANNEL)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration(USER_CHANNEL);
 
         AlertsPolicyChannels expected = AlertsPolicyChannels.builder()
                 .policyId(POLICY.getId())
@@ -297,9 +277,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
                 .thenReturn(userChannelInPolicy);
 
         // when
-        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
-                .policyName(POLICY_NAME)
-                .build();
+        PolicyConfiguration policyConfiguration = buildPolicyConfiguration();
         testee.sync(policyConfiguration);
 
         // then
@@ -337,6 +315,14 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
                 .type(channel.getType())
                 .configuration(channel.getConfiguration())
                 .links(new AlertsChannelLinks(ImmutableList.copyOf(policyIds)))
+                .build();
+    }
+
+    private PolicyConfiguration buildPolicyConfiguration(Channel... slackChannel) {
+        return PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .incidentPreference(INCIDENT_PREFERENCE)
+                .channels(Arrays.asList(slackChannel))
                 .build();
     }
 }

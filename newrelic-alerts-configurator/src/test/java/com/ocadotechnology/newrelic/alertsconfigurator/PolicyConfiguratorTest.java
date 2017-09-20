@@ -3,7 +3,9 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.apiclient.model.policies.AlertsPolicy;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 
 import java.util.Optional;
@@ -12,6 +14,9 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 public class PolicyConfiguratorTest extends AbstractConfiguratorTest {
+    @Rule
+    public final ExpectedException expectedException = ExpectedException.none();
+
     private static final String POLICY_NAME = "policyName";
     private static final PolicyConfiguration.IncidentPreference INCIDENT_PREFERENCE = PolicyConfiguration.IncidentPreference.PER_CONDITION;
     private static final AlertsPolicy ALERT_POLICY_SAME = createAlertPolicy(1, INCIDENT_PREFERENCE);
@@ -70,6 +75,34 @@ public class PolicyConfiguratorTest extends AbstractConfiguratorTest {
         InOrder order = inOrder(alertsPoliciesApiMock);
         order.verify(alertsPoliciesApiMock).getByName(POLICY_NAME);
         order.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void shouldThrowException_whenPolicyNameNotSet() throws Exception {
+        // given
+
+        // then - exception
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("policyName");
+
+        // when
+        PolicyConfiguration.builder()
+                .incidentPreference(INCIDENT_PREFERENCE)
+                .build();
+    }
+
+    @Test
+    public void shouldThrowException_whenIncidentPreferenceNotSet() throws Exception {
+        // given
+
+        // then - exception
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("incidentPreference");
+
+        // when
+        PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .build();
     }
 
     private static AlertsPolicy createAlertPolicy(int id, PolicyConfiguration.IncidentPreference incidentPreference) {

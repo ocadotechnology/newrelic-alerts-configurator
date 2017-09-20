@@ -91,6 +91,7 @@ public class ApmUserDefinedConditionConfiguratorTest extends AbstractConfigurato
     private static PolicyConfiguration createConfiguration() {
         return PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
+            .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
             .condition(APP_CONDITION)
             .build();
     }

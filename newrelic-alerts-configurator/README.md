@@ -70,8 +70,8 @@ PolicyConfiguration.builder()
 
 What you can set in your configuration:
 - policy name - Name of your alerts policy.
-- incident preference (optional) - Rollup strategy options for your alerts policy. Possible values are:
-    - Per policy (default)
+- incident preference - Rollup strategy options for your alerts policy. Possible values are:
+    - Per policy
     - Per condition
     - Per condition and target
 - conditions (optional) - Collection of [alerts conditions](#alerts-condition) which needs to be configured for your alerts policy.
