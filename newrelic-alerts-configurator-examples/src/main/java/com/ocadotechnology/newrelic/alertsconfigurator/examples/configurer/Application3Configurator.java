@@ -37,6 +37,7 @@ public class Application3Configurator implements ApplicationConfigurator {
                 .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
                 .condition(Defaults.apdexCondition(APPLICATION_NAME))
                 .condition(Defaults.cpuUsageCondition("app-3-host"))
+                .condition(Defaults.heapUsageCondition(APPLICATION_NAME))
                 .channel(Defaults.teamEmailChannel())
                 .channel(Defaults.slackChannel())
                 .build();

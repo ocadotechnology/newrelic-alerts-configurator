@@ -5,6 +5,7 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Cha
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.EmailChannel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.SlackChannel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmAppCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmJvmCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ServersMetricCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm;
@@ -12,6 +13,7 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.t
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.violationclosetimer.ViolationCloseTimer;
 
 import java.util.Arrays;
 
@@ -113,6 +115,34 @@ public final class Defaults {
                         .thresholdTerm(70.0f)
                         .build()
                 )
+                .build();
+    }
+
+    public static Condition heapUsageCondition(String applicationName) {
+        return ApmJvmCondition.builder()
+                .conditionName("Heap usage")
+                .enabled(true)
+                .application(applicationName)
+                .metric(ApmJvmCondition.Metric.HEAP_MEMORY_USAGE)
+                // Raise critical if in the last 5 minutes heap memory usage was above 85%
+                .term(TermsConfiguration.builder()
+                        .durationTerm(DurationTerm.DURATION_5)
+                        .operatorTerm(OperatorTerm.ABOVE)
+                        .priorityTerm(PriorityTerm.CRITICAL)
+                        .timeFunctionTerm(TimeFunctionTerm.ALL)
+                        .thresholdTerm(85f)
+                        .build()
+                )
+                // Raise warning if in the last 5 minutes heap memory usage was above 65%
+                .term(TermsConfiguration.builder()
+                        .durationTerm(DurationTerm.DURATION_5)
+                        .operatorTerm(OperatorTerm.ABOVE)
+                        .priorityTerm(PriorityTerm.WARNING)
+                        .timeFunctionTerm(TimeFunctionTerm.ALL)
+                        .thresholdTerm(65f)
+                        .build()
+                )
+                .violationCloseTimer(ViolationCloseTimer.DURATION_24)
                 .build();
     }
 

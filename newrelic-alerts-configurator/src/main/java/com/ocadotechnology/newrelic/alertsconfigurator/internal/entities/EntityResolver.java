@@ -43,6 +43,7 @@ public abstract class EntityResolver {
             providers.put(ConditionType.APM_KEY_TRANSACTION.getTypeString(), new KeyTransactionIdProvider());
             providers.put(ConditionType.SERVERS_METRIC.getTypeString(), new ServerIdProvider());
             providers.put(ExternalServiceConditionType.APM.getTypeString(), new ApplicationIdProvider());
+            providers.put(ConditionType.APM_JVM.getTypeString(), new ApplicationIdProvider());
         }
 
         @Override
