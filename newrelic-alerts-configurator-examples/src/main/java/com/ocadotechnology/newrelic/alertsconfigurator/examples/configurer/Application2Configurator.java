@@ -33,6 +33,7 @@ public class Application2Configurator implements ApplicationConfigurator {
                 .policyName("Application2 Policy")
                 .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
                 .condition(Defaults.apdexCondition(APPLICATION_NAME))
+                .condition(Defaults.heapUsageCondition(APPLICATION_NAME))
                 .channel(Defaults.slackChannel())
                 .build();
     }

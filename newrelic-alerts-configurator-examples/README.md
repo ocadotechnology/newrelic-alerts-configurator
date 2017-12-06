@@ -16,6 +16,8 @@ For **each** application we need to:
 - In application configuration **application apdex** threshold should be configured to `0.5f`
 - In application configuration **end user apdex** threshold should be configured to `0.7f`
 - Real user monitoring have to be enabled
+- Raise critical alert if **heap memory usage** is above `85%` for longer than 5 minutes
+- Raise warning alert if **heap memory usage** is above `65%` for longer than 5 minutes
 
 For **Application1** we need to additionally:
 - Raise warning alert if **disk space** on application host raises above `65%`
