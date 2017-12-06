@@ -5,6 +5,7 @@
 - [Policy configuration](#policy-configuration)
     - [Alerts condition](#alerts-condition)
         - [APM application metric condition](#apm-application-metric-condition)
+        - [APM JVM metric condition](#apm-jvm-metric-condition)
         - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
         - [Server metric condition](#server-metric-condition)
     - [Alerts external service condition](#alerts-external-service-condition)
@@ -103,6 +104,7 @@ PolicyConfiguration configuration = PolicyConfiguration.builder()
 
 Currently supported types of alerts policy conditions are:
 - [APM application metric condition](#apm-application-metric-condition)
+- [APM JVM metric condition](#apm-jvm-metric-condition)
 - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
 - [Server metric condition](#server-metric-condition)
 
@@ -151,6 +153,46 @@ Condition apmAppCondition = ApmAppCondition.builder()
     .metric(ApmAppCondition.Metric.APDEX)
     .conditionScope(ApmAppCondition.ConditionScope.APPLICATION)
     .term(term)
+    .build();
+```
+
+#### APM JVM metric condition
+
+To create APM JVM metric condition for your alerts policy use simple builder:
+
+```java
+ApmJvmCondition.builder()
+```
+
+What you can set for APM JVM metric condition:
+- condition name - Name of your APM application metric condition.
+- enabled (optional) - If your APM application metric condition is enabled. Default is false.
+- applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
+- metric - Metric used in given condition. Possible values are:
+    - Deadlocked threads
+    - Heap memory usage
+    - CPU utilization time
+- run book url (optional) - The runbook URL to display in notifications.
+- terms - Collection of [terms](#term) used for alerts condition.
+- violation close timer - Duration (in hours) after which instance-based violations will automatically close.
+  Possible values are:
+    - 1
+    - 2
+    - 4
+    - 8
+    - 12
+    - 24
+
+Example APM JVM metric condition configuration:
+
+```java
+Condition apmJvmCondition = ApmJvmCondition.builder()
+    .conditionName("Condition name")
+    .enabled(true)
+    .application("Application name")
+    .metric(ApmJvmCondition.Metric.HEAP_MEMORY_USAGE)
+    .term(term)
+    .violationCloseTimer(ViolationCloseTimer.DURATION_24)
     .build();
 ```
 
