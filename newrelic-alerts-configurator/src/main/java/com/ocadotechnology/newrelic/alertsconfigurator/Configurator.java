@@ -46,7 +46,7 @@ public class Configurator {
         policyConfigurator = new PolicyConfigurator(api);
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
-        nrqlConditionConfigurator = new NrqlConditionConfigurator(api, EntityResolver.defaultInstance());
+        nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
         channelConfigurator = new ChannelConfigurator(api);
     }
 

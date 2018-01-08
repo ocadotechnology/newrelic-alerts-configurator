@@ -5,7 +5,6 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.n
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlUtils;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsUtils;
 import com.ocadotechnology.newrelic.alertsconfigurator.exception.NewRelicSyncException;
-import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.policies.AlertsPolicy;
@@ -24,11 +23,9 @@ import static java.lang.String.format;
 @Slf4j
 public class NrqlConditionConfigurator {
     private final NewRelicApi api;
-    private final EntityResolver entityResolver;
 
-    NrqlConditionConfigurator(@NonNull NewRelicApi api, @NonNull EntityResolver entityResolver) {
+    NrqlConditionConfigurator(@NonNull NewRelicApi api) {
         this.api = api;
-        this.entityResolver = entityResolver;
     }
 
     void sync(@NonNull PolicyConfiguration config) {

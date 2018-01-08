@@ -3,6 +3,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 import com.ocadotechnology.newrelic.apiclient.AlertsChannelsApi;
 import com.ocadotechnology.newrelic.apiclient.AlertsConditionsApi;
 import com.ocadotechnology.newrelic.apiclient.AlertsExternalServiceConditionsApi;
+import com.ocadotechnology.newrelic.apiclient.AlertsNrqlConditionsApi;
 import com.ocadotechnology.newrelic.apiclient.AlertsPoliciesApi;
 import com.ocadotechnology.newrelic.apiclient.ApplicationsApi;
 import com.ocadotechnology.newrelic.apiclient.KeyTransactionsApi;
@@ -33,6 +34,8 @@ public abstract class AbstractConfiguratorTest {
     @Mock
     AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApiMock;
     @Mock
+    AlertsNrqlConditionsApi alertsNrqlConditionsApiMock;
+    @Mock
     KeyTransactionsApi keyTransactionsApiMock;
     @Mock
     UsersApi usersApiMock;
@@ -46,6 +49,7 @@ public abstract class AbstractConfiguratorTest {
         when(apiMock.getAlertsPoliciesApi()).thenReturn(alertsPoliciesApiMock);
         when(apiMock.getAlertsConditionsApi()).thenReturn(alertsConditionsApiMock);
         when(apiMock.getAlertsExternalServiceConditionsApi()).thenReturn(alertsExternalServiceConditionsApiMock);
+        when(apiMock.getAlertsNrqlConditionsApi()).thenReturn(alertsNrqlConditionsApiMock);
         when(apiMock.getKeyTransactionsApi()).thenReturn(keyTransactionsApiMock);
         when(apiMock.getServersApi()).thenReturn(serversApiMock);
         when(apiMock.getUsersApi()).thenReturn(usersApiMock);
