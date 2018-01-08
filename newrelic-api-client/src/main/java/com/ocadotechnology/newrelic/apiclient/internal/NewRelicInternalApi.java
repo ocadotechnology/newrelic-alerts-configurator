@@ -3,6 +3,7 @@ package com.ocadotechnology.newrelic.apiclient.internal;
 import com.ocadotechnology.newrelic.apiclient.AlertsChannelsApi;
 import com.ocadotechnology.newrelic.apiclient.AlertsConditionsApi;
 import com.ocadotechnology.newrelic.apiclient.AlertsExternalServiceConditionsApi;
+import com.ocadotechnology.newrelic.apiclient.AlertsNrqlConditionsApi;
 import com.ocadotechnology.newrelic.apiclient.AlertsPoliciesApi;
 import com.ocadotechnology.newrelic.apiclient.ApplicationsApi;
 import com.ocadotechnology.newrelic.apiclient.DeploymentsApi;
@@ -30,6 +31,8 @@ public class NewRelicInternalApi {
 
     private final AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApi;
 
+    private final AlertsNrqlConditionsApi alertsNrqlConditionsApi;
+
     private final KeyTransactionsApi keyTransactionsApi;
 
     private final DeploymentsApi deploymentsApi;
@@ -51,6 +54,7 @@ public class NewRelicInternalApi {
         alertsPoliciesApi = new DefaultAlertsPoliciesApi(client);
         alertsConditionsApi = new DefaultAlertsConditionsApi(client);
         alertsExternalServiceConditionsApi = new DefaultAlertsExternalServiceConditionsApi(client);
+        alertsNrqlConditionsApi = new DefaultAlertsNrqlConditionsApi(client);
         keyTransactionsApi = new DefaultKeyTransactionsApi(client);
         deploymentsApi = new DefaultDeploymentsApi(client);
         serversApi = new DefaultServersApi(client);

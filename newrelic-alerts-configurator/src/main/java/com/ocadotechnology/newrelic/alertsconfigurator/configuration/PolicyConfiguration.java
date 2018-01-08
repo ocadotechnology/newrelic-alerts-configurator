@@ -3,6 +3,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator.configuration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Channel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -50,6 +51,11 @@ public class PolicyConfiguration {
      */
     @Singular
     private Collection<ExternalServiceCondition> externalServiceConditions = Collections.emptyList();
+    /**
+     * Collection of {@link NrqlCondition} configurations
+     */
+    @Singular
+    private Collection<NrqlCondition> nrqlConditions = Collections.emptyList();
 
     public enum IncidentPreference {
         PER_POLICY, PER_CONDITION, PER_CONDITION_AND_TARGET

@@ -28,6 +28,7 @@ public class Configurator {
     private final PolicyConfigurator policyConfigurator;
     private final ConditionConfigurator conditionConfigurator;
     private final ExternalServiceConditionConfigurator externalServiceConditionConfigurator;
+    private final NrqlConditionConfigurator nrqlConditionConfigurator;
     private final ChannelConfigurator channelConfigurator;
 
 
@@ -45,6 +46,7 @@ public class Configurator {
         policyConfigurator = new PolicyConfigurator(api);
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
+        nrqlConditionConfigurator = new NrqlConditionConfigurator(api, EntityResolver.defaultInstance());
         channelConfigurator = new ChannelConfigurator(api);
     }
 
@@ -52,11 +54,13 @@ public class Configurator {
                  PolicyConfigurator policyConfigurator,
                  ConditionConfigurator conditionConfigurator,
                  ExternalServiceConditionConfigurator externalServiceConditionConfigurator,
+                 NrqlConditionConfigurator nrqlConditionConfigurator,
                  ChannelConfigurator channelConfigurator) {
         this.applicationConfigurator = applicationConfigurator;
         this.policyConfigurator = policyConfigurator;
         this.conditionConfigurator = conditionConfigurator;
         this.externalServiceConditionConfigurator = externalServiceConditionConfigurator;
+        this.nrqlConditionConfigurator = nrqlConditionConfigurator;
         this.channelConfigurator = channelConfigurator;
     }
 
@@ -73,6 +77,7 @@ public class Configurator {
             policyConfigurator.sync(configuration);
             conditionConfigurator.sync(configuration);
             externalServiceConditionConfigurator.sync(configuration);
+            nrqlConditionConfigurator.sync(configuration);
             channelConfigurator.sync(configuration);
         }
     }

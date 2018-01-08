@@ -1,5 +1,6 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -26,6 +27,8 @@ public class NrqlConfiguration {
     @NonNull
     private SinceValue sinceValue;
 
+    @Getter
+    @AllArgsConstructor
     public enum SinceValue {
         SINCE_1(1),
         SINCE_2(2),
@@ -33,10 +36,6 @@ public class NrqlConfiguration {
         SINCE_4(4),
         SINCE_5(5);
 
-        int since;
-
-        SinceValue(int since) {
-            this.since = since;
-        }
+        final int since;
     }
 }
