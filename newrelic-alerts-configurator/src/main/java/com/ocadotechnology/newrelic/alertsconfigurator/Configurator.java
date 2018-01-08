@@ -27,6 +27,7 @@ public class Configurator {
     private final ApplicationConfigurator applicationConfigurator;
     private final PolicyConfigurator policyConfigurator;
     private final ConditionConfigurator conditionConfigurator;
+    private final NrqlConditionConfigurator nrqlConditionConfigurator;
     private final ExternalServiceConditionConfigurator externalServiceConditionConfigurator;
     private final ChannelConfigurator channelConfigurator;
 
@@ -44,6 +45,7 @@ public class Configurator {
         applicationConfigurator = new ApplicationConfigurator(api);
         policyConfigurator = new PolicyConfigurator(api);
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
+        nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
         channelConfigurator = new ChannelConfigurator(api);
     }
@@ -51,11 +53,13 @@ public class Configurator {
     Configurator(ApplicationConfigurator applicationConfigurator,
                  PolicyConfigurator policyConfigurator,
                  ConditionConfigurator conditionConfigurator,
+                 NrqlConditionConfigurator nrqlConditionConfigurator,
                  ExternalServiceConditionConfigurator externalServiceConditionConfigurator,
                  ChannelConfigurator channelConfigurator) {
         this.applicationConfigurator = applicationConfigurator;
         this.policyConfigurator = policyConfigurator;
         this.conditionConfigurator = conditionConfigurator;
+        this.nrqlConditionConfigurator = nrqlConditionConfigurator;
         this.externalServiceConditionConfigurator = externalServiceConditionConfigurator;
         this.channelConfigurator = channelConfigurator;
     }
@@ -72,6 +76,7 @@ public class Configurator {
         for (PolicyConfiguration configuration : policyConfigurations) {
             policyConfigurator.sync(configuration);
             conditionConfigurator.sync(configuration);
+            nrqlConditionConfigurator.sync(configuration);
             externalServiceConditionConfigurator.sync(configuration);
             channelConfigurator.sync(configuration);
         }

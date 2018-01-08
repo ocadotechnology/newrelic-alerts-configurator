@@ -3,6 +3,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator.configuration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Channel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -19,6 +20,7 @@ import java.util.Collections;
  *     <li>{@link #incidentPreference} (optional)</li>
  *     <li>{@link #channels} (optional)</li>
  *     <li>{@link #conditions} (optional)</li>
+ *     <li>{@link #nrqlConditions} (optional)</li>
  *     <li>{@link #externalServiceConditions} (optional)</li>
  * </ul>
  */
@@ -45,6 +47,11 @@ public class PolicyConfiguration {
      */
     @Singular
     private Collection<Condition> conditions = Collections.emptyList();
+    /**
+     * Collection of {@link NrqlCondition} configurations
+     */
+    @Singular
+    private Collection<NrqlCondition> nrqlConditions = Collections.emptyList();
     /**
      * Collection of {@link ExternalServiceCondition} configurations
      */

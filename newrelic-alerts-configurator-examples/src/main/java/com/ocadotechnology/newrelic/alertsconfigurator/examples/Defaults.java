@@ -8,6 +8,9 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.A
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmJvmCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ServersMetricCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.SinceValue;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
@@ -143,6 +146,25 @@ public final class Defaults {
                         .build()
                 )
                 .violationCloseTimer(ViolationCloseTimer.DURATION_24)
+                .build();
+    }
+
+    public static NrqlCondition nrqlCondition() {
+        return NrqlCondition.builder()
+                .conditionName("Max transaction count")
+                .enabled(true)
+                .term(TermsConfiguration.builder()
+                        .durationTerm(DurationTerm.DURATION_10)
+                        .operatorTerm(OperatorTerm.ABOVE)
+                        .priorityTerm(PriorityTerm.CRITICAL)
+                        .thresholdTerm(100f)
+                        .timeFunctionTerm(TimeFunctionTerm.ANY)
+                        .build())
+                .valueFunction(NrqlCondition.ValueFunction.SUM)
+                .nrql(NrqlConfiguration.builder()
+                        .query("SELECT COUNT(*) FROM Transaction")
+                        .sinceValue(SinceValue.SINCE_1_MINUTE)
+                        .build())
                 .build();
     }
 
