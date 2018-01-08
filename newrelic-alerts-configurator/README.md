@@ -10,6 +10,7 @@
         - [Server metric condition](#server-metric-condition)
     - [Alerts external service condition](#alerts-external-service-condition)
         - [APM external service condition](#apm-external-service-condition)
+    - [Alerts NRQL condition](#alerts-nrql-condition)
     - [User defined configuration](#user-defined-configuration)
     - [Term](#term)
     - [Notification channel](#notification-channel)
@@ -79,6 +80,8 @@ What you can set in your configuration:
   If no conditions are set, your alerts policy won't have any alerts conditions.
 - external service conditions (optional) - Collection of [alerts external service conditions](#alerts-external-service-condition)
   which needs to be configured for your alerts policy. If no external service conditions are set, your alerts policy won't have any alerts external service conditions.
+- nrql conditions (optional) - Collection of [alerts NRQL conditions](#alerts-nrql-condition) which needs to be configured for 
+  your alerts policy. If no NRQL conditions are set, your alerts policy won't have any NRQL conditions.
 - channels (optional) - Collection of [alerts channels](#notification-channel) which needs to be configured for your alerts policy.
   If no channels are set, your alerts policy won't have any alerts channels.
 
@@ -95,6 +98,7 @@ PolicyConfiguration configuration = PolicyConfiguration.builder()
     .condition(apmAppCondition)
     .condition(apmKeyTransactionCondition)
     .externalServiceCondition(apmExternalServiceCondition)
+    .nrqlCondition(nrqlCondition)
     .channel(emailChannel)
     .channel(slackChannel)
     .build()
@@ -305,6 +309,36 @@ ExternalServiceCondition apmExternalServiceCondition = ApmExternalServiceConditi
     .build();
 ```
 
+### Alerts NRQL condition
+
+To create NRQL condition for your alerts policy use simple builder:
+
+```java
+NrqlCondition.builder()
+```
+
+What you can set for NRQL condition:
+- condition name - Name of your NRQL condition.
+- enabled (optional) - If your NRQL condition is enabled. Default is false.
+- run book url (optional) - The runbook URL to display in notifications.
+- terms - Collection of [terms](#term) used for alerts condition.
+- value function - How condition should be evaluated. Possible values are:
+    - single_value - the condition will be evaluated by the raw value returned.
+    - sum - the condition will evaluate on the sum of the query results.
+- nrql - configuration for [nrql](#nrql-configuration).
+
+Example NRQL condition configuration:
+
+```java
+NrqlCondition.builder()
+    .conditionName("Condition name")
+    .enabled(true)
+    .valueFunction(ValueFunction.SINGLE_VALUE)
+    .nrql(nrql)
+    .term(term)
+    .build();
+```
+
 ### User defined configuration
 
 User defined configuration allows to use custom (user defined) metric in alert definition.
@@ -315,6 +349,33 @@ Example user defined configuration:
 UserDefinedConfiguration config = UserDefinedConfiguration.builder()
     .metric("MY_CUSTOM_METRIC")
     .valueFunction(UserDefinedConfiguration.ValueFunction.MAX)
+    .build();
+```
+
+### NRQL configuration
+
+NRQL configuration allows to configure NRQL query in alert NRQL definition.
+To create NRQL configuration use simple builder:
+
+```java
+NrqlConfiguration.builder()
+```
+
+What you can set in NRQL configuration:
+- query - Query in NRQL.
+- since value - The timeframe in which to evaulate the query. Possible values are:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    
+Example NRQL configuration:
+
+```java
+NrqlConfiguration.builder()
+    .query("SELECT count(*) FROM `myApp:HealthStatus` WHERE healthy IS false")
+    .sinceValue(NrqlConfiguration.SinceValue.SINCE_5)
     .build();
 ```
 
