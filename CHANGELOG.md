@@ -1,3 +1,5 @@
+- Added support for NRQL conditions
+
 # 2.0.3 (06.12.2017)
 - Added support for JVM metrics conditions
 

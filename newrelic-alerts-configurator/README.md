@@ -21,6 +21,7 @@
         - [Webhook channel](#webhook-channel)
         - [PagerDuty channel](#pagerduty-channel)
         - [NewRelic user channel](#newrelic-user-channel)
+    - [Condition management policy](#condition-management-policy)
 
 ## Configurator
 
@@ -113,6 +114,8 @@ Currently supported types of alerts policy conditions are:
 - [APM JVM metric condition](#apm-jvm-metric-condition)
 - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
 - [Server metric condition](#server-metric-condition)
+
+Condition creation/update/removal policy is described in [Condition management policy](#condition-management-policy)
 
 #### APM application metric condition
 
@@ -277,6 +280,8 @@ Condition serverMetricCondition = ServerMetricCondition.builder()
 Currently supported types of alerts policy external service conditions are:
 - [APM external service condition](#apm-external-service-condition)
 
+External Service Condition creation/update/removal policy is described in [Condition management policy](#condition-management-policy)
+
 #### APM external service condition
 
 To create APM external service condition for your alerts policy use simple builder:
@@ -312,6 +317,8 @@ ExternalServiceCondition apmExternalServiceCondition = ApmExternalServiceConditi
 ```
 
 ### Alerts NRQL condition
+
+NRQL Condition creation/update/removal policy is described in [Condition management policy](#condition-management-policy)
 
 To create NRQL condition for your alerts policy use simple builder:
 
@@ -592,3 +599,44 @@ Channel userChannel = UserChannel.builder()
     .userEmail("your-email-address@ocado.com")
     .build();
 ```
+
+#### Condition management policy
+
+All conditions are management in the same way.
+
+1. If you don't define any conditions in the policy, synchronization process will not modify already existing conditions.
+   Example:
+   ```java
+   PolicyConfiguration configuration = PolicyConfiguration.builder()
+       .policyName("Policy name")
+       .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+       .build()
+   ```
+   This configuration will not remove, create or update any existing condition.
+   
+1. If you define some conditions it the policy, then:
+    - conditions which are defined in configuration, but are missing will be created.
+    - conditions which are defined in configuration and already exist will be updated.
+    - conditions which are not defined in configuration, but already exist will be removed.
+   Example:
+   ```java
+   PolicyConfiguration configuration = PolicyConfiguration.builder()
+       .policyName("Policy name")
+       .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+       .condition(condition1)
+       .condition(condition2)
+       .build()
+   ```
+   This configuration will create/update condition1 and condition2, and will remove all other conditions.
+   
+1. If you define empty conditions list in the policy, then synchronization process will remove all existing conditions.
+   Example:
+   ```java
+   PolicyConfiguration configuration = PolicyConfiguration.builder()
+       .policyName("Policy name")
+       .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+       .conditions(Collections.emptyList())
+       .build()
+   ```
+   This configuration will not create nor update any conditions, but will remove all existing ones.
+   
