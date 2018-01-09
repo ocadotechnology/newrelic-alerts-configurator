@@ -5,10 +5,10 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfi
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.ValueFunction;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.exception.NewRelicSyncException;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.Terms;
@@ -37,7 +37,7 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
 
     private static final String CONDITION_NAME = "conditionName";
     private static final boolean ENABLED = true;
-    private static final TermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
+    private static final NrqlTermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
     private static final ValueFunction VALUE_FUNCTION = ValueFunction.SINGLE_VALUE;
     private static final NrqlConfiguration NRQL_CONFIGURATION = createNrqlConfiguration();
 
@@ -136,9 +136,9 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
         order.verifyNoMoreInteractions();
     }
 
-    private static TermsConfiguration.TermsConfigurationBuilder createTermsConfiguration() {
-        return TermsConfiguration.builder()
-                .durationTerm(DurationTerm.DURATION_5)
+    private static NrqlTermsConfiguration.NrqlTermsConfigurationBuilder createTermsConfiguration() {
+        return NrqlTermsConfiguration.builder()
+                .durationTerm(NrqlDurationTerm.DURATION_1)
                 .operatorTerm(OperatorTerm.ABOVE)
                 .priorityTerm(PriorityTerm.CRITICAL)
                 .thresholdTerm(0.5f)

@@ -12,7 +12,9 @@
         - [APM external service condition](#apm-external-service-condition)
     - [Alerts NRQL condition](#alerts-nrql-condition)
     - [User defined configuration](#user-defined-configuration)
+    - [NRQL configuration](#nrql-configuration)
     - [Term](#term)
+    - [NRQL Term](#nrql-term)
     - [Notification channel](#notification-channel)
         - [Email channel](#email-channel)
         - [Slack channel](#slack-channel)
@@ -321,7 +323,7 @@ What you can set for NRQL condition:
 - condition name - Name of your NRQL condition.
 - enabled (optional) - If your NRQL condition is enabled. Default is false.
 - run book url (optional) - The runbook URL to display in notifications.
-- terms - Collection of [terms](#term) used for alerts condition.
+- terms - Collection of [NRQL terms](#nrql-term) used for alerts condition.
 - value function - How condition should be evaluated. Possible values are:
     - single_value - the condition will be evaluated by the raw value returned.
     - sum - the condition will evaluate on the sum of the query results.
@@ -413,6 +415,51 @@ Example term configuration:
 ```java
 TermsConfiguration term = TermsConfiguration.builder()
     .durationTerm(DurationTerm.DURATION_5)
+    .operatorTerm(OperatorTerm.BELOW)
+    .thresholdTerm(0.8f)
+    .priorityTerm(PriorityTerm.CRITICAL)
+    .timeFunctionTerm(TimeFunctionTerm.ALL)
+    .build();
+```
+
+### NRQL Term
+
+NRQL Terms are used in NRQL conditions.
+To create term configuration for condition use simple builder:
+
+```java
+NrqlTermsConfiguration.builder()
+```
+
+What you can set in term configuration:
+- duration - Time (in minutes) for the condition to persist before triggering an event. Possible values are:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 10
+    - 15
+    - 30
+    - 60
+    - 120
+- operator - Determines what comparison will be used between the monitored value and the threshold term value to trigger an event. Possible values are:
+    - Above
+    - Below
+    - Equal
+- priority - Severity level for given term in condition. Possible values are:
+    - Critical
+    - Warning
+- time function - Time function in which threshold term have to be reached in duration term to trigger an event. Possible values are:
+    - All (for whole time)
+    - Any (at least once in)
+- threshold - Threshold that the monitored value must be compared to using the operator term for an event to be triggered.
+
+Example term configuration:
+
+```java
+NrqlTermsConfiguration term = NrqlTermsConfiguration.builder()
+    .durationTerm(NrqlDurationTerm.DURATION_1)
     .operatorTerm(OperatorTerm.BELOW)
     .thresholdTerm(0.8f)
     .priorityTerm(PriorityTerm.CRITICAL)

@@ -106,7 +106,7 @@ public class NrqlConditionConfigurator {
                 .name(condition.getConditionName())
                 .enabled(condition.isEnabled())
                 .runbookUrl(condition.getRunBookUrl())
-                .terms(TermsUtils.createTerms(condition.getTerms()))
+                .terms(TermsUtils.createNrqlTerms(condition.getTerms()))
                 .valueFunction(condition.getValueFunction().getValueString())
                 .nrql(NrqlUtils.createNrql(condition.getNrql()))
                 .build();

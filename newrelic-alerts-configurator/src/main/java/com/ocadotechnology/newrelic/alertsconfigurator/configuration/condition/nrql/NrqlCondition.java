@@ -1,6 +1,6 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql;
 
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -41,7 +41,7 @@ public class NrqlCondition {
      */
     @NonNull
     @Singular
-    private Collection<TermsConfiguration> terms;
+    private Collection<NrqlTermsConfiguration> terms;
     /**
      * Value function
      */
