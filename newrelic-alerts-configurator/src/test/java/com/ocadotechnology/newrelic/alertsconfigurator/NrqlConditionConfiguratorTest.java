@@ -22,6 +22,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -71,11 +72,28 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
     }
 
     @Test
-    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+    public void shouldDoNothing_whenNullConditionsInConfiguration() {
         // given
         PolicyConfiguration config = PolicyConfiguration.builder()
                 .policyName(POLICY_NAME)
                 .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+                .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        InOrder order = inOrder(alertsNrqlConditionsApiMock);
+        order.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void shouldDoNothing_whenEmptyConditionsInConfiguration() {
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+                .nrqlConditions(Collections.emptyList())
                 .build();
 
         // when

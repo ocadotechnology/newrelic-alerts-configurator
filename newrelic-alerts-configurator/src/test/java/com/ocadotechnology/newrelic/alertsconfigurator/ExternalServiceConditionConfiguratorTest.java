@@ -84,12 +84,29 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
     }
 
     @Test
-    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+    public void shouldDoNothing_whenNullConditionsInConfiguration() {
         // given
         PolicyConfiguration config = PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
             .incidentPreference(INCIDENT_PREFERENCE)
             .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        InOrder order = inOrder(alertsExternalServiceConditionsApiMock);
+        order.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void shouldDoNothing_whenEmptyConditionsInConfiguration() {
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .incidentPreference(INCIDENT_PREFERENCE)
+                .externalServiceConditions(Collections.emptyList())
+                .build();
 
         // when
         testee.sync(config);

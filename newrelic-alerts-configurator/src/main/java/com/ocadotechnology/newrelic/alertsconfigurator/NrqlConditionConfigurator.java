@@ -29,7 +29,12 @@ public class NrqlConditionConfigurator {
     }
 
     void sync(@NonNull PolicyConfiguration config) {
-        LOG.info("Synchronizing alerts NRQL conditions for policy {}...", config.getPolicyName());
+        if (config.getNrqlConditions() == null) {
+            LOG.info("No NRQL alerts conditions for policy {} - skipping...", config.getPolicyName());
+            return;
+        }
+
+        LOG.info("Synchronizing NRQL alerts conditions for policy {}...", config.getPolicyName());
 
         AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
                 () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
@@ -39,7 +44,7 @@ public class NrqlConditionConfigurator {
                 policy, config.getNrqlConditions(), allAlertsConditions);
 
         cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
-        LOG.info("Alerts NRQL conditions for policy {} synchronized", config.getPolicyName());
+        LOG.info("NRQL alerts conditions for policy {} synchronized", config.getPolicyName());
     }
 
     private List<Integer> createOrUpdateAlertsConditions(AlertsPolicy policy,
@@ -75,7 +80,7 @@ public class NrqlConditionConfigurator {
     private void createAlertsCondition(AlertsPolicy policy, AlertsNrqlCondition alertConditionFromConfig) {
         AlertsNrqlCondition newCondition = api.getAlertsNrqlConditionsApi().create(
                 policy.getId(), alertConditionFromConfig);
-        LOG.info("Alerts NRQL condition {} (id: {}) created for policy {} (id: {})",
+        LOG.info("NRQL alerts condition {} (id: {}) created for policy {} (id: {})",
                 newCondition.getName(), newCondition.getId(), policy.getName(), policy.getId());
     }
 
@@ -83,7 +88,7 @@ public class NrqlConditionConfigurator {
                                                   AlertsNrqlCondition alertsConditionToUpdate) {
         AlertsNrqlCondition updatedCondition = api.getAlertsNrqlConditionsApi().update(
                 alertsConditionToUpdate.getId(), alertConditionFromConfig);
-        LOG.info("Alerts condition {} (id: {}) updated for policy {} (id: {})",
+        LOG.info("NRQL alerts condition {} (id: {}) updated for policy {} (id: {})",
                 updatedCondition.getName(), updatedCondition.getId(), policy.getName(), policy.getId());
         return updatedCondition;
     }
@@ -95,7 +100,7 @@ public class NrqlConditionConfigurator {
                 .forEach(
                         alertsCondition -> {
                             api.getAlertsNrqlConditionsApi().delete(alertsCondition.getId());
-                            LOG.info("Alerts condition {} (id: {}) removed from policy {} (id: {})",
+                            LOG.info("NRQL alerts condition {} (id: {}) removed from policy {} (id: {})",
                                     alertsCondition.getName(), alertsCondition.getId(), policy.getName(), policy.getId());
                         }
                 );

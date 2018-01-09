@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface AlertsNrqlConditionsApi {
     /**
-     * Lists Alerts NRQL Conditions for the given policy.
+     * Lists NRQL Alerts Conditions for the given policy.
      *
-     * @param policyId id of the policy containing alerts NRQL conditions
+     * @param policyId id of the policy containing NRQL alerts conditions
      * @return list of all existing {@link AlertsNrqlCondition} from the given policy
      */
     List<AlertsNrqlCondition> list(int policyId);
 
     /**
-     * Creates Alerts NRQL Condition instance within specified policy.
+     * Creates NRQL Alerts Condition instance within specified policy.
      *
      * @param policyId  id of the policy to be updated
      * @param condition condition definition to be created
@@ -23,7 +23,7 @@ public interface AlertsNrqlConditionsApi {
     AlertsNrqlCondition create(int policyId, AlertsNrqlCondition condition);
 
     /**
-     * Updates Alerts NRQL Condition definition.
+     * Updates NRQL Alerts Condition definition.
      *
      * @param conditionId id of the condition to be updated
      * @param condition   condition definition to be updated
@@ -32,7 +32,7 @@ public interface AlertsNrqlConditionsApi {
     AlertsNrqlCondition update(int conditionId, AlertsNrqlCondition condition);
 
     /**
-     * Deletes Alerts NRQL Condition.
+     * Deletes NRQL Alerts Condition.
      *
      * @param conditionId id of the condition to be updated
      * @return deleted {@link AlertsNrqlCondition}

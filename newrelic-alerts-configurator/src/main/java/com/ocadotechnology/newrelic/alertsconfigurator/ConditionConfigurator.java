@@ -32,6 +32,11 @@ class ConditionConfigurator {
     }
 
     void sync(@NonNull PolicyConfiguration config) {
+        if (config.getConditions() == null) {
+            LOG.info("No alerts conditions for policy {} - skipping...", config.getPolicyName());
+            return;
+        }
+
         LOG.info("Synchronizing alerts conditions for policy {}...", config.getPolicyName());
 
         AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
