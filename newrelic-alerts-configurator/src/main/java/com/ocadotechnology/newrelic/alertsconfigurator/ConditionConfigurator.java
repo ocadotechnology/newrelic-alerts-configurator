@@ -117,6 +117,7 @@ class ConditionConfigurator implements PolicyItemConfigurator {
             .terms(TermsUtils.createTerms(condition.getTerms()))
             .violationCloseTimer(condition.getViolationCloseTimerAsString())
             .userDefined(UserDefinedUtils.createUserDefined(condition.getUserDefinedMetric()))
+            .gcMetric(condition.getGcMetricAsString())
             .build();
     }
 

@@ -47,6 +47,11 @@ public class ApmJvmCondition implements Condition {
      */
     @NonNull
     private Metric metric;
+
+    /**
+     * Type of GC metric
+     */
+    private GcMetric gcMetric;
     /**
      * The runbook URL to display in notifications
      */
@@ -73,13 +78,28 @@ public class ApmJvmCondition implements Condition {
         return metric.name().toLowerCase();
     }
 
+
+    @Override
+    public String getGcMetricAsString() {
+        return gcMetric.metricData;
+    }
+
     @Override
     public String getViolationCloseTimerAsString() {
         return violationCloseTimer == null ? null : violationCloseTimer.getDuration();
     }
 
     public enum Metric {
-        DEADLOCKED_THREADS, HEAP_MEMORY_USAGE, CPU_UTILIZATION_TIME
+        DEADLOCKED_THREADS, HEAP_MEMORY_USAGE, CPU_UTILIZATION_TIME, GC_CPU_TIME
     }
 
+    public enum GcMetric {
+        GC_MARK_SWEEP("GC/PS MarkSweep");
+
+        private String metricData;
+
+        GcMetric(String metricData) {
+            this.metricData = metricData;
+        }
+    }
 }

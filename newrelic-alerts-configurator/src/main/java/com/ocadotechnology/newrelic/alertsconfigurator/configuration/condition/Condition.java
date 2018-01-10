@@ -93,4 +93,13 @@ public interface Condition {
         return null;
     }
 
+    /**
+     * Returns type of GC metric for jvm condition if metric set to GC_CPU_TIME.
+     *
+     * @return type of GC metric
+     */
+    default String getGcMetricAsString() {
+        return null;
+    }
+
 }

@@ -34,6 +34,8 @@ public class AlertsCondition implements PolicyItem {
     Collection<Integer> entities;
     @JsonProperty
     String metric;
+    @JsonProperty("gc_metric")
+    String gcMetric;
     @JsonProperty("condition_scope")
     String conditionScope;
     @JsonProperty("runbook_url")
