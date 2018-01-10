@@ -47,7 +47,6 @@ public class ApmJvmCondition implements Condition {
      */
     @NonNull
     private Metric metric;
-
     /**
      * Type of GC metric
      */
