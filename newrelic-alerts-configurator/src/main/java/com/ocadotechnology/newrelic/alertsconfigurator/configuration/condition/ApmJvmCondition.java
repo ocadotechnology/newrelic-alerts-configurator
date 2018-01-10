@@ -80,7 +80,7 @@ public class ApmJvmCondition implements Condition {
 
     @Override
     public String getGcMetricAsString() {
-        return gcMetric.metricData;
+        return gcMetric == null ? null : gcMetric.metricData;
     }
 
     @Override
@@ -93,7 +93,8 @@ public class ApmJvmCondition implements Condition {
     }
 
     public enum GcMetric {
-        GC_MARK_SWEEP("GC/PS MarkSweep");
+        GC_MARK_SWEEP("GC/PS MarkSweep"),
+        GC_SCAVENGE("GC/PS Scavenge");
 
         private String metricData;
 
