@@ -36,7 +36,7 @@ public class DefaultAlertsNrqlConditionsApi extends ApiBase implements AlertsNrq
                 .resolveTemplate("policy_id", policyId)
                 .request(APPLICATION_JSON_TYPE)
                 .post(Entity.entity(new AlertsNrqlConditionWrapper(nrqlCondition), APPLICATION_JSON_TYPE),
-                        AlertsNrqlConditionWrapper.class)
+                         AlertsNrqlConditionWrapper.class)
                 .getNrqlCondition();
     }
 

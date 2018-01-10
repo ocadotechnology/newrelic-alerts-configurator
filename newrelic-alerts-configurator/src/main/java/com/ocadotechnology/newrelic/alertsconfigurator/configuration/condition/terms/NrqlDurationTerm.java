@@ -1,8 +1,10 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum NrqlDurationTerm {
     DURATION_1(1),
     DURATION_2(2),
@@ -15,9 +17,5 @@ public enum NrqlDurationTerm {
     DURATION_60(60),
     DURATION_120(120);
 
-    int duration;
-
-    NrqlDurationTerm(int duration) {
-        this.duration = duration;
-    }
+    final int duration;
 }

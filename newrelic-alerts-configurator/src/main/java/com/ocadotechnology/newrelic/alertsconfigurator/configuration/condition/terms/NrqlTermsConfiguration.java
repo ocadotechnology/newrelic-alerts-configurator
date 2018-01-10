@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /**
- * Term configuration.
+ * NRQL Term configuration.
  * Configuration parameters:
  * <ul>
  *     <li>{@link #durationTerm}</li>
