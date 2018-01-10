@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @Slf4j
-class ExternalServiceConditionConfigurator {
+class ExternalServiceConditionConfigurator implements PolicyItemConfigurator {
     private final NewRelicApi api;
     private final EntityResolver entityResolver;
 
@@ -30,7 +30,8 @@ class ExternalServiceConditionConfigurator {
         this.entityResolver = entityResolver;
     }
 
-    void sync(@NonNull PolicyConfiguration config) {
+    @Override
+    public void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing external service alerts conditions for policy {}...", config.getPolicyName());
 
         AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(

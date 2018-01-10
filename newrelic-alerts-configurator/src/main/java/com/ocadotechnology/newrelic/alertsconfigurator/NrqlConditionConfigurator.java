@@ -23,14 +23,15 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @Slf4j
-class NrqlConditionConfigurator {
+class NrqlConditionConfigurator implements PolicyItemConfigurator {
     private final NewRelicApi api;
 
     NrqlConditionConfigurator(@NonNull NewRelicApi api) {
         this.api = api;
     }
 
-    void sync(@NonNull PolicyConfiguration config) {
+    @Override
+    public void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing alerts NrqlConditions for policy {}...", config.getPolicyName());
 
         AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(

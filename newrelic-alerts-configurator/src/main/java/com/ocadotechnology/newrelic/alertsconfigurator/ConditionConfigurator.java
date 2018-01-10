@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @Slf4j
-class ConditionConfigurator {
+class ConditionConfigurator implements PolicyItemConfigurator {
     private final NewRelicApi api;
     private final EntityResolver entityResolver;
 
@@ -31,7 +31,8 @@ class ConditionConfigurator {
         this.entityResolver = entityResolver;
     }
 
-    void sync(@NonNull PolicyConfiguration config) {
+    @Override
+    public void sync(@NonNull PolicyConfiguration config) {
         LOG.info("Synchronizing alerts conditions for policy {}...", config.getPolicyName());
 
         AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
