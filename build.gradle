@@ -33,7 +33,7 @@ subprojects {
     }
 
     dependencies {
-        compileOnly 'org.projectlombok:lombok:1.16.10'
+        compileOnly 'org.projectlombok:lombok:1.16.16'
         compile 'org.slf4j:slf4j-api:1.7.21'
         testCompile "junit:junit:4.12"
         testCompile 'com.google.guava:guava:20.0'

@@ -31,9 +31,10 @@ public class NrqlCondition {
     @NonNull
     private String conditionName;
     /**
-     * If your NRQL condition is enabled. Default is false
+     * If your NRQL condition is enabled. Default is true
      */
-    private boolean enabled;
+    @Builder.Default
+    private boolean enabled = true;
     /**
      * The runbook URL to display in notifications
      */

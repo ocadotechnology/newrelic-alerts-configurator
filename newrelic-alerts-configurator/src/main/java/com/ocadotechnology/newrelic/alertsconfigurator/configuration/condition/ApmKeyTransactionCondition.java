@@ -34,9 +34,10 @@ public class ApmKeyTransactionCondition implements Condition {
     @NonNull
     private String conditionName;
     /**
-     * If your APM key transaction metric condition is enabled. Default is false
+     * If your APM key transaction metric condition is enabled. Default is true
      */
-    private boolean enabled;
+    @Builder.Default
+    private boolean enabled = true;
     /**
      * Collection of key transaction names for which this condition is applied.
      * If key transaction with given name does not exist exception will be thrown

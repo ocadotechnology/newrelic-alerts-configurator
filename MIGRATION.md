@@ -1,5 +1,7 @@
 # Migrating from version 2 to 3
 
+## New Conditions and Channels management policy
+
 In version 3 we changed the way condition and channel synchronization works. In version 3 all conditions and channels are managed
  in the same way.
 
@@ -42,3 +44,7 @@ In version 3 we changed the way condition and channel synchronization works. In 
 In version 2 there was no way to preserve already existing conditions. Existing conditions were removed in both cases: 
 when you 
 provided empty conditions list and when you didn't provide anything at all
+
+## Changed default condition state
+
+In version 2 all conditions were by default disabled. In version 3 it has been changed and conditions are by default enabled
