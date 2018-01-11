@@ -67,6 +67,10 @@ public class PolicyConfiguration {
         PER_POLICY, PER_CONDITION, PER_CONDITION_AND_TARGET
     }
 
+    public Optional<Collection<Channel>> getChannels() {
+        return Optional.ofNullable(channels);
+    }
+
     public Optional<Collection<Condition>> getConditions() {
         return Optional.ofNullable(conditions);
     }
@@ -96,7 +100,7 @@ public class PolicyConfiguration {
             return new PolicyConfiguration(
                     policyName,
                     incidentPreference,
-                    normalizeList(this.channels),
+                    normalizeNullableList(this.channels),
                     normalizeNullableList(this.conditions),
                     normalizeNullableList(this.externalServiceConditions),
                     normalizeNullableList(this.nrqlConditions));

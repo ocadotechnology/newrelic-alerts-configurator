@@ -20,7 +20,7 @@
         - [Webhook channel](#webhook-channel)
         - [PagerDuty channel](#pagerduty-channel)
         - [NewRelic user channel](#newrelic-user-channel)
-    - [Condition management policy](#condition-management-policy)
+    - [Condition and Channel management policy](#condition-and-channel-management-policy)
 
 ## Configurator
 
@@ -84,7 +84,6 @@ What you can set in your configuration:
 - nrql conditions (optional) - Collection of [alerts NRQL conditions](#alerts-nrql-condition) which needs to be configured for 
   your alerts policy.
 - channels (optional) - Collection of [alerts channels](#notification-channel) which needs to be configured for your alerts policy.
-  If no channels are set, your alerts policy won't have any alerts channels.
 
 If policy with given policy name exists - it will be updated.
 
@@ -113,7 +112,7 @@ Currently supported types of alerts policy conditions are:
 - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
 - [Server metric condition](#server-metric-condition)
 
-Condition creation/update/removal policy is described in [Condition management policy](#condition-management-policy)
+Condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
 
 #### APM application metric condition
 
@@ -278,7 +277,7 @@ Condition serverMetricCondition = ServerMetricCondition.builder()
 Currently supported types of alerts policy external service conditions are:
 - [APM external service condition](#apm-external-service-condition)
 
-External Service Condition creation/update/removal policy is described in [Condition management policy](#condition-management-policy)
+External Service Condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
 
 #### APM external service condition
 
@@ -316,7 +315,7 @@ ExternalServiceCondition apmExternalServiceCondition = ApmExternalServiceConditi
 
 ### Alerts NRQL condition
 
-NRQL Condition creation/update/removal policy is described in [Condition management policy](#condition-management-policy)
+NRQL Condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
 
 To create NRQL condition for your alerts policy use simple builder:
 
@@ -461,11 +460,8 @@ Currently supported types of alerts notification channels are:
 - [PagerDuty channel](#pagerduty-channel)
 - [NewRelic user channel](#newrelic-user-channel)
 
-If notification channel with given name and type does exists - it will be updated
-
-If notification channel with given name and type does not exist - it will be created
-
-If you remove channel from your policy configuration, and it is not configured for any other policy - it will be deleted (except for NewRelic user channel).
+Channels creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
+Only exception is NewRelic user channel - we will not delete it.
 
 #### Email channel
 
@@ -578,9 +574,9 @@ Channel userChannel = UserChannel.builder()
     .build();
 ```
 
-#### Condition management policy
+#### Condition and Channel management policy
 
-All conditions are managed in the same way.
+All conditions and channels are managed in the same way.
 
 1. If you don't define any conditions in the policy, synchronization process will not modify already existing conditions.
    Example:
