@@ -32,7 +32,7 @@ class ConditionConfigurator {
     }
 
     void sync(@NonNull PolicyConfiguration config) {
-        if (config.getConditions() == null) {
+        if (!config.getConditions().isPresent()) {
             LOG.info("No alerts conditions for policy {} - skipping...", config.getPolicyName());
             return;
         }
@@ -44,7 +44,7 @@ class ConditionConfigurator {
 
         List<AlertsCondition> allAlertsConditions = api.getAlertsConditionsApi().list(policy.getId());
         List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(
-            policy, config.getConditions(), allAlertsConditions);
+            policy, config.getConditions().get(), allAlertsConditions);
 
         cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
         LOG.info("Alerts conditions for policy {} synchronized", config.getPolicyName());

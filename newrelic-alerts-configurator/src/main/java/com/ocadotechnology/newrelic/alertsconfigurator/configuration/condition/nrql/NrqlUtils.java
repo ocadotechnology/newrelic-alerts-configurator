@@ -8,12 +8,9 @@ public final class NrqlUtils {
     }
 
     public static Nrql createNrql(NrqlConfiguration nrqlConfiguration) {
-        if(nrqlConfiguration != null) {
-            return Nrql.builder()
-                    .query(nrqlConfiguration.getQuery())
-                    .sinceValue(String.valueOf(nrqlConfiguration.getSinceValue().getSince()))
-                    .build();
-        }
-        return null;
+        return Nrql.builder()
+                .query(nrqlConfiguration.getQuery())
+                .sinceValue(String.valueOf(nrqlConfiguration.getSinceValue().getSince()))
+                .build();
     }
 }

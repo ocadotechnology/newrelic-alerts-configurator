@@ -1,6 +1,7 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -52,4 +53,13 @@ public class NrqlCondition {
      */
     @NonNull
     private NrqlConfiguration nrql;
+
+    @Getter
+    @AllArgsConstructor
+    public enum ValueFunction {
+        SINGLE_VALUE("single_value"),
+        SUM("sum");
+
+        private final String valueString;
+    }
 }

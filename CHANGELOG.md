@@ -1,4 +1,6 @@
+# 3.0.0
 - Added support for NRQL conditions
+- Changed conditions and channels management logic. This is breaking change - see details in [Migration guide](MIGRATION.md)
 
 # 2.0.3 (06.12.2017)
 - Added support for JVM metrics conditions

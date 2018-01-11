@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
@@ -91,8 +92,7 @@ public class ConditionConfiguratorTest extends AbstractConfiguratorTest {
         testee.sync(config);
 
         // then
-        InOrder order = inOrder(alertsConditionsApiMock);
-        order.verifyNoMoreInteractions();
+        verifyZeroInteractions(alertsConditionsApiMock);
     }
 
     @Test

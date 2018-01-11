@@ -31,7 +31,7 @@ class ExternalServiceConditionConfigurator {
     }
 
     void sync(@NonNull PolicyConfiguration config) {
-        if (config.getExternalServiceConditions() == null) {
+        if (!config.getExternalServiceConditions().isPresent()) {
             LOG.info("No external service alerts conditions for policy {} - skipping...", config.getPolicyName());
             return;
         }
@@ -45,7 +45,7 @@ class ExternalServiceConditionConfigurator {
         List<AlertsExternalServiceCondition> allAlertsConditions = api.getAlertsExternalServiceConditionsApi()
             .list(policy.getId());
         List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(
-            policy, config.getExternalServiceConditions(), allAlertsConditions);
+            policy, config.getExternalServiceConditions().get(), allAlertsConditions);
 
         cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
         LOG.info("External service alerts conditions for policy {} synchronized", config.getPolicyName());

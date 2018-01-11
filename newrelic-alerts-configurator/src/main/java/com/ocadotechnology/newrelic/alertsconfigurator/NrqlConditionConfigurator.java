@@ -29,7 +29,7 @@ public class NrqlConditionConfigurator {
     }
 
     void sync(@NonNull PolicyConfiguration config) {
-        if (config.getNrqlConditions() == null) {
+        if (!config.getNrqlConditions().isPresent()) {
             LOG.info("No NRQL alerts conditions for policy {} - skipping...", config.getPolicyName());
             return;
         }
@@ -41,7 +41,7 @@ public class NrqlConditionConfigurator {
 
         List<AlertsNrqlCondition> allAlertsConditions = api.getAlertsNrqlConditionsApi().list(policy.getId());
         List<Integer> updatedAlertsConditionsIds = createOrUpdateAlertsConditions(
-                policy, config.getNrqlConditions(), allAlertsConditions);
+                policy, config.getNrqlConditions().get(), allAlertsConditions);
 
         cleanupOldAlertsConditions(policy, allAlertsConditions, updatedAlertsConditionsIds);
         LOG.info("NRQL alerts conditions for policy {} synchronized", config.getPolicyName());

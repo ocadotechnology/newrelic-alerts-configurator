@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlConfiguration;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.ValueFunction;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
@@ -27,6 +26,7 @@ import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
@@ -39,7 +39,7 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
     private static final String CONDITION_NAME = "conditionName";
     private static final boolean ENABLED = true;
     private static final NrqlTermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
-    private static final ValueFunction VALUE_FUNCTION = ValueFunction.SINGLE_VALUE;
+    private static final NrqlCondition.ValueFunction VALUE_FUNCTION = NrqlCondition.ValueFunction.SINGLE_VALUE;
     private static final NrqlConfiguration NRQL_CONFIGURATION = createNrqlConfiguration();
 
     private static final NrqlCondition NRQL_CONDITION = createNrqlCondition(CONDITION_NAME);
@@ -83,8 +83,7 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
         testee.sync(config);
 
         // then
-        InOrder order = inOrder(alertsNrqlConditionsApiMock);
-        order.verifyNoMoreInteractions();
+        verifyZeroInteractions(alertsNrqlConditionsApiMock);
     }
 
     @Test

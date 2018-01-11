@@ -4,12 +4,15 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Cha
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.Singular;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -27,179 +30,66 @@ import static java.util.Collections.unmodifiableList;
  * </ul>
  */
 @Getter
+@Builder
 public class PolicyConfiguration {
     /**
      * Your policy name
      */
+    @NonNull
     private String policyName;
     /**
      * Rollup strategy options for your alerts policy
      */
+    @NonNull
     private IncidentPreference incidentPreference;
     /**
      * Collection of {@link Channel} configurations
      */
+    @Singular
     private Collection<Channel> channels;
     /**
      * Collection of {@link Condition} configurations
      */
+    @Singular
     private Collection<Condition> conditions;
     /**
      * Collection of {@link ExternalServiceCondition} configurations
      */
+    @Singular
     private Collection<ExternalServiceCondition> externalServiceConditions;
     /**
      * Collection of {@link NrqlCondition} configurations
      */
+    @Singular
     private Collection<NrqlCondition> nrqlConditions;
-
-    @ConstructorProperties(
-            {"policyName", "incidentPreference", "channels", "conditions", "externalServiceConditions", "nrqlConditions"})
-    PolicyConfiguration(String policyName,
-                        IncidentPreference incidentPreference,
-                        Collection<Channel> channels, Collection<Condition> conditions,
-                        Collection<ExternalServiceCondition> externalServiceConditions,
-                        Collection<NrqlCondition> nrqlConditions) {
-        if (policyName == null) {
-            throw new NullPointerException("policyName");
-        }
-        if (incidentPreference == null) {
-            throw new NullPointerException("incidentPreference");
-        }
-
-        this.policyName = policyName;
-        this.incidentPreference = incidentPreference;
-        this.channels = channels;
-        this.conditions = conditions;
-        this.externalServiceConditions = externalServiceConditions;
-        this.nrqlConditions = nrqlConditions;
-    }
-
-    public static PolicyConfigurationBuilder builder() {
-        return new PolicyConfigurationBuilder();
-    }
 
     public enum IncidentPreference {
         PER_POLICY, PER_CONDITION, PER_CONDITION_AND_TARGET
     }
 
+    public Optional<Collection<Condition>> getConditions() {
+        return Optional.ofNullable(conditions);
+    }
+
+    public Optional<Collection<ExternalServiceCondition>> getExternalServiceConditions() {
+        return Optional.ofNullable(externalServiceConditions);
+    }
+
+    public Optional<Collection<NrqlCondition>> getNrqlConditions() {
+        return Optional.ofNullable(nrqlConditions);
+    }
+
     public static class PolicyConfigurationBuilder {
-        private String policyName;
-        private IncidentPreference incidentPreference;
-        private ArrayList<Channel> channels;
-        private ArrayList<Condition> conditions;
-        private ArrayList<ExternalServiceCondition> externalServiceConditions;
-        private ArrayList<NrqlCondition> nrqlConditions;
-
-        PolicyConfigurationBuilder() {
+        public void doNotModifyExistingConditions() {
+            this.conditions = null;
         }
 
-        public PolicyConfigurationBuilder policyName(String policyName) {
-            this.policyName = policyName;
-            return this;
+        public void doNotModifyExistingExternalServiceConditions() {
+            this.externalServiceConditions = null;
         }
 
-        public PolicyConfigurationBuilder incidentPreference(IncidentPreference incidentPreference) {
-            this.incidentPreference = incidentPreference;
-            return this;
-        }
-
-        public PolicyConfigurationBuilder channel(Channel channel) {
-            if (this.channels == null) {
-                this.channels = new ArrayList<>();
-            }
-            this.channels.add(channel);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder channels(Collection<? extends Channel> channels) {
-            if (this.channels == null) {
-                this.channels = new ArrayList<>();
-            }
-            this.channels.addAll(channels);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder clearChannels() {
-            if (this.channels != null) {
-                this.channels.clear();
-            }
-
-            return this;
-        }
-
-        public PolicyConfigurationBuilder condition(Condition condition) {
-            if (this.conditions == null) {
-                this.conditions = new ArrayList<>();
-            }
-            this.conditions.add(condition);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder conditions(Collection<? extends Condition> conditions) {
-            if (this.conditions == null) {
-                this.conditions = new ArrayList<>();
-            }
-            this.conditions.addAll(conditions);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder clearConditions() {
-            if (this.conditions != null) {
-                this.conditions.clear();
-            }
-
-            return this;
-        }
-
-        public PolicyConfigurationBuilder externalServiceCondition(
-                ExternalServiceCondition externalServiceCondition) {
-            if (this.externalServiceConditions == null) {
-                this.externalServiceConditions = new ArrayList<>();
-            }
-            this.externalServiceConditions.add(externalServiceCondition);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder externalServiceConditions(
-                Collection<? extends ExternalServiceCondition> externalServiceConditions) {
-            if (this.externalServiceConditions == null) {
-                this.externalServiceConditions = new ArrayList<>();
-            }
-            this.externalServiceConditions.addAll(externalServiceConditions);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder clearExternalServiceConditions() {
-            if (this.externalServiceConditions != null) {
-                this.externalServiceConditions.clear();
-            }
-
-            return this;
-        }
-
-        public PolicyConfigurationBuilder nrqlCondition(NrqlCondition nrqlCondition) {
-            if (this.nrqlConditions == null) {
-                this.nrqlConditions = new ArrayList<>();
-            }
-            this.nrqlConditions.add(nrqlCondition);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder nrqlConditions(Collection<? extends NrqlCondition> nrqlConditions) {
-            if (this.nrqlConditions == null) {
-                this.nrqlConditions = new ArrayList<>();
-            }
-            this.nrqlConditions.addAll(nrqlConditions);
-            return this;
-        }
-
-        public PolicyConfigurationBuilder clearNrqlConditions() {
-            if (this.nrqlConditions != null) {
-                this.nrqlConditions.clear();
-            }
-
-            return this;
+        public void doNotModifyExistingNrqlConditions() {
+            this.nrqlConditions = null;
         }
 
         public PolicyConfiguration build() {
@@ -225,13 +115,6 @@ public class PolicyConfiguration {
                 default:
                     return unmodifiableList(new ArrayList<>(list));
             }
-        }
-
-        public String toString() {
-            return "PolicyConfiguration.PolicyConfigurationBuilder(policyName=" + this.policyName + ", incidentPreference=" +
-                    this.incidentPreference + ", channels=" + this.channels + ", conditions=" + this.conditions +
-                    ", externalServiceConditions=" + this.externalServiceConditions + ", nrqlConditions=" + this.nrqlConditions +
-                    ")";
         }
     }
 }

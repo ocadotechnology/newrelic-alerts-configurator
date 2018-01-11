@@ -80,11 +80,10 @@ What you can set in your configuration:
     - Per condition
     - Per condition and target
 - conditions (optional) - Collection of [alerts conditions](#alerts-condition) which needs to be configured for your alerts policy.
-  If no conditions are set, your alerts policy won't have any alerts conditions.
 - external service conditions (optional) - Collection of [alerts external service conditions](#alerts-external-service-condition)
-  which needs to be configured for your alerts policy. If no external service conditions are set, your alerts policy won't have any alerts external service conditions.
+  which needs to be configured for your alerts policy.
 - nrql conditions (optional) - Collection of [alerts NRQL conditions](#alerts-nrql-condition) which needs to be configured for 
-  your alerts policy. If no NRQL conditions are set, your alerts policy won't have any NRQL conditions.
+  your alerts policy.
 - channels (optional) - Collection of [alerts channels](#notification-channel) which needs to be configured for your alerts policy.
   If no channels are set, your alerts policy won't have any alerts channels.
 
@@ -342,7 +341,7 @@ Example NRQL condition configuration:
 NrqlCondition.builder()
     .conditionName("Condition name")
     .enabled(true)
-    .valueFunction(ValueFunction.SINGLE_VALUE)
+    .valueFunction(NrqlCondition.ValueFunction.SINGLE_VALUE)
     .nrql(nrql)
     .term(term)
     .build();
@@ -602,7 +601,7 @@ Channel userChannel = UserChannel.builder()
 
 #### Condition management policy
 
-All conditions are management in the same way.
+All conditions are managed in the same way.
 
 1. If you don't define any conditions in the policy, synchronization process will not modify already existing conditions.
    Example:
@@ -614,7 +613,7 @@ All conditions are management in the same way.
    ```
    This configuration will not remove, create or update any existing condition.
    
-1. If you define some conditions it the policy, then:
+1. If you define some conditions in the policy, then:
     - conditions which are defined in configuration, but are missing will be created.
     - conditions which are defined in configuration and already exist will be updated.
     - conditions which are not defined in configuration, but already exist will be removed.

@@ -1,6 +1,6 @@
 # Migrating from version 2 to 3
 
-In version 3 we changed the way condition synchronization works. In version 3 all conditions are management in the same way.
+In version 3 we changed the way condition synchronization works. In version 3 all conditions are managed in the same way.
 
 1. If you don't define any conditions in the policy, synchronization process will not modify already existing conditions.
    Example:
@@ -12,7 +12,7 @@ In version 3 we changed the way condition synchronization works. In version 3 al
    ```
    This configuration will not remove, create or update any existing condition.
    
-1. If you define some conditions it the policy, then:
+1. If you define some conditions in the policy, then:
     - conditions which are defined in configuration, but are missing will be created.
     - conditions which are defined in configuration and already exist will be updated.
     - conditions which are not defined in configuration, but already exist will be removed.
