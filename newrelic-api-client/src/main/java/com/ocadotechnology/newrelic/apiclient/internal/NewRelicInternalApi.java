@@ -2,6 +2,9 @@ package com.ocadotechnology.newrelic.apiclient.internal;
 
 import com.ocadotechnology.newrelic.apiclient.*;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import lombok.Getter;
 
 /**
@@ -18,11 +21,11 @@ public class NewRelicInternalApi {
 
     private final AlertsPoliciesApi alertsPoliciesApi;
 
-    private final AlertsConditionsApi alertsConditionsApi;
+    private final PolicyItemApi<AlertsCondition> alertsConditionsApi;
 
-    private final AlertsNrqlConditionsApi alertsNrqlConditionsApi;
+    private final PolicyItemApi<AlertsNrqlCondition> alertsNrqlConditionsApi;
 
-    private final AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApi;
+    private final PolicyItemApi<AlertsExternalServiceCondition> alertsExternalServiceConditionsApi;
 
     private final KeyTransactionsApi keyTransactionsApi;
 

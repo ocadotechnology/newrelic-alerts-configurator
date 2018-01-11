@@ -1,6 +1,9 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.ocadotechnology.newrelic.apiclient.*;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.Mock;
@@ -21,11 +24,11 @@ public abstract class AbstractConfiguratorTest {
     @Mock
     AlertsPoliciesApi alertsPoliciesApiMock;
     @Mock
-    AlertsConditionsApi alertsConditionsApiMock;
+    PolicyItemApi<AlertsCondition> alertsConditionsApiMock;
     @Mock
-    AlertsNrqlConditionsApi alertsNrqlConditionsApiMock;
+    PolicyItemApi<AlertsNrqlCondition> alertsNrqlConditionsApiMock;
     @Mock
-    AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApiMock;
+    PolicyItemApi<AlertsExternalServiceCondition> alertsExternalServiceConditionsApiMock;
     @Mock
     KeyTransactionsApi keyTransactionsApiMock;
     @Mock

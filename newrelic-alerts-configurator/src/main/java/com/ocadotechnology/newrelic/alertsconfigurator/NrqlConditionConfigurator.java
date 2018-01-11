@@ -5,9 +5,9 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfi
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlUtils;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsUtils;
-import com.ocadotechnology.newrelic.apiclient.AlertsNrqlConditionsApi;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
 
+import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsNrqlCondition;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrq
     }
 
     @Override
-    protected AlertsNrqlConditionsApi getItemsApi() {
+    protected PolicyItemApi<AlertsNrqlCondition> getItemsApi() {
         return api.getAlertsNrqlConditionsApi();
     }
 
