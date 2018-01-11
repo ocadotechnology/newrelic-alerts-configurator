@@ -1,4 +1,4 @@
-package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql;
+package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,8 @@ import java.util.Collection;
  *     <li>{@link #runBookUrl} (optional)</li>
  *     <li>{@link #terms}</li>
  *     <li>{@link #valueFunction}</li>
- *     <li>{@link #nrql}</li>
+ *     <li>{@link #query}</li>
+ *     <li>{@link #sinceValue}</li>
  * </ul>
  */
 @Getter
@@ -49,10 +50,27 @@ public class NrqlCondition {
     @NonNull
     private ValueFunction valueFunction;
     /**
-     * Configuration for New Relic Query Language.
+     * This is NRQL query that will be executed by the condition.
      */
     @NonNull
-    private NrqlConfiguration nrql;
+    private String query;
+    /**
+     * This is the timeframe in which to evaluate the {@link #query}
+     */
+    @NonNull
+    private SinceValue sinceValue;
+
+    @Getter
+    @AllArgsConstructor
+    public enum SinceValue {
+        SINCE_1(1),
+        SINCE_2(2),
+        SINCE_3(3),
+        SINCE_4(4),
+        SINCE_5(5);
+
+        final int since;
+    }
 
     @Getter
     @AllArgsConstructor

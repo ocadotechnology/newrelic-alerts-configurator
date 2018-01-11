@@ -3,7 +3,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator.configuration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Channel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

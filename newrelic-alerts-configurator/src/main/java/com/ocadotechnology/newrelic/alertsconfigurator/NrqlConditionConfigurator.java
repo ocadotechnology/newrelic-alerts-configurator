@@ -1,12 +1,12 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlUtils;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsUtils;
 import com.ocadotechnology.newrelic.alertsconfigurator.exception.NewRelicSyncException;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.Nrql;
 import com.ocadotechnology.newrelic.apiclient.model.policies.AlertsPolicy;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +71,7 @@ public class NrqlConditionConfigurator {
     }
 
     private Optional<AlertsNrqlCondition> findAlertsConditionToUpdate(Collection<AlertsNrqlCondition> allAlertsConditions,
-                                                                  AlertsNrqlCondition alertConditionFromConfig) {
+                                                                      AlertsNrqlCondition alertConditionFromConfig) {
         return allAlertsConditions.stream()
                 .filter(alertCondition -> sameInstance(alertCondition, alertConditionFromConfig))
                 .findAny();
@@ -85,7 +85,7 @@ public class NrqlConditionConfigurator {
     }
 
     private AlertsNrqlCondition updateAlertsCondition(AlertsPolicy policy, AlertsNrqlCondition alertConditionFromConfig,
-                                                  AlertsNrqlCondition alertsConditionToUpdate) {
+                                                      AlertsNrqlCondition alertsConditionToUpdate) {
         AlertsNrqlCondition updatedCondition = api.getAlertsNrqlConditionsApi().update(
                 alertsConditionToUpdate.getId(), alertConditionFromConfig);
         LOG.info("NRQL alerts condition {} (id: {}) updated for policy {} (id: {})",
@@ -113,7 +113,10 @@ public class NrqlConditionConfigurator {
                 .runbookUrl(condition.getRunBookUrl())
                 .terms(TermsUtils.createNrqlTerms(condition.getTerms()))
                 .valueFunction(condition.getValueFunction().getValueString())
-                .nrql(NrqlUtils.createNrql(condition.getNrql()))
+                .nrql(Nrql.builder()
+                        .sinceValue(String.valueOf(condition.getSinceValue().getSince()))
+                        .query(condition.getQuery())
+                        .build())
                 .build();
     }
 

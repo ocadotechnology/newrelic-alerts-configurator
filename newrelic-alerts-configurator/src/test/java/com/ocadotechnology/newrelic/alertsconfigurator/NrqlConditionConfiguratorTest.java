@@ -2,8 +2,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.google.common.collect.ImmutableList;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
@@ -40,7 +39,8 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
     private static final boolean ENABLED = true;
     private static final NrqlTermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
     private static final NrqlCondition.ValueFunction VALUE_FUNCTION = NrqlCondition.ValueFunction.SINGLE_VALUE;
-    private static final NrqlConfiguration NRQL_CONFIGURATION = createNrqlConfiguration();
+    private static final NrqlCondition.SinceValue SINCE_VALUE = NrqlCondition.SinceValue.SINCE_1;
+    private static final String QUERY = "query";
 
     private static final NrqlCondition NRQL_CONDITION = createNrqlCondition(CONDITION_NAME);
     private static final AlertsNrqlCondition ALERTS_CONDITION_SAME = createConditionBuilder().id(1).build();
@@ -162,20 +162,14 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
                 .timeFunctionTerm(TimeFunctionTerm.ALL);
     }
 
-    private static NrqlConfiguration createNrqlConfiguration() {
-        return NrqlConfiguration.builder()
-                .sinceValue(NrqlConfiguration.SinceValue.SINCE_1)
-                .query("query")
-                .build();
-    }
-
     private static NrqlCondition createNrqlCondition(String conditionName) {
         return NrqlCondition.builder()
                 .conditionName(conditionName)
                 .enabled(ENABLED)
                 .term(TERMS_CONFIGURATION)
                 .valueFunction(VALUE_FUNCTION)
-                .nrql(NRQL_CONFIGURATION)
+                .query(QUERY)
+                .sinceValue(SINCE_VALUE)
                 .build();
     }
 
@@ -200,8 +194,8 @@ public class NrqlConditionConfiguratorTest extends AbstractConfiguratorTest {
                         .build())
                 .valueFunction(VALUE_FUNCTION.getValueString())
                 .nrql(Nrql.builder()
-                        .query(NRQL_CONFIGURATION.getQuery())
-                        .sinceValue(String.valueOf(NRQL_CONFIGURATION.getSinceValue().getSince()))
+                        .query(QUERY)
+                        .sinceValue(String.valueOf(SINCE_VALUE.getSince()))
                         .build());
     }
 }

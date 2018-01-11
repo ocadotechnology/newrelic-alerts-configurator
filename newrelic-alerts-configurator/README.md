@@ -12,7 +12,6 @@
         - [APM external service condition](#apm-external-service-condition)
     - [Alerts NRQL condition](#alerts-nrql-condition)
     - [User defined configuration](#user-defined-configuration)
-    - [NRQL configuration](#nrql-configuration)
     - [Term](#term)
     - [NRQL Term](#nrql-term)
     - [Notification channel](#notification-channel)
@@ -333,7 +332,13 @@ What you can set for NRQL condition:
 - value function - How condition should be evaluated. Possible values are:
     - single_value - the condition will be evaluated by the raw value returned.
     - sum - the condition will evaluate on the sum of the query results.
-- nrql - configuration for [nrql](#nrql-configuration).
+- query - Query in NRQL.
+- since value - The timeframe in which to evaulate the query. Possible values are:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
 
 Example NRQL condition configuration:
 
@@ -342,8 +347,9 @@ NrqlCondition.builder()
     .conditionName("Condition name")
     .enabled(true)
     .valueFunction(NrqlCondition.ValueFunction.SINGLE_VALUE)
-    .nrql(nrql)
     .term(term)
+    .query("SELECT count(*) FROM `myApp:HealthStatus` WHERE healthy IS false")
+    .sinceValue(NrqlCondition.SinceValue.SINCE_5)
     .build();
 ```
 
@@ -357,33 +363,6 @@ Example user defined configuration:
 UserDefinedConfiguration config = UserDefinedConfiguration.builder()
     .metric("MY_CUSTOM_METRIC")
     .valueFunction(UserDefinedConfiguration.ValueFunction.MAX)
-    .build();
-```
-
-### NRQL configuration
-
-NRQL configuration allows to configure NRQL query in alert NRQL definition.
-To create NRQL configuration use simple builder:
-
-```java
-NrqlConfiguration.builder()
-```
-
-What you can set in NRQL configuration:
-- query - Query in NRQL.
-- since value - The timeframe in which to evaulate the query. Possible values are:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    
-Example NRQL configuration:
-
-```java
-NrqlConfiguration.builder()
-    .query("SELECT count(*) FROM `myApp:HealthStatus` WHERE healthy IS false")
-    .sinceValue(NrqlConfiguration.SinceValue.SINCE_5)
     .build();
 ```
 
