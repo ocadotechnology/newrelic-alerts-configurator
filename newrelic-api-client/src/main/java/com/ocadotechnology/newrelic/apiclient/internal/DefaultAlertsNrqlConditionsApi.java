@@ -13,9 +13,9 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<AlertsNrqlCondition> {
 
-    private static final String NRQL_CONDITIONS_URL = "/v2/alerts_nrql_conditions";
-    private static final String NRQL_CONDITION_URL = "/v2/alerts_nrql_conditions/{condition_id}.json";
-    private static final String NRQL_CONDITION_POLICY_URL = "/v2/alerts_nrql_conditions/policies/{policy_id}.json";
+    private static final String CONDITIONS_URL = "/v2/alerts_nrql_conditions";
+    private static final String CONDITION_URL = "/v2/alerts_nrql_conditions/{condition_id}.json";
+    private static final String CONDITION_POLICY_URL = "/v2/alerts_nrql_conditions/policies/{policy_id}.json";
 
     DefaultAlertsNrqlConditionsApi(NewRelicClient client) {
         super(client);
@@ -24,29 +24,29 @@ class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<Al
     @Override
     public List<AlertsNrqlCondition> list(int policyId) {
         return getPageable(
-                client.target(NRQL_CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
+                client.target(CONDITIONS_URL).queryParam("policy_id", policyId).request(APPLICATION_JSON_TYPE),
                 AlertsNrqlConditionList.class)
                 .getList();
     }
 
     @Override
-    public AlertsNrqlCondition create(int policyId, AlertsNrqlCondition condition) {
+    public AlertsNrqlCondition create(int policyId, AlertsNrqlCondition nrqlCondition) {
         return client
-                .target(NRQL_CONDITION_POLICY_URL)
+                .target(CONDITION_POLICY_URL)
                 .resolveTemplate("policy_id", policyId)
                 .request(APPLICATION_JSON_TYPE)
-                .post(Entity.entity(new AlertsNrqlConditionWrapper(condition), APPLICATION_JSON_TYPE),
+                .post(Entity.entity(new AlertsNrqlConditionWrapper(nrqlCondition), APPLICATION_JSON_TYPE),
                         AlertsNrqlConditionWrapper.class)
                 .getNrqlCondition();
     }
 
     @Override
-    public AlertsNrqlCondition update(int conditionId, AlertsNrqlCondition condition) {
+    public AlertsNrqlCondition update(int conditionId, AlertsNrqlCondition nrqlCondition) {
         return client
-                .target(NRQL_CONDITION_URL)
+                .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)
                 .request(APPLICATION_JSON_TYPE)
-                .put(Entity.entity(new AlertsNrqlConditionWrapper(condition), APPLICATION_JSON_TYPE),
+                .put(Entity.entity(new AlertsNrqlConditionWrapper(nrqlCondition), APPLICATION_JSON_TYPE),
                         AlertsNrqlConditionWrapper.class)
                 .getNrqlCondition();
     }
@@ -54,7 +54,7 @@ class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<Al
     @Override
     public AlertsNrqlCondition delete(int conditionId) {
         return client
-                .target(NRQL_CONDITION_URL)
+                .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)
                 .request(APPLICATION_JSON_TYPE)
                 .delete(AlertsNrqlConditionWrapper.class)

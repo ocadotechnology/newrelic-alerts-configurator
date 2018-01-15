@@ -47,8 +47,8 @@ public class NewRelicInternalApi {
         alertsChannelsApi = new DefaultAlertsChannelsApi(client);
         alertsPoliciesApi = new DefaultAlertsPoliciesApi(client);
         alertsConditionsApi = new DefaultAlertsConditionsApi(client);
-        alertsNrqlConditionsApi = new DefaultAlertsNrqlConditionsApi(client);
         alertsExternalServiceConditionsApi = new DefaultAlertsExternalServiceConditionsApi(client);
+        alertsNrqlConditionsApi = new DefaultAlertsNrqlConditionsApi(client);
         keyTransactionsApi = new DefaultKeyTransactionsApi(client);
         deploymentsApi = new DefaultDeploymentsApi(client);
         serversApi = new DefaultServersApi(client);

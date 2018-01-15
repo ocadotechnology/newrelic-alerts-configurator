@@ -55,8 +55,8 @@ public class NewRelicApi {
         alertsChannelsApi = internalApi.getAlertsChannelsApi();
         alertsPoliciesApi = internalApi.getAlertsPoliciesApi();
         alertsConditionsApi = internalApi.getAlertsConditionsApi();
-        alertsNrqlConditionsApi = internalApi.getAlertsNrqlConditionsApi();
         alertsExternalServiceConditionsApi = internalApi.getAlertsExternalServiceConditionsApi();
+        alertsNrqlConditionsApi = internalApi.getAlertsNrqlConditionsApi();
         keyTransactionsApi = internalApi.getKeyTransactionsApi();
         deploymentsApi = internalApi.getDeploymentsApi();
         serversApi = internalApi.getServersApi();

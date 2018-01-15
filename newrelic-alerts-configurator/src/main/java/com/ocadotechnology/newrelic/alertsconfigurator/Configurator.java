@@ -45,22 +45,22 @@ public class Configurator {
         applicationConfigurator = new ApplicationConfigurator(api);
         policyConfigurator = new PolicyConfigurator(api);
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
-        nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
+        nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
         channelConfigurator = new ChannelConfigurator(api);
     }
 
     Configurator(ApplicationConfigurator applicationConfigurator,
                  PolicyConfigurator policyConfigurator,
                  ConditionConfigurator conditionConfigurator,
-                 NrqlConditionConfigurator nrqlConditionConfigurator,
                  ExternalServiceConditionConfigurator externalServiceConditionConfigurator,
+                 NrqlConditionConfigurator nrqlConditionConfigurator,
                  ChannelConfigurator channelConfigurator) {
         this.applicationConfigurator = applicationConfigurator;
         this.policyConfigurator = policyConfigurator;
         this.conditionConfigurator = conditionConfigurator;
-        this.nrqlConditionConfigurator = nrqlConditionConfigurator;
         this.externalServiceConditionConfigurator = externalServiceConditionConfigurator;
+        this.nrqlConditionConfigurator = nrqlConditionConfigurator;
         this.channelConfigurator = channelConfigurator;
     }
 
@@ -76,7 +76,6 @@ public class Configurator {
         for (PolicyConfiguration configuration : policyConfigurations) {
             policyConfigurator.sync(configuration);
             conditionConfigurator.sync(configuration);
-            nrqlConditionConfigurator.sync(configuration);
             externalServiceConditionConfigurator.sync(configuration);
             nrqlConditionConfigurator.sync(configuration);
             channelConfigurator.sync(configuration);
