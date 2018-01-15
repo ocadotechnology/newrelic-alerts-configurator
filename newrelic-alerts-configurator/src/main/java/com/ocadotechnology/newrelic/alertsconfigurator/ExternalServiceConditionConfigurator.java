@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Slf4j
 class ExternalServiceConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsExternalServiceCondition, ExternalServiceCondition> {
@@ -23,7 +24,7 @@ class ExternalServiceConditionConfigurator extends AbstractPolicyItemConfigurato
     }
 
     @Override
-    protected Collection<ExternalServiceCondition> getConfigItems(PolicyConfiguration config) {
+    protected Optional<Collection<ExternalServiceCondition>> getConfigItems(PolicyConfiguration config) {
         return config.getExternalServiceConditions();
     }
 

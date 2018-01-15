@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Slf4j
 class ConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsCondition, Condition> {
@@ -24,7 +25,7 @@ class ConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsConditi
     }
 
     @Override
-    protected Collection<Condition> getConfigItems(PolicyConfiguration config) {
+    protected Optional<Collection<Condition>> getConfigItems(PolicyConfiguration config) {
         return config.getConditions();
     }
 

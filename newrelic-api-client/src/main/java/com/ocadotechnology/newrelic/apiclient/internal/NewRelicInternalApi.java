@@ -3,7 +3,7 @@ package com.ocadotechnology.newrelic.apiclient.internal;
 import com.ocadotechnology.newrelic.apiclient.*;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
-import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import lombok.Getter;
 

@@ -2,7 +2,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.ocadotechnology.newrelic.apiclient.*;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
-import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import org.junit.Before;
 import org.junit.Rule;

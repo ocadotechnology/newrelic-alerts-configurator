@@ -2,18 +2,19 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlUtils;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsUtils;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
 
 import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
-import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.Nrql;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Slf4j
 class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrqlCondition, NrqlCondition> {
@@ -23,7 +24,7 @@ class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrq
     }
 
     @Override
-    protected Collection<NrqlCondition> getConfigItems(PolicyConfiguration config) {
+    protected Optional<Collection<NrqlCondition>> getConfigItems(PolicyConfiguration config) {
         return config.getNrqlConditions();
     }
 
@@ -33,14 +34,17 @@ class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrq
     }
 
     @Override
-    protected AlertsNrqlCondition convertFromConfigItem(NrqlCondition configItem) {
+    protected AlertsNrqlCondition convertFromConfigItem(NrqlCondition condition) {
         return AlertsNrqlCondition.builder()
-                .name(configItem.getConditionName())
-                .enabled(configItem.isEnabled())
-                .runbookUrl(configItem.getRunBookUrl())
-                .terms(TermsUtils.createTerms(configItem.getTerms()))
-                .valueFunction(configItem.getValueFunction().getAsString())
-                .nrql(NrqlUtils.mapNrql(configItem.getNrql()))
+                .name(condition.getConditionName())
+                .enabled(condition.isEnabled())
+                .runbookUrl(condition.getRunBookUrl())
+                .terms(TermsUtils.createNrqlTerms(condition.getTerms()))
+                .valueFunction(condition.getValueFunction().getValueString())
+                .nrql(Nrql.builder()
+                        .sinceValue(String.valueOf(condition.getSinceValue().getSince()))
+                        .query(condition.getQuery())
+                        .build())
                 .build();
     }
 

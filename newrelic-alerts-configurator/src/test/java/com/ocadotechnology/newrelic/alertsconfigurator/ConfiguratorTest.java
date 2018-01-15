@@ -50,7 +50,6 @@ public class ConfiguratorTest {
             conditionConfiguratorMock,
             nrqlConditionConfiguratorMock,
             externalServiceConditionConfiguratorMock,
-            nrqlConditionConfigurator,
             channelConfiguratorMock);
     }
 
@@ -130,7 +129,6 @@ public class ConfiguratorTest {
         order.verify(conditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(nrqlConditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(externalServiceConditionConfiguratorMock).sync(policyConfigurationMock);
-        order.verify(nrqlConditionConfigurator).sync(policyConfigurationMock);
         order.verify(channelConfiguratorMock).sync(policyConfigurationMock);
         order.verifyNoMoreInteractions();
     }

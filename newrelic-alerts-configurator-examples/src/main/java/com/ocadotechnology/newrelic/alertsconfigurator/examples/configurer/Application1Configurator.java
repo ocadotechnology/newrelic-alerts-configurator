@@ -38,7 +38,6 @@ public class Application1Configurator implements ApplicationConfigurator {
                 .condition(Defaults.apdexCondition(APPLICATION_NAME))
                 .condition(Defaults.diskSpaceCondition("app-1-host"))
                 .condition(Defaults.heapUsageCondition(APPLICATION_NAME))
-                .nrqlCondition(Defaults.nrqlCondition())
                 .channel(Defaults.teamEmailChannel())
                 .channel(Defaults.slackChannel())
                 .build();

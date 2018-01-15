@@ -17,10 +17,12 @@ import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public abstract class AbstractPolicyItemConfiguratorTest<T extends PolicyItemConfigurator, U extends PolicyItem> extends AbstractConfiguratorTest {
@@ -68,13 +70,33 @@ public abstract class AbstractPolicyItemConfiguratorTest<T extends PolicyItemCon
     }
 
     @Test
-    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+    public void shouldDoNothing_whenNullConditionsInConfiguration() {
+        PolicyItemApi<U> itemApiMock = getPolicyItemApiMock();
+
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+            .policyName(POLICY_NAME)
+            .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+            .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        verifyZeroInteractions(itemApiMock);
+    }
+
+    @Test
+    public void shouldDoNothing_whenEmptyConditionsInConfiguration() {
         PolicyItemApi<U> itemApiMock = getPolicyItemApiMock();
 
         // given
         PolicyConfiguration config = PolicyConfiguration.builder()
                 .policyName(POLICY_NAME)
                 .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+                .conditions(Collections.emptyList())
+                .nrqlConditions(Collections.emptyList())
+                .externalServiceConditions(Collections.emptyList())
                 .build();
 
         // when

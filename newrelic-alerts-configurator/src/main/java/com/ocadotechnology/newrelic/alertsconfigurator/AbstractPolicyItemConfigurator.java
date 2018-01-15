@@ -28,13 +28,18 @@ public abstract class AbstractPolicyItemConfigurator<T extends PolicyItem, U> im
 
     @Override
     public void sync(@NonNull PolicyConfiguration config) {
+        if (! getConfigItems(config).isPresent()) {
+            LOG.info("No items for policy {} - skipping...", config.getPolicyName());
+            return;
+        }
+
         LOG.info("Synchronizing items for policy {}...", config.getPolicyName());
 
         AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
                 () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
         List<T> allItems = getItemsApi().list(policy.getId());
-        List<Integer> updatedItemsIds = createOrUpdateAlertsNrqlConditions(policy, getConfigItems(config), allItems);
+        List<Integer> updatedItemsIds = createOrUpdateAlertsNrqlConditions(policy, getConfigItems(config).get(), allItems);
 
         cleanupOldItems(policy, allItems, updatedItemsIds);
         LOG.info("Items for policy {} synchronized", config.getPolicyName());
@@ -90,7 +95,7 @@ public abstract class AbstractPolicyItemConfigurator<T extends PolicyItem, U> im
                 .findAny();
     }
 
-    protected abstract Collection<U> getConfigItems(PolicyConfiguration config);
+    protected abstract Optional<Collection<U>> getConfigItems(PolicyConfiguration config);
 
     protected abstract T convertFromConfigItem(U configItem);
 
