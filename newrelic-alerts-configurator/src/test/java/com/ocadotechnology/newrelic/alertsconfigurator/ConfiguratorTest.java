@@ -31,6 +31,8 @@ public class ConfiguratorTest {
     @Mock
     private ExternalServiceConditionConfigurator externalServiceConditionConfiguratorMock;
     @Mock
+    private NrqlConditionConfigurator nrqlConditionConfigurator;
+    @Mock
     private ChannelConfigurator channelConfiguratorMock;
 
     @Mock
@@ -48,6 +50,7 @@ public class ConfiguratorTest {
             conditionConfiguratorMock,
             nrqlConditionConfiguratorMock,
             externalServiceConditionConfiguratorMock,
+            nrqlConditionConfigurator,
             channelConfiguratorMock);
     }
 
@@ -77,6 +80,7 @@ public class ConfiguratorTest {
             conditionConfiguratorMock,
             nrqlConditionConfiguratorMock,
             externalServiceConditionConfiguratorMock,
+            nrqlConditionConfigurator,
             channelConfiguratorMock);
         order.verifyNoMoreInteractions();
     }
@@ -98,6 +102,7 @@ public class ConfiguratorTest {
             conditionConfiguratorMock,
             nrqlConditionConfiguratorMock,
             externalServiceConditionConfiguratorMock,
+            nrqlConditionConfigurator,
             channelConfiguratorMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock2);
@@ -119,11 +124,13 @@ public class ConfiguratorTest {
             conditionConfiguratorMock,
             nrqlConditionConfiguratorMock,
             externalServiceConditionConfiguratorMock,
+            nrqlConditionConfigurator,
             channelConfiguratorMock);
         order.verify(policyConfiguratorMock).sync(policyConfigurationMock);
         order.verify(conditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(nrqlConditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(externalServiceConditionConfiguratorMock).sync(policyConfigurationMock);
+        order.verify(nrqlConditionConfigurator).sync(policyConfigurationMock);
         order.verify(channelConfiguratorMock).sync(policyConfigurationMock);
         order.verifyNoMoreInteractions();
     }

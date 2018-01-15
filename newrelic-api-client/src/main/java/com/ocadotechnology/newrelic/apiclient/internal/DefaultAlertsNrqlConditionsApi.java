@@ -4,7 +4,7 @@ import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsNrqlConditionList;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsNrqlConditionWrapper;
-import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 
 import javax.ws.rs.client.Entity;
 import java.util.List;

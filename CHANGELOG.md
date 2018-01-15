@@ -1,3 +1,11 @@
+# 3.0.0
+- Added support for NRQL conditions
+- Changed conditions and channels management logic. Changed default conditions state. Those are breaking changes - see details in 
+[Migration guide](MIGRATION.md)
+
+# 2.0.3 (06.12.2017)
+- Added support for JVM metrics conditions
+
 # 2.0.2 (20.09.2017)
 - Add violation_close_timer
 - Make incident preference required in policy configuration

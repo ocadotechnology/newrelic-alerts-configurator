@@ -7,11 +7,11 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Sla
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmAppCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmJvmCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ServersMetricCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.NrqlConfiguration;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.nrql.SinceValue;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
@@ -149,22 +149,20 @@ public final class Defaults {
                 .build();
     }
 
-    public static NrqlCondition nrqlCondition() {
+    public static NrqlCondition healthCheckCondition(String applicationName) {
         return NrqlCondition.builder()
-                .conditionName("Max transaction count")
+                .conditionName("Health Check")
                 .enabled(true)
-                .term(TermsConfiguration.builder()
-                        .durationTerm(DurationTerm.DURATION_10)
-                        .operatorTerm(OperatorTerm.ABOVE)
+                .valueFunction(NrqlCondition.ValueFunction.SINGLE_VALUE)
+                .term(NrqlTermsConfiguration.builder()
                         .priorityTerm(PriorityTerm.CRITICAL)
-                        .thresholdTerm(100f)
+                        .durationTerm(NrqlDurationTerm.DURATION_1)
                         .timeFunctionTerm(TimeFunctionTerm.ANY)
+                        .operatorTerm(OperatorTerm.ABOVE)
+                        .thresholdTerm(0f)
                         .build())
-                .valueFunction(NrqlCondition.ValueFunction.SUM)
-                .nrql(NrqlConfiguration.builder()
-                        .query("SELECT COUNT(*) FROM Transaction")
-                        .sinceValue(SinceValue.SINCE_1_MINUTE)
-                        .build())
+                .sinceValue(NrqlCondition.SinceValue.SINCE_5)
+                .query("SELECT count(*) FROM `" + applicationName + ":HealthStatus` WHERE healthy IS false")
                 .build();
     }
 

@@ -29,6 +29,7 @@ public class Configurator {
     private final ConditionConfigurator conditionConfigurator;
     private final NrqlConditionConfigurator nrqlConditionConfigurator;
     private final ExternalServiceConditionConfigurator externalServiceConditionConfigurator;
+    private final NrqlConditionConfigurator nrqlConditionConfigurator;
     private final ChannelConfigurator channelConfigurator;
 
 
@@ -47,6 +48,7 @@ public class Configurator {
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
         nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
+        nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
         channelConfigurator = new ChannelConfigurator(api);
     }
 
@@ -55,12 +57,14 @@ public class Configurator {
                  ConditionConfigurator conditionConfigurator,
                  NrqlConditionConfigurator nrqlConditionConfigurator,
                  ExternalServiceConditionConfigurator externalServiceConditionConfigurator,
+                 NrqlConditionConfigurator nrqlConditionConfigurator,
                  ChannelConfigurator channelConfigurator) {
         this.applicationConfigurator = applicationConfigurator;
         this.policyConfigurator = policyConfigurator;
         this.conditionConfigurator = conditionConfigurator;
         this.nrqlConditionConfigurator = nrqlConditionConfigurator;
         this.externalServiceConditionConfigurator = externalServiceConditionConfigurator;
+        this.nrqlConditionConfigurator = nrqlConditionConfigurator;
         this.channelConfigurator = channelConfigurator;
     }
 
@@ -78,6 +82,7 @@ public class Configurator {
             conditionConfigurator.sync(configuration);
             nrqlConditionConfigurator.sync(configuration);
             externalServiceConditionConfigurator.sync(configuration);
+            nrqlConditionConfigurator.sync(configuration);
             channelConfigurator.sync(configuration);
         }
     }

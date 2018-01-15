@@ -23,4 +23,18 @@ public final class TermsUtils {
             .timeFunction(termsConfiguration.getTimeFunctionTerm().name().toLowerCase())
             .build();
     }
+
+    public static Collection<Terms> createNrqlTerms(Collection<NrqlTermsConfiguration> termsConfigurations) {
+        return termsConfigurations.stream().map(TermsUtils::mapNrqlTerms).collect(Collectors.toList());
+    }
+
+    private static Terms mapNrqlTerms(NrqlTermsConfiguration termsConfiguration) {
+        return Terms.builder()
+                .duration(String.valueOf(termsConfiguration.getDurationTerm().getDuration()))
+                .operator(termsConfiguration.getOperatorTerm().name().toLowerCase())
+                .priority(termsConfiguration.getPriorityTerm().name().toLowerCase())
+                .threshold(String.valueOf(termsConfiguration.getThresholdTerm()))
+                .timeFunction(termsConfiguration.getTimeFunctionTerm().name().toLowerCase())
+                .build();
+    }
 }

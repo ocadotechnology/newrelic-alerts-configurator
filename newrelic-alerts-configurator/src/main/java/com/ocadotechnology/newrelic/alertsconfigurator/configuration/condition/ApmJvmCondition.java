@@ -32,9 +32,10 @@ public class ApmJvmCondition implements Condition {
     @NonNull
     private String conditionName;
     /**
-     * If your APM application metric condition is enabled. Default is false
+     * If your APM application metric condition is enabled. Default is true
      */
-    private boolean enabled;
+    @Builder.Default
+    private boolean enabled = true;
     /**
      * Collection of application names for which this condition is applied.
      * If application with given name does not exist exception will be thrown

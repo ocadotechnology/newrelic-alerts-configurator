@@ -25,12 +25,16 @@ class ChannelConfigurator {
     }
 
     void sync(@NonNull PolicyConfiguration config) {
+        if (!config.getChannels().isPresent()) {
+            LOG.info("No alerts channels for policy {} - skipping...", config.getPolicyName());
+            return;
+        }
         LOG.info("Synchronizing alerts channels for policy {}...", config.getPolicyName());
 
         AlertsPolicy policy = api.getAlertsPoliciesApi().getByName(config.getPolicyName()).orElseThrow(
             () -> new NewRelicSyncException(format("Policy %s does not exist", config.getPolicyName())));
 
-        Set<Integer> policyChannelsToCleanup = createOrUpdatePolicyAlertsChannels(policy, config.getChannels());
+        Set<Integer> policyChannelsToCleanup = createOrUpdatePolicyAlertsChannels(policy, config.getChannels().get());
         cleanupPolicyAlertsChannels(policy, policyChannelsToCleanup);
 
         LOG.info("Alerts channels for policy {} synchronized", config.getPolicyName());
