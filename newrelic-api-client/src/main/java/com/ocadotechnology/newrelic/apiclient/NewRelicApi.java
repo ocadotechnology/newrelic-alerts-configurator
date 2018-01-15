@@ -21,6 +21,8 @@ public class NewRelicApi {
 
     private final AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApi;
 
+    private final AlertsNrqlConditionsApi alertsNrqlConditionsApi;
+
     private final KeyTransactionsApi keyTransactionsApi;
 
     private final DeploymentsApi deploymentsApi;
@@ -51,6 +53,7 @@ public class NewRelicApi {
         alertsPoliciesApi = internalApi.getAlertsPoliciesApi();
         alertsConditionsApi = internalApi.getAlertsConditionsApi();
         alertsExternalServiceConditionsApi = internalApi.getAlertsExternalServiceConditionsApi();
+        alertsNrqlConditionsApi = internalApi.getAlertsNrqlConditionsApi();
         keyTransactionsApi = internalApi.getKeyTransactionsApi();
         deploymentsApi = internalApi.getDeploymentsApi();
         serversApi = internalApi.getServersApi();

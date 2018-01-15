@@ -97,7 +97,7 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
     }
 
     @Test
-    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+    public void shouldDoNothing_whenEmptyChannelsInConfiguration() {
         // given
         PolicyConfiguration policyConfiguration = buildPolicyConfiguration();
 
@@ -108,6 +108,21 @@ public class ChannelConfiguratorTest extends AbstractConfiguratorTest {
         InOrder order = inOrder(alertsChannelsApiMock);
         order.verify(alertsChannelsApiMock).list();
         order.verifyNoMoreInteractions();
+    }
+
+    @Test
+    public void shouldDoNothing_whenNullChannelsInConfiguration() {
+        // given
+        PolicyConfiguration policyConfiguration = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .incidentPreference(INCIDENT_PREFERENCE)
+                .build();
+
+        // when
+        testee.sync(policyConfiguration);
+
+        // then
+        verifyNoMoreInteractions(alertsChannelsApiMock);
     }
 
     @Test

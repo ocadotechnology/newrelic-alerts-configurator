@@ -10,14 +10,17 @@
         - [Server metric condition](#server-metric-condition)
     - [Alerts external service condition](#alerts-external-service-condition)
         - [APM external service condition](#apm-external-service-condition)
+    - [Alerts NRQL condition](#alerts-nrql-condition)
     - [User defined configuration](#user-defined-configuration)
     - [Term](#term)
+    - [NRQL Term](#nrql-term)
     - [Notification channel](#notification-channel)
         - [Email channel](#email-channel)
         - [Slack channel](#slack-channel)
         - [Webhook channel](#webhook-channel)
         - [PagerDuty channel](#pagerduty-channel)
         - [NewRelic user channel](#newrelic-user-channel)
+    - [Condition and Channel management policy](#condition-and-channel-management-policy)
 
 ## Configurator
 
@@ -76,11 +79,11 @@ What you can set in your configuration:
     - Per condition
     - Per condition and target
 - conditions (optional) - Collection of [alerts conditions](#alerts-condition) which needs to be configured for your alerts policy.
-  If no conditions are set, your alerts policy won't have any alerts conditions.
 - external service conditions (optional) - Collection of [alerts external service conditions](#alerts-external-service-condition)
-  which needs to be configured for your alerts policy. If no external service conditions are set, your alerts policy won't have any alerts external service conditions.
+  which needs to be configured for your alerts policy.
+- nrql conditions (optional) - Collection of [alerts NRQL conditions](#alerts-nrql-condition) which needs to be configured for 
+  your alerts policy.
 - channels (optional) - Collection of [alerts channels](#notification-channel) which needs to be configured for your alerts policy.
-  If no channels are set, your alerts policy won't have any alerts channels.
 
 If policy with given policy name exists - it will be updated.
 
@@ -95,6 +98,7 @@ PolicyConfiguration configuration = PolicyConfiguration.builder()
     .condition(apmAppCondition)
     .condition(apmKeyTransactionCondition)
     .externalServiceCondition(apmExternalServiceCondition)
+    .nrqlCondition(nrqlCondition)
     .channel(emailChannel)
     .channel(slackChannel)
     .build()
@@ -108,6 +112,8 @@ Currently supported types of alerts policy conditions are:
 - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
 - [Server metric condition](#server-metric-condition)
 
+Condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
+
 #### APM application metric condition
 
 To create APM application metric condition for your alerts policy use simple builder:
@@ -118,7 +124,7 @@ ApmAppCondition.builder()
 
 What you can set for APM application metric condition:
 - condition name - Name of your APM application metric condition.
-- enabled (optional) - If your APM application metric condition is enabled. Default is false.
+- enabled (optional) - If your APM application metric condition is enabled. Default is true.
 - applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - Apdex
@@ -166,7 +172,7 @@ ApmJvmCondition.builder()
 
 What you can set for APM JVM metric condition:
 - condition name - Name of your APM application metric condition.
-- enabled (optional) - If your APM application metric condition is enabled. Default is false.
+- enabled (optional) - If your APM application metric condition is enabled. Default is true.
 - applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - Deadlocked threads
@@ -206,7 +212,7 @@ ApmKeyTransactionCondition.builder()
 
 What you can set for APM key transaction metric condition:
 - condition name - Name of your APM key transaction metric condition.
-- enabled (optional) - If your APM key transaction metric condition is enabled. Default is false.
+- enabled (optional) - If your APM key transaction metric condition is enabled. Default is true.
 - keyTransactions - Collection of key transaction names for which this condition is applied. If key transaction with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - Apdex
@@ -241,7 +247,7 @@ ServersMetricCondition.builder()
 
 What you can set for server metric condition:
 - condition name - Name of your server metric condition.
-- enabled (optional) - If your server metric condition is enabled. Default is false.
+- enabled (optional) - If your server metric condition is enabled. Default is true.
 - servers - Collection of server names for which this condition is applied. If server with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - CPU percentage
@@ -271,6 +277,8 @@ Condition serverMetricCondition = ServerMetricCondition.builder()
 Currently supported types of alerts policy external service conditions are:
 - [APM external service condition](#apm-external-service-condition)
 
+External Service Condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
+
 #### APM external service condition
 
 To create APM external service condition for your alerts policy use simple builder:
@@ -281,7 +289,7 @@ ApmExternalServiceCondition.builder()
 
 What you can set for APM external service condition:
 - condition name - Name of your APM external service condition.
-- enabled (optional) - If your APM external service condition is enabled. Default is false.
+- enabled (optional) - If your APM external service condition is enabled. Default is true.
 - applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - Response time (average)
@@ -302,6 +310,45 @@ ExternalServiceCondition apmExternalServiceCondition = ApmExternalServiceConditi
     .externalServiceUrl("externalServiceUrl")
     .metric(ApmExternalServiceCondition.Metric.RESPONSE_TIME_AVERAGE)
     .term(term)
+    .build();
+```
+
+### Alerts NRQL condition
+
+NRQL Condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
+
+To create NRQL condition for your alerts policy use simple builder:
+
+```java
+NrqlCondition.builder()
+```
+
+What you can set for NRQL condition:
+- condition name - Name of your NRQL condition.
+- enabled (optional) - If your NRQL condition is enabled. Default is true.
+- run book url (optional) - The runbook URL to display in notifications.
+- terms - Collection of [NRQL terms](#nrql-term) used for alerts condition.
+- value function - How condition should be evaluated. Possible values are:
+    - single_value - the condition will be evaluated by the raw value returned.
+    - sum - the condition will evaluate on the sum of the query results.
+- query - Query in NRQL.
+- since value - The timeframe in which to evaulate the query. Possible values are:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+
+Example NRQL condition configuration:
+
+```java
+NrqlCondition.builder()
+    .conditionName("Condition name")
+    .enabled(true)
+    .valueFunction(NrqlCondition.ValueFunction.SINGLE_VALUE)
+    .term(term)
+    .query("SELECT count(*) FROM `myApp:HealthStatus` WHERE healthy IS false")
+    .sinceValue(NrqlCondition.SinceValue.SINCE_5)
     .build();
 ```
 
@@ -359,6 +406,51 @@ TermsConfiguration term = TermsConfiguration.builder()
     .build();
 ```
 
+### NRQL Term
+
+NRQL Terms are used in NRQL conditions.
+To create term configuration for condition use simple builder:
+
+```java
+NrqlTermsConfiguration.builder()
+```
+
+What you can set in term configuration:
+- duration - Time (in minutes) for the condition to persist before triggering an event. Possible values are:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 10
+    - 15
+    - 30
+    - 60
+    - 120
+- operator - Determines what comparison will be used between the monitored value and the threshold term value to trigger an event. Possible values are:
+    - Above
+    - Below
+    - Equal
+- priority - Severity level for given term in condition. Possible values are:
+    - Critical
+    - Warning
+- time function - Time function in which threshold term have to be reached in duration term to trigger an event. Possible values are:
+    - All (for whole time)
+    - Any (at least once in)
+- threshold - Threshold that the monitored value must be compared to using the operator term for an event to be triggered.
+
+Example term configuration:
+
+```java
+NrqlTermsConfiguration term = NrqlTermsConfiguration.builder()
+    .durationTerm(NrqlDurationTerm.DURATION_1)
+    .operatorTerm(OperatorTerm.BELOW)
+    .thresholdTerm(0.8f)
+    .priorityTerm(PriorityTerm.CRITICAL)
+    .timeFunctionTerm(TimeFunctionTerm.ALL)
+    .build();
+```
+
 ### Notification channel
 
 Currently supported types of alerts notification channels are:
@@ -368,11 +460,8 @@ Currently supported types of alerts notification channels are:
 - [PagerDuty channel](#pagerduty-channel)
 - [NewRelic user channel](#newrelic-user-channel)
 
-If notification channel with given name and type does exists - it will be updated
-
-If notification channel with given name and type does not exist - it will be created
-
-If you remove channel from your policy configuration, and it is not configured for any other policy - it will be deleted (except for NewRelic user channel).
+Channels creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
+Only exception is NewRelic user channel - we will not delete it.
 
 #### Email channel
 
@@ -484,3 +573,44 @@ Channel userChannel = UserChannel.builder()
     .userEmail("your-email-address@ocado.com")
     .build();
 ```
+
+#### Condition and Channel management policy
+
+All conditions and channels are managed in the same way.
+
+1. If you don't define any conditions in the policy, synchronization process will not modify already existing conditions.
+   Example:
+   ```java
+   PolicyConfiguration configuration = PolicyConfiguration.builder()
+       .policyName("Policy name")
+       .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+       .build()
+   ```
+   This configuration will not remove, create or update any existing condition.
+   
+1. If you define some conditions in the policy, then:
+    - conditions which are defined in configuration, but are missing will be created.
+    - conditions which are defined in configuration and already exist will be updated.
+    - conditions which are not defined in configuration, but already exist will be removed.
+   Example:
+   ```java
+   PolicyConfiguration configuration = PolicyConfiguration.builder()
+       .policyName("Policy name")
+       .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+       .condition(condition1)
+       .condition(condition2)
+       .build()
+   ```
+   This configuration will create/update condition1 and condition2, and will remove all other conditions.
+   
+1. If you define empty conditions list in the policy, then synchronization process will remove all existing conditions.
+   Example:
+   ```java
+   PolicyConfiguration configuration = PolicyConfiguration.builder()
+       .policyName("Policy name")
+       .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
+       .conditions(Collections.emptyList())
+       .build()
+   ```
+   This configuration will not create nor update any conditions, but will remove all existing ones.
+   

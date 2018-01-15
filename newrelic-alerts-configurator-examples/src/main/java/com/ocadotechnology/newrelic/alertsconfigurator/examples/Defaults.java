@@ -7,8 +7,11 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Sla
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmAppCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmJvmCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ServersMetricCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
@@ -143,6 +146,23 @@ public final class Defaults {
                         .build()
                 )
                 .violationCloseTimer(ViolationCloseTimer.DURATION_24)
+                .build();
+    }
+
+    public static NrqlCondition healthCheckCondition(String applicationName) {
+        return NrqlCondition.builder()
+                .conditionName("Health Check")
+                .enabled(true)
+                .valueFunction(NrqlCondition.ValueFunction.SINGLE_VALUE)
+                .term(NrqlTermsConfiguration.builder()
+                        .priorityTerm(PriorityTerm.CRITICAL)
+                        .durationTerm(NrqlDurationTerm.DURATION_1)
+                        .timeFunctionTerm(TimeFunctionTerm.ANY)
+                        .operatorTerm(OperatorTerm.ABOVE)
+                        .thresholdTerm(0f)
+                        .build())
+                .sinceValue(NrqlCondition.SinceValue.SINCE_5)
+                .query("SELECT count(*) FROM `" + applicationName + ":HealthStatus` WHERE healthy IS false")
                 .build();
     }
 

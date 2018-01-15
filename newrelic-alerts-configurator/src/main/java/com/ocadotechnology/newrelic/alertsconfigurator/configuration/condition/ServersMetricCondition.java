@@ -31,9 +31,10 @@ public class ServersMetricCondition implements Condition {
     @NonNull
     private String conditionName;
     /**
-     * If your servers metric condition is enabled. Default is false.
+     * If your servers metric condition is enabled. Default is true.
      */
-    private boolean enabled;
+    @Builder.Default
+    private boolean enabled = true;
     /**
      * Collection of server names for which this condition is applied.
      * If server with given name does not exist exception will be thrown.

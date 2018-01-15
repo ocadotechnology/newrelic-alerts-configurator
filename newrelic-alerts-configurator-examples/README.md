@@ -24,6 +24,9 @@ For **Application1** we need to additionally:
 - Raise critical alert if **disk space** on application host raises above `80%`
 - Send alert notifications to **email** `my-team@my-company.com`
 
+For **Application2** we need to additionally:
+- Raise critical alert if **HealthStatus** returns false. Health statuses are available in **Application2:HealthStatus** transactions.
+
 For **Application3** we need to additionally:
 - Raise warning alert if **cpu usage** on application host raised above `70%`
 - Raise critical alert if **cpu usage** on application host raised above `90%`

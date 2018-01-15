@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class ExternalServiceConditionConfiguratorTest extends AbstractConfiguratorTest {
@@ -84,12 +85,28 @@ public class ExternalServiceConditionConfiguratorTest extends AbstractConfigurat
     }
 
     @Test
-    public void shouldDoNothing_whenNoChannelsInConfiguration() {
+    public void shouldDoNothing_whenNullConditionsInConfiguration() {
         // given
         PolicyConfiguration config = PolicyConfiguration.builder()
             .policyName(POLICY_NAME)
             .incidentPreference(INCIDENT_PREFERENCE)
             .build();
+
+        // when
+        testee.sync(config);
+
+        // then
+        verifyZeroInteractions(alertsExternalServiceConditionsApiMock);
+    }
+
+    @Test
+    public void shouldDoNothing_whenEmptyConditionsInConfiguration() {
+        // given
+        PolicyConfiguration config = PolicyConfiguration.builder()
+                .policyName(POLICY_NAME)
+                .incidentPreference(INCIDENT_PREFERENCE)
+                .externalServiceConditions(Collections.emptyList())
+                .build();
 
         // when
         testee.sync(config);

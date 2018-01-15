@@ -15,6 +15,7 @@ import com.ocadotechnology.newrelic.alertsconfigurator.examples.Defaults;
  * <li> Raise warning alert if <b>apdex</b> falls below {@code 0.85} </li>
  * <li> Raise critical alert if <b>apdex</b> falls below {@code 0.7} </li>
  * <li> Send alert notification to <b>slack</b> to {@code newrelic-alerts} channel </li>
+ * <li> Raise critical alert if any <b>HealthStatus</b> returns false </li>
  *
  * </ul>
  */
@@ -34,6 +35,7 @@ public class Application2Configurator implements ApplicationConfigurator {
                 .incidentPreference(PolicyConfiguration.IncidentPreference.PER_POLICY)
                 .condition(Defaults.apdexCondition(APPLICATION_NAME))
                 .condition(Defaults.heapUsageCondition(APPLICATION_NAME))
+                .nrqlCondition(Defaults.healthCheckCondition(APPLICATION_NAME))
                 .channel(Defaults.slackChannel())
                 .build();
     }

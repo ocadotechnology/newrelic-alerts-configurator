@@ -34,7 +34,7 @@ public class ApmAppCondition implements Condition {
     @NonNull
     private String conditionName;
     /**
-     * If your APM application metric condition is enabled. Default is false
+     * If your APM application metric condition is enabled. Default is true
      */
     private boolean enabled;
     /**
@@ -109,6 +109,8 @@ public class ApmAppCondition implements Condition {
     }
 
     public static class ApmAppConditionBuilder {
+        private boolean enabled = true;
+
         public ApmAppCondition build() {
             validateViolationCloseTimer();
             return new ApmAppCondition(conditionName, enabled, applications, metric, conditionScope,
