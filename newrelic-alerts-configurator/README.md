@@ -178,6 +178,10 @@ What you can set for APM JVM metric condition:
     - Deadlocked threads
     - Heap memory usage
     - CPU utilization time
+    - Garbage collection CPU time
+- gc metric - Metric used to get GC CPU time. To use it metric has to be set to measure garbage collection CPU time. Possible values are:
+    - PS MarkSweep
+    - PS Scavenge   
 - run book url (optional) - The runbook URL to display in notifications.
 - terms - Collection of [terms](#term) used for alerts condition.
 - violation close timer - Duration (in hours) after which instance-based violations will automatically close.
@@ -196,7 +200,8 @@ Condition apmJvmCondition = ApmJvmCondition.builder()
     .conditionName("Condition name")
     .enabled(true)
     .application("Application name")
-    .metric(ApmJvmCondition.Metric.HEAP_MEMORY_USAGE)
+    .metric(ApmJvmCondition.Metric.GC_CPU_TIME)
+    .gcMetric(ApmJvmCondition.GcMetric.GC_MARK_SWEEP)
     .term(term)
     .violationCloseTimer(ViolationCloseTimer.DURATION_24)
     .build();
