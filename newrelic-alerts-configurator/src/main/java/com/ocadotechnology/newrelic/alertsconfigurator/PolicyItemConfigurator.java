@@ -3,6 +3,6 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import lombok.NonNull;
 
-public interface PolicyItemConfigurator {
+interface PolicyItemConfigurator {
     void sync(@NonNull PolicyConfiguration config);
 }

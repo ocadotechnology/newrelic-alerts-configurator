@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 
 @Slf4j
-public abstract class AbstractPolicyItemConfigurator<T extends PolicyItem, U> implements PolicyItemConfigurator {
+abstract class AbstractPolicyItemConfigurator<T extends PolicyItem, U> implements PolicyItemConfigurator {
 
     protected final NewRelicApi api;
 
