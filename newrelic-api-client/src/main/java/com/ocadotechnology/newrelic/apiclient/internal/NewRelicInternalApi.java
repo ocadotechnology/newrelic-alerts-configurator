@@ -1,16 +1,10 @@
 package com.ocadotechnology.newrelic.apiclient.internal;
 
-import com.ocadotechnology.newrelic.apiclient.AlertsChannelsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsConditionsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsExternalServiceConditionsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsNrqlConditionsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsPoliciesApi;
-import com.ocadotechnology.newrelic.apiclient.ApplicationsApi;
-import com.ocadotechnology.newrelic.apiclient.DeploymentsApi;
-import com.ocadotechnology.newrelic.apiclient.KeyTransactionsApi;
-import com.ocadotechnology.newrelic.apiclient.ServersApi;
-import com.ocadotechnology.newrelic.apiclient.UsersApi;
+import com.ocadotechnology.newrelic.apiclient.*;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import lombok.Getter;
 
 /**
@@ -27,11 +21,11 @@ public class NewRelicInternalApi {
 
     private final AlertsPoliciesApi alertsPoliciesApi;
 
-    private final AlertsConditionsApi alertsConditionsApi;
+    private final PolicyItemApi<AlertsCondition> alertsConditionsApi;
 
-    private final AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApi;
+    private final PolicyItemApi<AlertsNrqlCondition> alertsNrqlConditionsApi;
 
-    private final AlertsNrqlConditionsApi alertsNrqlConditionsApi;
+    private final PolicyItemApi<AlertsExternalServiceCondition> alertsExternalServiceConditionsApi;
 
     private final KeyTransactionsApi keyTransactionsApi;
 

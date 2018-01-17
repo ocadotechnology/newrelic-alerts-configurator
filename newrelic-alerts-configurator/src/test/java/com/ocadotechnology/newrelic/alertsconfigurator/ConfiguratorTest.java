@@ -29,7 +29,7 @@ public class ConfiguratorTest {
     @Mock
     private ExternalServiceConditionConfigurator externalServiceConditionConfiguratorMock;
     @Mock
-    private NrqlConditionConfigurator nrqlConditionConfigurator;
+    private NrqlConditionConfigurator nrqlConditionConfiguratorMock;
     @Mock
     private ChannelConfigurator channelConfiguratorMock;
 
@@ -47,7 +47,7 @@ public class ConfiguratorTest {
             policyConfiguratorMock,
             conditionConfiguratorMock,
             externalServiceConditionConfiguratorMock,
-            nrqlConditionConfigurator,
+            nrqlConditionConfiguratorMock,
             channelConfiguratorMock);
     }
 
@@ -73,11 +73,11 @@ public class ConfiguratorTest {
 
         // then
         InOrder order = inOrder(applicationConfiguratorMock,
-            policyConfiguratorMock,
-            conditionConfiguratorMock,
-            externalServiceConditionConfiguratorMock,
-            nrqlConditionConfigurator,
-            channelConfiguratorMock);
+                policyConfiguratorMock,
+                conditionConfiguratorMock,
+                externalServiceConditionConfiguratorMock,
+                nrqlConditionConfiguratorMock,
+                channelConfiguratorMock);
         order.verifyNoMoreInteractions();
     }
 
@@ -94,11 +94,11 @@ public class ConfiguratorTest {
 
         // then
         InOrder order = inOrder(applicationConfiguratorMock,
-            policyConfiguratorMock,
-            conditionConfiguratorMock,
-            externalServiceConditionConfiguratorMock,
-            nrqlConditionConfigurator,
-            channelConfiguratorMock);
+                policyConfiguratorMock,
+                conditionConfiguratorMock,
+                externalServiceConditionConfiguratorMock,
+                nrqlConditionConfiguratorMock,
+                channelConfiguratorMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock2);
         order.verify(policyConfiguratorMock).sync(policyConfigurationMock);
@@ -115,15 +115,15 @@ public class ConfiguratorTest {
 
         // then
         InOrder order = inOrder(applicationConfiguratorMock,
-            policyConfiguratorMock,
-            conditionConfiguratorMock,
-            externalServiceConditionConfiguratorMock,
-            nrqlConditionConfigurator,
-            channelConfiguratorMock);
+                policyConfiguratorMock,
+                conditionConfiguratorMock,
+                externalServiceConditionConfiguratorMock,
+                nrqlConditionConfiguratorMock,
+                channelConfiguratorMock);
         order.verify(policyConfiguratorMock).sync(policyConfigurationMock);
         order.verify(conditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(externalServiceConditionConfiguratorMock).sync(policyConfigurationMock);
-        order.verify(nrqlConditionConfigurator).sync(policyConfigurationMock);
+        order.verify(nrqlConditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(channelConfiguratorMock).sync(policyConfigurationMock);
         order.verifyNoMoreInteractions();
     }

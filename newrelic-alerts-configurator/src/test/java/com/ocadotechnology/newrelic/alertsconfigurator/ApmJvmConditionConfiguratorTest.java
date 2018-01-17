@@ -76,7 +76,8 @@ public class ApmJvmConditionConfiguratorTest extends AbstractConfiguratorTest {
         assertThat(result.getName()).isEqualTo(CONDITION_NAME);
         assertThat(result.getEnabled()).isEqualTo(true);
         assertThat(result.getEntities()).containsExactly(APPLICATION_ENTITY_ID);
-        assertThat(result.getMetric()).isEqualTo("heap_memory_usage");
+        assertThat(result.getMetric()).isEqualTo("gc_cpu_time");
+        assertThat(result.getGcMetric()).isEqualTo("GC/PS MarkSweep");
         assertThat(result.getTerms())
                 .extracting("duration", "operator", "priority", "threshold", "timeFunction")
                 .containsExactly(new Tuple("5", "above", "critical", "85.0", "all"));
@@ -105,8 +106,9 @@ public class ApmJvmConditionConfiguratorTest extends AbstractConfiguratorTest {
                 .enabled(ENABLED)
                 .application(APPLICATION_NAME)
                 .term(TERMS_CONFIGURATION)
-                .metric(ApmJvmCondition.Metric.HEAP_MEMORY_USAGE)
                 .violationCloseTimer(ViolationCloseTimer.DURATION_24)
+                .metric(ApmJvmCondition.Metric.GC_CPU_TIME)
+                .gcMetric(ApmJvmCondition.GcMetric.GC_MARK_SWEEP)
                 .build();
     }
 }

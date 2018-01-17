@@ -1,6 +1,6 @@
 package com.ocadotechnology.newrelic.apiclient.internal;
 
-import com.ocadotechnology.newrelic.apiclient.AlertsNrqlConditionsApi;
+import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsNrqlConditionList;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsNrqlConditionWrapper;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-public class DefaultAlertsNrqlConditionsApi extends ApiBase implements AlertsNrqlConditionsApi {
+class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<AlertsNrqlCondition> {
 
     private static final String CONDITIONS_URL = "/v2/alerts_nrql_conditions";
     private static final String CONDITION_URL = "/v2/alerts_nrql_conditions/{condition_id}.json";
@@ -36,7 +36,7 @@ public class DefaultAlertsNrqlConditionsApi extends ApiBase implements AlertsNrq
                 .resolveTemplate("policy_id", policyId)
                 .request(APPLICATION_JSON_TYPE)
                 .post(Entity.entity(new AlertsNrqlConditionWrapper(nrqlCondition), APPLICATION_JSON_TYPE),
-                         AlertsNrqlConditionWrapper.class)
+                        AlertsNrqlConditionWrapper.class)
                 .getNrqlCondition();
     }
 

@@ -1,15 +1,9 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
-import com.ocadotechnology.newrelic.apiclient.AlertsChannelsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsConditionsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsExternalServiceConditionsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsNrqlConditionsApi;
-import com.ocadotechnology.newrelic.apiclient.AlertsPoliciesApi;
-import com.ocadotechnology.newrelic.apiclient.ApplicationsApi;
-import com.ocadotechnology.newrelic.apiclient.KeyTransactionsApi;
-import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
-import com.ocadotechnology.newrelic.apiclient.ServersApi;
-import com.ocadotechnology.newrelic.apiclient.UsersApi;
+import com.ocadotechnology.newrelic.apiclient.*;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.Mock;
@@ -30,11 +24,11 @@ public abstract class AbstractConfiguratorTest {
     @Mock
     AlertsPoliciesApi alertsPoliciesApiMock;
     @Mock
-    AlertsConditionsApi alertsConditionsApiMock;
+    PolicyItemApi<AlertsCondition> alertsConditionsApiMock;
     @Mock
-    AlertsExternalServiceConditionsApi alertsExternalServiceConditionsApiMock;
+    PolicyItemApi<AlertsNrqlCondition> alertsNrqlConditionsApiMock;
     @Mock
-    AlertsNrqlConditionsApi alertsNrqlConditionsApiMock;
+    PolicyItemApi<AlertsExternalServiceCondition> alertsExternalServiceConditionsApiMock;
     @Mock
     KeyTransactionsApi keyTransactionsApiMock;
     @Mock
@@ -48,8 +42,8 @@ public abstract class AbstractConfiguratorTest {
         when(apiMock.getAlertsChannelsApi()).thenReturn(alertsChannelsApiMock);
         when(apiMock.getAlertsPoliciesApi()).thenReturn(alertsPoliciesApiMock);
         when(apiMock.getAlertsConditionsApi()).thenReturn(alertsConditionsApiMock);
-        when(apiMock.getAlertsExternalServiceConditionsApi()).thenReturn(alertsExternalServiceConditionsApiMock);
         when(apiMock.getAlertsNrqlConditionsApi()).thenReturn(alertsNrqlConditionsApiMock);
+        when(apiMock.getAlertsExternalServiceConditionsApi()).thenReturn(alertsExternalServiceConditionsApiMock);
         when(apiMock.getKeyTransactionsApi()).thenReturn(keyTransactionsApiMock);
         when(apiMock.getServersApi()).thenReturn(serversApiMock);
         when(apiMock.getUsersApi()).thenReturn(usersApiMock);

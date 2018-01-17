@@ -1,6 +1,6 @@
 package com.ocadotechnology.newrelic.apiclient.internal;
 
-import com.ocadotechnology.newrelic.apiclient.AlertsExternalServiceConditionsApi;
+import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsExternalServiceConditionList;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsExternalServiceConditionWrapper;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements AlertsExternalServiceConditionsApi {
+class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements PolicyItemApi<AlertsExternalServiceCondition> {
 
     private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
     private static final String CONDITION_URL = "/v2/alerts_external_service_conditions/{condition_id}.json";

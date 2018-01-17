@@ -1,6 +1,7 @@
 package com.ocadotechnology.newrelic.apiclient.model.conditions.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ocadotechnology.newrelic.apiclient.model.PolicyItem;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.Terms;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.Collection;
 @Value
 @Builder
 @AllArgsConstructor
-public class AlertsExternalServiceCondition {
+public class AlertsExternalServiceCondition implements PolicyItem {
     @JsonProperty
     Integer id;
     @JsonProperty
