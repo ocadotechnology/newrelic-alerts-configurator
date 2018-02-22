@@ -1,5 +1,5 @@
 # 3.1.0 (23.02.2018)
-- Added support New Relic Browser conditions 
+- Added support for New Relic Browser conditions 
 
 # 3.0.0 (17.01.2018)
 - Added support for NRQL conditions
