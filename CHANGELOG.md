@@ -1,3 +1,6 @@
+# 3.1.0 (23.02.2018)
+- Added support New Relic Browser conditions 
+
 # 3.0.0 (17.01.2018)
 - Added support for NRQL conditions
 - Changed conditions and channels management logic. Changed default conditions state. Those are breaking changes - see details in 

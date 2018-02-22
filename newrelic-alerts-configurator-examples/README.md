@@ -26,6 +26,7 @@ For **Application1** we need to additionally:
 
 For **Application2** we need to additionally:
 - Raise critical alert if **HealthStatus** returns false. Health statuses are available in **Application2:HealthStatus** transactions.
+- Raise warning alert if there are above 1% page views with JS error within 5 min
 
 For **Application3** we need to additionally:
 - Raise warning alert if **cpu usage** on application host raised above `70%`

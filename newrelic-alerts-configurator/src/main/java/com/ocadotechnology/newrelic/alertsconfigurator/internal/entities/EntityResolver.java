@@ -44,6 +44,7 @@ public abstract class EntityResolver {
             providers.put(ConditionType.SERVERS_METRIC.getTypeString(), new ServerIdProvider());
             providers.put(ExternalServiceConditionType.APM.getTypeString(), new ApplicationIdProvider());
             providers.put(ConditionType.APM_JVM.getTypeString(), new ApplicationIdProvider());
+            providers.put(ConditionType.BROWSER_METRIC.getTypeString(), new ApplicationIdProvider());
         }
 
         @Override

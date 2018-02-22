@@ -5,6 +5,7 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Cha
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.EmailChannel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.SlackChannel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmAppCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.BrowserCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmJvmCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
@@ -163,6 +164,23 @@ public final class Defaults {
                         .build())
                 .sinceValue(NrqlCondition.SinceValue.SINCE_5)
                 .query("SELECT count(*) FROM `" + applicationName + ":HealthStatus` WHERE healthy IS false")
+                .build();
+    }
+
+    public static BrowserCondition jsErrorsCondition(String applicationName) {
+        return BrowserCondition.builder()
+                .conditionName("Page views with JS errors")
+                .enabled(true)
+                .application(applicationName)
+                .metric(BrowserCondition.Metric.PAGE_VIEWS_WITH_JS_ERRORS)
+                .term(TermsConfiguration.builder()
+                    .durationTerm(DurationTerm.DURATION_5)
+                    .operatorTerm(OperatorTerm.ABOVE)
+                    .priorityTerm(PriorityTerm.WARNING)
+                    .thresholdTerm(1f)
+                    .timeFunctionTerm(TimeFunctionTerm.ANY)
+                    .build()
+                )
                 .build();
     }
 
