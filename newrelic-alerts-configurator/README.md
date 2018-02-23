@@ -290,6 +290,7 @@ BrowserCondition.builder()
 What you can set for New Relic Browser metric condition:
 - condition name - Name of your New Relic Browser metric condition
 - enabled (optional) - If your New Relic Browser metric condition is enabled. Default is true.
+- applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
 - metric - Metric used in given condition. Possible values are:
     - End user Apdex
     - Total page load

@@ -80,14 +80,4 @@ public class BrowserCondition implements Condition {
         END_USER_APDEX, TOTAL_PAGE_LOAD, PAGE_RENDERING, WEB_APPLICATION, NETWORK, DOM_PROCESSING, REQUEST_QUEUING,
         AJAX_RESPONSE_TIME, PAGE_VIEWS_WITH_JS_ERRORS, PAGE_VIEW_THROUGHPUT, AJAX_THROUGHPUT, USER_DEFINED
     }
-
-    public static class BrowserConditionBuilder {
-        private boolean enabled = true;
-
-        public BrowserCondition build() {
-            return new BrowserCondition(conditionName, enabled, applications, metric,
-                    runBookUrl, terms, userDefinedConfiguration);
-        }
-    }
-
 }

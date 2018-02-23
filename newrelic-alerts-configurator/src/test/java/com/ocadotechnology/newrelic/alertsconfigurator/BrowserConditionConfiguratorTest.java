@@ -42,7 +42,7 @@ public class BrowserConditionConfiguratorTest extends AbstractConfiguratorTest {
 
     private static final AlertsPolicy POLICY = AlertsPolicy.builder().id(42).name(POLICY_NAME).build();
     private static final TermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
-    private static final Condition APP_CONDITION = createAppCondition(CONDITION_NAME);
+    private static final Condition APP_CONDITION = createBrowserCondition(CONDITION_NAME);
     private static final PolicyConfiguration CONFIGURATION = createConfiguration();
 
     @Captor
@@ -98,7 +98,7 @@ public class BrowserConditionConfiguratorTest extends AbstractConfiguratorTest {
             .thresholdTerm(1f);
     }
 
-    private static BrowserCondition createAppCondition(String conditionName) {
+    private static BrowserCondition createBrowserCondition(String conditionName) {
         return BrowserCondition.builder()
             .conditionName(conditionName)
             .enabled(ENABLED)
