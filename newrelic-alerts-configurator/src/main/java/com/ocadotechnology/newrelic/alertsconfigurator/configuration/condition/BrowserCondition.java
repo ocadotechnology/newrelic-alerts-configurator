@@ -33,7 +33,8 @@ public class BrowserCondition implements Condition {
     /**
      * If your New Relic Browser metric condition is enabled. Default is true
      */
-    private boolean enabled;
+    @Builder.Default
+    private boolean enabled = true;
     /**
      * Collection of application names for which this condition is applied.
      * If application with given name does not exist exception will be thrown
