@@ -8,6 +8,7 @@
         - [APM JVM metric condition](#apm-jvm-metric-condition)
         - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
         - [Server metric condition](#server-metric-condition)
+        - [New Relic Browser metric condition](#new-relic-browser-metric-condition)
     - [Alerts external service condition](#alerts-external-service-condition)
         - [APM external service condition](#apm-external-service-condition)
     - [Alerts NRQL condition](#alerts-nrql-condition)
@@ -111,6 +112,7 @@ Currently supported types of alerts policy conditions are:
 - [APM JVM metric condition](#apm-jvm-metric-condition)
 - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
 - [Server metric condition](#server-metric-condition)
+- [New Relic Browser metric condition](#new-relic-browser-metric-condition)
 
 Condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
 
@@ -276,6 +278,49 @@ Condition serverMetricCondition = ServerMetricCondition.builder()
     .term(term)
     .build();
 ```
+
+#### New Relic Browser metric condition
+
+To create New Relic Browser metric condition for your alerts policy use simple builder:
+
+```java
+BrowserCondition.builder()
+```
+
+What you can set for New Relic Browser metric condition:
+- condition name - Name of your New Relic Browser metric condition
+- enabled (optional) - If your New Relic Browser metric condition is enabled. Default is true.
+- applications - Collection of application names for which this condition is applied. If application with given name does not exist exception will be thrown.
+- metric - Metric used in given condition. Possible values are:
+    - End user Apdex
+    - Total page load
+    - Page rendering
+    - Web application
+    - Network
+    - DOM processing
+    - Request queuing
+    - AJAX response time
+    - Page views with JS errors
+    - Page view throughput
+    - AJAX throughput
+    - User defined
+- run book url (optional) - The runbook URL to display in notifications.
+- terms - Collection of [terms](#term) used for alerts condition.
+- user defined configuration - configuration for [user defined metric](#user-defined-configuration).
+
+Example New Relic Browser metric condition configuration:
+
+```java
+Condition browserCondition = BrowserCondition.builder()
+	.conditionName("Page views with JS errors")
+	.enabled(true)
+	.application("Application name")
+	.metric(BrowserCondition.Metric.PAGE_VIEWS_WITH_JS_ERRORS)
+	.term(term)
+	.build();
+```
+
+**Please note New Relic Browser agent has to be installed.** 
 
 ### Alerts external service condition
 
