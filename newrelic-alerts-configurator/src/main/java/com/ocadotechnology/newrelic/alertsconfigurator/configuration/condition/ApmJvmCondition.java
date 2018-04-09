@@ -95,7 +95,9 @@ public class ApmJvmCondition implements Condition {
 
     public enum GcMetric {
         GC_MARK_SWEEP("GC/PS MarkSweep"),
-        GC_SCAVENGE("GC/PS Scavenge");
+        GC_SCAVENGE("GC/PS Scavenge"),
+        GC_PAR_NEW("GC/ParNew"),
+        GC_CONCURRENT_MARK_SWEEP("GC/ConcurrentMarkSweep");
 
         private String metricData;
 

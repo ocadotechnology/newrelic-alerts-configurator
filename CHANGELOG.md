@@ -1,3 +1,5 @@
+- Added new GcMetric `GC/ParNew` and `GC/ConcurrentMarkSweep` 
+
 # 3.1.0 (23.02.2018)
 - Added support for New Relic Browser conditions 
 
