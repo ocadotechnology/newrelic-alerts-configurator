@@ -183,7 +183,9 @@ What you can set for APM JVM metric condition:
     - Garbage collection CPU time
 - gc metric - Metric used to get GC CPU time. To use it metric has to be set to measure garbage collection CPU time. Possible values are:
     - PS MarkSweep
-    - PS Scavenge   
+    - PS Scavenge
+    - ParNew
+    - ConcurrentMarkSweep
 - run book url (optional) - The runbook URL to display in notifications.
 - terms - Collection of [terms](#term) used for alerts condition.
 - violation close timer - Duration (in hours) after which instance-based violations will automatically close.
