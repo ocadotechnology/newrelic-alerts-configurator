@@ -1,3 +1,4 @@
+# 3.2.0 (09.04.2018)
 - Added new GcMetric `GC/ParNew` and `GC/ConcurrentMarkSweep` 
 
 # 3.1.0 (23.02.2018)
