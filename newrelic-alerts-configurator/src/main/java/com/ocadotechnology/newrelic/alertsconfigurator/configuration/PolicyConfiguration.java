@@ -4,6 +4,8 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Cha
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.SyntheticsCondition;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -62,6 +64,11 @@ public class PolicyConfiguration {
      */
     @Singular
     private Collection<NrqlCondition> nrqlConditions;
+    /**
+     * Collection of {@link SyntheticsCondition} configurations
+     */
+    @Singular
+    private Collection<SyntheticsCondition> syntheticsConditions;
 
     public enum IncidentPreference {
         PER_POLICY, PER_CONDITION, PER_CONDITION_AND_TARGET
@@ -83,6 +90,10 @@ public class PolicyConfiguration {
         return Optional.ofNullable(nrqlConditions);
     }
 
+    public Optional<Collection<SyntheticsCondition>> getSyntheticsConditions() {
+        return Optional.ofNullable(syntheticsConditions);
+    }
+
     public static class PolicyConfigurationBuilder {
         public void doNotModifyExistingConditions() {
             this.conditions = null;
@@ -96,6 +107,10 @@ public class PolicyConfiguration {
             this.nrqlConditions = null;
         }
 
+        public void doNotModifyExistingSyntheticsConditions() {
+            this.syntheticsConditions = null;
+        }
+
         public PolicyConfiguration build() {
             return new PolicyConfiguration(
                     policyName,
@@ -103,7 +118,8 @@ public class PolicyConfiguration {
                     normalizeNullableList(this.channels),
                     normalizeNullableList(this.conditions),
                     normalizeNullableList(this.externalServiceConditions),
-                    normalizeNullableList(this.nrqlConditions));
+                    normalizeNullableList(this.nrqlConditions),
+                    normalizeNullableList(this.syntheticsConditions));
         }
 
         private static <T> Collection<T> normalizeNullableList(List<T> list) {

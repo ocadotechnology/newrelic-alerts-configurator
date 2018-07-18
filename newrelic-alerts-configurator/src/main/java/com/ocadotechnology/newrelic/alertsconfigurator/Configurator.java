@@ -29,6 +29,7 @@ public class Configurator {
     private final ConditionConfigurator conditionConfigurator;
     private final ExternalServiceConditionConfigurator externalServiceConditionConfigurator;
     private final NrqlConditionConfigurator nrqlConditionConfigurator;
+    private final SyntheticsConditionConfigurator syntheticsConditionConfigurator;
     private final ChannelConfigurator channelConfigurator;
 
 
@@ -47,6 +48,7 @@ public class Configurator {
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
         nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
+        syntheticsConditionConfigurator = new SyntheticsConditionConfigurator(api);
         channelConfigurator = new ChannelConfigurator(api);
     }
 
@@ -55,12 +57,14 @@ public class Configurator {
                  ConditionConfigurator conditionConfigurator,
                  ExternalServiceConditionConfigurator externalServiceConditionConfigurator,
                  NrqlConditionConfigurator nrqlConditionConfigurator,
+                 SyntheticsConditionConfigurator syntheticsConditionConfigurator,
                  ChannelConfigurator channelConfigurator) {
         this.applicationConfigurator = applicationConfigurator;
         this.policyConfigurator = policyConfigurator;
         this.conditionConfigurator = conditionConfigurator;
         this.externalServiceConditionConfigurator = externalServiceConditionConfigurator;
         this.nrqlConditionConfigurator = nrqlConditionConfigurator;
+        this.syntheticsConditionConfigurator = syntheticsConditionConfigurator;
         this.channelConfigurator = channelConfigurator;
     }
 
@@ -78,6 +82,7 @@ public class Configurator {
             conditionConfigurator.sync(configuration);
             externalServiceConditionConfigurator.sync(configuration);
             nrqlConditionConfigurator.sync(configuration);
+            syntheticsConditionConfigurator.sync(configuration);
             channelConfigurator.sync(configuration);
         }
     }

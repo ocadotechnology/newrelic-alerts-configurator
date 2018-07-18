@@ -1,8 +1,8 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
-import com.google.common.collect.ImmutableList;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,8 +12,9 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
+import com.google.common.collect.ImmutableList;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfiguratorTest {
@@ -30,6 +31,8 @@ public class ConfiguratorTest {
     private ExternalServiceConditionConfigurator externalServiceConditionConfiguratorMock;
     @Mock
     private NrqlConditionConfigurator nrqlConditionConfiguratorMock;
+    @Mock
+    private SyntheticsConditionConfigurator syntheticsConditionConfiguratorMock;
     @Mock
     private ChannelConfigurator channelConfiguratorMock;
 
@@ -48,6 +51,7 @@ public class ConfiguratorTest {
             conditionConfiguratorMock,
             externalServiceConditionConfiguratorMock,
             nrqlConditionConfiguratorMock,
+            syntheticsConditionConfiguratorMock,
             channelConfiguratorMock);
     }
 
@@ -77,6 +81,7 @@ public class ConfiguratorTest {
                 conditionConfiguratorMock,
                 externalServiceConditionConfiguratorMock,
                 nrqlConditionConfiguratorMock,
+                syntheticsConditionConfiguratorMock,
                 channelConfiguratorMock);
         order.verifyNoMoreInteractions();
     }
@@ -98,6 +103,7 @@ public class ConfiguratorTest {
                 conditionConfiguratorMock,
                 externalServiceConditionConfiguratorMock,
                 nrqlConditionConfiguratorMock,
+                syntheticsConditionConfiguratorMock,
                 channelConfiguratorMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock2);
@@ -119,11 +125,13 @@ public class ConfiguratorTest {
                 conditionConfiguratorMock,
                 externalServiceConditionConfiguratorMock,
                 nrqlConditionConfiguratorMock,
+                syntheticsConditionConfiguratorMock,
                 channelConfiguratorMock);
         order.verify(policyConfiguratorMock).sync(policyConfigurationMock);
         order.verify(conditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(externalServiceConditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(nrqlConditionConfiguratorMock).sync(policyConfigurationMock);
+        order.verify(syntheticsConditionConfiguratorMock).sync(policyConfigurationMock);
         order.verify(channelConfiguratorMock).sync(policyConfigurationMock);
         order.verifyNoMoreInteractions();
     }
