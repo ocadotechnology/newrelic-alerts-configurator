@@ -1,3 +1,7 @@
+# 3.3.0
+- Added support for Synthetics Monitor Failure conditions
+- Removed unused AlertsNrqlConditionsApi interface
+
 # 3.2.0 (09.04.2018)
 - Added new GcMetric `GC/ParNew` and `GC/ConcurrentMarkSweep` 
 
