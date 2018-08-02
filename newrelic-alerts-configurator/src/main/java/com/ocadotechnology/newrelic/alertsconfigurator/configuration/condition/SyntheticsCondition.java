@@ -9,7 +9,7 @@ import lombok.NonNull;
  * Configuration parameters:
  * <ul>
  *     <li>{@link #conditionName}</li>
- *     <li>{@link #monitorId}</li>
+ *     <li>{@link #monitorName}</li>
  *     <li>{@link #enabled} (optional)</li>
  *     <li>{@link #runBookUrl} (optional)</li>
  * </ul>
@@ -23,10 +23,10 @@ public class SyntheticsCondition {
     @NonNull
     private String conditionName;
     /**
-     * Id of Synthetics monitor
+     * Name of Synthetics monitor
      */
     @NonNull
-    private String monitorId;
+    private String monitorName;
     /**
      * If your Synthetics condition is enabled. Default is true
      */

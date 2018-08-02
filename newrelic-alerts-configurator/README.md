@@ -417,9 +417,9 @@ To create Synthetics Monitor Failure condition for your alerts policy use simple
 SyntheticsCondition.builder()
 ```
 
-What you can set for NRQL condition:
+What you can set for Synthetics Monitor Failure condition:
 - condition name - Name of your Synthetics Monitor Failure condition.
-- monitorId - The identifier of the Synthetics Monitor you want to alert on.
+- monitorName - The name of the Synthetics Monitor you want to alert on.
 - enabled (optional) - If your Synthetics Monitor Failure condition is enabled. Default is true.
 - run book url (optional) - The runbook URL to display in notifications.
 
@@ -429,7 +429,7 @@ Example Synthetics Monitor Failure condition configuration:
 SyntheticsCondition.builder()
     .conditionName("MyMonitor failed")
     .enabled(true)
-    .monitorId("91cdec21-a3cd-54e2-bc51-1ce12023ecd8")
+    .monitorName("MyMonitor")
     .build();
 ```
 

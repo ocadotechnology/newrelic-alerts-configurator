@@ -14,7 +14,8 @@ import lombok.Getter;
 @Getter
 public class NewRelicApi {
 
-    private static final String NEWRELIC_HOST_URL = "https://api.newrelic.com";
+    private static final String REST_API_URL = "https://api.newrelic.com";
+    private static final String SYNTHETICS_URL = "https://synthetics.newrelic.com/synthetics/api";
 
     private final ApplicationsApi applicationsApi;
 
@@ -38,23 +39,26 @@ public class NewRelicApi {
 
     private final UsersApi usersApi;
 
+    private final SyntheticsMonitorsApi syntheticsMonitorsApi;
+
     /**
      * NewRelic API constructor.
      *
      * @param apiKey API Key for given NewRelic account
      */
     public NewRelicApi(String apiKey) {
-        this(NEWRELIC_HOST_URL, apiKey);
+        this(REST_API_URL, SYNTHETICS_URL, apiKey);
     }
 
     /**
      * NewRelic API constructor.
      *
-     * @param hostUrl NewRelic API host URL, for example https://api.newrelic.com
+     * @param restApiUrl NewRelic REST API URL, for example https://api.newrelic.com
+     * @param syntheticsApiUrl NewRelic Synthetics API URL
      * @param apiKey  API Key for given NewRelic account
      */
-    public NewRelicApi(String hostUrl, String apiKey) {
-        NewRelicInternalApi internalApi = new NewRelicInternalApi(hostUrl, apiKey);
+    public NewRelicApi(String restApiUrl, String syntheticsApiUrl, String apiKey) {
+        NewRelicInternalApi internalApi = new NewRelicInternalApi(restApiUrl, syntheticsApiUrl, apiKey);
         applicationsApi = internalApi.getApplicationsApi();
         alertsChannelsApi = internalApi.getAlertsChannelsApi();
         alertsPoliciesApi = internalApi.getAlertsPoliciesApi();
@@ -66,5 +70,6 @@ public class NewRelicApi {
         deploymentsApi = internalApi.getDeploymentsApi();
         serversApi = internalApi.getServersApi();
         usersApi = internalApi.getUsersApi();
+        syntheticsMonitorsApi = internalApi.getSyntheticsMonitorsApi();
     }
 }

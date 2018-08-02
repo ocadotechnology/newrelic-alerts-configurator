@@ -1,13 +1,14 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
-import lombok.NonNull;
 
-import java.util.Collection;
-import java.util.Collections;
+import lombok.NonNull;
 
 /**
  * Main class used in configuration process. It is responsible for synchronizing programmatically created definitions of
@@ -48,7 +49,7 @@ public class Configurator {
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
         nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
-        syntheticsConditionConfigurator = new SyntheticsConditionConfigurator(api);
+        syntheticsConditionConfigurator = new SyntheticsConditionConfigurator(api, EntityResolver.defaultInstance());
         channelConfigurator = new ChannelConfigurator(api);
     }
 
