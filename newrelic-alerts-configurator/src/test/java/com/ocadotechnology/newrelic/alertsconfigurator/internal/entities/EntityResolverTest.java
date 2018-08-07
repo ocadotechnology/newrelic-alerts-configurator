@@ -1,10 +1,14 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.internal.entities;
 
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ConditionType;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceConditionType;
-import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,12 +16,11 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ConditionType;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ExternalServiceConditionType;
+import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
 
 public class EntityResolverTest {
     @Rule
@@ -32,6 +35,11 @@ public class EntityResolverTest {
         @Override
         protected IdProvider getIdProvider(String conditionType) {
             return idProviderMock;
+        }
+
+        @Override
+        protected UuidProvider getUuidProvider(String conditionType) {
+            return null;
         }
     };
 

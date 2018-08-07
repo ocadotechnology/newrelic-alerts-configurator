@@ -1,13 +1,14 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
-import lombok.NonNull;
 
-import java.util.Collection;
-import java.util.Collections;
+import lombok.NonNull;
 
 /**
  * Main class used in configuration process. It is responsible for synchronizing programmatically created definitions of
@@ -29,6 +30,7 @@ public class Configurator {
     private final ConditionConfigurator conditionConfigurator;
     private final ExternalServiceConditionConfigurator externalServiceConditionConfigurator;
     private final NrqlConditionConfigurator nrqlConditionConfigurator;
+    private final SyntheticsConditionConfigurator syntheticsConditionConfigurator;
     private final ChannelConfigurator channelConfigurator;
 
 
@@ -47,6 +49,7 @@ public class Configurator {
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());
         externalServiceConditionConfigurator = new ExternalServiceConditionConfigurator(api, EntityResolver.defaultInstance());
         nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
+        syntheticsConditionConfigurator = new SyntheticsConditionConfigurator(api, EntityResolver.defaultInstance());
         channelConfigurator = new ChannelConfigurator(api);
     }
 
@@ -55,12 +58,14 @@ public class Configurator {
                  ConditionConfigurator conditionConfigurator,
                  ExternalServiceConditionConfigurator externalServiceConditionConfigurator,
                  NrqlConditionConfigurator nrqlConditionConfigurator,
+                 SyntheticsConditionConfigurator syntheticsConditionConfigurator,
                  ChannelConfigurator channelConfigurator) {
         this.applicationConfigurator = applicationConfigurator;
         this.policyConfigurator = policyConfigurator;
         this.conditionConfigurator = conditionConfigurator;
         this.externalServiceConditionConfigurator = externalServiceConditionConfigurator;
         this.nrqlConditionConfigurator = nrqlConditionConfigurator;
+        this.syntheticsConditionConfigurator = syntheticsConditionConfigurator;
         this.channelConfigurator = channelConfigurator;
     }
 
@@ -78,6 +83,7 @@ public class Configurator {
             conditionConfigurator.sync(configuration);
             externalServiceConditionConfigurator.sync(configuration);
             nrqlConditionConfigurator.sync(configuration);
+            syntheticsConditionConfigurator.sync(configuration);
             channelConfigurator.sync(configuration);
         }
     }

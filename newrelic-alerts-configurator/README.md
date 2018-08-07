@@ -9,19 +9,20 @@
         - [APM key transaction metric condition](#apm-key-transaction-metric-condition)
         - [Server metric condition](#server-metric-condition)
         - [New Relic Browser metric condition](#new-relic-browser-metric-condition)
-    - [Alerts external service condition](#alerts-external-service-condition)
-        - [APM external service condition](#apm-external-service-condition)
-    - [Alerts NRQL condition](#alerts-nrql-condition)
-    - [User defined configuration](#user-defined-configuration)
-    - [Term](#term)
-    - [NRQL Term](#nrql-term)
-    - [Notification channel](#notification-channel)
-        - [Email channel](#email-channel)
-        - [Slack channel](#slack-channel)
-        - [Webhook channel](#webhook-channel)
-        - [PagerDuty channel](#pagerduty-channel)
-        - [NewRelic user channel](#newrelic-user-channel)
-    - [Condition and Channel management policy](#condition-and-channel-management-policy)
+        - [Alerts external service condition](#alerts-external-service-condition)
+            - [APM external service condition](#apm-external-service-condition)
+        - [Alerts NRQL condition](#alerts-nrql-condition)
+        - [Synthetics Monitor Failure condition](#synthetics-monitor-failure-condition)
+        - [User defined configuration](#user-defined-configuration)
+        - [Term](#term)
+        - [NRQL Term](#nrql-term)
+        - [Notification channel](#notification-channel)
+            - [Email channel](#email-channel)
+            - [Slack channel](#slack-channel)
+            - [Webhook channel](#webhook-channel)
+            - [PagerDuty channel](#pagerduty-channel)
+            - [NewRelic user channel](#newrelic-user-channel)
+            - [Condition and Channel management policy](#condition-and-channel-management-policy)
 
 ## Configurator
 
@@ -84,6 +85,8 @@ What you can set in your configuration:
   which needs to be configured for your alerts policy.
 - nrql conditions (optional) - Collection of [alerts NRQL conditions](#alerts-nrql-condition) which needs to be configured for 
   your alerts policy.
+- synthetics conditions (optional) - Collection of [Synthetics Monitor Failure conditions](#synthetics-monitor-failure-condition) 
+  which need to be configured for your alerts policy.
 - channels (optional) - Collection of [alerts channels](#notification-channel) which needs to be configured for your alerts policy.
 
 If policy with given policy name exists - it will be updated.
@@ -401,6 +404,32 @@ NrqlCondition.builder()
     .term(term)
     .query("SELECT count(*) FROM `myApp:HealthStatus` WHERE healthy IS false")
     .sinceValue(NrqlCondition.SinceValue.SINCE_5)
+    .build();
+```
+
+### Synthetics Monitor Failure condition
+
+Synthetics Monitor Failure condition creation/update/removal policy is described in [Condition and Channel management policy](#condition-and-channel-management-policy)
+
+To create Synthetics Monitor Failure condition for your alerts policy use simple builder:
+
+```java
+SyntheticsCondition.builder()
+```
+
+What you can set for Synthetics Monitor Failure condition:
+- condition name - Name of your Synthetics Monitor Failure condition.
+- monitorName - The name of the Synthetics Monitor you want to alert on.
+- enabled (optional) - If your Synthetics Monitor Failure condition is enabled. Default is true.
+- run book url (optional) - The runbook URL to display in notifications.
+
+Example Synthetics Monitor Failure condition configuration:
+
+```java
+SyntheticsCondition.builder()
+    .conditionName("MyMonitor failed")
+    .enabled(true)
+    .monitorName("MyMonitor")
     .build();
 ```
 
