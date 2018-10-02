@@ -12,7 +12,8 @@ public enum SinceValue {
     SINCE_10_MINUTES("10"),
     SINCE_15_MINUTES("15"),
     SINCE_30_MINUTES("30"),
-    SINCE_60_MINUTES("60");
+    SINCE_60_MINUTES("60"),
+    SINCE_120_MINUTES("120");
 
     String since;
 
