@@ -1,4 +1,4 @@
-# 3.3.0
+# 3.3.0 (07-08-2018)
 - Added support for Synthetics Monitor Failure conditions
 - Removed unused AlertsNrqlConditionsApi interface
 
