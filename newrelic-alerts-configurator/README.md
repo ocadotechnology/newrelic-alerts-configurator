@@ -393,6 +393,11 @@ What you can set for NRQL condition:
     - 3
     - 4
     - 5
+    - 10
+    - 15
+    - 30
+    - 60
+    - 120
 
 Example NRQL condition configuration:
 

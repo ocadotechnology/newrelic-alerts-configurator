@@ -68,7 +68,12 @@ public class NrqlCondition {
         SINCE_2(2),
         SINCE_3(3),
         SINCE_4(4),
-        SINCE_5(5);
+        SINCE_5(5),
+        SINCE_10(10),
+        SINCE_15(15),
+        SINCE_30(30),
+        SINCE_60(60),
+        SINCE_120(120);
 
         final int since;
     }
