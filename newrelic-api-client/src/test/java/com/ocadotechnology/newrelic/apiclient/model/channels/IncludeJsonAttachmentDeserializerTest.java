@@ -21,13 +21,13 @@ public class IncludeJsonAttachmentDeserializerTest {
         public Boolean sampleField;
     }
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void deserialize_shouldDeserializeToTrue_whenTrueProvided() throws IOException {
 
         // given
-        String sampleJsonValue = "{ \"sampleField\" : true }";
+        final String sampleJsonValue = "{ \"sampleField\" : true }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -40,7 +40,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToFalse_whenFalseProvided() throws IOException {
 
         // given
-        String sampleJsonValue = "{ \"sampleField\" : false }";
+        final String sampleJsonValue = "{ \"sampleField\" : false }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -53,7 +53,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToTrue_whenTrueStringProvided() throws IOException {
 
         // given
-        String sampleJsonValue = "{ \"sampleField\" : \"true\" }";
+        final String sampleJsonValue = "{ \"sampleField\" : \"true\" }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -66,7 +66,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToFalse_whenFalseStringProvided() throws IOException {
 
         // given
-        String sampleJsonValue = "{ \"sampleField\" : \"false\" }";
+        final String sampleJsonValue = "{ \"sampleField\" : \"false\" }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -79,7 +79,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToTrue_when1StringProvided() throws IOException {
 
         // given
-        String sampleJsonValue = "{ \"sampleField\" : \"1\" }";
+        final String sampleJsonValue = "{ \"sampleField\" : \"1\" }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -92,7 +92,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToFalse_when0StringProvided() throws IOException {
 
         // given
-        String sampleJsonValue = "{ \"sampleField\" : \"0\" }";
+        final String sampleJsonValue = "{ \"sampleField\" : \"0\" }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -104,7 +104,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldDeserializeToNull_whenEmptyStringProvided() throws IOException {
         // given
-        String sampleJsonValue = "{ \"sampleField\" : \"\" }";
+        final String sampleJsonValue = "{ \"sampleField\" : \"\" }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -116,7 +116,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldDeserializeToNull_whenNoValueProvided() throws IOException {
         // given
-        String sampleJsonValue = "{ }";
+        final String sampleJsonValue = "{ }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -128,7 +128,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldDeserializeToNull_whenNullProvided() throws IOException {
         // given
-        String sampleJsonValue = "{ \"sampleField\" : null }";
+        final String sampleJsonValue = "{ \"sampleField\" : null }";
 
         // when
         final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
@@ -143,7 +143,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldThrowException_unknownValueProvided() throws IOException {
         // given
-        String sampleJsonValue = "{ \"sampleField\" : \"some-unknown-value\" }";
+        final String sampleJsonValue = "{ \"sampleField\" : \"some-unknown-value\" }";
 
         // then
         expectedException.expect(JsonMappingException.class);
