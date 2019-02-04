@@ -14,16 +14,16 @@ import java.util.Set;
 
 public class IncludeJsonAttachmentDeserializer extends JsonDeserializer<Boolean> {
 
-    private static Set<String> THRUTHY_VALUES = new HashSet<>(Arrays.asList("1", "true"));
-    private static Set<String> FALSY_VALUES = new HashSet<>(Arrays.asList("0", "false"));
+    private static final Set<String> TRUTHY_VALUES = new HashSet<>(Arrays.asList("1", "true"));
+    private static final Set<String> FALSY_VALUES = new HashSet<>(Arrays.asList("0", "false"));
 
     @Override
-    public Boolean deserialize(final JsonParser jsonParser, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        final String value = jsonParser.readValueAs(String.class);
+    public Boolean deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+        String value = jsonParser.readValueAs(String.class);
 
         return Optional.ofNullable(StringUtils.trimToNull(value))
                 .map(val -> {
-                    if (THRUTHY_VALUES.contains(val)) {
+                    if (TRUTHY_VALUES.contains(val)) {
                         return true;
                     }
                     if (FALSY_VALUES.contains(val)) {

@@ -27,10 +27,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToTrue_whenTrueProvided() throws IOException {
 
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : true }";
+        String sampleJsonValue = "{ \"sampleField\" : true }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isTrue();
@@ -40,10 +40,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToFalse_whenFalseProvided() throws IOException {
 
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : false }";
+        String sampleJsonValue = "{ \"sampleField\" : false }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isFalse();
@@ -53,10 +53,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToTrue_whenTrueStringProvided() throws IOException {
 
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : \"true\" }";
+        String sampleJsonValue = "{ \"sampleField\" : \"true\" }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isTrue();
@@ -66,10 +66,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToFalse_whenFalseStringProvided() throws IOException {
 
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : \"false\" }";
+        String sampleJsonValue = "{ \"sampleField\" : \"false\" }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isFalse();
@@ -79,10 +79,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToTrue_when1StringProvided() throws IOException {
 
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : \"1\" }";
+        String sampleJsonValue = "{ \"sampleField\" : \"1\" }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isTrue();
@@ -92,10 +92,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     public void deserialize_shouldDeserializeToFalse_when0StringProvided() throws IOException {
 
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : \"0\" }";
+        String sampleJsonValue = "{ \"sampleField\" : \"0\" }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isFalse();
@@ -104,10 +104,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldDeserializeToNull_whenEmptyStringProvided() throws IOException {
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : \"\" }";
+        String sampleJsonValue = "{ \"sampleField\" : \"\" }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isNull();
@@ -116,10 +116,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldDeserializeToNull_whenNoValueProvided() throws IOException {
         // given
-        final String sampleJsonValue = "{ }";
+        String sampleJsonValue = "{ }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isNull();
@@ -128,10 +128,10 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldDeserializeToNull_whenNullProvided() throws IOException {
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : null }";
+        String sampleJsonValue = "{ \"sampleField\" : null }";
 
         // when
-        final SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
+        SampleJson sampleJson = objectMapper.readValue(sampleJsonValue, SampleJson.class);
 
         //then
         assertThat(sampleJson.sampleField).isNull();
@@ -143,7 +143,7 @@ public class IncludeJsonAttachmentDeserializerTest {
     @Test
     public void deserialize_shouldThrowException_unknownValueProvided() throws IOException {
         // given
-        final String sampleJsonValue = "{ \"sampleField\" : \"some-unknown-value\" }";
+        String sampleJsonValue = "{ \"sampleField\" : \"some-unknown-value\" }";
 
         // then
         expectedException.expect(JsonMappingException.class);
