@@ -1,6 +1,7 @@
 package com.ocadotechnology.newrelic.apiclient.model.channels;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,7 @@ public class AlertsChannelConfiguration {
     String channel;
     @JsonProperty
     String url;
+    @JsonDeserialize(using = IncludeJsonAttachmentDeserializer.class)
     @JsonProperty("include_json_attachment")
     Boolean includeJsonAttachment;
     @JsonProperty
