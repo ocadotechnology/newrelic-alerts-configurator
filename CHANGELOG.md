@@ -1,3 +1,6 @@
+# 3.3.2 (08-02-2018)
+- Improved json deserialization in Mail Channel
+
 # 3.3.1 (03-10-2018)
 - Added more "Since" values to NRQL Condition
 
