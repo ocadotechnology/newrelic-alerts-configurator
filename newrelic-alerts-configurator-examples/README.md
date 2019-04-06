@@ -1,6 +1,7 @@
 # Sample
 
 This is the sample project that uses NewRelic Alerts Configurator library to configure NewRelic alerts for few applications.
+It contains configuration in both Java and Kotlin DSL
 
 ## Goals
 

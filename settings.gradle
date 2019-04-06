@@ -1,2 +1,2 @@
 rootProject.name = 'newrelic-alerts-configurator'
-include 'newrelic-api-client', 'newrelic-alerts-configurator', 'newrelic-alerts-configurator-examples'
+include 'newrelic-api-client', 'newrelic-alerts-configurator', 'newrelic-alerts-configurator-examples', 'newrelic-alerts-configurator-dsl'

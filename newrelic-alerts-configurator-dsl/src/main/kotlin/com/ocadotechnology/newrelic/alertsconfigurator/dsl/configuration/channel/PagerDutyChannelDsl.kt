@@ -1,0 +1,20 @@
+package com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.channel
+
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.PagerDutyChannel
+import com.ocadotechnology.newrelic.alertsconfigurator.dsl.NewRelicConfigurationMarker
+
+@NewRelicConfigurationMarker
+class PagerDutyChannelDsl {
+    var channelName: String? = null
+    var serviceKey: String? = null
+}
+
+fun pagerDutyChannel(block: PagerDutyChannelDsl.() -> Unit): PagerDutyChannel {
+    val dsl = PagerDutyChannelDsl()
+    dsl.block()
+
+    return PagerDutyChannel.builder()
+            .channelName(dsl.channelName)
+            .serviceKey(dsl.serviceKey)
+            .build()
+}
