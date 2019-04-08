@@ -6,7 +6,9 @@ import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configurator
 
 object APP1 {
     private const val NAME = "Application1"
+
     val applicationConfig = applicationConfiguration(NAME)
+
     val policyConfig = policy {
         policyName = "Application1 Policy"
         incidentPreference = PolicyConfiguration.IncidentPreference.PER_POLICY
@@ -26,7 +28,9 @@ object APP1 {
 
 object APP2 {
     private const val NAME = "Application2"
+
     val applicationConfig = applicationConfiguration(NAME)
+
     val policyConfig = policy {
         policyName = "Application2 Policy"
         incidentPreference = PolicyConfiguration.IncidentPreference.PER_POLICY
@@ -46,7 +50,9 @@ object APP2 {
 
 object APP3 {
     private const val NAME = "Application3"
+
     val applicationConfig = applicationConfiguration(NAME)
+
     val policyConfig = policy {
         policyName = "Application3 Policy"
         incidentPreference = PolicyConfiguration.IncidentPreference.PER_POLICY
