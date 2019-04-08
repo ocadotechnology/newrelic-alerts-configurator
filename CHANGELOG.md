@@ -1,3 +1,5 @@
+- Added newrelic-alerts-configurator-dsl module with kotlin dsl
+
 # 3.3.1 (03-10-2018)
 - Added more "Since" values to NRQL Condition
 

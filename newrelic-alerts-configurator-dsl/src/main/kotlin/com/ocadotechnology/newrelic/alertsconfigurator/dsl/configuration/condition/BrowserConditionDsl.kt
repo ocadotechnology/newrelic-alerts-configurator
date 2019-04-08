@@ -5,7 +5,6 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.U
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.NewRelicConfigurationMarker
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.terms.TermConfigurations
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.userDefined as userDefinedBlock
 
 @NewRelicConfigurationMarker
 class BrowserConditionDsl {
@@ -20,7 +19,7 @@ class BrowserConditionDsl {
     fun terms(block: TermConfigurations.() -> Unit) = terms.addAll(TermConfigurations().apply(block).terms)
 
     fun userDefined(block: UserDefinedConfigurationDsl.() -> Unit) {
-        userDefinedConfiguration = userDefinedBlock(block)
+        userDefinedConfiguration = userDefinedCondition(block)
     }
 }
 

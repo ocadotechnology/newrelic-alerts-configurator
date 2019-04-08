@@ -2,26 +2,13 @@ package com.ocadotechnology.newrelic.alertsconfigurator.examples
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Channel
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmAppCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmJvmCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.BrowserCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ServersMetricCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.DurationTerm
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.*
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.*
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.violationclosetimer.ViolationCloseTimer
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.application
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.channel.emailChannel
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.channel.slackChannel
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.apmAppCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.apmJvmCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.browserCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.nrqlCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.serversMetricCondition
+import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.*
 
 fun applicationConfiguration(name: String): ApplicationConfiguration {
     return application {

@@ -6,7 +6,6 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfi
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.ApplicationConfigurations
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.PolicyConfigurations
 
-// TODO build and publish configuration
 // TODO Add README.md
 @NewRelicConfigurationMarker
 class ConfiguratorDsl {
