@@ -28,23 +28,8 @@ fun apdexCondition(applicationName: String): Condition {
         conditionScope = ApmAppCondition.ConditionScope.APPLICATION
 
         terms {
-            // Raise critical if in the last 5 minutes apdex was below 0.7
-            term {
-                priorityTerm = PriorityTerm.CRITICAL
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.BELOW
-                thresholdTerm = 0.7f
-            }
-
-            // Raise warning if in the last 5 minutes apdex was below 0.85
-            term {
-                priorityTerm = PriorityTerm.WARNING
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.BELOW
-                thresholdTerm = 0.85f
-            }
+            PriorityTerm.CRITICAL given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.BELOW value 0.7f
+            PriorityTerm.WARNING given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.BELOW value 0.85f
         }
     }
 }
@@ -57,23 +42,8 @@ fun diskSpaceCondition(vararg serverNames: String): Condition {
         metric = ServersMetricCondition.Metric.FULLEST_DISK_PERCENTAGE
 
         terms {
-            // Raise critical if in the last 5 minutes disk was over 80% full
-            term {
-                priorityTerm = PriorityTerm.CRITICAL
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.ABOVE
-                thresholdTerm = 80.0f
-            }
-
-            // Raise warning if in the last 5 minutes disk was over 65% full
-            term {
-                priorityTerm = PriorityTerm.WARNING
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.ABOVE
-                thresholdTerm = 65.0f
-            }
+            PriorityTerm.CRITICAL given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.ABOVE value 80.0f
+            PriorityTerm.WARNING given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.ABOVE value 65.0f
         }
     }
 }
@@ -86,23 +56,8 @@ fun cpuUsageCondition(vararg serverNames: String): Condition {
         metric = ServersMetricCondition.Metric.CPU_PERCENTAGE
 
         terms {
-            // Raise critical if in the last 5 minutes cpu was over 90%
-            term {
-                priorityTerm = PriorityTerm.CRITICAL
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.ABOVE
-                thresholdTerm = 90.0f
-            }
-
-            // Raise warning if in the last 5 minutes cpu was over 70%
-            term {
-                priorityTerm = PriorityTerm.WARNING
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.ABOVE
-                thresholdTerm = 70.0f
-            }
+            PriorityTerm.CRITICAL given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.ABOVE value 90.0f
+            PriorityTerm.WARNING given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.ABOVE value 70.0f
         }
     }
 }
@@ -116,25 +71,8 @@ fun heapUsageCondition(applicationName: String): Condition {
         violationCloseTimer = ViolationCloseTimer.DURATION_24
 
         terms {
-            // Raise critical if in the last 5 minutes heap memory usage was above 85%
-            term {
-                // TODO maybe some flux stuff?
-                // PriorityTerm.CRITICAL when TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.ABOVE value 85.0f
-                priorityTerm = PriorityTerm.CRITICAL
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.ABOVE
-                thresholdTerm = 85.0f
-            }
-
-            // Raise warning if in the last 5 minutes cpu was over 70%
-            term {
-                priorityTerm = PriorityTerm.WARNING
-                durationTerm = DurationTerm.DURATION_5
-                timeFunctionTerm = TimeFunctionTerm.ALL
-                operatorTerm = OperatorTerm.ABOVE
-                thresholdTerm = 65.0f
-            }
+            PriorityTerm.CRITICAL given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.ABOVE value 85.0f
+            PriorityTerm.WARNING given TimeFunctionTerm.ALL inLast DurationTerm.DURATION_5 minutes OperatorTerm.ABOVE value 65.0f
         }
     }
 }

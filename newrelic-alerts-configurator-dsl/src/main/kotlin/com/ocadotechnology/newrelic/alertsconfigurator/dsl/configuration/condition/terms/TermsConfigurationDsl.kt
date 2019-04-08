@@ -31,4 +31,24 @@ class TermConfigurations {
 
     fun term(block: TermsConfigurationDsl.() -> Unit) = terms.add(com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.terms.termConfiguration(block))
     operator fun TermsConfiguration.unaryPlus() = terms.add(this)
+
+    infix fun PriorityTerm.given(timeFunctionTerm: TimeFunctionTerm) : AfterGiven {
+        return AfterGiven(TermsConfiguration.builder().priorityTerm(this).timeFunctionTerm(timeFunctionTerm))
+    }
+
+    infix fun AfterGiven.inLast(durationTerm: DurationTerm) : AfterInLast {
+        return AfterInLast(this.builder.durationTerm(durationTerm))
+    }
+
+    infix fun AfterInLast.minutes(operatorTerm: OperatorTerm) : AfterMinutes {
+        return AfterMinutes(this.builder.operatorTerm(operatorTerm))
+    }
+
+    infix fun AfterMinutes.value(thresholdTerm: Float) {
+        terms.add(this.builder.thresholdTerm(thresholdTerm).build())
+    }
+
+    class AfterGiven(internal val builder: TermsConfiguration.TermsConfigurationBuilder)
+    class AfterInLast(internal val builder: TermsConfiguration.TermsConfigurationBuilder)
+    class AfterMinutes(internal val builder: TermsConfiguration.TermsConfigurationBuilder)
 }

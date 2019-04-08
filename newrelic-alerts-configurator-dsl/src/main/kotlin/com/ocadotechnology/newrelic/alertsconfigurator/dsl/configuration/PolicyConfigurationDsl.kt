@@ -31,7 +31,6 @@ class PolicyConfigurationDsl {
     }
 }
 
-// TODO maybe it should be object with invoke operator instead of method?
 fun policy(block: PolicyConfigurationDsl.() -> Unit): PolicyConfiguration {
     val dsl = PolicyConfigurationDsl()
     dsl.block()
