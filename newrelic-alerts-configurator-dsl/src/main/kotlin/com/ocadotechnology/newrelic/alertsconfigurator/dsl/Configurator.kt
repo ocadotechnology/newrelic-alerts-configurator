@@ -6,9 +6,6 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfi
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.ApplicationConfigurations
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.PolicyConfigurations
 
-// TODO Add README.md - index
-// TODO Add README.md - + operator
-// TODO Add README.md - term and nrqlTerm flux
 @NewRelicConfigurationMarker
 class ConfiguratorDsl {
     internal val applicationConfigurations: MutableList<ApplicationConfiguration> = mutableListOf()
