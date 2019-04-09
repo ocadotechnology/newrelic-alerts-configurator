@@ -1,7 +1,7 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.examples
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.policy
+import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.policyConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configurator
 
 object APP1 {
@@ -9,7 +9,7 @@ object APP1 {
 
     val applicationConfig = applicationConfiguration(NAME)
 
-    val policyConfig = policy {
+    val policyConfig = policyConfiguration {
         policyName = "Application1 Policy"
         incidentPreference = PolicyConfiguration.IncidentPreference.PER_POLICY
 
@@ -31,7 +31,7 @@ object APP2 {
 
     val applicationConfig = applicationConfiguration(NAME)
 
-    val policyConfig = policy {
+    val policyConfig = policyConfiguration {
         policyName = "Application2 Policy"
         incidentPreference = PolicyConfiguration.IncidentPreference.PER_POLICY
 
@@ -53,7 +53,7 @@ object APP3 {
 
     val applicationConfig = applicationConfiguration(NAME)
 
-    val policyConfig = policy {
+    val policyConfig = policyConfiguration {
         policyName = "Application3 Policy"
         incidentPreference = PolicyConfiguration.IncidentPreference.PER_POLICY
 

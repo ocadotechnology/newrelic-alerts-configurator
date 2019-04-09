@@ -11,7 +11,7 @@ class ApplicationConfigurationDsl {
     var enableRealUserMonitoring: Boolean = false
 }
 
-fun application(block: ApplicationConfigurationDsl.() -> Unit): ApplicationConfiguration {
+fun applicationConfiguration(block: ApplicationConfigurationDsl.() -> Unit): ApplicationConfiguration {
     val dsl = ApplicationConfigurationDsl()
     dsl.block()
 
@@ -27,6 +27,6 @@ fun application(block: ApplicationConfigurationDsl.() -> Unit): ApplicationConfi
 class ApplicationConfigurations {
     internal val applications:  MutableList<ApplicationConfiguration> = mutableListOf()
 
-    fun application(block: ApplicationConfigurationDsl.() -> Unit) = applications.add(com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.application(block))
+    fun application(block: ApplicationConfigurationDsl.() -> Unit) = applications.add(applicationConfiguration(block))
     operator fun ApplicationConfiguration.unaryPlus() = applications.add(this)
 }

@@ -12,7 +12,7 @@ class TermsConfigurationDsl {
     var timeFunctionTerm: TimeFunctionTerm? = null
 }
 
-fun termConfiguration(block: TermsConfigurationDsl.() -> Unit): TermsConfiguration {
+fun termsConfiguration(block: TermsConfigurationDsl.() -> Unit): TermsConfiguration {
     val dsl = TermsConfigurationDsl()
     dsl.block()
 
@@ -29,7 +29,7 @@ fun termConfiguration(block: TermsConfigurationDsl.() -> Unit): TermsConfigurati
 class TermConfigurations {
     internal val terms: MutableList<TermsConfiguration> = mutableListOf()
 
-    fun term(block: TermsConfigurationDsl.() -> Unit) = terms.add(com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.terms.termConfiguration(block))
+    fun term(block: TermsConfigurationDsl.() -> Unit) = terms.add(com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.terms.termsConfiguration(block))
     operator fun TermsConfiguration.unaryPlus() = terms.add(this)
 
     infix fun PriorityTerm.given(timeFunctionTerm: TimeFunctionTerm) : AfterGiven {

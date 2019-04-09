@@ -12,7 +12,7 @@ class NrqlTermsConfigurationDsl {
     var timeFunctionTerm: TimeFunctionTerm? = null
 }
 
-fun nrqlTerm(block: NrqlTermsConfigurationDsl.() -> Unit): NrqlTermsConfiguration {
+fun nrqlTermsConfiguration(block: NrqlTermsConfigurationDsl.() -> Unit): NrqlTermsConfiguration {
     val dsl = NrqlTermsConfigurationDsl()
     dsl.block()
 
@@ -29,7 +29,7 @@ fun nrqlTerm(block: NrqlTermsConfigurationDsl.() -> Unit): NrqlTermsConfiguratio
 class NrqlTermConfigurations {
     internal val terms: MutableList<NrqlTermsConfiguration> = mutableListOf()
 
-    fun term(block: NrqlTermsConfigurationDsl.() -> Unit) = terms.add(com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.terms.nrqlTerm(block))
+    fun term(block: NrqlTermsConfigurationDsl.() -> Unit) = terms.add(com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.terms.nrqlTermsConfiguration(block))
     operator fun NrqlTermsConfiguration.unaryPlus() = terms.add(this)
 
     infix fun PriorityTerm.given(timeFunctionTerm: TimeFunctionTerm) : AfterGiven {

@@ -31,7 +31,7 @@ class PolicyConfigurationDsl {
     }
 }
 
-fun policy(block: PolicyConfigurationDsl.() -> Unit): PolicyConfiguration {
+fun policyConfiguration(block: PolicyConfigurationDsl.() -> Unit): PolicyConfiguration {
     val dsl = PolicyConfigurationDsl()
     dsl.block()
 
@@ -50,6 +50,6 @@ fun policy(block: PolicyConfigurationDsl.() -> Unit): PolicyConfiguration {
 class PolicyConfigurations {
     internal val policies: MutableList<PolicyConfiguration> = mutableListOf()
 
-    fun policy(block: PolicyConfigurationDsl.() -> Unit) = policies.add(com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.policy(block))
+    fun policy(block: PolicyConfigurationDsl.() -> Unit) = policies.add(policyConfiguration(block))
     operator fun PolicyConfiguration.unaryPlus() = policies.add(this)
 }

@@ -9,7 +9,7 @@ class UserDefinedConfigurationDsl {
     var valueFunction: UserDefinedConfiguration.ValueFunction? = null
 }
 
-fun userDefinedCondition(block: UserDefinedConfigurationDsl.() -> Unit): UserDefinedConfiguration {
+fun userDefinedConfiguration(block: UserDefinedConfigurationDsl.() -> Unit): UserDefinedConfiguration {
     val dsl = UserDefinedConfigurationDsl()
     dsl.block()
 

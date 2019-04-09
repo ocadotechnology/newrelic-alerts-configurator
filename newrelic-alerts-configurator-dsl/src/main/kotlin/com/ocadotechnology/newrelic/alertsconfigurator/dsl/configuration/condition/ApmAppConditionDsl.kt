@@ -22,7 +22,7 @@ class ApmAppConditionDsl {
     fun terms(block: TermConfigurations.() -> Unit) = terms.addAll(TermConfigurations().apply(block).terms)
 
     fun userDefined(block: UserDefinedConfigurationDsl.() -> Unit) {
-        userDefinedConfiguration = userDefinedCondition(block)
+        userDefinedConfiguration = userDefinedConfiguration(block)
     }
 }
 

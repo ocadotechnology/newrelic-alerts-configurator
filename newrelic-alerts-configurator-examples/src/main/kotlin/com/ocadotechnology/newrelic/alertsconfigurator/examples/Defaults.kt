@@ -5,13 +5,13 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Cha
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.*
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.*
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.violationclosetimer.ViolationCloseTimer
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.application
+import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.applicationConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.channel.emailChannel
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.channel.slackChannel
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.*
 
 fun applicationConfiguration(name: String): ApplicationConfiguration {
-    return application {
+    return applicationConfiguration {
         applicationName = name
         appApdexThreshold = 0.5f
         endUserApdexThreshold = 0.7f
