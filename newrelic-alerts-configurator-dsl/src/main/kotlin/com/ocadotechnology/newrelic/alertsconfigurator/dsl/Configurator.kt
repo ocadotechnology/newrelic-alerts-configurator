@@ -15,7 +15,7 @@ class ConfiguratorDsl {
     fun policies(block: PolicyConfigurations.() -> Unit) = policyConfigurations.addAll(PolicyConfigurations().apply(block).policies)
 }
 
-fun configurator(apiKey: String, block: ConfiguratorDsl.() -> Unit) {
+fun configuration(apiKey: String, block: ConfiguratorDsl.() -> Unit) {
     val dsl = ConfiguratorDsl()
     dsl.apply(block)
 

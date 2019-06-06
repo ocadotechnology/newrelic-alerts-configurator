@@ -24,13 +24,13 @@
             - [NewRelic user channel DSL](#newrelic-user-channel-dsl)
 
 ## Configurator DSL
-To create and run [Configurator](../newrelic-alerts-configurator#configurator) use `configurator` dsl. 
+To create and run [Configurator](../newrelic-alerts-configurator#configurator) use `configuration` dsl. 
 
 ```kotlin
 val appConfig: ApplicationConfiguration
 val policyConfig: PolicyConfiguration
 
-configurator(yourApiKey) {
+configuration(yourApiKey) {
     applications {
         application { /* configuration described in Application configuration DSL section */ }
         application { /* configuration described in Application configuration DSL section */ }
@@ -45,7 +45,7 @@ configurator(yourApiKey) {
 }
 ```
 
-This will create `Configurator`, set applications and policies, and run synchronization process
+This will create `Configurator`, set applications and policies, and *run* synchronization process
 
 # Application configuration DSL
 To create [ApplicationConfiguration](../newrelic-alerts-configurator#application-configuration) use `applicationConfiguration` dsl.

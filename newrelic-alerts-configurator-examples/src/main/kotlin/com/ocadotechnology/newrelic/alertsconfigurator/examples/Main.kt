@@ -2,7 +2,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator.examples
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.policyConfiguration
-import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configurator
+import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration
 
 object APP1 {
     private const val NAME = "Application1"
@@ -79,7 +79,7 @@ fun main() {
 }
 
 fun configure(newRelicKey: String) {
-    configurator(newRelicKey) {
+    configuration(newRelicKey) {
         applications {
             +APP1.applicationConfig
             +APP2.applicationConfig
