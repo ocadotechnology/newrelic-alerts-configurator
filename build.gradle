@@ -2,6 +2,10 @@ buildscript {
     repositories {
         jcenter()
     }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21"
+    }
 }
 
 allprojects {
@@ -138,7 +142,19 @@ project(':newrelic-alerts-configurator') {
 }
 
 project(':newrelic-alerts-configurator-examples') {
+    apply plugin: 'kotlin'
+    
     dependencies {
         compile project(':newrelic-alerts-configurator')
+        compile project(':newrelic-alerts-configurator-dsl')
+    }
+}
+
+project(':newrelic-alerts-configurator-dsl') {
+    apply plugin: 'kotlin'
+
+    dependencies {
+        compile project(':newrelic-alerts-configurator')
+        compile 'org.jetbrains.kotlin:kotlin-stdlib'
     }
 }

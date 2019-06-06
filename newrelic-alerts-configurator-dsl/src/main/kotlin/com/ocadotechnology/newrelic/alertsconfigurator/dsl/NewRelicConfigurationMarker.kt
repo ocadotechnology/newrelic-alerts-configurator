@@ -1,0 +1,4 @@
+package com.ocadotechnology.newrelic.alertsconfigurator.dsl
+
+@DslMarker
+annotation class NewRelicConfigurationMarker
