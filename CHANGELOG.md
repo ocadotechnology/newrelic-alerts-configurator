@@ -1,3 +1,4 @@
+# 3.4.0 (06-06-2019)
 - Added newrelic-alerts-configurator-dsl module with kotlin dsl
 
 # 3.3.1 (03-10-2018)

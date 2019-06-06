@@ -27,7 +27,7 @@ private def getPublicationVersion() {
             return version
         }
     }
-    return '3.3.2-SNAPSHOT'
+    return '3.4.1-SNAPSHOT'
 }
 
 subprojects {
