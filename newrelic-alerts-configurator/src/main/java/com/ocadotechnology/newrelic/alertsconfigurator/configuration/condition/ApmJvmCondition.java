@@ -97,7 +97,8 @@ public class ApmJvmCondition implements Condition {
         GC_MARK_SWEEP("GC/PS MarkSweep"),
         GC_SCAVENGE("GC/PS Scavenge"),
         GC_PAR_NEW("GC/ParNew"),
-        GC_CONCURRENT_MARK_SWEEP("GC/ConcurrentMarkSweep");
+        GC_CONCURRENT_MARK_SWEEP("GC/MarkSweepCompact"),
+        GC_CONCURRENT_MARK_SWEEP("GC/Copy");
 
         private String metricData;
 
