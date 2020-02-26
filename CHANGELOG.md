@@ -1,3 +1,6 @@
+# 3.4.1 (26-02-2020)
+- Added new GcMetric `GC/MarkSweepCompact` and `GC/Copy` 
+
 # 3.4.0 (06-06-2019)
 - Added newrelic-alerts-configurator-dsl module with kotlin dsl
 
