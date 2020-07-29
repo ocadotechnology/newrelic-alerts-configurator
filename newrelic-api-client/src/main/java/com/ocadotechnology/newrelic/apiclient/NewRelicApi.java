@@ -2,10 +2,9 @@ package com.ocadotechnology.newrelic.apiclient;
 
 import com.ocadotechnology.newrelic.apiclient.internal.NewRelicInternalApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
-import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.synthetics.AlertsSyntheticsCondition;
-
 import lombok.Getter;
 
 /**
@@ -39,6 +38,8 @@ public class NewRelicApi {
 
     private final UsersApi usersApi;
 
+    private final DashboardsApi dashboardsApi;
+
     private final SyntheticsMonitorsApi syntheticsMonitorsApi;
 
     /**
@@ -70,6 +71,7 @@ public class NewRelicApi {
         deploymentsApi = internalApi.getDeploymentsApi();
         serversApi = internalApi.getServersApi();
         usersApi = internalApi.getUsersApi();
+        dashboardsApi = internalApi.getDashboardsApi();
         syntheticsMonitorsApi = internalApi.getSyntheticsMonitorsApi();
     }
 }
