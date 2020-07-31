@@ -14,7 +14,7 @@ fun userDefinedConfiguration(block: UserDefinedConfigurationDsl.() -> Unit): Use
     dsl.block()
 
     return UserDefinedConfiguration.builder()
-            .metric(dsl.metric)
-            .valueFunction(dsl.valueFunction)
+            .metric(requireNotNull(dsl.metric) { "User defined configuration metric cannot be null" })
+            .valueFunction(requireNotNull(dsl.valueFunction) { "User defined configuration value cannot be null" })
             .build()
 }

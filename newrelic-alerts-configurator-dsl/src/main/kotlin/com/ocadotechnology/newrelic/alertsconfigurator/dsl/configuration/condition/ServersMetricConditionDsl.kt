@@ -28,10 +28,10 @@ fun serversMetricCondition(block: ServersMetricConditionDsl.() -> Unit): Servers
     dsl.block()
 
     return ServersMetricCondition.builder()
-            .conditionName(dsl.conditionName)
+            .conditionName(requireNotNull(dsl.conditionName) { "Server metrics condition name cannot be null" })
             .enabled(dsl.enabled)
             .servers(dsl.servers)
-            .metric(dsl.metric)
+            .metric(requireNotNull(dsl.metric) { "Server metrics condition name cannot be null" })
             .runBookUrl(dsl.runBookUrl)
             .terms(dsl.terms)
             .userDefinedConfiguration(dsl.userDefinedConfiguration)

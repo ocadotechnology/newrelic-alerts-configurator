@@ -36,8 +36,8 @@ fun policyConfiguration(block: PolicyConfigurationDsl.() -> Unit): PolicyConfigu
     dsl.block()
 
     return PolicyConfiguration.builder()
-            .policyName(dsl.policyName)
-            .incidentPreference(dsl.incidentPreference)
+            .policyName(requireNotNull(dsl.policyName) { "Policy name cannot be null" })
+            .incidentPreference(requireNotNull(dsl.incidentPreference) { "Policy incident preference cannot be null" })
             .channels(dsl.channels)
             .conditions(dsl.conditions)
             .externalServiceConditions(dsl.externalServiceConditions)

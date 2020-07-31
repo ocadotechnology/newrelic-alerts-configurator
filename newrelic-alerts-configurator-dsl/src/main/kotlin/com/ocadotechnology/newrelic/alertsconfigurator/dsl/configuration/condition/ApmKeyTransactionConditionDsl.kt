@@ -22,10 +22,10 @@ fun apmKeyTransactionCondition(block: ApmKeyTransactionConditionDsl.() -> Unit):
     dsl.block()
 
     return ApmKeyTransactionCondition.builder()
-            .conditionName(dsl.conditionName)
+            .conditionName(requireNotNull(dsl.conditionName) { "Apm key transaction condition name cannot be null" })
             .enabled(dsl.enabled)
             .keyTransactions(dsl.keyTransactions)
-            .metric(dsl.metric)
+            .metric(requireNotNull(dsl.metric) { "Apm key transaction condition metric cannot be null" })
             .runBookUrl(dsl.runBookUrl)
             .terms(dsl.terms)
             .build()

@@ -14,7 +14,7 @@ fun pagerDutyChannel(block: PagerDutyChannelDsl.() -> Unit): PagerDutyChannel {
     dsl.block()
 
     return PagerDutyChannel.builder()
-            .channelName(dsl.channelName)
-            .serviceKey(dsl.serviceKey)
+            .channelName(requireNotNull(dsl.channelName) { "PagerDuty channel name cannot be null" })
+            .serviceKey(requireNotNull(dsl.serviceKey) { "PagerDuty channel key cannot be null" })
             .build()
 }

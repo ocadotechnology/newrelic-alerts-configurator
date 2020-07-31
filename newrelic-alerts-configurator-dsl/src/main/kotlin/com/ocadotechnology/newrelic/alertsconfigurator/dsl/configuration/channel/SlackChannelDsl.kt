@@ -15,8 +15,8 @@ fun slackChannel(block: SlackChannelDsl.() -> Unit): SlackChannel {
     dsl.block()
 
     return SlackChannel.builder()
-            .channelName(dsl.channelName)
-            .slackUrl(dsl.slackUrl)
+            .channelName(requireNotNull(dsl.channelName) { "Slack channel name cannot be null" })
+            .slackUrl(requireNotNull(dsl.slackUrl) {"Slack channel url cannot be null"})
             .teamChannel(dsl.teamChannel)
             .build()
 }

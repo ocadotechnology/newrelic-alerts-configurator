@@ -28,10 +28,10 @@ fun browserCondition(block: BrowserConditionDsl.() -> Unit): BrowserCondition {
     dsl.block()
 
     return BrowserCondition.builder()
-            .conditionName(dsl.conditionName)
+            .conditionName(requireNotNull(dsl.conditionName) { "Browser condition name cannot be null" })
             .enabled(dsl.enabled)
             .applications(dsl.applications)
-            .metric(dsl.metric)
+            .metric(requireNotNull(dsl.metric) { "Browser condition metric cannot be null" })
             .runBookUrl(dsl.runBookUrl)
             .terms(dsl.terms)
             .userDefinedConfiguration(dsl.userDefinedConfiguration)
