@@ -23,6 +23,7 @@
             - [PagerDuty channel](#pagerduty-channel)
             - [NewRelic user channel](#newrelic-user-channel)
             - [Condition and Channel management policy](#condition-and-channel-management-policy)
+- [Dashboard configuration](#dashboard-configuration)
 
 ## Configurator
 
@@ -699,4 +700,69 @@ All conditions and channels are managed in the same way.
        .build()
    ```
    This configuration will not create nor update any conditions, but will remove all existing ones.
-   
+
+## Dashboard configuration
+
+To update your dashboard in NewRelic Insights you just need to create and pass your dashboard configuration to NewRelic Alerts configurator.
+Dashboard configuration can be created using simple builder:
+
+```java
+DashboardConfiguration.builder()
+```
+
+What you can set in your configuration:
+- title - Your dashboard title. It is the only parameter that have to be provided.
+- description - Your dashboard description.
+- icon - Your dashboard icon. Look at `DashboardIcon` enum for possible values.
+- visibility - A visibility of the dashboard. It can be set either to `all` or `owner`.
+- editability - Configuration parameter which tells who can edit your dashboard. Look at `DashboardEditable` enum for possible values.
+- owner email - An email of the owner of given dashboard.
+- widgets - List of the widgets (charts, bar, pies)
+
+If dashboard with given title does not exist exception will be thrown.
+
+Example dashboard configuration:
+
+```java
+DashboardConfiguration.builder()
+    .title("Application 2 dashboard")
+    .description("Details of app 2")
+    .icon(DashboardIcon.BELL)
+    .visibility(DashboardVisibility.ALL)
+    .editable(DashboardEditable.EDITABLE_BY_OWNER)
+    .ownerEmail("tester@testee.local")
+    .widgets(ImmutableList.of(widget))
+    .build();
+```
+
+```java
+Widget widget = Widget.builder()
+    .presentation(presentation)
+    .layout(layout)
+    .visualization("gauge")
+    .data(ImmutableList.of(nrql))
+    .build();
+```
+
+```java
+WidgetPresentation presentation = WidgetPresentation.builder()
+    .title("Widget title")
+    .notes("Widget notes")
+    .build();
+```
+
+> Widget layout have limitation to 3 columns. Additionally it is the client resposibility to make sure that widgets are not going to overlap eachother. If that will happen an error from NewRelic will be received.
+```java
+WidgetLayout layout = WidgetLayout.builder()
+    .column(0)
+    .row(0)
+    .width(3)
+    .height(2)
+    .build();
+```
+
+```java
+WidgetData nrql = WidgetData.builder()
+    .nrql("SELECT count(*) FROM ErrorTransaction WHERE error IS true")
+    .build();
+```

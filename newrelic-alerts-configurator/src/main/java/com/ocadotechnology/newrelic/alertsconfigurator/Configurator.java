@@ -1,26 +1,27 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.DashboardConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
-
 import lombok.NonNull;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Main class used in configuration process. It is responsible for synchronizing programmatically created definitions of
- * application and policy configurations to NewRelic.
+ * application, policy and dashboard configurations to NewRelic.
  * <p>
- *
+ * <p>
  * Example:
  *
  * <pre>
  * Configurator configurator = new Configurator("NEW_RELIC_REST_API_KEY");
  * configurator.setApplicationConfigurations(Arrays.asList(appConfig1, appConfig2));
  * configurator.setPolicyConfigurations(Arrays.asList(policy1, policy2, policy3));
+ * configurator.setDashboardConfigurations(Arrays.asList(dashboard1, dashboard2, dashboard3));
  * configurator.sync();
  * </pre>
  */
@@ -32,10 +33,12 @@ public class Configurator {
     private final NrqlConditionConfigurator nrqlConditionConfigurator;
     private final SyntheticsConditionConfigurator syntheticsConditionConfigurator;
     private final ChannelConfigurator channelConfigurator;
+    private final DashboardConfigurator dashboardConfigurator;
 
 
     private Collection<ApplicationConfiguration> applicationConfigurations = Collections.emptyList();
     private Collection<PolicyConfiguration> policyConfigurations = Collections.emptyList();
+    private Collection<DashboardConfiguration> dashboardConfigurations = Collections.emptyList();
 
     /**
      * NewRelic Alerts configurator constructor
@@ -51,6 +54,7 @@ public class Configurator {
         nrqlConditionConfigurator = new NrqlConditionConfigurator(api);
         syntheticsConditionConfigurator = new SyntheticsConditionConfigurator(api, EntityResolver.defaultInstance());
         channelConfigurator = new ChannelConfigurator(api);
+        dashboardConfigurator = new DashboardConfigurator(api);
     }
 
     Configurator(ApplicationConfigurator applicationConfigurator,
@@ -59,7 +63,8 @@ public class Configurator {
                  ExternalServiceConditionConfigurator externalServiceConditionConfigurator,
                  NrqlConditionConfigurator nrqlConditionConfigurator,
                  SyntheticsConditionConfigurator syntheticsConditionConfigurator,
-                 ChannelConfigurator channelConfigurator) {
+                 ChannelConfigurator channelConfigurator,
+                 DashboardConfigurator dashboardConfigurator) {
         this.applicationConfigurator = applicationConfigurator;
         this.policyConfigurator = policyConfigurator;
         this.conditionConfigurator = conditionConfigurator;
@@ -67,11 +72,12 @@ public class Configurator {
         this.nrqlConditionConfigurator = nrqlConditionConfigurator;
         this.syntheticsConditionConfigurator = syntheticsConditionConfigurator;
         this.channelConfigurator = channelConfigurator;
+        this.dashboardConfigurator = dashboardConfigurator;
     }
 
     /**
      * Synchronizes configurations (see {@link Configurator#setApplicationConfigurations(Collection)}
-     * and {@link Configurator#setPolicyConfigurations(Collection)})
+     * policies {@link Configurator#setPolicyConfigurations(Collection)}) and dashboards ({@link Configurator#setDashboardConfigurations(Collection)}
      */
     public void sync() {
         for (ApplicationConfiguration applicationConfiguration : applicationConfigurations) {
@@ -85,6 +91,10 @@ public class Configurator {
             nrqlConditionConfigurator.sync(configuration);
             syntheticsConditionConfigurator.sync(configuration);
             channelConfigurator.sync(configuration);
+        }
+
+        for (DashboardConfiguration configuration : dashboardConfigurations) {
+            dashboardConfigurator.sync(configuration);
         }
     }
 
@@ -108,5 +118,16 @@ public class Configurator {
      */
     public void setPolicyConfigurations(@NonNull Collection<PolicyConfiguration> policyConfigurations) {
         this.policyConfigurations = policyConfigurations;
+    }
+
+    /**
+     * Sets dashboards configurations to synchronize. If dashboard with the same name is already defined in NewRelic, it will be
+     * updated. It will not create new dashboards.
+     *
+     * @param dashboardConfigurations collection of dashboard configurations to synchronize
+     * @see DashboardConfiguration
+     */
+    public void setDashboardConfigurations(@NonNull Collection<DashboardConfiguration> dashboardConfigurations) {
+        this.dashboardConfigurations = dashboardConfigurations;
     }
 }

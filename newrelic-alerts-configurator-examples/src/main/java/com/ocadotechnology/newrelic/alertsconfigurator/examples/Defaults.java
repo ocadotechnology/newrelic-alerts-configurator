@@ -5,8 +5,8 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.Cha
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.EmailChannel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.channel.SlackChannel;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmAppCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.BrowserCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ApmJvmCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.BrowserCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.Condition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.ServersMetricCondition;
@@ -18,12 +18,17 @@ import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.t
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.violationclosetimer.ViolationCloseTimer;
+import com.ocadotechnology.newrelic.apiclient.model.dashboards.widget.Widget;
+import com.ocadotechnology.newrelic.apiclient.model.dashboards.widget.WidgetData;
+import com.ocadotechnology.newrelic.apiclient.model.dashboards.widget.WidgetLayout;
+import com.ocadotechnology.newrelic.apiclient.model.dashboards.widget.WidgetPresentation;
+import jersey.repackaged.com.google.common.collect.ImmutableList;
 
 import java.util.Arrays;
 
 /**
- * Utility class used to obtain {@link Channel}, {@link Condition} or {@link ApplicationConfiguration} predefined
- * with default values.
+ * Utility class used to obtain {@link Channel}, {@link Condition}, {@link ApplicationConfiguration} or {@link Widget}
+ * predefined with default values.
  */
 public final class Defaults {
 
@@ -197,6 +202,31 @@ public final class Defaults {
                 .channelName("My Team - slack")
                 .slackUrl("https://hooks.slack.com/services/aaaaaaaaa/bbbbbbbbb/cccccccccccccccccccccccc")
                 .teamChannel("newrelic-alerts")
+                .build();
+    }
+
+    public static Widget errorCountDashboard() {
+        WidgetPresentation presentation = WidgetPresentation.builder()
+                .title("Widget title")
+                .notes("Widget notes")
+                .build();
+
+        WidgetLayout layout = WidgetLayout.builder()
+                .column(0)
+                .row(0)
+                .width(3)
+                .height(2)
+                .build();
+
+        WidgetData nrql = WidgetData.builder()
+                .nrql("SELECT count(*) FROM ErrorTransaction WHERE error IS true")
+                .build();
+
+        return Widget.builder()
+                .presentation(presentation)
+                .layout(layout)
+                .visualization("gauge")
+                .data(ImmutableList.of(nrql))
                 .build();
     }
 }

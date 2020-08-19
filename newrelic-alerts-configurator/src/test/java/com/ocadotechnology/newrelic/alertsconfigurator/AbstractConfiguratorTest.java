@@ -1,9 +1,17 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
-import com.ocadotechnology.newrelic.apiclient.*;
+import com.ocadotechnology.newrelic.apiclient.AlertsChannelsApi;
+import com.ocadotechnology.newrelic.apiclient.AlertsPoliciesApi;
+import com.ocadotechnology.newrelic.apiclient.ApplicationsApi;
+import com.ocadotechnology.newrelic.apiclient.DashboardsApi;
+import com.ocadotechnology.newrelic.apiclient.KeyTransactionsApi;
+import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
+import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
+import com.ocadotechnology.newrelic.apiclient.ServersApi;
+import com.ocadotechnology.newrelic.apiclient.UsersApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
-import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.Mock;
@@ -35,6 +43,8 @@ public abstract class AbstractConfiguratorTest {
     UsersApi usersApiMock;
     @Mock
     ServersApi serversApiMock;
+    @Mock
+    DashboardsApi dashboardsApiMock;
 
     @Before
     public void mockApi() {
@@ -47,5 +57,6 @@ public abstract class AbstractConfiguratorTest {
         when(apiMock.getKeyTransactionsApi()).thenReturn(keyTransactionsApiMock);
         when(apiMock.getServersApi()).thenReturn(serversApiMock);
         when(apiMock.getUsersApi()).thenReturn(usersApiMock);
+        when(apiMock.getDashboardsApi()).thenReturn(dashboardsApiMock);
     }
 }

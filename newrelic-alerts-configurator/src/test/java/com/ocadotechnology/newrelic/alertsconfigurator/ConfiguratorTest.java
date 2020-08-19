@@ -1,26 +1,26 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-
+import com.google.common.collect.ImmutableList;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.DashboardConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.collect.ImmutableList;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfiguratorTest {
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
 
+    @Mock
+    private DashboardConfigurator dashboardConfiguratorMock;
     @Mock
     private ApplicationConfigurator applicationConfiguratorMock;
     @Mock
@@ -40,6 +40,8 @@ public class ConfiguratorTest {
     private ApplicationConfiguration applicationConfigurationMock;
     @Mock
     private PolicyConfiguration policyConfigurationMock;
+    @Mock
+    private DashboardConfiguration dashboardConfigurationMock;
 
 
     private Configurator testee;
@@ -47,12 +49,13 @@ public class ConfiguratorTest {
     @Before
     public void setUp() {
         testee = new Configurator(applicationConfiguratorMock,
-            policyConfiguratorMock,
-            conditionConfiguratorMock,
-            externalServiceConditionConfiguratorMock,
-            nrqlConditionConfiguratorMock,
-            syntheticsConditionConfiguratorMock,
-            channelConfiguratorMock);
+                policyConfiguratorMock,
+                conditionConfiguratorMock,
+                externalServiceConditionConfiguratorMock,
+                nrqlConditionConfiguratorMock,
+                syntheticsConditionConfiguratorMock,
+                channelConfiguratorMock,
+                dashboardConfiguratorMock);
     }
 
 
@@ -60,12 +63,12 @@ public class ConfiguratorTest {
     public void shouldThrowException_whenNoApiKey() {
         // given
 
-        // then - exception
-        expectedException.expect(NullPointerException.class);
-        expectedException.expectMessage("apiKey");
-
         // when
-        new Configurator(null);
+        Throwable exception = catchThrowable(() -> new Configurator(null));
+
+        // then - exception
+        assertThat(exception).isInstanceOf(NullPointerException.class);
+        assertThat(exception).hasMessage("apiKey");
     }
 
     @Test
@@ -82,7 +85,8 @@ public class ConfiguratorTest {
                 externalServiceConditionConfiguratorMock,
                 nrqlConditionConfiguratorMock,
                 syntheticsConditionConfiguratorMock,
-                channelConfiguratorMock);
+                channelConfiguratorMock,
+                dashboardConfiguratorMock);
         order.verifyNoMoreInteractions();
     }
 
@@ -91,8 +95,10 @@ public class ConfiguratorTest {
         // given
         ApplicationConfiguration applicationConfigurationMock2 = mock(ApplicationConfiguration.class);
         PolicyConfiguration policyConfigurationMock2 = mock(PolicyConfiguration.class);
+        DashboardConfiguration dashboardConfigurationMock2 = mock(DashboardConfiguration.class);
         testee.setApplicationConfigurations(ImmutableList.of(applicationConfigurationMock, applicationConfigurationMock2));
         testee.setPolicyConfigurations(ImmutableList.of(policyConfigurationMock, policyConfigurationMock2));
+        testee.setDashboardConfigurations(ImmutableList.of(dashboardConfigurationMock, dashboardConfigurationMock2));
 
         // when
         testee.sync();
@@ -104,11 +110,14 @@ public class ConfiguratorTest {
                 externalServiceConditionConfiguratorMock,
                 nrqlConditionConfiguratorMock,
                 syntheticsConditionConfiguratorMock,
-                channelConfiguratorMock);
+                channelConfiguratorMock,
+                dashboardConfiguratorMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock);
         order.verify(applicationConfiguratorMock).sync(applicationConfigurationMock2);
         order.verify(policyConfiguratorMock).sync(policyConfigurationMock);
         order.verify(policyConfiguratorMock).sync(policyConfigurationMock2);
+        order.verify(dashboardConfiguratorMock).sync(dashboardConfigurationMock);
+        order.verify(dashboardConfiguratorMock).sync(dashboardConfigurationMock2);
     }
 
     @Test
