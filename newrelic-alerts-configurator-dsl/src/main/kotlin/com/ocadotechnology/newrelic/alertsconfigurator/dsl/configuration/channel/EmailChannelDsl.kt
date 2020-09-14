@@ -15,8 +15,8 @@ fun emailChannel(block: EmailChannelDsl.() -> Unit): EmailChannel {
     dsl.block()
 
     return EmailChannel.builder()
-            .channelName(dsl.channelName)
-            .emailAddress(dsl.emailAddress)
+            .channelName(requireNotNull(dsl.channelName) { "Email channel name cannot be null" })
+            .emailAddress(requireNotNull(dsl.emailAddress) { "Email channel address cannot be null" })
             .includeJsonAttachment(dsl.includeJsonAttachment)
             .build()
 }

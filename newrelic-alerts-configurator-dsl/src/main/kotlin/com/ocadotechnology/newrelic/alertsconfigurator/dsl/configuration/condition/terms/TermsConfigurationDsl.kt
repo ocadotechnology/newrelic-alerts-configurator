@@ -17,11 +17,11 @@ fun termsConfiguration(block: TermsConfigurationDsl.() -> Unit): TermsConfigurat
     dsl.block()
 
     return TermsConfiguration.builder()
-            .durationTerm(dsl.durationTerm)
-            .operatorTerm(dsl.operatorTerm)
-            .priorityTerm(dsl.priorityTerm)
-            .thresholdTerm(dsl.thresholdTerm)
-            .timeFunctionTerm(dsl.timeFunctionTerm)
+            .durationTerm(requireNotNull(dsl.durationTerm) { "Terms duration cannot be null" })
+            .operatorTerm(requireNotNull(dsl.operatorTerm) { "Terms operator cannot be null" })
+            .priorityTerm(requireNotNull(dsl.priorityTerm) { "Terms priority cannot be null" })
+            .thresholdTerm(requireNotNull(dsl.thresholdTerm) { "Terms threshold cannot be null" })
+            .timeFunctionTerm(requireNotNull(dsl.timeFunctionTerm) { "Terms time cannot be null" })
             .build()
 }
 

@@ -23,12 +23,12 @@ fun nrqlCondition(block: NrqlConditionDsl.() -> Unit): NrqlCondition {
     dsl.block()
 
     return NrqlCondition.builder()
-            .conditionName(dsl.conditionName)
+            .conditionName(requireNotNull(dsl.conditionName) { "Nrql condition name cannot be null" })
             .enabled(dsl.enabled)
             .runBookUrl(dsl.runBookUrl)
             .terms(dsl.terms)
-            .valueFunction(dsl.valueFunction)
-            .query(dsl.query)
-            .sinceValue(dsl.sinceValue)
+            .valueFunction(requireNotNull(dsl.valueFunction) { "Nrql condition value cannot be null" })
+            .query(requireNotNull(dsl.query) { "Nrql condition query cannot be null" })
+            .sinceValue(requireNotNull(dsl.sinceValue) { "Nrql condition since cannot be null" })
             .build()
 }

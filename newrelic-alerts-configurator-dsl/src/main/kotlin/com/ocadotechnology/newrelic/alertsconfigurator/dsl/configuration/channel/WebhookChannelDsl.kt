@@ -16,8 +16,8 @@ fun webhookChannel(block: WebhookChannelDsl.() -> Unit): WebhookChannel {
     dsl.block()
 
     return WebhookChannel.builder()
-            .channelName(dsl.channelName)
-            .baseUrl(dsl.baseUrl)
+            .channelName(requireNotNull(dsl.channelName) { "Webhook channel name cannot be null" })
+            .baseUrl(requireNotNull(dsl.baseUrl) { "Webhook channel url cannot be null" })
             .authUsername(dsl.authUsername)
             .authPassword(dsl.authPassword)
             .build()

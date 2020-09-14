@@ -16,8 +16,8 @@ fun syntheticsCondition(block: SyntheticsConditionDsl.() -> Unit): SyntheticsCon
     dsl.block()
 
     return SyntheticsCondition.builder()
-            .conditionName(dsl.conditionName)
-            .monitorName(dsl.monitorName)
+            .conditionName(requireNotNull(dsl.conditionName) { "Synthetics condition name cannot be null" })
+            .monitorName(requireNotNull(dsl.monitorName) { "Synthetics condition monitor name cannot be null" })
             .enabled(dsl.enabled)
             .runBookUrl(dsl.runBookUrl)
             .build()

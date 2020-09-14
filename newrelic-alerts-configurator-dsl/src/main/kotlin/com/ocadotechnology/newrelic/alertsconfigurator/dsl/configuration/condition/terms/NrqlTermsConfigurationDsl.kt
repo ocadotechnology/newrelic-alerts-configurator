@@ -17,11 +17,11 @@ fun nrqlTermsConfiguration(block: NrqlTermsConfigurationDsl.() -> Unit): NrqlTer
     dsl.block()
 
     return NrqlTermsConfiguration.builder()
-            .durationTerm(dsl.durationTerm)
-            .operatorTerm(dsl.operatorTerm)
-            .priorityTerm(dsl.priorityTerm)
-            .thresholdTerm(dsl.thresholdTerm)
-            .timeFunctionTerm(dsl.timeFunctionTerm)
+            .durationTerm(requireNotNull(dsl.durationTerm) { "Nrql terms duration cannot be null" })
+            .operatorTerm(requireNotNull(dsl.operatorTerm) { "Nrql terms operator cannot be null" })
+            .priorityTerm(requireNotNull(dsl.priorityTerm) { "Nrql terms priority cannot be null" })
+            .thresholdTerm(requireNotNull(dsl.thresholdTerm) { "Nrql terms threshold cannot be null" })
+            .timeFunctionTerm(requireNotNull(dsl.timeFunctionTerm) { "Nrql terms time function cannot be null" })
             .build()
 }
 

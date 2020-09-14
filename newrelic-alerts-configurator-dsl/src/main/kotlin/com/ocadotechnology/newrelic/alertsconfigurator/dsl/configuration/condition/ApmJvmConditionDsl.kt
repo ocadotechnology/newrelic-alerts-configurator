@@ -25,13 +25,13 @@ fun apmJvmCondition(block: ApmJvmConditionDsl.() -> Unit): ApmJvmCondition {
     dsl.block()
 
     return ApmJvmCondition.builder()
-            .conditionName(dsl.conditionName)
+            .conditionName(requireNotNull(dsl.conditionName) { "Apm jvm condition name cannot be null" })
             .enabled(dsl.enabled)
             .applications(dsl.applications)
-            .metric(dsl.metric)
+            .metric(requireNotNull(dsl.metric) { "Apm jvm condition metric cannot be null" })
             .gcMetric(dsl.gcMetric)
             .runBookUrl(dsl.runBookUrl)
             .terms(dsl.terms)
-            .violationCloseTimer(dsl.violationCloseTimer)
+            .violationCloseTimer(requireNotNull(dsl.violationCloseTimer) { "Apm jvm condition timer cannot be null" })
             .build()
 }

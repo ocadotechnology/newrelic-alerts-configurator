@@ -13,6 +13,6 @@ fun userChannel(block: UserChannelDsl.() -> Unit): UserChannel {
     dsl.block()
 
     return UserChannel.builder()
-            .userEmail(dsl.userEmail)
+            .userEmail(requireNotNull(dsl.userEmail) { "User channel name cannot be null" })
             .build()
 }
