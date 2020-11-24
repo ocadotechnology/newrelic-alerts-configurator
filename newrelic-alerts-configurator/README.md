@@ -398,7 +398,17 @@ What you can set for NRQL condition:
     - 30
     - 60
     - 120
-
+- signal configuration - Determines how data should be collected and what should happened when there is lack of data:
+    - aggregation window - Time (in seconds) for how long NewRelic collects data before running the NRQL query.
+    - evaluation windows - Number of windows to evaluate data.
+    - signal fill option - Configuration of filling data gaps/signal lost. Possible values are:
+        - NONE - do not fill any data
+        - LAST_KNOWN_VALUE - fill with last known value
+    - signal lost configuration:
+        - signal is lost after - Time (in seconds) for the signal treated as lost.
+        - open new violation on signal lost - Opens a loss of signal violation when no signal.
+        - closeCurrentViolationsOnSignalLost - cCoses all currently open violations when no signal is heard.
+     
 Example NRQL condition configuration:
 
 ```java
