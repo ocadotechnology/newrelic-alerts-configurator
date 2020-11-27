@@ -1,15 +1,13 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.signal;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum SignalFillOption {
     NONE("none"), LAST_KNOWN_VALUE("last_value");
 
-    private String value;
+    private final String value;
 
-    SignalFillOption(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 }

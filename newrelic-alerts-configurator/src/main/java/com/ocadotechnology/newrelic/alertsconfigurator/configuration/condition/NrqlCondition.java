@@ -68,10 +68,6 @@ public class NrqlCondition {
      */
     private NrqlSignalConfiguration signal;
 
-    public Optional<NrqlSignalConfiguration> getSignal() {
-        return Optional.ofNullable(signal);
-    }
-
     @Getter
     @AllArgsConstructor
     public enum SinceValue {
