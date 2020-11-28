@@ -34,4 +34,8 @@ public class AlertsNrqlCondition implements PolicyItem {
     String valueFunction;
     @JsonProperty
     Nrql nrql;
+    @JsonProperty
+    Signal signal;
+    @JsonProperty
+    Expiration expiration;
 }
