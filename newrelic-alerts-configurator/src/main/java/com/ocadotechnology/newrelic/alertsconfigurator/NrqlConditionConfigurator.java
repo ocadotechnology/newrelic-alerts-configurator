@@ -1,11 +1,10 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
-
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.lossofsignal.LossOfSignalUtils;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TermsUtils;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
-
 import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.Nrql;
@@ -45,6 +44,8 @@ class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrq
                         .sinceValue(String.valueOf(condition.getSinceValue().getSince()))
                         .query(condition.getQuery())
                         .build())
+                .expiration(LossOfSignalUtils.createExpiration(condition.getExpiration()))
+                .signal(LossOfSignalUtils.createSignal(condition.getSignal()))
                 .build();
     }
 

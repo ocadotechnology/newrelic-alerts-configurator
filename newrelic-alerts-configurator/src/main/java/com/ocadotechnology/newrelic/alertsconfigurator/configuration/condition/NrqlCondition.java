@@ -1,5 +1,7 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition;
 
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.lossofsignal.ExpirationConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.lossofsignal.SignalConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +22,8 @@ import java.util.Collection;
  *     <li>{@link #valueFunction}</li>
  *     <li>{@link #query}</li>
  *     <li>{@link #sinceValue}</li>
+ *     <li>{@link #expiration}</li>
+ *     <li>{@link #signal}</li>
  * </ul>
  */
 @Getter
@@ -60,6 +64,17 @@ public class NrqlCondition {
      */
     @NonNull
     private SinceValue sinceValue;
+
+    /**
+     * Expiration configuration to customise the loss of signal detection
+     */
+    private ExpirationConfiguration expiration;
+
+    /**
+     *  Signal configuration to customise the gap filling
+     */
+    private SignalConfiguration signal;
+
 
     @Getter
     @AllArgsConstructor

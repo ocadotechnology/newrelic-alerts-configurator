@@ -2,12 +2,23 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.*;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.lossofsignal.ExpirationConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.lossofsignal.SignalConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.lossofsignal.SignalConfiguration.FillOption;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
 import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.Terms;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.Expiration;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.Nrql;
+import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.Signal;
 import org.junit.Before;
+
+import java.util.concurrent.TimeUnit;
 
 public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfiguratorTest<NrqlConditionConfigurator, AlertsNrqlCondition> {
 
@@ -15,6 +26,16 @@ public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfigurato
     private static final NrqlCondition.ValueFunction VALUE_FUNCTION = NrqlCondition.ValueFunction.SINGLE_VALUE;
     private static final NrqlCondition.SinceValue SINCE_VALUE = NrqlCondition.SinceValue.SINCE_1;
     private static final String QUERY = "query";
+
+    private static final FillOption FILL_OPTION = FillOption.STATIC;
+    private static final String FILL_VALUE = "123";
+    private static final int AGGREGATION_WINDOW_MINUTES = 3;
+    private static final int EVALUATION_OFFSET_MINUTES = 5;
+
+    private static final int EXPIRATION_DURATION_SECONDS = 10;
+    private static final boolean OPEN_VIOLATION_ON_EXPIRATION = true;
+    private static final boolean CLOSE_VIOLATIONS_ON_EXPIRATION = true;
+
     private static final NrqlCondition NRQL_CONDITION = createNrqlCondition(CONDITION_NAME);
 
     private static final AlertsNrqlCondition ALERTS_CONDITION_SAME = createConditionBuilder().id(1).build();
@@ -78,6 +99,17 @@ public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfigurato
                 .valueFunction(VALUE_FUNCTION)
                 .query(QUERY)
                 .sinceValue(SINCE_VALUE)
+                .expiration(ExpirationConfiguration.builder()
+                        .closeViolationsOnExpiration(CLOSE_VIOLATIONS_ON_EXPIRATION)
+                        .openViolationOnExpiration(OPEN_VIOLATION_ON_EXPIRATION)
+                        .expirationDuration(EXPIRATION_DURATION_SECONDS, TimeUnit.SECONDS)
+                        .build())
+                .signal(SignalConfiguration.builder()
+                        .aggregationWindow(AGGREGATION_WINDOW_MINUTES, TimeUnit.MINUTES)
+                        .evaluationOffset(EVALUATION_OFFSET_MINUTES, TimeUnit.MINUTES)
+                        .fillOption(FILL_OPTION)
+                        .fillValue(FILL_VALUE)
+                        .build())
                 .build();
     }
 
@@ -104,6 +136,17 @@ public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfigurato
                 .nrql(Nrql.builder()
                         .query(QUERY)
                         .sinceValue(String.valueOf(SINCE_VALUE.getSince()))
+                        .build())
+                .signal(Signal.builder()
+                        .fillOption(FILL_OPTION.getValue())
+                        .fillValue(FILL_VALUE)
+                        .aggregationWindow(String.valueOf(AGGREGATION_WINDOW_MINUTES))
+                        .evaluationOffset(String.valueOf(EVALUATION_OFFSET_MINUTES))
+                        .build())
+                .expiration(Expiration.builder()
+                        .expirationDuration(String.valueOf(EXPIRATION_DURATION_SECONDS))
+                        .openViolationOnExpiration(OPEN_VIOLATION_ON_EXPIRATION)
+                        .closeViolationsOnExpiration(CLOSE_VIOLATIONS_ON_EXPIRATION)
                         .build());
     }
 
