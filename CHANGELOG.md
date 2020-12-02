@@ -1,3 +1,6 @@
+# 3.5.0 (02-12-2020)
+- Added Signal configuration
+
 # 3.4.1 (26-02-2020)
 - Added new GcMetric `GC/MarkSweepCompact` and `GC/Copy` 
 
