@@ -1,5 +1,6 @@
 package com.ocadotechnology.newrelic.apiclient.model.conditions;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,4 +16,7 @@ public class Signal {
     String evaluationOffset;
     @JsonProperty("fill_option")
     String fillOption;
+    @JsonInclude
+    @JsonProperty("fill_value")
+    String fillValue;
 }
