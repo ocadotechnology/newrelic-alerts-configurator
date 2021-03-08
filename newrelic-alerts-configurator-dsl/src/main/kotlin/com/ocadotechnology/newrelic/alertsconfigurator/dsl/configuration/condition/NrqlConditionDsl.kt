@@ -1,6 +1,8 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.UserDefinedConfiguration
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.signal.NrqlSignalConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.NewRelicConfigurationMarker
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition.terms.NrqlTermConfigurations
@@ -14,8 +16,13 @@ class NrqlConditionDsl {
     var query: String? = null
     var sinceValue: NrqlCondition.SinceValue? = null
     internal val terms: MutableList<NrqlTermsConfiguration> = mutableListOf()
+    var nrqlSignalConfiguration: NrqlSignalConfiguration? = null
 
     fun terms(block: NrqlTermConfigurations.() -> Unit) = terms.addAll(NrqlTermConfigurations().apply(block).terms)
+
+    fun nrqlSignal(block: NrqlSignalConfigurationDsl.() -> Unit) {
+        nrqlSignalConfiguration = nrqlSignalConfiguration(block)
+    }
 }
 
 fun nrqlCondition(block: NrqlConditionDsl.() -> Unit): NrqlCondition {
@@ -30,5 +37,6 @@ fun nrqlCondition(block: NrqlConditionDsl.() -> Unit): NrqlCondition {
             .valueFunction(requireNotNull(dsl.valueFunction) { "Nrql condition value cannot be null" })
             .query(requireNotNull(dsl.query) { "Nrql condition query cannot be null" })
             .sinceValue(requireNotNull(dsl.sinceValue) { "Nrql condition since cannot be null" })
+            .signal(dsl.nrqlSignalConfiguration)
             .build()
 }
