@@ -20,7 +20,7 @@ class NrqlConditionDsl {
 
     fun terms(block: NrqlTermConfigurations.() -> Unit) = terms.addAll(NrqlTermConfigurations().apply(block).terms)
 
-    fun nrqlSignal(block: NrqlSignalConfigurationDsl.() -> Unit) {
+    fun signal(block: NrqlSignalConfigurationDsl.() -> Unit) {
         nrqlSignalConfiguration = nrqlSignalConfiguration(block)
     }
 }

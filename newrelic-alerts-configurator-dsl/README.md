@@ -272,6 +272,17 @@ val config: NrqlCondition = nrqlCondition {
         // you can also use special fluent syntax to define term
         PriorityTerm.CRITICAL given TimeFunctionTerm.ALL inLast NrqlDurationTerm.DURATION_5 minutes OperatorTerm.BELOW value 0.7f
     }
+    
+    signal {
+        aggregationWindow = 1
+        evaluationWindows = 15
+        signalFillOption = SignalFillOption.LAST_KNOWN_VALUE
+        signalLost {
+            signalIsLostAfter = 22
+            openNewViolationOnSignalLost = true
+            closeCurrentViolationsOnSignalLost = false
+        }
+    }
 }
 ```
 
