@@ -1,3 +1,6 @@
+# 3.5.2 (08-03-2021)
+- Added NRQL signal configuration to Kotlin DSL
+
 # 3.5.1 (14-01-2021)
 - Fixed setting explicit null value for field 'fill_value' in Signal configuration
 
