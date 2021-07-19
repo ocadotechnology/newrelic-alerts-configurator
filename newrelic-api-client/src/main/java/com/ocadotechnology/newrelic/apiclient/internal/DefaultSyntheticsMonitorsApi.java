@@ -1,13 +1,15 @@
 package com.ocadotechnology.newrelic.apiclient.internal;
 
-import java.util.Optional;
-
-import javax.ws.rs.client.Invocation;
-
 import com.ocadotechnology.newrelic.apiclient.SyntheticsMonitorsApi;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.apiclient.internal.model.MonitorList;
 import com.ocadotechnology.newrelic.apiclient.model.synthetics.Monitor;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.Response;
+import java.util.Optional;
 
 class DefaultSyntheticsMonitorsApi extends ApiBase implements SyntheticsMonitorsApi {
 
@@ -27,4 +29,21 @@ class DefaultSyntheticsMonitorsApi extends ApiBase implements SyntheticsMonitors
                 .getSingle();
     }
 
+    @Override
+    public Monitor create(Monitor monitor) throws Exception {
+        final Response response = client
+                .target(MONITORS_URL)
+                .request(APPLICATION_JSON_TYPE)
+                .post(Entity.entity(monitor, APPLICATION_JSON_TYPE));
+
+        if(response.getStatus() != 201) {
+            throw new Exception(String.format("Failed to create a the Monitor with name %s", monitor.getName()));
+        }
+        return getByName(monitor.getName()).get();
+    }
+
+    @Override
+    public Monitor delete(String monitorId) {
+        return null;
+    }
 }
