@@ -37,13 +37,17 @@ class DefaultSyntheticsMonitorsApi extends ApiBase implements SyntheticsMonitors
                 .post(Entity.entity(monitor, APPLICATION_JSON_TYPE));
 
         if(response.getStatus() != 201) {
-            throw new Exception(String.format("Failed to create a the Monitor with name %s", monitor.getName()));
+            throw new Exception(String.format("Failed to create the Monitor with name %s", monitor.getName()));
         }
         return getByName(monitor.getName()).get();
     }
 
     @Override
-    public Monitor delete(String monitorId) {
-        return null;
+    public Monitor delete(Monitor monitor) {
+        client
+                .target(MONITORS_URL + "/" + monitor.getUuid())
+                .request(APPLICATION_JSON_TYPE)
+                .delete();
+        return monitor;
     }
 }

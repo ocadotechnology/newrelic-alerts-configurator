@@ -29,9 +29,9 @@ public interface SyntheticsMonitorsApi {
      * <p>
      *
      *
-     * @param monitorId to be deleted in NewRelic
+     * @param monitor to be deleted in NewRelic
      * @return deleted {@link com.ocadotechnology.newrelic.apiclient.model.synthetics.Monitor}
      */
-    Monitor delete(String monitorId);
+    Monitor delete(Monitor monitor);
 
 }

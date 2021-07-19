@@ -70,4 +70,16 @@ public class DefaultSyntheticsMonitorsApiTest {
 
         assertThatThrownBy(() -> syntheticsMonitorsApi.create(actualMonitorToBeCreated)).isInstanceOf(Exception.class);
     }
+
+    @Test
+    public void delete_shouldDeleteTheMonitor() {
+        final Monitor actualMonitorToBeDeleted = new Monitor(UUID.randomUUID().toString(), "test-monitor", "SIMPLE", 1, singletonList("AWS_US_WEST_1"), "http://newrelic-url", "ENABLED", 1.0, null, null);
+        when(builderMock.delete()).thenReturn(postResponseMock);
+        when(webTargetMock.request(APPLICATION_JSON_TYPE)).thenReturn(builderMock);
+        when(clientMock.target("/v3/monitors/"+actualMonitorToBeDeleted.getUuid())).thenReturn(webTargetMock);
+
+        final Monitor monitor = syntheticsMonitorsApi.delete(actualMonitorToBeDeleted);
+
+        assertThat(monitor).isEqualTo(actualMonitorToBeDeleted);
+    }
 }
