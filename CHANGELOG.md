@@ -1,3 +1,6 @@
+# 3.5.3 (25-08-2021)
+- Added SyntheticsMonitorsApi
+
 # 3.5.2 (08-03-2021)
 - Added NRQL signal configuration to Kotlin DSL
 
