@@ -14,4 +14,24 @@ public interface SyntheticsMonitorsApi {
      */
     Optional<Monitor> getByName(String monitorName);
 
+    /**
+     * Create a new {@link com.ocadotechnology.newrelic.apiclient.model.synthetics.Monitor}.
+     * <p>
+     *
+     *
+     * @param monitor to be created in NewRelic
+     * @return created {@link com.ocadotechnology.newrelic.apiclient.model.synthetics.Monitor}
+     */
+    Monitor create(Monitor monitor) throws Exception;
+
+    /**
+     * Deletes a {@link com.ocadotechnology.newrelic.apiclient.model.synthetics.Monitor}.
+     * <p>
+     *
+     *
+     * @param monitor to be deleted in NewRelic
+     * @return deleted {@link com.ocadotechnology.newrelic.apiclient.model.synthetics.Monitor}
+     */
+    Monitor delete(Monitor monitor);
+
 }

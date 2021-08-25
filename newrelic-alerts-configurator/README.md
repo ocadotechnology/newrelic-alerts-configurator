@@ -447,6 +447,17 @@ SyntheticsCondition.builder()
     .monitorName("MyMonitor")
     .build();
 ```
+### Synthetic Monitor Create
+Synthetic monitor can be created as follows. 
+```java
+new NewRelicApi("api-key").getSyntheticsMonitorsApi().create(new Monitor(...))
+```
+
+### Synthetic Monitor Delete
+Synthetic monitor can be delete as follows. 
+```java
+new NewRelicApi("api-key").getSyntheticsMonitorsApi().delete(new Monitor(...))
+```
 
 ### User defined configuration
 
