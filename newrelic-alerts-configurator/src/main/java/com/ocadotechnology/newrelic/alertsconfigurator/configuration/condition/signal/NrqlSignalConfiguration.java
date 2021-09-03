@@ -37,6 +37,11 @@ public class NrqlSignalConfiguration {
     private SignalFillOption signalFillOption;
 
     /**
+     * Value for filling data gaps/signal lost
+     */
+    private String signalFillValue;
+
+    /**
      * Configuration of signal lost behaviour.
      */
     @NonNull
