@@ -13,7 +13,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<AlertsNrqlCondition> {
 
-    private static final String CONDITIONS_URL = "/v2/alerts_nrql_conditions";
+    private static final String CONDITIONS_URL = "/v2/alerts_nrql_conditions.json";
     private static final String CONDITION_URL = "/v2/alerts_nrql_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_nrql_conditions/policies/{policy_id}.json";
 
