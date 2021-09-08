@@ -29,7 +29,7 @@ fun nrqlSignalConfiguration(block: NrqlSignalConfigurationDsl.() -> Unit): NrqlS
             .signalFillOption(requireNotNull(dsl.signalFillOption) { "Signal fill option cannot be null" })
             .signalLostConfiguration(requireNotNull(dsl.signalLostConfiguration) { "Signal lost configuration cannot be null" })
     if (dsl.signalFillOption == SignalFillOption.STATIC) {
-        signalConfigurationBuilder.signalFillValue(requireNotNull(dsl.signalFillValue))
+        signalConfigurationBuilder.signalFillValue(requireNotNull(dsl.signalFillValue) {"Signal fill value is required when signal fill is STATIC"})
     }
     return signalConfigurationBuilder
         .build()

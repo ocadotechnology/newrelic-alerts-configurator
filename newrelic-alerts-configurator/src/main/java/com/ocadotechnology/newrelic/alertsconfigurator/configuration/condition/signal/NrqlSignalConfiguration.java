@@ -11,6 +11,7 @@ import lombok.NonNull;
  *     <li>{@link #aggregationWindow}</li>
  *     <li>{@link #evaluationWindows}</li>
  *     <li>{@link #signalFillOption}</li>
+ *     <li>{@link #signalFillValue}</li>
  *     <li>{@link #signalLostConfiguration}</li>
  * </ul>
  */
