@@ -1,3 +1,7 @@
+# 3.6.0 (09-09-2021)
+- Added support for `signalFillValue` in NRQL Signaling
+- Updated conditions REST API url
+
 # 3.5.3 (25-08-2021)
 - Added SyntheticsMonitorsApi
 
