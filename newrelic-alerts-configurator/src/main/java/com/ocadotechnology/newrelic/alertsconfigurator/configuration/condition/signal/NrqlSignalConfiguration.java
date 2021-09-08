@@ -11,6 +11,7 @@ import lombok.NonNull;
  *     <li>{@link #aggregationWindow}</li>
  *     <li>{@link #evaluationWindows}</li>
  *     <li>{@link #signalFillOption}</li>
+ *     <li>{@link #signalFillValue}</li>
  *     <li>{@link #signalLostConfiguration}</li>
  * </ul>
  */
@@ -35,6 +36,11 @@ public class NrqlSignalConfiguration {
      */
     @NonNull
     private SignalFillOption signalFillOption;
+
+    /**
+     * Value for filling data gaps/signal lost
+     */
+    private String signalFillValue;
 
     /**
      * Configuration of signal lost behaviour.

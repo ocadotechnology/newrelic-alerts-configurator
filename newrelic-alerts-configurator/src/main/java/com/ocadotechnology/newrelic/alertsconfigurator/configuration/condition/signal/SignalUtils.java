@@ -12,7 +12,7 @@ public final class SignalUtils {
             .aggregationWindow(String.valueOf(nrqlSignalConfiguration.getAggregationWindow()))
             .evaluationOffset(String.valueOf(nrqlSignalConfiguration.getEvaluationWindows()))
             .fillOption(nrqlSignalConfiguration.getSignalFillOption().getValue())
-            .fillValue(null)
+            .fillValue(nrqlSignalConfiguration.getSignalFillValue())
             .build();
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SignalFillOption {
-    NONE("none"), LAST_KNOWN_VALUE("last_value");
+    NONE("none"), LAST_KNOWN_VALUE("last_value"), STATIC("static");
 
     private final String value;
 

@@ -11,6 +11,7 @@ class NrqlSignalConfigurationDsl {
     var aggregationWindow: Int? = null
     var evaluationWindows: Int? = null
     var signalFillOption: SignalFillOption? = null
+    var signalFillValue: String? = null
     var signalLostConfiguration: SignalLostConfiguration? = null
 
     fun signalLost(block: SignalLostConfigurationDsl.() -> Unit) {
@@ -22,10 +23,14 @@ fun nrqlSignalConfiguration(block: NrqlSignalConfigurationDsl.() -> Unit): NrqlS
     val dsl = NrqlSignalConfigurationDsl()
     dsl.block()
 
-    return NrqlSignalConfiguration.builder()
-        .aggregationWindow(requireNotNull(dsl.aggregationWindow) { "Aggregation window cannot be null" })
-        .evaluationWindows(requireNotNull(dsl.evaluationWindows) { "Evaluation window cannot be null" })
-        .signalFillOption(requireNotNull(dsl.signalFillOption) { "Signal fill option cannot be null" })
-        .signalLostConfiguration(requireNotNull(dsl.signalLostConfiguration) { "Signal lost configuration cannot be null" })
+    val signalConfigurationBuilder = NrqlSignalConfiguration.builder()
+            .aggregationWindow(requireNotNull(dsl.aggregationWindow) { "Aggregation window cannot be null" })
+            .evaluationWindows(requireNotNull(dsl.evaluationWindows) { "Evaluation window cannot be null" })
+            .signalFillOption(requireNotNull(dsl.signalFillOption) { "Signal fill option cannot be null" })
+            .signalLostConfiguration(requireNotNull(dsl.signalLostConfiguration) { "Signal lost configuration cannot be null" })
+    if (dsl.signalFillOption == SignalFillOption.STATIC) {
+        signalConfigurationBuilder.signalFillValue(requireNotNull(dsl.signalFillValue) {"Signal fill value is required when signal fill is STATIC"})
+    }
+    return signalConfigurationBuilder
         .build()
 }
