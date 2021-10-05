@@ -45,7 +45,6 @@ public class NrqlSignalConfiguration {
     /**
      * Configuration of signal lost behaviour.
      */
-    @NonNull
     private SignalLostConfiguration signalLostConfiguration;
 
 }
