@@ -26,6 +26,7 @@ fun nrqlSignalConfiguration(block: NrqlSignalConfigurationDsl.() -> Unit): NrqlS
             .aggregationWindow(requireNotNull(dsl.aggregationWindow) { "Aggregation window cannot be null" })
             .evaluationWindows(requireNotNull(dsl.evaluationWindows) { "Evaluation window cannot be null" })
             .signalFillOption(requireNotNull(dsl.signalFillOption) { "Signal fill option cannot be null" })
+            .signalLostConfiguration(dsl.signalLostConfiguration)
     if (dsl.signalFillOption == SignalFillOption.STATIC) {
         signalConfigurationBuilder.signalFillValue(requireNotNull(dsl.signalFillValue) {"Signal fill value is required when signal fill is STATIC"})
     }
