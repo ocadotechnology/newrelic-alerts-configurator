@@ -8,6 +8,9 @@ public final class ExpirationUtils {
     }
 
     public static Expiration createExpiration(SignalLostConfiguration signalLostConfiguration) {
+        if (signalLostConfiguration == null) {
+            return null;
+        }
         return Expiration.builder()
             .expirationDuration(String.valueOf(signalLostConfiguration.getSignalIsLostAfter()))
             .closeViolationsOnExpiration(signalLostConfiguration.isCloseCurrentViolationsOnSignalLost())
