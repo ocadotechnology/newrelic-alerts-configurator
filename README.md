@@ -67,7 +67,7 @@ Library is available in Maven Central
 <dependency>
     <groupId>com.ocadotechnology.newrelicalertsconfigurator</groupId>
     <artifactId>newrelic-alerts-configurator</artifactId>
-    <version>3.6.0</version>
+    <version>3.6.1</version>
 </dependency>
 ```
 
