@@ -1,3 +1,6 @@
+# 3.6.1 (13-10-2021)
+- Added support for signal configuration without expiration
+
 # 3.6.0 (09-09-2021)
 - Added support for `signalFillValue` in NRQL Signaling
 - Updated conditions REST API url
