@@ -9,10 +9,15 @@ public final class SignalUtils {
 
     public static Signal createSignal(NrqlSignalConfiguration nrqlSignalConfiguration) {
         return Signal.builder()
-            .aggregationWindow(String.valueOf(nrqlSignalConfiguration.getAggregationWindow()))
-            .evaluationOffset(String.valueOf(nrqlSignalConfiguration.getEvaluationWindows()))
+            .aggregationMethod(nrqlSignalConfiguration.getAggregationMethod().getValue())
+            .aggregationDelay(intToStringOrNull(nrqlSignalConfiguration.getAggregationDelay()))
+            .aggregationWindow(intToStringOrNull(nrqlSignalConfiguration.getAggregationWindow()))
             .fillOption(nrqlSignalConfiguration.getSignalFillOption().getValue())
             .fillValue(nrqlSignalConfiguration.getSignalFillValue())
             .build();
+    }
+
+    public static String intToStringOrNull(Integer integer) {
+        return integer != null ? String.valueOf(integer) : null;
     }
 }
