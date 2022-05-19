@@ -1,3 +1,6 @@
+# 4.0.0 (19-05-2022)
+- Adapt to Signal having aggregationMethod
+
 # 3.6.1 (13-10-2021)
 - Added support for signal configuration without expiration
 
