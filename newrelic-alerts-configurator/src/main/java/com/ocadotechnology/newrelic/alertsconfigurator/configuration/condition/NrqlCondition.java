@@ -60,7 +60,6 @@ public class NrqlCondition {
     /**
      * This is the timeframe in which to evaluate the {@link #query}
      */
-    @NonNull
     private SinceValue sinceValue;
 
     /**

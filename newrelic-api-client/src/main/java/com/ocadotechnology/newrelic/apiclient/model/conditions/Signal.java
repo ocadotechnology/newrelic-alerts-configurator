@@ -10,10 +10,12 @@ import lombok.Value;
 @Builder
 @AllArgsConstructor
 public class Signal {
+    @JsonProperty("aggregation_method")
+    String aggregationMethod;
+    @JsonProperty("aggregation_delay")
+    String aggregationDelay;
     @JsonProperty("aggregation_window")
     String aggregationWindow;
-    @JsonProperty("evaluation_offset")
-    String evaluationOffset;
     @JsonProperty("fill_option")
     String fillOption;
     @JsonInclude

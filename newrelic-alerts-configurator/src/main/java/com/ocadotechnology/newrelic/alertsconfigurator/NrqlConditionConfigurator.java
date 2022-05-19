@@ -16,6 +16,8 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import static com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.signal.SignalUtils.intToStringOrNull;
+
 @Slf4j
 class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrqlCondition, NrqlCondition> {
 
@@ -42,7 +44,7 @@ class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrq
             .terms(TermsUtils.createNrqlTerms(condition.getTerms()))
             .valueFunction(condition.getValueFunction().getValueString())
             .nrql(Nrql.builder()
-                .sinceValue(String.valueOf(condition.getSinceValue().getSince()))
+                .sinceValue(getSinceValueOrNull(condition))
                 .query(condition.getQuery())
                 .build());
 
@@ -54,6 +56,10 @@ class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrq
         }
 
         return nrqlConditionBuilder.build();
+    }
+
+    private String getSinceValueOrNull(NrqlCondition condition) {
+        return condition.getSinceValue() != null ? intToStringOrNull(condition.getSinceValue().getSince()) : null;
     }
 
     @Override
