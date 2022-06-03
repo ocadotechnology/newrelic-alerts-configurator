@@ -29,9 +29,17 @@ public class NrqlSignalConfiguration {
     /**
      * Delay is how long we wait for events that belong in each aggregation window.
      * Depending on your data a longer delay may increase accuracy but delay notifications.
+     * This value is used for EVENT_FLOW and CADENCE aggregation methods.
      */
-    @NonNull
     private Integer aggregationDelay;
+
+    /**
+     * The timer tells us how long to wait after each data point to make sure we've processed the whole batch.
+     * This value should match data frequency, and preferably be at least equal to aggregationWindow.
+     * See <a href="https://docs.newrelic.com/docs/alerts-applied-intelligence/new-relic-alerts/advanced-alerts/understand-technical-concepts/streaming-alerts-key-terms-concepts/#aggregation-methods">NR Docs</a> for more information.
+     * This value is used for EVENT_TIMER aggregation method.
+     */
+    private Integer aggregationTimer;
 
     /**
      * Time (in seconds) for how long NewRelic collects data before running the NRQL query.

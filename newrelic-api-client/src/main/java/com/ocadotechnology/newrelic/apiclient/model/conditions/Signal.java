@@ -14,6 +14,8 @@ public class Signal {
     String aggregationMethod;
     @JsonProperty("aggregation_delay")
     String aggregationDelay;
+    @JsonProperty("aggregation_timer")
+    String aggregationTimer;
     @JsonProperty("aggregation_window")
     String aggregationWindow;
     @JsonProperty("fill_option")
