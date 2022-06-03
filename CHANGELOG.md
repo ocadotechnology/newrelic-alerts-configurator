@@ -1,3 +1,6 @@
+# 4.0.1 (03-06-2022)
+- Allow usage of aggregationTimer when EVENT_TIMER streaming method is used
+
 # 4.0.0 (19-05-2022)
 - Adapt to Signal having aggregationMethod
 
