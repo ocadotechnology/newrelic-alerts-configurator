@@ -82,7 +82,6 @@ fun healthCheckCondition(applicationName: String): NrqlCondition {
         conditionName = "Health Check"
         enabled = true
         valueFunction = NrqlCondition.ValueFunction.SINGLE_VALUE
-        sinceValue = NrqlCondition.SinceValue.SINCE_5
         query = "SELECT count(*) FROM `$applicationName:HealthStatus` WHERE healthy IS false"
 
         terms {

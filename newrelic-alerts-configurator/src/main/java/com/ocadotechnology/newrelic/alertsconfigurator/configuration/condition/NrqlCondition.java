@@ -20,7 +20,6 @@ import lombok.Singular;
  *     <li>{@link #terms}</li>
  *     <li>{@link #valueFunction}</li>
  *     <li>{@link #query}</li>
- *     <li>{@link #sinceValue}</li>
  *     <li>{@link #signal}</li>
  * </ul>
  */
@@ -57,32 +56,11 @@ public class NrqlCondition {
      */
     @NonNull
     private String query;
-    /**
-     * This is the timeframe in which to evaluate the {@link #query}
-     */
-    private SinceValue sinceValue;
 
     /**
      * NRQL Signal configuration.
      */
     private NrqlSignalConfiguration signal;
-
-    @Getter
-    @AllArgsConstructor
-    public enum SinceValue {
-        SINCE_1(1),
-        SINCE_2(2),
-        SINCE_3(3),
-        SINCE_4(4),
-        SINCE_5(5),
-        SINCE_10(10),
-        SINCE_15(15),
-        SINCE_30(30),
-        SINCE_60(60),
-        SINCE_120(120);
-
-        final int since;
-    }
 
     @Getter
     @AllArgsConstructor

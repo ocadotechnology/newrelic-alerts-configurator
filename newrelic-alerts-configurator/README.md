@@ -387,17 +387,6 @@ What you can set for NRQL condition:
     - single_value - the condition will be evaluated by the raw value returned.
     - sum - the condition will evaluate on the sum of the query results.
 - query - Query in NRQL.
-- since value - The timeframe in which to evaulate the query. Possible values are:
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - 10
-    - 15
-    - 30
-    - 60
-    - 120
 - signal configuration - Determines how data should be collected and what should happened when there is lack of data:
     - aggregation window - Time (in seconds) for how long NewRelic collects data before running the NRQL query.
     - evaluation windows - Number of windows to evaluate data.
@@ -418,7 +407,6 @@ NrqlCondition.builder()
     .valueFunction(NrqlCondition.ValueFunction.SINGLE_VALUE)
     .term(term)
     .query("SELECT count(*) FROM `myApp:HealthStatus` WHERE healthy IS false")
-    .sinceValue(NrqlCondition.SinceValue.SINCE_5)
     .build();
 ```
 

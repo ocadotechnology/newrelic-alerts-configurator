@@ -162,7 +162,6 @@ public final class Defaults {
                         .operatorTerm(OperatorTerm.ABOVE)
                         .thresholdTerm(0f)
                         .build())
-                .sinceValue(NrqlCondition.SinceValue.SINCE_5)
                 .query("SELECT count(*) FROM `" + applicationName + ":HealthStatus` WHERE healthy IS false")
                 .build();
     }

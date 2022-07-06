@@ -262,7 +262,6 @@ val config: NrqlCondition = nrqlCondition {
     enabled = true
     valueFunction = NrqlCondition.ValueFunction.SINGLE_VALUE
     query = "SELECT count(*) FROM `myApp:HealthStatus` WHERE healthy IS false"
-    sinceValue = NrqlCondition.SinceValue.SINCE_5
     runBookUrl = "runBookUrl"
     
     terms {

@@ -1,7 +1,6 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.dsl.configuration.condition
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.UserDefinedConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.signal.NrqlSignalConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration
 import com.ocadotechnology.newrelic.alertsconfigurator.dsl.NewRelicConfigurationMarker
@@ -14,7 +13,6 @@ class NrqlConditionDsl {
     var runBookUrl: String? = null
     var valueFunction: NrqlCondition.ValueFunction? = null
     var query: String? = null
-    var sinceValue: NrqlCondition.SinceValue? = null
     internal val terms: MutableList<NrqlTermsConfiguration> = mutableListOf()
     var nrqlSignalConfiguration: NrqlSignalConfiguration? = null
 
@@ -36,7 +34,6 @@ fun nrqlCondition(block: NrqlConditionDsl.() -> Unit): NrqlCondition {
             .terms(dsl.terms)
             .valueFunction(requireNotNull(dsl.valueFunction) { "Nrql condition value cannot be null" })
             .query(requireNotNull(dsl.query) { "Nrql condition query cannot be null" })
-            .sinceValue(requireNotNull(dsl.sinceValue) { "Nrql condition since cannot be null" })
             .signal(dsl.nrqlSignalConfiguration)
             .build()
 }

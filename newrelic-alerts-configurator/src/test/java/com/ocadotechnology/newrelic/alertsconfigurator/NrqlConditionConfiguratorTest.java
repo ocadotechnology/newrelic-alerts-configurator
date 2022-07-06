@@ -2,7 +2,11 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.NrqlCondition;
-import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.*;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlDurationTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.OperatorTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.PriorityTerm;
+import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.TimeFunctionTerm;
 import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.Terms;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
@@ -13,7 +17,6 @@ public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfigurato
 
     private static final NrqlTermsConfiguration TERMS_CONFIGURATION = createTermsConfiguration().build();
     private static final NrqlCondition.ValueFunction VALUE_FUNCTION = NrqlCondition.ValueFunction.SINGLE_VALUE;
-    private static final NrqlCondition.SinceValue SINCE_VALUE = NrqlCondition.SinceValue.SINCE_1;
     private static final String QUERY = "query";
     private static final NrqlCondition NRQL_CONDITION = createNrqlCondition(CONDITION_NAME);
 
@@ -77,7 +80,6 @@ public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfigurato
                 .term(TERMS_CONFIGURATION)
                 .valueFunction(VALUE_FUNCTION)
                 .query(QUERY)
-                .sinceValue(SINCE_VALUE)
                 .build();
     }
 
@@ -103,7 +105,6 @@ public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfigurato
                 .valueFunction(VALUE_FUNCTION.getValueString())
                 .nrql(Nrql.builder()
                         .query(QUERY)
-                        .sinceValue(String.valueOf(SINCE_VALUE.getSince()))
                         .build());
     }
 
