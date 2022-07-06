@@ -1,21 +1,31 @@
 package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public enum NrqlDurationTerm {
-    DURATION_1(1),
-    DURATION_2(2),
-    DURATION_3(3),
-    DURATION_4(4),
-    DURATION_5(5),
-    DURATION_10(10),
-    DURATION_15(15),
-    DURATION_30(30),
-    DURATION_60(60),
-    DURATION_120(120);
+public final class NrqlDurationTerm {
+//    defaults as used in original, enum-based implementation
+    public static final NrqlDurationTerm DURATION_1 = new NrqlDurationTerm(1);
+    public static final NrqlDurationTerm DURATION_2 = new NrqlDurationTerm(2);
+    public static final NrqlDurationTerm DURATION_3 = new NrqlDurationTerm(3);
+    public static final NrqlDurationTerm DURATION_4 = new NrqlDurationTerm(4);
+    public static final NrqlDurationTerm DURATION_5 = new NrqlDurationTerm(5);
+    public static final NrqlDurationTerm DURATION_10 = new NrqlDurationTerm(10);
+    public static final NrqlDurationTerm DURATION_15 = new NrqlDurationTerm(15);
+    public static final NrqlDurationTerm DURATION_30 = new NrqlDurationTerm(30);
+    public static final NrqlDurationTerm DURATION_60 = new NrqlDurationTerm(60);
+    public static final NrqlDurationTerm DURATION_120 = new NrqlDurationTerm(120);
 
-    final int duration;
+    private final int duration;
+
+    public NrqlDurationTerm(int duration) {
+        assertMoreThanZero(duration);
+        this.duration = duration;
+    }
+
+    private static void assertMoreThanZero(int duration) {
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Duration Term for alert should not be 0 nor negative");
+        }
+    }
 }
