@@ -1,3 +1,6 @@
+# 4.2.0 (19-07-2022)
+- Added possibility to define custom duration
+
 # 4.1.0 (06-07-2022)
 - Removed deprecated `sinceValue` from Nrql Condition
 
