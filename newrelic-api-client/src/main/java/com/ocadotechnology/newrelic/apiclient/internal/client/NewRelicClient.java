@@ -5,6 +5,8 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.client.ClientConfig;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -24,8 +26,10 @@ public class NewRelicClient {
 
     public NewRelicClient(String hostUrl, String apiKey) {
         this.hostUrl = hostUrl;
+        ClientConfig clientConfig = new ClientConfig();
+        clientConfig.connectorProvider(new ApacheConnectorProvider());
         client = ClientBuilder
-                .newClient()
+                .newClient(clientConfig)
                 .register(createMapper())
                 .register(createInterceptor(apiKey));
     }

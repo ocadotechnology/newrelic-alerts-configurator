@@ -115,6 +115,7 @@ project(':newrelic-api-client') {
         api 'org.apache.commons:commons-lang3:3.11'
         api 'org.glassfish.jersey.core:jersey-client:2.24.1'
         api 'org.glassfish.jersey.media:jersey-media-json-jackson:2.24.1'
+        api 'org.glassfish.jersey.connectors:jersey-apache-connector:2.24.1'
         api 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
         api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.1'
         api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
