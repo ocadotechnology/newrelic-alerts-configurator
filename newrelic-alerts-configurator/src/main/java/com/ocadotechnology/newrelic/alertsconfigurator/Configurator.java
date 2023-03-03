@@ -43,7 +43,15 @@ public class Configurator {
      * @param apiKey API Key for given NewRelic account
      */
     public Configurator(@NonNull String apiKey) {
-        NewRelicApi api = new NewRelicApi(apiKey);
+        this(new NewRelicApi(apiKey));
+    }
+
+    /**
+     * NewRelic Alerts configurator constructor
+     *
+     * @param api API facade for NewRelic
+     */
+    public Configurator(@NonNull NewRelicApi api) {
         applicationConfigurator = new ApplicationConfigurator(api);
         policyConfigurator = new PolicyConfigurator(api);
         conditionConfigurator = new ConditionConfigurator(api, EntityResolver.defaultInstance());

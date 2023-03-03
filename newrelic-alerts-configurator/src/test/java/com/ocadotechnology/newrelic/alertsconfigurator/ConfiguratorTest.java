@@ -3,6 +3,7 @@ package com.ocadotechnology.newrelic.alertsconfigurator;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
+import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -65,7 +66,19 @@ public class ConfiguratorTest {
         expectedException.expectMessage("apiKey");
 
         // when
-        new Configurator(null);
+        new Configurator((String) null);
+    }
+
+    @Test
+    public void shouldThrowException_whenNoApi() {
+        // given
+
+        // then - exception
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("api");
+
+        // when
+        new Configurator((NewRelicApi) null);
     }
 
     @Test

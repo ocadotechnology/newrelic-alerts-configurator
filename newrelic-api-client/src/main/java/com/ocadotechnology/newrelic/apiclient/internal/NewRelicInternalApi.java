@@ -2,6 +2,7 @@ package com.ocadotechnology.newrelic.apiclient.internal;
 
 import com.ocadotechnology.newrelic.apiclient.*;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
+import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClientFactory;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
@@ -45,10 +46,10 @@ public class NewRelicInternalApi {
      *
      * @param restApiUrl       NewRelic REST API URL, for example https://api.newrelic.com
      * @param syntheticsApiUrl NewRelic Synthetics API URL
-     * @param apiKey           API Key for given NewRelic account
+     * @param clientFactory    NewRelic client factory
      */
-    public NewRelicInternalApi(String restApiUrl, String syntheticsApiUrl, String apiKey) {
-        NewRelicClient client = new NewRelicClient(restApiUrl, apiKey);
+    public NewRelicInternalApi(String restApiUrl, String syntheticsApiUrl, NewRelicClientFactory clientFactory) {
+        NewRelicClient client = clientFactory.create(restApiUrl);
         applicationsApi = new DefaultApplicationsApi(client);
         alertsChannelsApi = new DefaultAlertsChannelsApi(client);
         alertsPoliciesApi = new DefaultAlertsPoliciesApi(client);
@@ -62,7 +63,7 @@ public class NewRelicInternalApi {
         usersApi = new DefaultUsersApi(client);
         dashboardsApi = new DefaultDashboardsApi(client);
 
-        NewRelicClient syntheticsClient = new NewRelicClient(syntheticsApiUrl, apiKey);
+        NewRelicClient syntheticsClient = clientFactory.create(syntheticsApiUrl);
         syntheticsMonitorsApi = new DefaultSyntheticsMonitorsApi(syntheticsClient);
     }
 }
