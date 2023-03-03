@@ -1,7 +1,7 @@
 package com.ocadotechnology.newrelic.apiclient.internal.client;
 
 public class NewRelicClientFactory {
-    private final String apiKey;
+    protected final String apiKey;
 
     public NewRelicClientFactory(String apiKey) {
         if(apiKey == null) {

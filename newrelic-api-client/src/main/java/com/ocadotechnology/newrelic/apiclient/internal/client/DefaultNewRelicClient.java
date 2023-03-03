@@ -48,10 +48,12 @@ public class DefaultNewRelicClient implements NewRelicClient {
         return new JacksonJaxbJsonProvider(mapper, DEFAULT_ANNOTATIONS);
     }
 
+    @Override
     public WebTarget target(String path) {
         return client.target(hostUrl).path(path);
     }
 
+    @Override
     public WebTarget target(Link link) {
         return client.target(link);
     }
