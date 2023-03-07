@@ -41,7 +41,6 @@ class NrqlConditionConfigurator extends AbstractPolicyItemConfigurator<AlertsNrq
             .runbookUrl(condition.getRunBookUrl())
             .terms(TermsUtils.createNrqlTerms(condition.getTerms()))
             .valueFunction(condition.getValueFunction().getValueString())
-            .violationTimeLimitSeconds(condition.getViolationTimeLimitSeconds())
             .nrql(Nrql.builder()
                 .query(condition.getQuery())
                 .build());

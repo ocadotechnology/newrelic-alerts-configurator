@@ -2,9 +2,13 @@ package com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition;
 
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.signal.NrqlSignalConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.condition.terms.NrqlTermsConfiguration;
-import lombok.*;
-
 import java.util.Collection;
+import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Singular;
 
 /**
  * NRQL condition.
@@ -32,9 +36,6 @@ public class NrqlCondition {
      */
     @Builder.Default
     private boolean enabled = true;
-
-    @Builder.Default
-    private Integer violationTimeLimitSeconds = 259200;
     /**
      * The runbook URL to display in notifications
      */
