@@ -1,6 +1,7 @@
 package com.ocadotechnology.newrelic.apiclient;
 
 import com.ocadotechnology.newrelic.apiclient.internal.NewRelicInternalApi;
+import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClientFactory;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
@@ -54,12 +55,32 @@ public class NewRelicApi {
     /**
      * NewRelic API constructor.
      *
+     * @param clientFactory    NewRelic client factory
+     */
+    public NewRelicApi(NewRelicClientFactory clientFactory) {
+        this(REST_API_URL, SYNTHETICS_URL, clientFactory);
+    }
+
+    /**
+     * NewRelic API constructor.
+     *
      * @param restApiUrl NewRelic REST API URL, for example https://api.newrelic.com
      * @param syntheticsApiUrl NewRelic Synthetics API URL
      * @param apiKey  API Key for given NewRelic account
      */
     public NewRelicApi(String restApiUrl, String syntheticsApiUrl, String apiKey) {
-        NewRelicInternalApi internalApi = new NewRelicInternalApi(restApiUrl, syntheticsApiUrl, apiKey);
+        this(restApiUrl, syntheticsApiUrl, new NewRelicClientFactory(apiKey));
+    }
+
+    /**
+     * NewRelic API constructor.
+     *
+     * @param restApiUrl NewRelic REST API URL, for example https://api.newrelic.com
+     * @param syntheticsApiUrl NewRelic Synthetics API URL
+     * @param clientFactory    NewRelic client factory
+     */
+    public NewRelicApi(String restApiUrl, String syntheticsApiUrl, NewRelicClientFactory clientFactory) {
+        NewRelicInternalApi internalApi = new NewRelicInternalApi(restApiUrl, syntheticsApiUrl, clientFactory);
         applicationsApi = internalApi.getApplicationsApi();
         alertsChannelsApi = internalApi.getAlertsChannelsApi();
         alertsPoliciesApi = internalApi.getAlertsPoliciesApi();
