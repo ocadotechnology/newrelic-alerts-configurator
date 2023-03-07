@@ -39,4 +39,6 @@ public class AlertsNrqlCondition implements PolicyItem {
     Signal signal;
     @JsonProperty
     Expiration expiration;
+    @JsonProperty("violation_time_limit_seconds")
+    Integer violationTimeLimitSeconds;
 }
