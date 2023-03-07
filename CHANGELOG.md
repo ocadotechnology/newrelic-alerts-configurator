@@ -1,3 +1,6 @@
+# 4.3.0 (07-03-2023)
+- Added redirect following
+
 # 4.2.0 (19-07-2022)
 - Added possibility to define custom duration
 
