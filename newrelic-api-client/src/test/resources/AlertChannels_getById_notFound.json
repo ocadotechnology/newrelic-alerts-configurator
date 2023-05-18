@@ -1,0 +1,32 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannel": null
+        }
+      }
+    }
+  },
+  "errors": [
+    {
+      "extensions": {
+        "code": "BAD_USER_INPUT",
+        "errorClass": "BAD_USER_INPUT"
+      },
+      "locations": [
+        {
+          "column": 7,
+          "line": 4
+        }
+      ],
+      "message": "Not Found",
+      "path": [
+        "actor",
+        "account",
+        "alerts",
+        "notificationChannel"
+      ]
+    }
+  ]
+}

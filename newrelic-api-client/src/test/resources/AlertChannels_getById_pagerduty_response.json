@@ -1,0 +1,21 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannel": {
+            "associatedPolicies": {
+              "policies": []
+            },
+            "config": {
+              "apiKey": "*********************abcdefghijk"
+            },
+            "id": "1111111",
+            "name": "Test Pagerduty Channel",
+            "type": "PAGERDUTY"
+          }
+        }
+      }
+    }
+  }
+}

@@ -14,11 +14,11 @@ import java.util.Optional;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.glassfish.jersey.uri.UriComponent.Type.QUERY_PARAM_SPACE_ENCODED;
 
-class DefaultServersApi extends ApiBase implements ServersApi {
+public class DefaultServersApi extends ApiBase implements ServersApi {
     private static final String SERVERS_URL = "/v2/servers.json";
     private static final String SERVER_URL = "/v2/servers/{server_id}.json";
 
-    DefaultServersApi(NewRelicClient client) {
+    public DefaultServersApi(NewRelicClient client) {
         super(client);
     }
 

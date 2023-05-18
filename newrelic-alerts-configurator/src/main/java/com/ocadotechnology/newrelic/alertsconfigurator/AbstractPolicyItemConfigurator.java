@@ -83,7 +83,7 @@ abstract class AbstractPolicyItemConfigurator<T extends PolicyItem, U> implement
                 .filter(item -> !updatedItemsIds.contains(item.getId()))
                 .forEach(
                         item -> {
-                            getItemsApi().delete(item.getId());
+                            getItemsApi().delete(policy.getId(), item.getId());
                             LOG.info("Item {} (id: {}) removed from policy {} (id: {})", item.getName(), item.getId(), policy.getName(), policy.getId());
                         }
                 );

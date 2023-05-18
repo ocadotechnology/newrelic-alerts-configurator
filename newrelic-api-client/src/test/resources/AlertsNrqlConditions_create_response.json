@@ -1,0 +1,38 @@
+{
+  "data": {
+    "alertsNrqlConditionStaticCreate": {
+      "enabled": true,
+      "expiration": {
+        "closeViolationsOnExpiration": false,
+        "expirationDuration": 60,
+        "openViolationOnExpiration": false
+      },
+      "id": "11111111",
+      "name": "Test NRQL Condition",
+      "nrql": {
+        "query": "SELECT count(*) from `test:test-event`"
+      },
+      "runbookUrl": null,
+      "signal": {
+        "aggregationDelay": 120,
+        "aggregationMethod": "CADENCE",
+        "aggregationTimer": null,
+        "aggregationWindow": 60,
+        "evaluationDelay": null,
+        "fillOption": "NONE",
+        "fillValue": null,
+        "slideBy": null
+      },
+      "terms": [
+        {
+          "operator": "ABOVE_OR_EQUALS",
+          "priority": "CRITICAL",
+          "threshold": 1,
+          "thresholdDuration": 60,
+          "thresholdOccurrences": "AT_LEAST_ONCE"
+        }
+      ],
+      "valueFunction": "SINGLE_VALUE"
+    }
+  }
+}

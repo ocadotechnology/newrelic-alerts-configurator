@@ -1,0 +1,22 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannel": {
+            "associatedPolicies": {
+              "policies": []
+            },
+            "config": {
+              "teamChannel": "test-slack-channel",
+              "url": "****************************************************99/ABCDEFGHIJKLMNOPQRSTUWXYZ"
+            },
+            "id": "1111111",
+            "name": "Test Slack Channel",
+            "type": "SLACK"
+          }
+        }
+      }
+    }
+  }
+}

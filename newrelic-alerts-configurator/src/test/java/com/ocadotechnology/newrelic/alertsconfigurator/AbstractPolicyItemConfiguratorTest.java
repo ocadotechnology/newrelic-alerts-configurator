@@ -21,9 +21,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public abstract class AbstractPolicyItemConfiguratorTest<T extends PolicyItemConfigurator, U extends PolicyItem> extends AbstractConfiguratorTest {
     @Rule
@@ -190,7 +188,7 @@ public abstract class AbstractPolicyItemConfiguratorTest<T extends PolicyItemCon
         InOrder order = inOrder(itemApiMock);
         order.verify(itemApiMock).list(POLICY.getId());
         order.verify(itemApiMock).create(POLICY.getId(), itemFromConfig);
-        order.verify(itemApiMock).delete(itemDifferent.getId());
+        order.verify(itemApiMock).delete(POLICY.getId(), itemDifferent.getId());
         order.verifyNoMoreInteractions();
     }
 

@@ -1,11 +1,13 @@
 package com.ocadotechnology.newrelic.apiclient;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static org.apache.http.HttpStatus.SC_OK;
-import static org.assertj.core.api.Assertions.assertThat;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.ocadotechnology.newrelic.apiclient.model.applications.Application;
+import com.ocadotechnology.newrelic.apiclient.model.channels.AlertsChannel;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpHeaders;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -16,15 +18,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpHeaders;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.ocadotechnology.newrelic.apiclient.model.applications.Application;
-import com.ocadotechnology.newrelic.apiclient.model.channels.AlertsChannel;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NewRelicApiIntegrationTest {
     @ClassRule
@@ -41,7 +37,7 @@ public class NewRelicApiIntegrationTest {
     @Before
     public void setUp() throws IOException {
         WIRE_MOCK.resetMappings();
-        testee = new NewRelicApi("http://localhost:6766", "http://localhost:6766", "secret");
+        testee = new NewRelicRestApi("http://localhost:6766", "http://localhost:6766", "secret");
         applications = IOUtils.toString(NewRelicApiIntegrationTest.class.getResource("/applications.json"), UTF_8);
         channels1 = IOUtils.toString(NewRelicApiIntegrationTest.class.getResource("/channels1.json"), UTF_8);
         channels2 = IOUtils.toString(NewRelicApiIntegrationTest.class.getResource("/channels2.json"), UTF_8);

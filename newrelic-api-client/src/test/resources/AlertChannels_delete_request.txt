@@ -1,0 +1,9 @@
+mutation {
+  alertsNotificationChannelDelete(accountId:12345678 id:"1111111") {
+    error {
+      description
+      errorType
+      notificationChannelId
+    }
+  }
+}

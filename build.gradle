@@ -48,7 +48,7 @@ configure(subprojects - project(':newrelic-alerts-configurator-examples')) {
         archives javadocJar, sourcesJar
     }
 
-    if(project.hasProperty('release')) {
+    if (project.hasProperty('release')) {
         signing {
             required { !version.endsWith("-SNAPSHOT") && gradle.taskGraph.hasTask("uploadArchives") }
             sign configurations.archives
@@ -119,6 +119,11 @@ project(':newrelic-api-client') {
         api 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
         api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.1'
         api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
+        implementation 'org.apache.commons:commons-text:1.10.0'
+        implementation('com.github.k0kubun:graphql-query-builder:0.4.2') {
+            exclude group: 'com.google.guava', module: 'guava'
+        }
+
     }
 }
 
@@ -130,7 +135,7 @@ project(':newrelic-alerts-configurator') {
 
 project(':newrelic-alerts-configurator-examples') {
     apply plugin: 'kotlin'
-    
+
     dependencies {
         api project(':newrelic-alerts-configurator')
         api project(':newrelic-alerts-configurator-dsl')

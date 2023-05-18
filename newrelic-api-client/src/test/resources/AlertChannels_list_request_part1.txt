@@ -1,0 +1,56 @@
+actor {
+  account(id:12345678) {
+    alerts {
+      notificationChannels(cursor:"") {
+        nextCursor
+        channels {
+          id
+          name
+          type
+          associatedPolicies {
+            policies {
+              id
+            }
+          }
+          ... on AlertsEmailNotificationChannel {
+            config {
+              emails
+              includeJson
+            }
+          }
+          ... on AlertsSlackNotificationChannel {
+            config {
+              teamChannel
+              url
+            }
+          }
+          ... on AlertsPagerDutyNotificationChannel {
+            config {
+              apiKey
+            }
+          }
+          ... on AlertsWebhookNotificationChannel {
+            config {
+              baseUrl
+              basicAuth {
+                username
+                password
+              }
+              customHttpHeaders {
+                name
+                value
+              }
+              customPayloadBody
+              customPayloadType
+            }
+          }
+          ... on AlertsUserNotificationChannel {
+            config {
+              userId
+            }
+          }
+        }
+      }
+    }
+  }
+}

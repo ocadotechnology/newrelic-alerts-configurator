@@ -1,0 +1,34 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannel": {
+            "associatedPolicies": {
+              "policies": []
+            },
+            "config": {
+              "baseUrl": "https://address.domain.com",
+              "basicAuth": null,
+              "customHttpHeaders": [
+                {
+                  "name": "Custom-Header",
+                  "value": "CUSTOM-VALUE"
+                },
+                {
+                  "name": "Custom-Header-2",
+                  "value": "CUSTOM-VALUE-2"
+                }
+              ],
+              "customPayloadBody": "{\n  \"field\": \"value\"\n}",
+              "customPayloadType": "JSON"
+            },
+            "id": "1111111",
+            "name": "Test Webhook Channel",
+            "type": "WEBHOOK"
+          }
+        }
+      }
+    }
+  }
+}

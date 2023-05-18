@@ -35,5 +35,5 @@ public interface PolicyItemApi<T> {
      * @param id id of the item to be deleted
      * @return deleted {@link T}
      */
-    T delete(int id);
+    T delete(int policyId, int id);
 }

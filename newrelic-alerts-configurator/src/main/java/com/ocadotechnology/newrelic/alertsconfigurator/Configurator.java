@@ -1,14 +1,14 @@
 package com.ocadotechnology.newrelic.alertsconfigurator;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.ApplicationConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.configuration.PolicyConfiguration;
 import com.ocadotechnology.newrelic.alertsconfigurator.internal.entities.EntityResolver;
 import com.ocadotechnology.newrelic.apiclient.NewRelicApi;
-
+import com.ocadotechnology.newrelic.apiclient.NewRelicRestApi;
 import lombok.NonNull;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Main class used in configuration process. It is responsible for synchronizing programmatically created definitions of
@@ -43,7 +43,7 @@ public class Configurator {
      * @param apiKey API Key for given NewRelic account
      */
     public Configurator(@NonNull String apiKey) {
-        this(new NewRelicApi(apiKey));
+        this(new NewRelicRestApi(apiKey));
     }
 
     /**

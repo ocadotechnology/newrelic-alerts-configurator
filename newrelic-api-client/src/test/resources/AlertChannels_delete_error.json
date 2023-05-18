@@ -1,0 +1,11 @@
+{
+  "data": {
+    "alertsNotificationChannelDelete": {
+      "error": {
+        "description": "Not Found",
+        "errorType": "NOT_FOUND_ERROR",
+        "notificationChannelId": "1111111"
+      }
+    }
+  }
+}

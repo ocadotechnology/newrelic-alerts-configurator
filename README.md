@@ -52,11 +52,23 @@ This code creates alert policy that will raise critical alert whenever some-host
  minutes. Information about alert will be emailed to my-team@my-company.com
  
 More examples can be found in [newrelic-alerts-configurator-examples](newrelic-alerts-configurator-examples) module.
- 
-## How to obtain New Relic REST API key
 
-In above example we used **MY_REST_API_KEY**. Details on how to obtain it can be found in 
-[NewRelic's REST API docs](https://docs.newrelic.com/docs/apis/rest-api-v2/getting-started/api-keys)
+### Experimental configurator
+NewRelic actively deprecates parts of it's REST API encouraging a shift towards GraphQL API. 
+There is therefore an alternative configurator that uses [NewRelic GraphQL API](https://docs.newrelic.com/docs/apis/nerdgraph/get-started/introduction-new-relic-nerdgraph/) where possible.
+At this point it's experimental.
+```java
+NewRelicApi api = new NewRelicHybridApi("MY_REST_API_KEY", MY_ACCOUNT_ID);
+Configurator configurator = new Configurator(api);
+```
+ 
+## How to obtain New Relic REST API key and account ID
+
+In above examples we used **MY_REST_API_KEY** and **MY_ACCOUNT_ID**.  
+Details on how to obtain API key can be found in
+[NewRelic's REST API docs](https://docs.newrelic.com/docs/apis/rest-api-v2/getting-started/api-keys)  
+Details on how to obtain account ID can be found in
+[NewRelic's account docs](https://docs.newrelic.com/docs/accounts/accounts-billing/account-structure/account-id/)
 
 **Note that for some configurations you will need Admin User's New Relic API key!**
 

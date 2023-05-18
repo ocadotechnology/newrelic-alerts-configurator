@@ -1,0 +1,5 @@
+mutation {
+  alertsPolicyDelete(accountId:12345678 id:"7654321") {
+    id
+  }
+}

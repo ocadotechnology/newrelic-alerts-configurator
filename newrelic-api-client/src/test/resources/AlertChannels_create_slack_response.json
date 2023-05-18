@@ -1,0 +1,16 @@
+{
+  "data": {
+    "alertsNotificationChannelCreate": {
+      "error": null,
+      "notificationChannel": {
+        "config": {
+          "teamChannel": "the channel",
+          "url": "***************om/slack"
+        },
+        "id": "1111111",
+        "name": "Test Slack Channel",
+        "type": "SLACK"
+      }
+    }
+  }
+}

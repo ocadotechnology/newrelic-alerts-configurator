@@ -1,0 +1,13 @@
+{
+  "errors": [
+    {
+      "locations": [
+        {
+          "column": 52,
+          "line": 2
+        }
+      ],
+      "message": "Argument \"notificationChannel\" has invalid value."
+    }
+  ]
+}

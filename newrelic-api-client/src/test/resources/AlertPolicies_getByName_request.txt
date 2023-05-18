@@ -1,0 +1,13 @@
+actor {
+  account(id:12345678) {
+    alerts {
+      policiesSearch(searchCriteria:{name:"Test Policy"}) {
+        policies {
+          id
+          name
+          incidentPreference
+        }
+      }
+    }
+  }
+}

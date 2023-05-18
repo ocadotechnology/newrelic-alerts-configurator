@@ -1,0 +1,43 @@
+actor {
+  account(id:12345678) {
+    alerts {
+      nrqlConditionsSearch(cursor:"123456abcdeFGHIJKLMNOP==:7899999999999999ZZzZzzZ=" searchCriteria:{policyId:7654321}) {
+        nextCursor
+        nrqlConditions {
+          id
+          name
+          enabled
+          runbookUrl
+          nrql {
+            query
+          }
+          signal {
+            aggregationDelay
+            aggregationMethod
+            aggregationTimer
+            aggregationWindow
+            evaluationDelay
+            fillOption
+            fillValue
+            slideBy
+          }
+          terms {
+            operator
+            priority
+            threshold
+            thresholdDuration
+            thresholdOccurrences
+          }
+          expiration {
+            closeViolationsOnExpiration
+            expirationDuration
+            openViolationOnExpiration
+          }
+          ... on AlertsNrqlStaticCondition {
+            valueFunction
+          }
+        }
+      }
+    }
+  }
+}
