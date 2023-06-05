@@ -1,3 +1,6 @@
+# 5.0.0 (05-06-2023)
+- Added support for new NR API
+
 # 4.3.0 (07-03-2023)
 - Added redirect following
 

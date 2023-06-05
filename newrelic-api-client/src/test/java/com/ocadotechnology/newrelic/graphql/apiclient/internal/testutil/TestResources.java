@@ -20,13 +20,12 @@ public class TestResources {
     }
 
     public static String fromJson(String fileName) {
-        try (InputStream inputStream = inputStream(fileName)) {
-            BufferedInputStream bis = new BufferedInputStream(inputStream);
-            ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            for (int result = bis.read(); result != -1; result = bis.read()) {
-                buf.write((byte) result);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream(fileName)))) {
+            StringBuilder builder = new StringBuilder();
+            while (reader.ready()) {
+                builder.append(reader.readLine()).append("\n");
             }
-            return buf.toString("UTF-8");
+            return builder.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
