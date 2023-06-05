@@ -48,6 +48,8 @@ configure(subprojects - project(':newrelic-alerts-configurator-examples')) {
         archives javadocJar, sourcesJar
     }
 
+    println("### " + project.findProperty("ossrhUsername"))
+
     if (project.hasProperty('release')) {
         signing {
             required { !version.endsWith("-SNAPSHOT") && gradle.taskGraph.hasTask("uploadArchives") }

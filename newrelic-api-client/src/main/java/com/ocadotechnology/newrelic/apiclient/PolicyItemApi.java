@@ -14,8 +14,8 @@ public interface PolicyItemApi<T> {
     /**
      * Creates item instance within specified policy.
      *
-     * @param policyId  id of the policy to be updated
-     * @param item item definition to be created
+     * @param policyId id of the policy to be updated
+     * @param item     item definition to be created
      * @return created {@link T}
      */
     T create(int policyId, T item);
@@ -23,8 +23,8 @@ public interface PolicyItemApi<T> {
     /**
      * Updates item definition.
      *
-     * @param id id of the item to be updated
-     * @param item   item definition to be updated
+     * @param id   id of the item to be updated
+     * @param item item definition to be updated
      * @return created {@link T}
      */
     T update(int id, T item);
@@ -32,7 +32,8 @@ public interface PolicyItemApi<T> {
     /**
      * Deletes item.
      *
-     * @param id id of the item to be deleted
+     * @param policyId policy id
+     * @param id       id of the item to be deleted
      * @return deleted {@link T}
      */
     T delete(int policyId, int id);
