@@ -51,8 +51,8 @@ configure(subprojects - project(':newrelic-alerts-configurator-examples')) {
     if (project.hasProperty('release')) {
         signing {
             required { !version.endsWith("-SNAPSHOT") && gradle.taskGraph.hasTask("uploadArchives") }
+            useInMemoryPgpKeys(findProperty("signingKey").toString().split("(?<=\\G.{64})").join("\n"), findProperty("signingPassword").toString())
             sign configurations.archives
-            useInMemoryPgpKeys(findProperty("signingKey"), findProperty("signingPassword"))
         }
 
         uploadArchives {
