@@ -18,5 +18,3 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
-        env:
-          ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
