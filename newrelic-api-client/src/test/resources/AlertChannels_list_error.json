@@ -1,0 +1,25 @@
+{
+  "data": {
+    "actor": {
+      "account": null
+    }
+  },
+  "errors": [
+    {
+      "extensions": {
+        "errorClass": "ACCESS_DENIED"
+      },
+      "locations": [
+        {
+          "column": 5,
+          "line": 3
+        }
+      ],
+      "message": "Access denied.",
+      "path": [
+        "actor",
+        "account"
+      ]
+    }
+  ]
+}

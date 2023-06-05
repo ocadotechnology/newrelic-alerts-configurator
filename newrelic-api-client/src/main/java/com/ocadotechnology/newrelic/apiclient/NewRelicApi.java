@@ -1,98 +1,38 @@
 package com.ocadotechnology.newrelic.apiclient;
 
-import com.ocadotechnology.newrelic.apiclient.internal.NewRelicInternalApi;
-import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClientFactory;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.AlertsCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.external.AlertsExternalServiceCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.nrql.AlertsNrqlCondition;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.synthetics.AlertsSyntheticsCondition;
-import lombok.Getter;
 
 /**
- * API facade - object exposing NewRelic API endpoints as Java methods. Requires API key.
+ * API facade - interface exposing NewRelic API as Java methods.
  */
-@Getter
-public class NewRelicApi {
+public interface NewRelicApi {
 
-    private static final String REST_API_URL = "https://api.newrelic.com";
-    private static final String SYNTHETICS_URL = "https://synthetics.newrelic.com/synthetics/api";
+    ApplicationsApi getApplicationsApi();
 
-    private final ApplicationsApi applicationsApi;
+    AlertsChannelsApi getAlertsChannelsApi();
 
-    private final AlertsChannelsApi alertsChannelsApi;
+    AlertsPoliciesApi getAlertsPoliciesApi();
 
-    private final AlertsPoliciesApi alertsPoliciesApi;
+    PolicyItemApi<AlertsCondition> getAlertsConditionsApi();
 
-    private final PolicyItemApi<AlertsCondition> alertsConditionsApi;
+    PolicyItemApi<AlertsNrqlCondition> getAlertsNrqlConditionsApi();
 
-    private final PolicyItemApi<AlertsNrqlCondition> alertsNrqlConditionsApi;
+    PolicyItemApi<AlertsExternalServiceCondition> getAlertsExternalServiceConditionsApi();
 
-    private final PolicyItemApi<AlertsExternalServiceCondition> alertsExternalServiceConditionsApi;
+    PolicyItemApi<AlertsSyntheticsCondition> getAlertsSyntheticsConditionApi();
 
-    private final PolicyItemApi<AlertsSyntheticsCondition> alertsSyntheticsConditionApi;
+    KeyTransactionsApi getKeyTransactionsApi();
 
-    private final KeyTransactionsApi keyTransactionsApi;
+    DeploymentsApi getDeploymentsApi();
 
-    private final DeploymentsApi deploymentsApi;
+    ServersApi getServersApi();
 
-    private final ServersApi serversApi;
+    UsersApi getUsersApi();
 
-    private final UsersApi usersApi;
+    DashboardsApi getDashboardsApi();
 
-    private final DashboardsApi dashboardsApi;
-
-    private final SyntheticsMonitorsApi syntheticsMonitorsApi;
-
-    /**
-     * NewRelic API constructor.
-     *
-     * @param apiKey API Key for given NewRelic account
-     */
-    public NewRelicApi(String apiKey) {
-        this(REST_API_URL, SYNTHETICS_URL, apiKey);
-    }
-
-    /**
-     * NewRelic API constructor.
-     *
-     * @param clientFactory    NewRelic client factory
-     */
-    public NewRelicApi(NewRelicClientFactory clientFactory) {
-        this(REST_API_URL, SYNTHETICS_URL, clientFactory);
-    }
-
-    /**
-     * NewRelic API constructor.
-     *
-     * @param restApiUrl NewRelic REST API URL, for example https://api.newrelic.com
-     * @param syntheticsApiUrl NewRelic Synthetics API URL
-     * @param apiKey  API Key for given NewRelic account
-     */
-    public NewRelicApi(String restApiUrl, String syntheticsApiUrl, String apiKey) {
-        this(restApiUrl, syntheticsApiUrl, new NewRelicClientFactory(apiKey));
-    }
-
-    /**
-     * NewRelic API constructor.
-     *
-     * @param restApiUrl NewRelic REST API URL, for example https://api.newrelic.com
-     * @param syntheticsApiUrl NewRelic Synthetics API URL
-     * @param clientFactory    NewRelic client factory
-     */
-    public NewRelicApi(String restApiUrl, String syntheticsApiUrl, NewRelicClientFactory clientFactory) {
-        NewRelicInternalApi internalApi = new NewRelicInternalApi(restApiUrl, syntheticsApiUrl, clientFactory);
-        applicationsApi = internalApi.getApplicationsApi();
-        alertsChannelsApi = internalApi.getAlertsChannelsApi();
-        alertsPoliciesApi = internalApi.getAlertsPoliciesApi();
-        alertsConditionsApi = internalApi.getAlertsConditionsApi();
-        alertsExternalServiceConditionsApi = internalApi.getAlertsExternalServiceConditionsApi();
-        alertsNrqlConditionsApi = internalApi.getAlertsNrqlConditionsApi();
-        alertsSyntheticsConditionApi = internalApi.getAlertsSyntheticsConditionApi();
-        keyTransactionsApi = internalApi.getKeyTransactionsApi();
-        deploymentsApi = internalApi.getDeploymentsApi();
-        serversApi = internalApi.getServersApi();
-        usersApi = internalApi.getUsersApi();
-        dashboardsApi = internalApi.getDashboardsApi();
-        syntheticsMonitorsApi = internalApi.getSyntheticsMonitorsApi();
-    }
+    SyntheticsMonitorsApi getSyntheticsMonitorsApi();
 }

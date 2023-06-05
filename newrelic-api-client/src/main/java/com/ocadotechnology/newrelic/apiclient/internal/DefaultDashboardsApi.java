@@ -15,13 +15,13 @@ import java.util.List;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.glassfish.jersey.uri.UriComponent.Type.QUERY_PARAM_SPACE_ENCODED;
 
-class DefaultDashboardsApi extends ApiBase implements DashboardsApi {
+public class DefaultDashboardsApi extends ApiBase implements DashboardsApi {
 
     private static final String DASHBOARDS_URL = "/v2/dashboards.json";
 
     private static final String DASHBOARD_URL = "/v2/dashboards/{dashboard_id}.json";
 
-    DefaultDashboardsApi(NewRelicClient client) {
+    public DefaultDashboardsApi(NewRelicClient client) {
         super(client);
     }
 

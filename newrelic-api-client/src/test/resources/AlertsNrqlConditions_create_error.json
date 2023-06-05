@@ -1,0 +1,22 @@
+{
+  "data": {
+    "alertsNrqlConditionStaticCreate": null
+  },
+  "errors": [
+    {
+      "extensions": {
+        "errorClass": "ACCESS_DENIED"
+      },
+      "locations": [
+        {
+          "column": 3,
+          "line": 2
+        }
+      ],
+      "message": "Access restricted",
+      "path": [
+        "alertsNrqlConditionStaticCreate"
+      ]
+    }
+  ]
+}

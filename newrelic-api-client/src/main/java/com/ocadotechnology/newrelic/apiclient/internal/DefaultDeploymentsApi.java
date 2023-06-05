@@ -11,12 +11,12 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-class DefaultDeploymentsApi extends ApiBase implements DeploymentsApi {
+public class DefaultDeploymentsApi extends ApiBase implements DeploymentsApi {
 
     private static final String DEPLOYMENTS_URL = "/v2/applications/{application_id}/deployments.json";
     private static final String DEPLOYMENT_URL = "/v2/applications/{application_id}/deployments/{deployment_id}.json";
 
-    DefaultDeploymentsApi(NewRelicClient client) {
+    public DefaultDeploymentsApi(NewRelicClient client) {
         super(client);
     }
 

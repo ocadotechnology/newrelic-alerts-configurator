@@ -1,0 +1,41 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannels": {
+            "channels": [
+              {
+                "associatedPolicies": {
+                  "policies": []
+                },
+                "config": {
+                  "emails": [
+                    "mail@domain.com"
+                  ],
+                  "includeJson": false
+                },
+                "id": "1111111",
+                "name": "Test Email Channel",
+                "type": "EMAIL"
+              },
+              {
+                "associatedPolicies": {
+                  "policies": [
+                    {
+                      "id": "123456"
+                    }
+                  ]
+                },
+                "id": "2222222",
+                "name": "Test Webhook Channel",
+                "type": "WEBHOOK"
+              }
+            ],
+            "nextCursor": "123456abcdeFGHIJKLMNOP==:7899999999999999ZZzZzzZ="
+          }
+        }
+      }
+    }
+  }
+}

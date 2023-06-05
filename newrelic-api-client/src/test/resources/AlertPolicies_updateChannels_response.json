@@ -1,0 +1,14 @@
+{
+  "data": {
+    "alertsNotificationChannelsAddToPolicy": {
+      "notificationChannels": [
+        {
+          "id": "1111111"
+        },
+        {
+          "id": "2222222"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannel": {
+            "associatedPolicies": {
+              "policies": []
+            },
+            "config": {
+              "baseUrl": "https://address.domain.com",
+              "basicAuth": {
+                "password": "**st",
+                "username": "test"
+              },
+              "customHttpHeaders": [],
+              "customPayloadBody": "current_state=acknowledged\naccount_name=$ACCOUNT_NAME",
+              "customPayloadType": "FORM"
+            },
+            "id": "1111111",
+            "name": "Test Webhook Channel",
+            "type": "WEBHOOK"
+          }
+        }
+      }
+    }
+  }
+}

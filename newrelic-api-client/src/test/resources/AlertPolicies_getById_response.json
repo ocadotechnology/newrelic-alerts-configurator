@@ -1,0 +1,15 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "policy": {
+            "id": "7654321",
+            "incidentPreference": "PER_CONDITION",
+            "name": "Test Policy"
+          }
+        }
+      }
+    }
+  }
+}

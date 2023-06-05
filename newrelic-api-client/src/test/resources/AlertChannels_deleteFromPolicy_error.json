@@ -1,0 +1,14 @@
+{
+  "data": {
+    "alertsNotificationChannelsRemoveFromPolicy": {
+      "errors": [
+        {
+          "description": "Unable to find the policy with ID 7654321",
+          "errorType": "NOT_FOUND_ERROR",
+          "notificationChannelId": "1111111"
+        }
+      ],
+      "notificationChannels": []
+    }
+  }
+}

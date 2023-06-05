@@ -1,0 +1,12 @@
+mutation {
+  alertsNotificationChannelsRemoveFromPolicy(accountId:12345678 policyId:"7654321" notificationChannelIds:"1111111") {
+    notificationChannels {
+      id
+    }
+    errors {
+      description
+      errorType
+      notificationChannelId
+    }
+  }
+}

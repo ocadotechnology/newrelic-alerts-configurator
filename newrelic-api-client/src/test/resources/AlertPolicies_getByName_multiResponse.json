@@ -1,0 +1,24 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "policiesSearch": {
+            "policies": [
+              {
+                "id": "7654321",
+                "incidentPreference": "PER_CONDITION",
+                "name": "Test Policy"
+              },
+              {
+                "id": "1234567",
+                "incidentPreference": "PER_CONDITION",
+                "name": "Test Policy"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

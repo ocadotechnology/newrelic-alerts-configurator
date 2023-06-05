@@ -1,0 +1,13 @@
+{
+  "data": {
+    "alertsNotificationChannelsRemoveFromPolicy": {
+      "errors": [],
+      "notificationChannels": [
+        {
+          "id": "1111111"
+        }
+      ],
+      "policyId": "7654321"
+    }
+  }
+}

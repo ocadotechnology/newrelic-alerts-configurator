@@ -1,0 +1,11 @@
+actor {
+  account(id:12345678) {
+    alerts {
+      policy(id:7654321) {
+        id
+        name
+        incidentPreference
+      }
+    }
+  }
+}

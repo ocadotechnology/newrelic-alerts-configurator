@@ -1,0 +1,22 @@
+{
+  "data": {
+    "alertsNotificationChannelCreate": {
+      "error": null,
+      "notificationChannel": {
+        "associatedPolicies": {
+          "policies": []
+        },
+        "config": {
+          "emails": [
+            "email@domain.com",
+            "other@domain.com"
+          ],
+          "includeJson": false
+        },
+        "id": "1111111",
+        "name": "Test Email Channel",
+        "type": "EMAIL"
+      }
+    }
+  }
+}

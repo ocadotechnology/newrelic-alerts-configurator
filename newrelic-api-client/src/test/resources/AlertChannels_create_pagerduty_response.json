@@ -1,0 +1,18 @@
+{
+  "data": {
+    "alertsNotificationChannelCreate": {
+      "error": null,
+      "notificationChannel": {
+        "associatedPolicies": {
+          "policies": []
+        },
+        "config": {
+          "apiKey": "*****************RSTUVWXYZ"
+        },
+        "id": "1111111",
+        "name": "Test PagerDuty Channel",
+        "type": "PAGERDUTY"
+      }
+    }
+  }
+}

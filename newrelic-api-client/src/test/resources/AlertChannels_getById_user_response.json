@@ -1,0 +1,21 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannel": {
+            "associatedPolicies": {
+              "policies": []
+            },
+            "config": {
+              "userId": "2111111111"
+            },
+            "id": "1111111",
+            "name": "Test User Channel",
+            "type": "USER"
+          }
+        }
+      }
+    }
+  }
+}

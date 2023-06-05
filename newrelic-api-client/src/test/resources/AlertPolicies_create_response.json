@@ -1,0 +1,9 @@
+{
+  "data": {
+    "alertsPolicyCreate": {
+      "id": "7654321",
+      "incidentPreference": "PER_CONDITION",
+      "name": "Test Policy"
+    }
+  }
+}

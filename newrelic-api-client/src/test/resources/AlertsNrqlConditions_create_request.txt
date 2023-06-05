@@ -1,0 +1,36 @@
+mutation {
+  alertsNrqlConditionStaticCreate(accountId:12345678 policyId:7654321 condition:{enabled:true,name:"Test NRQL Condition",nrql:{query:"SELECT count(*) from `test:test-event`"},expiration:{closeViolationsOnExpiration:false,openViolationOnExpiration:false,expirationDuration:60},signal:{aggregationDelay:120,aggregationMethod:CADENCE,aggregationWindow:60,fillOption:NONE},terms:[{operator:ABOVE_OR_EQUALS,priority:CRITICAL,threshold:1.0,thresholdDuration:60,thresholdOccurrences:AT_LEAST_ONCE}],valueFunction:SINGLE_VALUE}) {
+    id
+    name
+    enabled
+    runbookUrl
+    nrql {
+      query
+    }
+    signal {
+      aggregationDelay
+      aggregationMethod
+      aggregationTimer
+      aggregationWindow
+      evaluationDelay
+      fillOption
+      fillValue
+      slideBy
+    }
+    terms {
+      operator
+      priority
+      threshold
+      thresholdDuration
+      thresholdOccurrences
+    }
+    expiration {
+      closeViolationsOnExpiration
+      expirationDuration
+      openViolationOnExpiration
+    }
+    ... on AlertsNrqlStaticCondition {
+      valueFunction
+    }
+  }
+}

@@ -11,13 +11,13 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<AlertsNrqlCondition> {
+public class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<AlertsNrqlCondition> {
 
     private static final String CONDITIONS_URL = "/v2/alerts_nrql_conditions.json";
     private static final String CONDITION_URL = "/v2/alerts_nrql_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_nrql_conditions/policies/{policy_id}.json";
 
-    DefaultAlertsNrqlConditionsApi(NewRelicClient client) {
+    public DefaultAlertsNrqlConditionsApi(NewRelicClient client) {
         super(client);
     }
 
@@ -52,7 +52,7 @@ class DefaultAlertsNrqlConditionsApi extends ApiBase implements PolicyItemApi<Al
     }
 
     @Override
-    public AlertsNrqlCondition delete(int conditionId) {
+    public AlertsNrqlCondition delete(int policyId, int conditionId) {
         return client
                 .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)

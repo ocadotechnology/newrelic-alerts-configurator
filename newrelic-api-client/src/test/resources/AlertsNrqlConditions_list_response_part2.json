@@ -1,0 +1,49 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "nrqlConditionsSearch": {
+            "nextCursor": null,
+            "nrqlConditions": [
+              {
+                "enabled": true,
+                "expiration": {
+                  "closeViolationsOnExpiration": false,
+                  "expirationDuration": null,
+                  "openViolationOnExpiration": false
+                },
+                "id": "22222222",
+                "name": "Test NRQL Condition 2",
+                "nrql": {
+                  "query": "SELECT count(*) from `test2:test-event`"
+                },
+                "runbookUrl": null,
+                "signal": {
+                  "aggregationDelay": 120,
+                  "aggregationMethod": "EVENT_FLOW",
+                  "aggregationTimer": 240,
+                  "aggregationWindow": 60,
+                  "evaluationDelay": 60,
+                  "fillOption": "NONE",
+                  "fillValue": null,
+                  "slideBy": 30
+                },
+                "terms": [
+                  {
+                    "operator": "ABOVE_OR_EQUALS",
+                    "priority": "CRITICAL",
+                    "threshold": 1,
+                    "thresholdDuration": 60,
+                    "thresholdOccurrences": "AT_LEAST_ONCE"
+                  }
+                ],
+                "valueFunction": "SUM"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

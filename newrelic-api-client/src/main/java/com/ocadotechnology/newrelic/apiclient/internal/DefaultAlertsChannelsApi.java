@@ -11,13 +11,13 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
+public class DefaultAlertsChannelsApi extends ApiBase implements AlertsChannelsApi {
 
     private static final String CHANNELS_URL = "/v2/alerts_channels.json";
     private static final String CHANNEL_URL = "/v2/alerts_channels/{channel_id}.json";
     private static final String POLICY_CHANNELS_URL = "/v2/alerts_policy_channels.json";
 
-    DefaultAlertsChannelsApi(NewRelicClient client) {
+    public DefaultAlertsChannelsApi(NewRelicClient client) {
         super(client);
     }
 

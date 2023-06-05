@@ -12,12 +12,12 @@ import java.util.Optional;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.glassfish.jersey.uri.UriComponent.Type.QUERY_PARAM_SPACE_ENCODED;
 
-class DefaultKeyTransactionsApi extends ApiBase implements KeyTransactionsApi {
+public class DefaultKeyTransactionsApi extends ApiBase implements KeyTransactionsApi {
 
     private static final String KEY_TRANSACTIONS_URL = "/v2/key_transactions.json";
     private static final String KEY_TRANSACTION_URL = "/v2/key_transactions/{key_transaction_id}.json";
 
-    DefaultKeyTransactionsApi(NewRelicClient client) {
+    public DefaultKeyTransactionsApi(NewRelicClient client) {
         super(client);
     }
 

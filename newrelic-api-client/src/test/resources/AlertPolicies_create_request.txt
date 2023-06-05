@@ -1,0 +1,7 @@
+mutation {
+  alertsPolicyCreate(accountId:12345678 policy:{name:"Test Policy",incidentPreference:PER_CONDITION}) {
+    id
+    name
+    incidentPreference
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "data": {
+    "actor": {
+      "account": {
+        "alerts": {
+          "notificationChannel": {
+            "associatedPolicies": {
+              "policies": [
+                {
+                  "id": "1234567"
+                }
+              ]
+            },
+            "config": {
+              "emails": [
+                "email@domain.com",
+                "other@domain.com"
+              ],
+              "includeJson": true
+            },
+            "id": "1111111",
+            "name": "Test Email Channel",
+            "type": "EMAIL"
+          }
+        }
+      }
+    }
+  }
+}

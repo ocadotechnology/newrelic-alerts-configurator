@@ -1,0 +1,14 @@
+{
+  "data": {
+    "alertsNotificationChannelsAddToPolicy": {
+      "errors": [
+        {
+          "description": "Validation Failure",
+          "errorType": "BAD_USER_INPUT",
+          "notificationChannelId": "1111111"
+        }
+      ],
+      "notificationChannels": []
+    }
+  }
+}

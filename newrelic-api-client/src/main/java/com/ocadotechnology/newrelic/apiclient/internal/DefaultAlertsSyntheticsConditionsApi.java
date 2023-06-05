@@ -1,24 +1,23 @@
 package com.ocadotechnology.newrelic.apiclient.internal;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
-
-import java.util.List;
-
-import javax.ws.rs.client.Entity;
-
 import com.ocadotechnology.newrelic.apiclient.PolicyItemApi;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsSyntheticsConditionList;
 import com.ocadotechnology.newrelic.apiclient.internal.model.AlertsSyntheticsConditionWrapper;
 import com.ocadotechnology.newrelic.apiclient.model.conditions.synthetics.AlertsSyntheticsCondition;
 
-class DefaultAlertsSyntheticsConditionsApi extends ApiBase implements PolicyItemApi<AlertsSyntheticsCondition> {
+import javax.ws.rs.client.Entity;
+import java.util.List;
+
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+
+public class DefaultAlertsSyntheticsConditionsApi extends ApiBase implements PolicyItemApi<AlertsSyntheticsCondition> {
 
     private static final String CONDITIONS_URL = "/v2/alerts_synthetics_conditions";
     private static final String CONDITION_URL = "/v2/alerts_synthetics_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_synthetics_conditions/policies/{policy_id}.json";
 
-    DefaultAlertsSyntheticsConditionsApi(NewRelicClient client) {
+    public DefaultAlertsSyntheticsConditionsApi(NewRelicClient client) {
         super(client);
     }
 
@@ -53,7 +52,7 @@ class DefaultAlertsSyntheticsConditionsApi extends ApiBase implements PolicyItem
     }
 
     @Override
-    public AlertsSyntheticsCondition delete(int conditionId) {
+    public AlertsSyntheticsCondition delete(int policyId, int conditionId) {
         return client
                 .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)

@@ -1,0 +1,5 @@
+mutation {
+  alertsConditionDelete(accountId:12345678 id:11111111) {
+    id
+  }
+}

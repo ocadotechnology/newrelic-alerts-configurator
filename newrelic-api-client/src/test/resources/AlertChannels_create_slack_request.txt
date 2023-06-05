@@ -1,0 +1,74 @@
+mutation {
+  alertsNotificationChannelCreate(accountId:12345678 notificationChannel:{slack:{name:"Test Slack Channel",teamChannel:"the channel",url:"https://domain.com/slack"}}) {
+    error {
+      description
+      errorType
+    }
+    notificationChannel {
+      ... on AlertsEmailNotificationChannel {
+        id
+        name
+        type
+        config {
+          emails
+          includeJson
+        }
+        associatedPolicies {
+          policies {
+            id
+          }
+        }
+      }
+      ... on AlertsPagerDutyNotificationChannel {
+        id
+        name
+        type
+        config {
+          apiKey
+        }
+        associatedPolicies {
+          policies {
+            id
+          }
+        }
+      }
+      ... on AlertsSlackNotificationChannel {
+        id
+        name
+        type
+        config {
+          teamChannel
+          url
+        }
+        associatedPolicies {
+          policies {
+            id
+          }
+        }
+      }
+      ... on AlertsWebhookNotificationChannel {
+        id
+        name
+        type
+        config {
+          baseUrl
+          basicAuth {
+            username
+            password
+          }
+          customHttpHeaders {
+            name
+            value
+          }
+          customPayloadBody
+          customPayloadType
+        }
+        associatedPolicies {
+          policies {
+            id
+          }
+        }
+      }
+    }
+  }
+}

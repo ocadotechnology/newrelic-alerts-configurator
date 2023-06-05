@@ -4,18 +4,19 @@ import com.ocadotechnology.newrelic.apiclient.SyntheticsMonitorsApi;
 import com.ocadotechnology.newrelic.apiclient.internal.client.NewRelicClient;
 import com.ocadotechnology.newrelic.apiclient.internal.model.MonitorList;
 import com.ocadotechnology.newrelic.apiclient.model.synthetics.Monitor;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
 
-class DefaultSyntheticsMonitorsApi extends ApiBase implements SyntheticsMonitorsApi {
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+
+public class DefaultSyntheticsMonitorsApi extends ApiBase implements SyntheticsMonitorsApi {
 
     private static final String MONITORS_URL = "/v3/monitors";
 
-    DefaultSyntheticsMonitorsApi(NewRelicClient client) {
+    public DefaultSyntheticsMonitorsApi(NewRelicClient client) {
         super(client);
     }
 

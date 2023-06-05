@@ -1,5 +1,6 @@
 package com.ocadotechnology.newrelic.apiclient.model.policies;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ public class AlertsPolicy {
     @JsonProperty
     Integer id;
     @JsonProperty("incident_preference")
+    @JsonAlias({"incidentPreference"})
     String incidentPreference;
     @JsonProperty
     String name;

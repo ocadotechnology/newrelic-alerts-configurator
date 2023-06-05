@@ -1,0 +1,23 @@
+{
+  "data": {
+    "alertsNrqlConditionStaticUpdate": null
+  },
+  "errors": [
+    {
+      "extensions": {
+        "code": "BAD_USER_INPUT",
+        "errorClass": "BAD_USER_INPUT"
+      },
+      "locations": [
+        {
+          "column": 3,
+          "line": 2
+        }
+      ],
+      "message": "Not Found",
+      "path": [
+        "alertsNrqlConditionStaticUpdate"
+      ]
+    }
+  ]
+}

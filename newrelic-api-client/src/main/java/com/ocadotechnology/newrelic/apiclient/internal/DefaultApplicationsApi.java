@@ -12,12 +12,12 @@ import java.util.Optional;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-class DefaultApplicationsApi extends ApiBase implements ApplicationsApi {
+public class DefaultApplicationsApi extends ApiBase implements ApplicationsApi {
 
     private static final String APPLICATIONS_URL = "/v2/applications.json";
     private static final String APPLICATION_URL = "/v2/applications/{application_id}.json";
 
-    DefaultApplicationsApi(NewRelicClient client) {
+    public DefaultApplicationsApi(NewRelicClient client) {
         super(client);
     }
 

@@ -11,13 +11,13 @@ import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements PolicyItemApi<AlertsExternalServiceCondition> {
+public class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements PolicyItemApi<AlertsExternalServiceCondition> {
 
     private static final String CONDITIONS_URL = "/v2/alerts_external_service_conditions";
     private static final String CONDITION_URL = "/v2/alerts_external_service_conditions/{condition_id}.json";
     private static final String CONDITION_POLICY_URL = "/v2/alerts_external_service_conditions/policies/{policy_id}.json";
 
-    DefaultAlertsExternalServiceConditionsApi(NewRelicClient client) {
+    public DefaultAlertsExternalServiceConditionsApi(NewRelicClient client) {
         super(client);
     }
 
@@ -52,7 +52,7 @@ class DefaultAlertsExternalServiceConditionsApi extends ApiBase implements Polic
     }
 
     @Override
-    public AlertsExternalServiceCondition delete(int conditionId) {
+    public AlertsExternalServiceCondition delete(int policyId, int conditionId) {
         return client
                 .target(CONDITION_URL)
                 .resolveTemplate("condition_id", conditionId)
