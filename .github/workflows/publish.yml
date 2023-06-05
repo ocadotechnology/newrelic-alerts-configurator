@@ -17,7 +17,7 @@ jobs:
       - name: Publish
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: uploadArchives -Prelease -Pversion=${{ github.event.release.tag_name }}
+          arguments: uploadArchives -Prelease -Pversion=${{ github.event.release.tag_name }} --stacktrace
         env:
           ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
           ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.OSSRH_PASSWORD }}
