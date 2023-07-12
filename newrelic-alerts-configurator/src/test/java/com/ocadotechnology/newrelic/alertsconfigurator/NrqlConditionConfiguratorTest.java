@@ -103,6 +103,7 @@ public class NrqlConditionConfiguratorTest extends AbstractPolicyItemConfigurato
                         .timeFunction(TERMS_CONFIGURATION.getTimeFunctionTerm().name().toLowerCase())
                         .build())
                 .valueFunction(VALUE_FUNCTION.getValueString())
+                .violationTimeLimitSeconds(NrqlCondition.DEFAULT_VIOLATION_TIME_LIMIT_SECONDS)
                 .nrql(Nrql.builder()
                         .query(QUERY)
                         .build());
