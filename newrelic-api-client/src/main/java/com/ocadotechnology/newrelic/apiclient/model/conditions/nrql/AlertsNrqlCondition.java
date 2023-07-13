@@ -13,7 +13,7 @@ import lombok.Value;
 import lombok.experimental.NonFinal;
 
 /**
- * See <a href="https://rpm.newrelic.com/api/explore/alerts_nrql_conditions/list">Doc</a>
+ * See <a href="https://docs.newrelic.com/docs/alerts-applied-intelligence/new-relic-alerts/advanced-alerts/rest-api-alerts/rest-api-calls-alerts/#conditions-list">Doc</a>
  */
 @Value
 @Builder
@@ -39,4 +39,6 @@ public class AlertsNrqlCondition implements PolicyItem {
     Signal signal;
     @JsonProperty
     Expiration expiration;
+    @JsonProperty("violation_time_limit_seconds")
+    Integer violationTimeLimitSeconds;
 }
