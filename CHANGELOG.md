@@ -1,3 +1,6 @@
+# 5.0.1 (13-07-2023)
+- Added support for `violationTimeLimitSeconds`
+
 # 5.0.0 (05-06-2023)
 - Added support for new NR API
 
